@@ -1,11 +1,18 @@
+@import "../assets/styles/mixins";
+@import "../assets/styles/variables";
+
 .subHeader {
-  height: 40px;
+  height: 32px;
+
+  @include on-tablet {
+    height: 40px;
+  }
+
   background-color: #0b5a45;
 
-  color: #ABEFD1;
-  font-family: MacPaw Fixel;
+  color: $primary-200;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
 
   display: flex;
   align-items: center;
