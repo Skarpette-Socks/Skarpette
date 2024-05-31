@@ -1,0 +1,87 @@
+@import "../assets/styles/mixins";
+@import "../assets/styles/variables";
+
+.navBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+
+  &__logo {
+    font-family: Mariupol;
+    font-size: 28px;
+    font-weight: 700;
+    color: $grayscale-1000;
+    text-decoration: none;
+  }
+
+  &__menu {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    list-style-type: none;
+
+    &-catalog {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      border-radius: 100px;
+      width: 116px;
+      height: 48px;
+      padding: 14px 16px 14px 20px;
+      border: 1px solid $grayscale-200;
+      background-color: transparent;
+
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+
+  &__item {
+    font-family: MacPaw Fixel;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19.84px;
+    text-align: left;
+    color: $grayscale-1000;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+
+    &-cart {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 100px;
+      background-color: $grayscale-200;
+      width: 111px;
+      height: 48px;
+
+      &-text {
+        font-size: 16px;
+        font-weight: 600;
+        color: $grayscale-1000;
+        
+      }
+
+      &-count {
+        background-color: $grayscale-1000;
+        color: $grayscale-0;
+        font-weight: 500;
+        border-radius: 100px;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+    }
+  }
+}
