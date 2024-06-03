@@ -21,6 +21,10 @@
     align-items: center;
     list-style-type: none;
 
+    a {
+      text-decoration: none;
+    }
+
     &-catalog {
       display: flex;
       align-items: center;
@@ -35,16 +39,18 @@
 
       font-size: 16px;
       font-weight: 600;
+      cursor: pointer;
+
     }
   }
 
-  &__item {
+  &__item a {
     font-family: MacPaw Fixel;
     font-size: 16px;
     font-weight: 500;
     line-height: 19.84px;
-    text-align: left;
     color: $grayscale-1000;
+    text-decoration: none;
   }
 
   &__actions {
@@ -52,6 +58,10 @@
     gap: 16px;
     align-items: center;
     justify-content: center;
+
+    a {
+      text-decoration: none;
+    }
 
     &-cart {
       display: flex;
@@ -67,7 +77,6 @@
         font-size: 16px;
         font-weight: 600;
         color: $grayscale-1000;
-        
       }
 
       &-count {
