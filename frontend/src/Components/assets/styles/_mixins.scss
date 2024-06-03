@@ -9,3 +9,15 @@
     @content;
   }
 }
+
+@mixin content-padding-inline {
+  padding-inline: 16px;
+
+  @include on-tablet {
+    padding-inline: 78px;
+  }
+
+  @include on-desktop {
+    padding-inline: 78px;
+  }
+}
