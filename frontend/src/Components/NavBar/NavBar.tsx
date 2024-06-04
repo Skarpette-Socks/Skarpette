@@ -3,6 +3,7 @@ import "./NavBar.scss";
 
 import search_icon from "../assets/img/icons/search.svg";
 import heart_icon from "../assets/img/icons/heart.svg";
+import logo from "../assets/img/icons/logo.svg";
 
 import arrow_down from "../assets/img/icons/caret-down-filled.svg";
 
@@ -53,7 +54,7 @@ const NavBarActions = () => (
 const NavBar = () => (
   <nav className="navBar">
     <Link to="/" className="navBar__logo">
-      Skarpette
+      <img src={logo} alt="site logo" />
     </Link>
     <NavBarMenu />
     <NavBarActions />
