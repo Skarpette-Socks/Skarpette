@@ -2,14 +2,14 @@ import "./NavBar.scss";
 
 import search_icon from '../assets/img/icons/search.svg';
 import heart_icon from "../assets/img/icons/heart.svg";
-import arrow_down from '../assets/img/icons/caret-down-filled.svg'
+import arrow_down from '../assets/img/icons/caret-down-filled.svg';
+import logo from '../assets/img/icons/Logo.svg';
 
 const NavBar = () => {
   return (
     <div className="navBar">
-      <a href="#" className="navBar__logo">
-        Skarpette
-      </a>
+      <img src={logo} alt="Skarpette logo" className="navBar__logo"/>
+
       <ul className="navBar__menu">
         <li>
           <button className="navBar__menu-catalog">

@@ -1,0 +1,67 @@
+@import "../assets/styles/mixins";
+@import "../assets/styles/variables";
+
+.footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  margin-top: 120px;
+
+  &__logo {
+    fill: $primary-800;
+    // height: 48px;
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__main-info {
+    width: 192px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__subtitle {
+    margin-bottom: 24px;
+    color: $grayscale-400;
+  }
+
+  &__categories-list, &__about-us-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__categories-item, &__about-us-item {
+    list-style: none;
+  }
+
+  &__graytitle {
+    color: $grayscale-400;
+  }
+
+  &__info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  & a {
+    text-decoration: none;
+    color: $grayscale-1000;
+
+    &:hover {
+      color: $grayscale-600;
+    }
+  }
+
+  &__phone-number, &__email {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
