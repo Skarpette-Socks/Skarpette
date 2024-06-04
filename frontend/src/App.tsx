@@ -1,4 +1,7 @@
+import "./App.css";
+import "./Components/assets/styles/main.scss";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Footer from "./Components/Footer/Footer";
 import NavBar from "./Components/NavBar/NavBar";
 import Promoitons from "./Pages/Promoitons";
 import AboutUs from "./Pages/AboutUs";
@@ -24,6 +27,7 @@ const App = () => (
       <Route path="/favorites" element={<Favorites />} />
       <Route path="/cart" element={<Cart />} />
     </Routes>
+    <Footer />
   </Router>
 );
 
