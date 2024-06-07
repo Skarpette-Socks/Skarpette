@@ -4,40 +4,57 @@
 .navBar {
   @include content-padding-inline;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-top: 16px;
+  align-items: center;
+  margin-top: 14px;
+
+  @include on-tablet {
+    margin-top: 16px;
+  }
+
+  @include on-desktop {
+    margin-top: 16px;
+  }
 
   &__logo svg path {
     fill: $grayscale-1000 !important;
     color: aliceblue !important;
   }
 
-  &__menu {
+  &__logo {
     display: flex;
-    gap: 24px;
+    justify-content: center;
     align-items: center;
-    list-style-type: none;
+    gap: 8px;
+  }
 
-    a {
-      text-decoration: none;
+  &__burger-menu {
+    @include on-desktop {
+      display: none;
     }
   }
 
-  &__item a {
-    font-family: MacPaw Fixel;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 19.84px;
-    color: $grayscale-1000;
-    text-decoration: none;
+  &__menu {
+    display: none;
+    @include on-desktop {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      list-style-type: none;
+
+      a {
+        text-decoration: none;
+        color: $grayscale-1000;
+        font-weight: 500;
+        font-size: 16px;
+      }
+    }
   }
 
   &__actions {
     display: flex;
-    gap: 16px;
     align-items: center;
-    justify-content: center;
+    gap: 16px;
 
     a {
       text-decoration: none;
@@ -49,14 +66,23 @@
       justify-content: center;
       gap: 8px;
       border-radius: 100px;
-      background-color: $grayscale-200;
-      width: 111px;
-      height: 48px;
+      background-color: $grayscale-50;
+      width: 60px;
+      height: 36px;
+
+      @include on-tablet {
+        width: 111px;
+        height: 48px;
+      }
 
       &-text {
-        font-size: 16px;
-        font-weight: 600;
-        color: $grayscale-1000;
+        display: none;
+        @include on-tablet {
+          display: block;
+          font-size: 16px;
+          font-weight: 600;
+          color: $grayscale-1000;
+        }
       }
 
       &-count {
@@ -70,6 +96,12 @@
         align-items: center;
         justify-content: center;
         text-align: center;
+      }
+
+      &-icon {
+        @include on-tablet {
+          display: none;
+        }
       }
     }
   }
