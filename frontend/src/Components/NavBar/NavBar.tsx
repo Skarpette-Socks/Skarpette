@@ -6,6 +6,8 @@ import Dropdown from "../Dropdown/Dropdown";
 import search_icon from "../assets/img/icons/search.svg";
 import heart_icon from "../assets/img/icons/heart.svg";
 import logo from "../assets/img/icons/logo.svg";
+import menu from "../assets/img/icons/menu.svg";
+import cart from "../assets/img/icons/cart.svg";
 
 const NavBarMenu: React.FC = () => {
   return (
@@ -39,6 +41,7 @@ const NavBarActions: React.FC = () => (
     </Link>
     <Link to="/cart">
       <div className="navBar__actions-cart">
+        <img src={cart} alt="cart icon" className="navBar__actions-cart-icon" />
         <p className="navBar__actions-cart-text">Кошик</p>
         <div className="navBar__actions-cart-count">2</div>
       </div>
@@ -49,6 +52,7 @@ const NavBarActions: React.FC = () => (
 const NavBar: React.FC = () => (
   <nav className="navBar">
     <Link to="/" className="navBar__logo">
+      <img src={menu} alt="burger menu" className="navBar__burger-menu" />
       <img src={logo} alt="site logo" />
     </Link>
     <NavBarMenu />
