@@ -1,8 +1,6 @@
 
-const AboutUs = () => {
-  return (
-    <div>AboutUs</div>
-  )
-}
+const AboutUs: React.FC = () => {
+  return <div>AboutUs</div>;
+};
 
 export default AboutUs

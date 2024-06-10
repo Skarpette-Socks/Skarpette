@@ -32,7 +32,7 @@ const routes = [
   { path: "/cart", element: <Cart /> },
 ];
 
-const App = () => (
+const App: React.FC = () => (
   <Router>
     <SubHeader />
     <NavBar />

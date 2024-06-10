@@ -1,9 +1,9 @@
 import PromoCards from "../Components/PromoCards/PromoCards";
 
-const Shop = () => {
+const Shop: React.FC = () => {
   return (
     <div>
-      <PromoCards/>
+      <PromoCards />
     </div>
   );
 };
