@@ -1,31 +1,45 @@
+// Импорты стилей
 import "./App.css";
 import "./Components/assets/styles/main.scss";
+
+// Импорты библиотек
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+// Импорты компонентов
 import Footer from "./Components/Footer/Footer";
 import NavBar from "./Components/NavBar/NavBar";
-import Promoitons from "./Pages/Promoitons";
-import AboutUs from "./Pages/AboutUs";
-import PaymentDelivery from "./Pages/PaymentDelivery";
-import Contacts from "./Pages/Contacts";
 import SubHeader from "./Components/SubHeader/SubHeader";
+
+// Импорты страниц
+import AboutUs from "./Pages/AboutUs";
 import Cart from "./Pages/Cart";
-import Favorites from "./Pages/Favorites";
 import Catalog from "./Pages/Catalog";
+import Contacts from "./Pages/Contacts";
+import Favorites from "./Pages/Favorites";
+import PaymentDelivery from "./Pages/PaymentDelivery";
+import Promotions from "./Pages/Promotions";
 import Shop from "./Pages/Shop";
+
+// Конфигурация маршрутов
+const routes = [
+  { path: "/", element: <Shop /> },
+  { path: "/catalog", element: <Catalog /> },
+  { path: "/offers", element: <Promotions /> },
+  { path: "/about-us", element: <AboutUs /> },
+  { path: "/payment-and-delivery", element: <PaymentDelivery /> },
+  { path: "/contacts", element: <Contacts /> },
+  { path: "/favorites", element: <Favorites /> },
+  { path: "/cart", element: <Cart /> },
+];
 
 const App = () => (
   <Router>
     <SubHeader />
     <NavBar />
     <Routes>
-      <Route path="/" element={<Shop />} />
-      <Route path="/catalog" element={<Catalog />} />
-      <Route path="/offers" element={<Promoitons />} />
-      <Route path="/about-us" element={<AboutUs />} />
-      <Route path="/payment-and-delivery" element={<PaymentDelivery />} />
-      <Route path="/contacts" element={<Contacts />} />
-      <Route path="/favorites" element={<Favorites />} />
-      <Route path="/cart" element={<Cart />} />
+      {routes.map(({ path, element }) => (
+        <Route key={path} path={path} element={element} />
+      ))}
     </Routes>
     <Footer />
   </Router>
