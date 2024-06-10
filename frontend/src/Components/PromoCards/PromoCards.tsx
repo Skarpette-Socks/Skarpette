@@ -9,8 +9,8 @@ const PromoCards: React.FC = () => {
     <div className="promo-cards">
       <div className="promo-cards__item">
         <img src={promo_icon_1} alt="" />
-        <p className="promo-cards-title">Якісне виробництво</p>
-        <p className="promo-cards-text">
+        <p className="promo-cards__title">Якісне виробництво</p>
+        <p className="promo-cards__text">
           Найкращі матеріали, якість без компромісів та стильні дизайни — в
           нашому асортименті. Обери комфорт і стиль разом з Skarpette
         </p>
@@ -18,8 +18,8 @@ const PromoCards: React.FC = () => {
 
       <div className="promo-cards__item">
         <img src={promo_icon_2} alt="" />
-        <p className="promo-cards-title">Турбота про клієнтів</p>
-        <p className="promo-cards-text">
+        <p className="promo-cards__title">Турбота про клієнтів</p>
+        <p className="promo-cards__text">
           Ми створюємо всі продукти з думкою про твої потреби. Ми завжди на
           зв’язку і готові відповісти на всі твої запитання
         </p>
@@ -27,8 +27,8 @@ const PromoCards: React.FC = () => {
 
       <div className="promo-cards__item">
         <img src={promo_icon_3} alt="" />
-        <p className="promo-cards-title">Соціальна відповідальність</p>
-        <p className="promo-cards-text">
+        <p className="promo-cards__title">Соціальна відповідальність</p>
+        <p className="promo-cards__text">
           Ми впевнені, що український бізнес має велике значення для покращення
           життя суспільства та громадян
         </p>
