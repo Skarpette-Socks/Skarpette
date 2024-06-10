@@ -1,8 +1,6 @@
 
-const Promotions = () => {
-  return (
-    <div>Promoitons</div>
-  )
-}
+const Promotions: React.FC = () => {
+  return <div>Promoitons</div>;
+};
 
 export default Promotions
