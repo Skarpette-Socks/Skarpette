@@ -1,8 +1,6 @@
 
-const Favorites = () => {
-  return (
-    <div>Favorites</div>
-  )
-}
+const Favorites: React.FC = () => {
+  return <div>Favorites</div>;
+};
 
 export default Favorites

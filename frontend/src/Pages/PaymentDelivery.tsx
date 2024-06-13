@@ -1,8 +1,6 @@
 
-const PaymentDelivery = () => {
-  return (
-    <div>PaymentDelivery</div>
-  )
-}
+const PaymentDelivery: React.FC = () => {
+  return <div>PaymentDelivery</div>;
+};
 
 export default PaymentDelivery

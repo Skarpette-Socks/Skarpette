@@ -2,7 +2,7 @@ import "./Footer.scss";
 
 import logo from "../assets/img/icons/logo.svg";
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
     <div className="footer">
       <div className="footer__main">
