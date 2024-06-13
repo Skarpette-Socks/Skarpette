@@ -2,7 +2,7 @@ import "./Footer.scss";
 
 import logo from "../assets/img/icons/logo.svg";
 
-const Footer: React.FC = () => {
+const Footer = () => {
   return (
     <div className="footer">
       <div className="footer__main">
@@ -28,13 +28,13 @@ const Footer: React.FC = () => {
 
             <li className="footer__categories-item">
               <a href="#" className="footer__categories-link">
-                Дитячі
+                Чоловічі
               </a>
             </li>
 
             <li className="footer__categories-item">
               <a href="#" className="footer__categories-link">
-                Веселі
+                Дитячі
               </a>
             </li>
 
@@ -46,19 +46,19 @@ const Footer: React.FC = () => {
 
             <li className="footer__categories-item">
               <a href="#" className="footer__categories-link">
-                Спорт
-              </a>
-            </li>
-
-            <li className="footer__categories-item">
-              <a href="#" className="footer__categories-link">
-                Моно
-              </a>
-            </li>
-
-            <li className="footer__categories-item">
-              <a href="#" className="footer__categories-link">
                 Короткі
+              </a>
+            </li>
+
+            <li className="footer__categories-item">
+              <a href="#" className="footer__categories-link">
+                Спортивні
+              </a>
+            </li>
+
+            <li className="footer__categories-item">
+              <a href="#" className="footer__categories-link">
+                Медичні
               </a>
             </li>
           </ul>
@@ -99,6 +99,26 @@ const Footer: React.FC = () => {
               </a>
             </li>
           </ul>
+        </div>
+
+        <div className="footer__dropdowns">
+          <div className="footer__greyline"></div>
+
+          <div className="footer__dropdown-catalog">
+            <div className="footer__dropdown-catalog-title">
+              Категорії
+            </div>
+          </div>
+
+          <div className="footer__greyline"></div>
+
+          <div className="footer__dropdown-about-us">
+            <div className="footer__dropdown-about-us-title">
+              Про компанію
+            </div>
+          </div>
+
+          <div className="footer__greyline"></div>
         </div>
 
         <div className="footer__info">
