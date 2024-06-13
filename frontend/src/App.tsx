@@ -34,14 +34,16 @@ const routes = [
 
 const App: React.FC = () => (
   <Router>
-    <SubHeader />
-    <NavBar />
-    <Routes>
-      {routes.map(({ path, element }) => (
-        <Route key={path} path={path} element={element} />
-      ))}
-    </Routes>
-    <Footer />
+    <div className="App">
+      <SubHeader />
+      <NavBar />
+      <Routes>
+        {routes.map(({ path, element }) => (
+          <Route key={path} path={path} element={element} />
+        ))}
+      </Routes>
+      <Footer />
+    </div>
   </Router>
 );
 
