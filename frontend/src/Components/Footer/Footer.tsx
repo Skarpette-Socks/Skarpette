@@ -1,8 +1,18 @@
 import "./Footer.scss";
 
-import logo from "../assets/img/icons/logo.svg";
+import { useState } from "react";
 
-const Footer: React.FC = () => {
+import logo from "../assets/img/icons/logo.svg";
+import plus from "../assets/img/icons/plus.svg";
+import minus from "../assets/img/icons/minus.svg";
+import categories from "../../../../backend/bd/categories.json";
+import usefulLinks from "../../../../backend/bd/useful-links.json";
+import FooterLinks from "./FooterLinks";
+
+const Footer = () => {
+  const [categoriesOpened, setCategoriesOpened] = useState(false);
+  const [aboutUsOpened, setAboutUsOpened] = useState(false);
+
   return (
     <div className="footer">
       <div className="footer__main">
@@ -19,86 +29,63 @@ const Footer: React.FC = () => {
         <div className="footer__categories">
           <div className="footer__subtitle">Категорії</div>
 
-          <ul className="footer__categories-list">
-            <li className="footer__categories-item">
-              <a href="#" className="footer__categories-link">
-                Жіночі
-              </a>
-            </li>
-
-            <li className="footer__categories-item">
-              <a href="#" className="footer__categories-link">
-                Дитячі
-              </a>
-            </li>
-
-            <li className="footer__categories-item">
-              <a href="#" className="footer__categories-link">
-                Веселі
-              </a>
-            </li>
-
-            <li className="footer__categories-item">
-              <a href="#" className="footer__categories-link">
-                Класичні
-              </a>
-            </li>
-
-            <li className="footer__categories-item">
-              <a href="#" className="footer__categories-link">
-                Спорт
-              </a>
-            </li>
-
-            <li className="footer__categories-item">
-              <a href="#" className="footer__categories-link">
-                Моно
-              </a>
-            </li>
-
-            <li className="footer__categories-item">
-              <a href="#" className="footer__categories-link">
-                Короткі
-              </a>
-            </li>
-          </ul>
+          <FooterLinks items={categories}/>
         </div>
 
         <div className="footer__about-us">
           <div className="footer__subtitle">Про компанію</div>
 
-          <ul className="footer__about-us-list">
-            <li className="footer__about-us-item">
-              <a href="#about-us" className="footer__about-us-link">
-                Про нас
-              </a>
-            </li>
-            <li className="footer__about-us-item">
-              <a href="#about-us" className="footer__about-us-link">
-                Акції
-              </a>
-            </li>
-            <li className="footer__about-us-item">
-              <a href="#about-us" className="footer__about-us-link">
-                Оплата та доставка
-              </a>
-            </li>
-            <li className="footer__about-us-item">
-              <a href="#about-us" className="footer__about-us-link">
-                Повернення
-              </a>
-            </li>
-            <li className="footer__about-us-item">
-              <a href="#about-us" className="footer__about-us-link">
-                Контакти
-              </a>
-            </li>
-            <li className="footer__about-us-item">
-              <a href="#about-us" className="footer__about-us-link">
-                Написати відгук
-              </a>
-            </li>
-          </ul>
+          <FooterLinks items={usefulLinks}/>
+        </div>
+
+        <div className="footer__dropdowns">
+          <div className="footer__greyline"></div>
+
+          <div className="footer__dropdown-catalog">
+            <div className="footer__dropdown-container">
+              <div className="footer__dropdown-catalog-title">Категорії</div>
+
+              <span 
+                className="footer__dropdown-button"
+                onClick={() => setCategoriesOpened(!categoriesOpened)}
+              >
+                {categoriesOpened ? (
+                  <img src={minus} alt="Minus" />
+                ) : (
+                  <img src={plus} alt="Plus" />
+                )}
+              </span>
+
+            </div>
+
+            {categoriesOpened && <FooterLinks items={categories}/>}
+          </div>
+
+          <div className="footer__greyline"></div>
+
+          <div className="footer__dropdown-about-us">
+            <div className="footer__dropdown-container">
+              <div className="footer__dropdown-about-us-title">
+                Про компанію
+              </div>
+
+              <span 
+                className="footer__dropdown-button"
+                onClick={() => setAboutUsOpened(!aboutUsOpened)}
+              >
+                {aboutUsOpened ? (
+                  <img src={minus} alt="Minus" />
+                ) : (
+                  <img src={plus} alt="Plus" />
+                )}
+              </span>
+            </div>
+
+            {aboutUsOpened && <FooterLinks items={usefulLinks}/>}
+
+          </div>
+
+          <div className="footer__greyline"></div>
         </div>
 
         <div className="footer__info">

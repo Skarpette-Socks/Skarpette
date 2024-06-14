@@ -1,0 +1,9 @@
+[
+  { "name": "Жіночі", "link": "/womens-socks" },
+  { "name": "Чоловічі", "link": "/mens-socks" },
+  { "name": "Дитячі", "link": "/kids-socks" },
+  { "name": "Класичні", "link": "/classic-socks" },
+  { "name": "Короткі", "link": "/short-socks" },
+  { "name": "Спортивні", "link": "/sport-socks" },
+  { "name": "Медичні", "link": "/medical-socks" }
+]
