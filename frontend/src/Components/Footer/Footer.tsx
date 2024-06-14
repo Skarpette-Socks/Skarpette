@@ -1,6 +1,8 @@
 import "./Footer.scss";
 
 import logo from "../assets/img/icons/logo.svg";
+import plus from "../assets/img/icons/plus.svg";
+
 
 const Footer = () => {
   return (
@@ -105,16 +107,28 @@ const Footer = () => {
           <div className="footer__greyline"></div>
 
           <div className="footer__dropdown-catalog">
-            <div className="footer__dropdown-catalog-title">
-              Категорії
+            <div className="footer__dropdown-container">
+              <div className="footer__dropdown-catalog-title">
+                Категорії
+              </div>
+
+              <a className="footer__plus plus" href="#">
+                <img src={plus} alt="Plus" />
+              </a>
             </div>
           </div>
 
           <div className="footer__greyline"></div>
 
           <div className="footer__dropdown-about-us">
-            <div className="footer__dropdown-about-us-title">
-              Про компанію
+            <div className="footer__dropdown-container">
+              <div className="footer__dropdown-about-us-title">
+                Про компанію
+              </div>
+
+              <a className="footer__plus plus" href="#">
+                <img src={plus} alt="Plus" />
+              </a>
             </div>
           </div>
 
