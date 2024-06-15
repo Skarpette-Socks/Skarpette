@@ -1,8 +1,8 @@
 [
-  { "name": "Про нас", "link": "/womens-socks" },
-  { "name": "Акції", "link": "/mens-socks" },
-  { "name": "Оплата та доставка", "link": "/kids-socks" },
-  { "name": "Повернення", "link": "/classic-socks" },
-  { "name": "Контакти", "link": "/short-socks" },
-  { "name": "Написати відгук", "link": "/sport-socks" }
+  { "name": "Про нас", "link": "/about-us" },
+  { "name": "Акції", "link": "/discounts" },
+  { "name": "Оплата та доставка", "link": "/payment-and-delivery" },
+  { "name": "Повернення", "link": "/return-of-goods" },
+  { "name": "Контакти", "link": "/contacts" },
+  { "name": "Написати відгук", "link": "/write-a-review" }
 ]
