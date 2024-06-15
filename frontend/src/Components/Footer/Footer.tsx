@@ -2,7 +2,7 @@ import "./Footer.scss";
 
 import { useState } from "react";
 
-import logo from "../assets/img/icons/logo.svg";
+import logo from "../assets/img/icons/logo-green.svg";
 import plus from "../assets/img/icons/plus.svg";
 import minus from "../assets/img/icons/minus.svg";
 import categories from "../../../../backend/bd/categories.json";
