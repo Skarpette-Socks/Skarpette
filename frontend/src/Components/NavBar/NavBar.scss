@@ -6,14 +6,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 14px;
+
+  padding: 12px 16px 12px 8px;
 
   @include on-tablet {
-    margin-top: 16px;
-  }
-
-  @include on-desktop {
-    margin-top: 16px;
+    padding: 16px 78px;
   }
 
   &__logo svg path {
