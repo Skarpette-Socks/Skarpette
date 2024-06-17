@@ -70,6 +70,10 @@
   }
 
   &__questions {
-    margin-top: 64px;
+    margin-top: 40px;
+
+    @include on-tablet {
+      margin-top: 64px;
+    }
   }
 }
