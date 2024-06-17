@@ -5,7 +5,7 @@ import Dropdown from "../Dropdown/Dropdown";
 
 import search_icon from "../assets/img/icons/search.svg";
 import heart_icon from "../assets/img/icons/heart.svg";
-import logo from "../assets/img/icons/logo.svg";
+import logo from "../assets/img/icons/logo-black.svg";
 import menu from "../assets/img/icons/menu.svg";
 import cart from "../assets/img/icons/cart.svg";
 
