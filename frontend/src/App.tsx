@@ -16,7 +16,7 @@ import Cart from "./Pages/Cart";
 import Catalog from "./Pages/Catalog";
 import Contacts from "./Pages/Contacts";
 import Favorites from "./Pages/Favorites";
-import PaymentDelivery from "./Pages/PaymentDelivery";
+import PaymentDelivery from "./Pages/PaymentDelivery/PaymentDelivery";
 import Promotions from "./Pages/Promotions";
 import Shop from "./Pages/Shop";
 

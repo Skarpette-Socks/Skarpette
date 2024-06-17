@@ -7,7 +7,7 @@ const Questions: React.FC = () => {
       <p className="questions__text">
         Ми будемо раді поспілкуватися! Залиште свій коментар за кнопкою нижче.
       </p>
-      <button className="questions__button">Написати</button>
+      <a href="#" className="questions__button">Написати</a>
     </div>
   );
 };
