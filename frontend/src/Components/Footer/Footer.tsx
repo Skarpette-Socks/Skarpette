@@ -5,8 +5,14 @@ import { useState } from "react";
 import logo from "../assets/img/icons/logo-green.svg";
 import plus from "../assets/img/icons/plus.svg";
 import minus from "../assets/img/icons/minus.svg";
+import visa from "../assets/img/icons/visa.svg";
+import mastercard from "../assets/img/icons/mastercard.svg";
+import fondy from "../assets/img/icons/fondy.svg";
+
+
 import categories from "../../../../backend/bd/categories.json";
 import usefulLinks from "../../../../backend/bd/useful-links.json";
+
 import FooterLinks from "./FooterLinks";
 
 const Footer = () => {
@@ -113,11 +119,46 @@ const Footer = () => {
 
               <a href="mail:scarpettehelp@gmail.com">scarpettehelp@gmail.com</a>
             </div>
+
+            <div className="footer__address">
+              <div className="footer__address-title footer__graytitle">
+                Фізична адреса
+              </div>
+
+              <div className="footer__address-info">
+                Київ, вул. Антоновича 24/10
+              </div>
+              <div className="footer__address-fop">
+                ФОП Ковальчук Марина Андріївна
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="footer__minor-info"></div>
+      <div className="footer__minor-info">
+        <div className="footer__greyline"></div>
+
+        <div className="footer__company-name">
+          ©2024 Scarpette Socks
+        </div>
+
+        <div className="footer__terms-privacy-container">
+          <a href="/privacy-policy" className="footer__privacy-link">
+            Політика конфіденційності
+          </a>
+
+          <a href="/privacy-policy" className="footer__terms-link">
+            Умови використання
+          </a>
+        </div>
+
+        <div className="footer__payment-logos">
+          <img src={visa} alt="visa logo" className="footer__visa-logo" />
+          <img src={mastercard} alt="mastercard logo" className="footer__mastercard-logo" />
+          <img src={fondy} alt="fondy logo" className="footer__fondy-logo" />
+        </div>
+      </div>
     </div>
   );
 };
