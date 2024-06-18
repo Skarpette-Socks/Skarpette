@@ -34,7 +34,7 @@
   @include on-desktop {
     grid-template-columns: repeat(12, 1fr);
     max-width: calc($content-max-width - 2 * 78px);
-    margin: 0 auto;
+    margin-inline: auto;
 
   }
 }
