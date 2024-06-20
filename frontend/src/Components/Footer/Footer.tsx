@@ -47,14 +47,14 @@ const Footer = () => {
         <div className="footer__dropdowns">
           <div className="footer__greyline"></div>
 
-          <div className="footer__dropdown-catalog">
+          <div 
+            className="footer__dropdown-catalog"
+            onClick={() => setCategoriesOpened(!categoriesOpened)}
+          >
             <div className="footer__dropdown-container">
               <div className="footer__dropdown-catalog-title">Категорії</div>
 
-              <span 
-                className="footer__dropdown-button"
-                onClick={() => setCategoriesOpened(!categoriesOpened)}
-              >
+              <span className="footer__dropdown-button">
                 {categoriesOpened ? (
                   <img src={minus} alt="Minus" />
                 ) : (
@@ -69,16 +69,16 @@ const Footer = () => {
 
           <div className="footer__greyline"></div>
 
-          <div className="footer__dropdown-about-us">
+          <div 
+            className="footer__dropdown-about-us" 
+            onClick={() => setAboutUsOpened(!aboutUsOpened)}
+          >
             <div className="footer__dropdown-container">
               <div className="footer__dropdown-about-us-title">
                 Про компанію
               </div>
 
-              <span 
-                className="footer__dropdown-button"
-                onClick={() => setAboutUsOpened(!aboutUsOpened)}
-              >
+              <span className="footer__dropdown-button">
                 {aboutUsOpened ? (
                   <img src={minus} alt="Minus" />
                 ) : (
