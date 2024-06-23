@@ -11,6 +11,7 @@
     background-color: $grayscale-50;
     border-radius: 16px;
     margin-top: 8px;
+    border: none !important;
 
     @include on-tablet {
       height: 680px;
