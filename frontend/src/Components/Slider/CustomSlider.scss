@@ -1,0 +1,233 @@
+@import "../assets/styles/mixins";
+@import "../assets/styles/variables";
+
+.custom-slider {
+  @include content-padding-inline;
+
+  &__slide-content {
+    display: flex !important;
+    flex-direction: column;
+    width: 100%;
+    background-color: $grayscale-50;
+    border-radius: 16px;
+    margin-top: 8px;
+
+    @include on-tablet {
+      height: 680px;
+    }
+
+    @include on-desktop {
+      display: flex !important;
+      flex-direction: row-reverse;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  &__text-content {
+    h2 {
+      font-size: 28px;
+      font-weight: 600;
+      color: $grayscale-1000;
+      margin-top: 24px;
+      margin-left: 24px;
+
+      @include on-tablet {
+        word-wrap: break-word;
+        margin-top: 40px;
+        font-size: 48px;
+        margin-left: 40px;
+        margin-right: 152px;
+      }
+
+      @include on-desktop {
+        margin-top: 44px;
+        margin-left: 80px;
+      }
+    }
+
+    p {
+      font-size: 16px;
+      color: $grayscale-800;
+      margin-top: 16px;
+      margin-left: 24px;
+      font-weight: 500;
+
+      @include on-tablet {
+        font-size: 18px;
+        margin-top: 24px;
+        margin-left: 40px;
+      }
+
+      @include on-desktop {
+        margin-left: 80px;
+      }
+    }
+
+    .custom-slider__actions {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      position: relative;
+
+      button {
+        background-color: $primary-800;
+        color: $grayscale-0;
+        font-weight: 600;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        border-radius: 100px;
+        margin-top: 24px;
+        margin-left: 24px;
+        margin-bottom: 32px;
+        width: 106px;
+        height: 48px;
+
+        @include on-tablet {
+          margin-top: 40px;
+          margin-left: 40px;
+          margin-bottom: 44px;
+
+          width: 123px;
+          height: 60px;
+        }
+
+        @include on-desktop {
+          width: 123px;
+          height: 60px;
+
+          margin-top: 40px;
+          margin-left: 80px;
+          margin-bottom: 20px;
+        }
+      }
+    }
+  }
+
+  &__image-content {
+    img {
+      width: 100%;
+      border-radius: 10px;
+      object-fit: cover;
+      height: 240px;
+
+      @include on-tablet {
+        height: 316px;
+      }
+
+      @include on-desktop {
+        height: 680px;
+      }
+    }
+  }
+
+  &__dots-container {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 10px;
+
+    @include on-desktop {
+      margin-left: 80px;
+    }
+  }
+
+  &__arrow {
+    @include on-desktop {
+      width: 60px;
+      height: 60px;
+      z-index: 1;
+      background: transparent;
+      border-radius: 100px;
+      border: 1px solid $grayscale-200;
+      position: absolute;
+      top: 64px;
+
+      &--prev {
+        left: 80px;
+      }
+
+      &--next {
+        left: 148px;
+      }
+
+      svg {
+        @include on-desktop {
+          width: 24px;
+          height: 24px;
+          margin: 18px;
+
+          path {
+            stroke: #000;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+          }
+        }
+      }
+    }
+  }
+}
+
+.slick-dots {
+  position: absolute !important;
+  margin: 0 !important;
+  padding: 0;
+  width: 72px;
+  bottom: 48px;
+  left: 248px;
+
+  @include on-tablet {
+    width: 92px;
+    bottom: 60px;
+    left: 480px;
+  }
+  @include on-desktop {
+    top: 604px;
+    left: 80px;
+    width: 150px;
+    height: 12px;
+  }
+}
+
+.slick-dots li {
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: $grayscale-200;
+  border-radius: 50%;
+  cursor: pointer;
+  margin: 0;
+
+  &:not(:last-child) {
+    margin-right: 8px;
+  }
+
+  &.slick-active {
+    background-color: $primary-800;
+  }
+
+  @include on-tablet {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.slick-dots li button {
+  display: none !important;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  display: none;
+}
+
+svg {
+  display: none;
+
+  @include on-desktop {
+    display: block;
+  }
+}
