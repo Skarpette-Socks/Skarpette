@@ -28,7 +28,7 @@ const CustomSlider: React.FC = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,
-    autoplay: true,
+    autoplay: false,
     autoplaySpeed: 3000,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
@@ -95,7 +95,9 @@ const CustomSlider: React.FC = () => {
               <h2>{slide.title}</h2>
               <p>{slide.description}</p>
               <div className="custom-slider__actions">
-                <button>{slide.button}</button>
+                <a href="/catalog">
+                  <button>{slide.button}</button>
+                </a>
               </div>
             </div>
           </div>
