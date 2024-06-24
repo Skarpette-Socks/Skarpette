@@ -1,13 +1,40 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import "./NavBar.scss";
-import Dropdown from "../Dropdown/Dropdown";
+import Menu from "../Menu/Menu"; // Adjust the path as necessary
 
 import search_icon from "../assets/img/icons/search.svg";
 import heart_icon from "../assets/img/icons/heart.svg";
 import logo from "../assets/img/icons/logo-black.svg";
 import menu from "../assets/img/icons/menu.svg";
 import cart from "../assets/img/icons/cart.svg";
+import Dropdown from "../Dropdown/Dropdown";
+
+const NavBar: React.FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  return (
+    <nav className="navBar">
+      <div className="navBar__logo">
+        <img
+          src={menu}
+          alt="burger menu"
+          className="navBar__burger-menu"
+          onClick={toggleMenu}
+        />
+        <a href="/">
+          <img src={logo} alt="site logo" className="navBar__logo-img" />
+        </a>
+      </div>
+      <NavBarMenu />
+      <Menu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+      <NavBarActions />
+    </nav>
+  );
+};
 
 const NavBarMenu: React.FC = () => {
   return (
@@ -16,16 +43,16 @@ const NavBarMenu: React.FC = () => {
         <Dropdown />
       </li>
       <li className="navBar__item">
-        <Link to="/offers">Акції</Link>
+        <a href="/offers">Акції</a>
       </li>
       <li className="navBar__item">
-        <Link to="/about-us">Про нас</Link>
+        <a href="/about-us">Про нас</a>
       </li>
       <li className="navBar__item">
-        <Link to="/payment-and-delivery">Оплата та доставка</Link>
+        <a href="/payment-and-delivery">Оплата та доставка</a>
       </li>
       <li className="navBar__item">
-        <Link to="/contacts">Контакти</Link>
+        <a href="/contacts">Контакти</a>
       </li>
     </ul>
   );
@@ -36,28 +63,17 @@ const NavBarActions: React.FC = () => (
     <a href="#">
       <img src={search_icon} alt="Search" />
     </a>
-    <Link to="/favorites">
+    <a href="/favorites">
       <img src={heart_icon} alt="Favorites" />
-    </Link>
-    <Link to="/cart">
+    </a>
+    <a href="/cart">
       <div className="navBar__actions-cart">
         <img src={cart} alt="cart icon" className="navBar__actions-cart-icon" />
         <p className="navBar__actions-cart-text">Кошик</p>
         <div className="navBar__actions-cart-count">2</div>
       </div>
-    </Link>
+    </a>
   </div>
-);
-
-const NavBar: React.FC = () => (
-  <nav className="navBar">
-    <Link to="/" className="navBar__logo">
-      <img src={menu} alt="burger menu" className="navBar__burger-menu" />
-      <img src={logo} alt="site logo" />
-    </Link>
-    <NavBarMenu />
-    <NavBarActions />
-  </nav>
 );
 
 export default NavBar;

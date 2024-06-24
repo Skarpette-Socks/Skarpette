@@ -30,6 +30,7 @@ const CustomSlider: React.FC = () => {
     arrows: true,
     autoplay: true,
     autoplaySpeed: 3000,
+    pauseOnHover: false,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     appendDots: (dots: React.ReactNode) => (
