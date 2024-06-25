@@ -6,6 +6,7 @@ import search_icon from "../assets/img/icons/search.svg";
 import heart_icon from "../assets/img/icons/heart.svg";
 import logo from "../assets/img/icons/logo-black.svg";
 import menu from "../assets/img/icons/menu.svg";
+import close_icon from "../assets/img/icons/close.svg";
 import cart from "../assets/img/icons/cart.svg";
 import Dropdown from "../Dropdown/Dropdown";
 
@@ -20,7 +21,7 @@ const NavBar: React.FC = () => {
     <nav className="navBar">
       <div className="navBar__logo">
         <img
-          src={menu}
+          src={isMenuOpen ? close_icon : menu}
           alt="burger menu"
           className="navBar__burger-menu"
           onClick={toggleMenu}
