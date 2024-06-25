@@ -8,13 +8,27 @@
   gap: 48px;
   justify-content: center;
   align-items: center;
-  margin-top: 80px;
+  margin: 80px auto 0;
+  max-width: 1440px;
 
   &__item {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    width: 280px;
+    height: 196px;
+
+    @include on-tablet {
+      width: 484px;
+      height: 268px;
+    }
+
+    @include on-desktop {
+      width: 412px;
+      height: 268px;
+    }
 
     img {
       width: 96px;
