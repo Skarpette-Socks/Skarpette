@@ -8,7 +8,8 @@
   gap: 48px;
   justify-content: center;
   align-items: center;
-  margin-top: 80px;
+  margin: 80px auto 0;
+  max-width: 1440px;
 
   &__item {
     display: flex;
