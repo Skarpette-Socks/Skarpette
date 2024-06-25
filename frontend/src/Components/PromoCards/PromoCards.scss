@@ -17,6 +17,19 @@
     justify-content: center;
     align-items: center;
 
+    width: 280px;
+    height: 196px;
+
+    @include on-tablet {
+      width: 484px;
+      height: 268px;
+    }
+
+    @include on-desktop {
+      width: 412px;
+      height: 268px;
+    }
+
     img {
       width: 96px;
       height: 96px;
