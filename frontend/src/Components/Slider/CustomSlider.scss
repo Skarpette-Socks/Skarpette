@@ -12,6 +12,8 @@
     border-radius: 16px;
     margin-top: 8px;
     border: none !important;
+    position: relative; // добавлено для абсолютного позиционирования кнопки
+    height: 520px;
 
     @include on-tablet {
       height: 680px;
@@ -26,6 +28,14 @@
   }
 
   &__text-content {
+    @include on-desktop {
+      position: absolute;
+      width: 380px;
+      // height: 180px;
+      top: 168px;
+      left: 80px;
+    }
+
     h2 {
       font-size: 28px;
       font-weight: 600;
@@ -34,17 +44,13 @@
       margin-left: 24px;
 
       @include on-tablet {
-        word-wrap: break-word;
         margin-top: 40px;
         font-size: 48px;
         margin-left: 40px;
-        margin-right: 152px;
-        width: 380px;
       }
 
       @include on-desktop {
-        margin-top: 44px;
-        margin-left: 80px;
+        margin: 0;
       }
     }
 
@@ -62,48 +68,46 @@
       }
 
       @include on-desktop {
-        margin-left: 80px;
-        width: 380px;
+        margin-top: 24px;
+        margin-left: 0;
       }
     }
+  }
 
-    .custom-slider__actions {
-      display: flex;
-      align-items: flex-start;
-      flex-direction: column;
-      position: relative;
+  &__actions {
+    position: absolute;
+    bottom: 32px;
+    left: 24px;
 
-      button {
-        background-color: $primary-800;
-        color: $grayscale-0;
-        font-weight: 600;
-        font-size: 16px;
-        border: none;
-        cursor: pointer;
-        border-radius: 100px;
-        margin-top: 24px;
-        margin-left: 24px;
-        margin-bottom: 32px;
-        width: 106px;
-        height: 48px;
+    @include on-tablet {
+      bottom: 44px;
+      left: 40px;
+    }
 
-        @include on-tablet {
-          margin-top: 40px;
-          margin-left: 40px;
-          margin-bottom: 44px;
+    @include on-desktop {
+      bottom: 150px;
+      left: 80px;
+    }
 
-          width: 123px;
-          height: 60px;
-        }
+    &-button {
+      background-color: $primary-800;
+      color: $grayscale-0;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      border-radius: 100px;
+      width: 106px;
+      height: 48px;
 
-        @include on-desktop {
-          width: 123px;
-          height: 60px;
+      @include on-tablet {
+        width: 123px;
+        height: 60px;
+      }
 
-          margin-top: 40px;
-          margin-left: 80px;
-          margin-bottom: 20px;
-        }
+      @include on-desktop {
+        width: 123px;
+        height: 60px;
       }
     }
   }
@@ -121,6 +125,7 @@
 
       @include on-desktop {
         height: 680px;
+        width: 624px;
       }
     }
   }

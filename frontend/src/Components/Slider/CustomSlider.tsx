@@ -6,11 +6,12 @@ import "./CustomSlider.scss";
 
 import { NextArrow, PrevArrow } from "./CustomArrows";
 
-import slide_img from "../assets/img/slider_img.png";
+import slide_img_1 from "../assets/img/slider_img_1.png";
 // тестовые рандомные картинки
-import slide_img_2 from "../assets/img/slider_test_img_2.webp";
-import slide_img_3 from "../assets/img/test_img_3.jpg";
-import slide_img_4 from "../assets/img/test_img_4.jpg";
+import slide_img_2 from "../assets/img/slide_img_2.png";
+import slide_img_3 from "../assets/img/slide_img_3.png";
+import slide_img_4 from "../assets/img/slide_img_4.png";
+import slide_img_5 from "../assets/img/slide_img_5.png";
 
 interface Slide {
   id: number;
@@ -47,39 +48,39 @@ const CustomSlider: React.FC = () => {
       description:
         "Купуйте нашивки за областями та підтримуйте нашу армію — 30% отриманих коштів іде на підтримку ЗСУ!",
       button: "Перейти",
-      imageUrl: slide_img,
+      imageUrl: slide_img_1,
     },
     {
       id: 2,
-      title: "Нове життя вічної традиції",
+      title: "Жіночі шкарпетки зі знижкою!",
       description:
-        "Купуйте нашивки за областями та підтримуйте нашу армію — 30% отриманих коштів іде на підтримку ЗСУ!",
+        "Skarpette пропонує жіночі шкарпетки зі знижками від 10 до 50%",
       button: "Перейти",
       imageUrl: slide_img_2,
     },
     {
       id: 3,
-      title: "Нове життя вічної традиції",
+      title: "Переглядайте новинки",
       description:
-        "Купуйте нашивки за областями та підтримуйте нашу армію — 30% отриманих коштів іде на підтримку ЗСУ!",
+        "Ми регулярно поповнюємо асортимент магазину новими цікавими пропозиціями",
       button: "Перейти",
       imageUrl: slide_img_3,
     },
     {
       id: 4,
-      title: "Нове життя вічної традиції",
+      title: "Вибір справжнього спортсмена",
       description:
-        "Купуйте нашивки за областями та підтримуйте нашу армію — 30% отриманих коштів іде на підтримку ЗСУ!",
+        "Наші спортивні шкарпетки стануть гарним доповненням до ваших тренувань та змагань.",
       button: "Перейти",
       imageUrl: slide_img_4,
     },
     {
       id: 5,
-      title: "Нове життя вічної традиції",
+      title: "Підтримка здоров’я",
       description:
-        "Купуйте нашивки за областями та підтримуйте нашу армію — 30% отриманих коштів іде на підтримку ЗСУ!",
+        "Придбайте медичні та компресійні шкарпетки для вашого здоров'я та активності.",
       button: "Перейти",
-      imageUrl: slide_img,
+      imageUrl: slide_img_5,
     },
   ];
 
@@ -93,13 +94,16 @@ const CustomSlider: React.FC = () => {
             </div>
 
             <div className="custom-slider__text-content">
-              <h2>{slide.title}</h2>
-              <p>{slide.description}</p>
-              <div className="custom-slider__actions">
-                <a href="/catalog">
-                  <button>{slide.button}</button>
-                </a>
-              </div>
+              <h2 className="custom-slider__title">{slide.title}</h2>
+              <p className="custom-slider__description">{slide.description}</p>
+            </div>
+
+            <div className="custom-slider__actions">
+              <a href="/catalog">
+                <button className="custom-slider__actions-button">
+                  {slide.button}
+                </button>
+              </a>
             </div>
           </div>
         ))}
