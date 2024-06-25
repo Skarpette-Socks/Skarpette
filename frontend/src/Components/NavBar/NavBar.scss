@@ -22,6 +22,16 @@
       display: inline-block;
       line-height: 0;
     }
+
+    &-img {
+      width: 97px;
+      height: 32px;
+
+      @include on-desktop {
+        width: 114px;
+        height: 37px;
+      }
+    }
   }
 
   &__burger-menu {
@@ -53,8 +63,18 @@
     align-items: center;
     gap: 16px;
 
+    img {
+      width: 20px;
+      height: 20px;
+      @include on-tablet {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
     a {
       text-decoration: none;
+      display: inline-block;
     }
 
     &-cart {
