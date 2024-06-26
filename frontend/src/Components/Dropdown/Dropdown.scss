@@ -4,6 +4,7 @@
 .dropdown {
   border: 1px solid $grayscale-200;
   border-radius: 24px;
+  z-index: 10;
 
   &-btn {
     background-color: transparent;
