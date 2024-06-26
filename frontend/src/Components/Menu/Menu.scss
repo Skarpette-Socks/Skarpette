@@ -7,16 +7,17 @@
   top: 100px;
   left: -100%;
   width: 75%;
-  height: 100%;
+  height: calc(100% - 100px); // Учитываем отступ сверху
   background-color: #fff;
   transition: left 0.3s ease;
   z-index: 1000;
   display: flex;
   flex-direction: column;
   padding-inline: 16px;
+  justify-content: space-between; // Добавляем это свойство
 
   @include on-tablet {
-    padding-inline: 78px ;
+    padding-inline: 78px;
   }
 
   &--open {
@@ -32,6 +33,7 @@
       &:not(:first-child) {
         margin-top: 24px;
       }
+
       a {
         text-decoration: none;
         color: $grayscale-1000;
@@ -53,7 +55,7 @@
     width: 100%;
     height: 48px;
     border-radius: 100px;
-    margin-top: 100px;
+    margin-bottom: 32px; // Добавляем отступ снизу
 
     a {
       text-decoration: none;
@@ -88,3 +90,4 @@
     }
   }
 }
+
