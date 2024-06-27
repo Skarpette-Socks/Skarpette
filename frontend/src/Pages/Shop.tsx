@@ -1,5 +1,4 @@
 import PromoCards from "../Components/PromoCards/PromoCards";
-// import ReviewsSlider from "../Components/ReviewsSlider/ReviewsSlider";
 import CustomSlider from "../Components/Slider/CustomSlider";
 
 const Shop: React.FC = () => {
@@ -7,7 +6,6 @@ const Shop: React.FC = () => {
     <div>
       <CustomSlider />
       <PromoCards />
-      {/* <ReviewsSlider /> */}
     </div>
   );
 };
