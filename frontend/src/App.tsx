@@ -19,6 +19,7 @@ import Favorites from "./Pages/Favorites";
 import PaymentDelivery from "./Pages/PaymentDelivery/PaymentDelivery";
 import Promotions from "./Pages/Promotions";
 import Shop from "./Pages/Shop";
+import CategoriesCarousel from "./Components/CategoriesCarousel/CategoriesCarousel";
 
 // Конфигурация маршрутов
 const routes = [
@@ -37,6 +38,7 @@ const App: React.FC = () => (
     <div className="App">
       <SubHeader />
       <NavBar />
+      <CategoriesCarousel />
       <Routes>
         {routes.map(({ path, element }) => (
           <Route key={path} path={path} element={element} />
