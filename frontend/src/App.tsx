@@ -16,6 +16,7 @@ import Favorites from "./Pages/Favorites";
 import PaymentDelivery from "./Pages/PaymentDelivery/PaymentDelivery";
 import Promotions from "./Pages/Promotions";
 import Shop from "./Pages/Shop";
+import CategoriesCarousel from "./Components/CategoriesCarousel/CategoriesCarousel";
 
 // Конфигурация маршрутов
 const routes = [
