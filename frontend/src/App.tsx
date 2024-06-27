@@ -2,9 +2,6 @@
 import "./App.css";
 import "./Components/assets/styles/main.scss";
 
-// Импорты библиотек
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
 // Импорты компонентов
 import Footer from "./Components/Footer/Footer";
 import NavBar from "./Components/NavBar/NavBar";
@@ -19,7 +16,6 @@ import Favorites from "./Pages/Favorites";
 import PaymentDelivery from "./Pages/PaymentDelivery/PaymentDelivery";
 import Promotions from "./Pages/Promotions";
 import Shop from "./Pages/Shop";
-import CategoriesCarousel from "./Components/CategoriesCarousel/CategoriesCarousel";
 
 // Конфигурация маршрутов
 const routes = [
@@ -33,20 +29,19 @@ const routes = [
   { path: "/cart", element: <Cart /> },
 ];
 
-const App: React.FC = () => (
-  <Router>
+const App: React.FC = () => {
+  const currentPath = window.location.pathname;
+  const currentRoute =
+    routes.find((route) => route.path === currentPath) || routes[0];
+
+  return (
     <div className="App">
       <SubHeader />
       <NavBar />
-      <CategoriesCarousel />
-      <Routes>
-        {routes.map(({ path, element }) => (
-          <Route key={path} path={path} element={element} />
-        ))}
-      </Routes>
+      {currentRoute.element}
       <Footer />
     </div>
-  </Router>
-);
+  );
+};
 
 export default App;
