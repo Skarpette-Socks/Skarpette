@@ -37,7 +37,7 @@ const Testimonials: React.FC = () => {
     const handleResize = () => {
       if (window.innerWidth <= 767) {
         setScreenType("mobile");
-      } else if (window.innerWidth <= 1023) {
+      } else if (window.innerWidth <= 1280) {
         setScreenType("tablet");
       } else {
         setScreenType("desktop");
@@ -78,34 +78,38 @@ const Testimonials: React.FC = () => {
     return testimonials.slice(startIndex, startIndex + itemsPerPage);
   };
 
-  const visibleTestimonials = getVisibleTestimonials();
+  const visibleReviews = getVisibleTestimonials();
 
   return (
-    <div className="testimonials-container">
-      <h2>Що про нас кажуть клієнти?</h2>
-      <button className="leave-feedback">Залишити відгук</button>
-      <div className={`testimonial-slider ${screenType}`}>
-        {visibleTestimonials.map((testimonial, index) => (
-          <div key={index} className="testimonial active">
-            <div className="stars">
+    <div className="reviews">
+      <h2 className="reviews__title">Що про нас кажуть клієнти?</h2>
+      <button className="reviews__feedback-button">Залишити відгук</button>
+      <div className={`reviews__slider reviews__slider--${screenType}`}>
+        {visibleReviews.map((review, index) => (
+          <div key={index} className="reviews__item reviews__item--active">
+            <div className="reviews__stars">
               {[...Array(5)].map((_, i) => (
                 <span
                   key={i}
-                  className={i < testimonial.rating ? "filled" : ""}
+                  className={`reviews__stars-item ${i < review.rating ? "reviews__stars-item--filled" : ""}`}
                 >
                   ★
                 </span>
               ))}
             </div>
-            <h3>{testimonial.name}</h3>
-            <p>{testimonial.comment}</p>
+            <h3 className="reviews__item-name">{review.name}</h3>
+            <p className="reviews__item-comment">{review.comment}</p>
           </div>
         ))}
       </div>
-      <div className="slider-controls">
-        <button onClick={goToPrevious}>&lt;</button>
-        <span>{`${currentPage} / ${totalPages}`}</span>
-        <button onClick={goToNext}>&gt;</button>
+      <div className="reviews__controls">
+        <button className="reviews__controls-button" onClick={goToPrevious}>
+          &lt;
+        </button>
+        <span className="reviews__controls-page">{`${currentPage} / ${totalPages}`}</span>
+        <button className="reviews__controls-button" onClick={goToNext}>
+          &gt;
+        </button>
       </div>
     </div>
   );
