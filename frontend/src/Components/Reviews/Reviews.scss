@@ -1,0 +1,92 @@
+.testimonials-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.leave-feedback {
+  display: block;
+  margin: 0 auto 20px;
+  background-color: #1e6e50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.testimonial-slider {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.testimonial {
+  width: calc(33.33% - 20px);
+  margin-bottom: 20px;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  border-radius: 5px;
+  display: none;
+}
+
+.testimonial.active {
+  display: block;
+}
+
+.stars {
+  font-size: 24px;
+  color: #ffd700;
+  margin-bottom: 10px;
+}
+
+.stars .filled {
+  color: #ffd700;
+}
+
+.testimonial h3 {
+  margin: 0 0 10px;
+}
+
+.testimonial p {
+  margin: 0;
+}
+
+.slider-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.slider-controls button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0 10px;
+}
+
+.slider-controls span {
+  margin: 0 10px;
+}
+
+/* Стили для планшетов */
+@media (max-width: 1023px) {
+  .testimonial-slider.tablet .testimonial {
+    width: calc(50% - 15px);
+  }
+}
+
+/* Стили для мобильных устройств */
+@media (max-width: 767px) {
+  .testimonial-slider.mobile .testimonial {
+    width: 100%;
+  }
+}

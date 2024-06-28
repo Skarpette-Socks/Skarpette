@@ -1,5 +1,6 @@
 import CategoriesCarousel from "../Components/CategoriesCarousel/CategoriesCarousel";
 import PromoCards from "../Components/PromoCards/PromoCards";
+import Reviews from "../Components/Reviews/Reviews";
 import CustomSlider from "../Components/Slider/CustomSlider";
 
 const Shop: React.FC = () => {
@@ -8,6 +9,7 @@ const Shop: React.FC = () => {
       <CustomSlider />
       <CategoriesCarousel />
       <PromoCards />
+      <Reviews />
     </div>
   );
 };
