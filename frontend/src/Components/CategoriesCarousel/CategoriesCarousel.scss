@@ -5,6 +5,10 @@
   @include content-padding-inline;
   width: 100%;
   // align-items: center;
+
+  @include on-desktop {
+    margin-bottom: 100px;
+  }
   
   &__container {
     @include container-grid;

@@ -2,34 +2,12 @@
 @import "../assets/styles/variables";
 
 .item {
-  @include content-padding-inline;
-  width: 152px;
-  height: 260px;
-
-  @include on-tablet {
-    width: 294px;
-    height: 428px;
-  }
-
-  @include on-desktop {
-    width: 303px;
-    height: 428px;
-  }
+  width: 100%;
+  max-width: 350px;
 
   &__image {
-    width: 152px;
-    height: 164px;
     border-radius: 8px;
-
-    @include on-tablet {
-      width: 294px;
-      height: 340px;
-    }
-
-    @include on-desktop {
-      width: 303px;
-      height: 340px;
-    }
+    width: 100%;
   }
 
   &__category {
@@ -37,6 +15,7 @@
     font-size: 12px;
     font-weight: 500;
     color: $grayscale-400;
+    text-transform: uppercase;
 
     @include on-tablet {
       font-size: 14px;
@@ -50,6 +29,8 @@
 
     @include on-tablet {
       margin-top: 8px;
+      font-size: 18px;
+
     }
   }
 

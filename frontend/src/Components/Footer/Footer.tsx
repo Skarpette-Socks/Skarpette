@@ -145,11 +145,11 @@ const Footer = () => {
 
         <div className="footer__terms-privacy-container">
           <a href="/privacy-policy" className="footer__privacy-link">
-            Політика конфіденційності
+            Політика&nbsp;конфіденційності
           </a>
 
           <a href="/privacy-policy" className="footer__terms-link">
-            Умови використання
+            Умови&nbsp;використання
           </a>
         </div>
 
