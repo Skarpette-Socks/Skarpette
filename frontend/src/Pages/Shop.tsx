@@ -1,6 +1,6 @@
 import CategoriesCarousel from "../Components/CategoriesCarousel/CategoriesCarousel";
 import PromoCards from "../Components/PromoCards/PromoCards";
-// import ReviewsSlider from "../Components/ReviewsSlider/ReviewsSlider";
+import Reviews from "../Components/Reviews/Reviews";
 import CustomSlider from "../Components/Slider/CustomSlider";
 import MainPageListGoods from "../Components/MainPageListGoods/MainPageListGoods";
 
@@ -15,7 +15,7 @@ const Shop: React.FC = () => {
       <MainPageListGoods title={newGoods}/>
       <MainPageListGoods title={yourFavorite}/>
       <PromoCards />
-      {/* <ReviewsSlider /> */}
+      <Reviews />
     </div>
   );
 };
