@@ -1,7 +1,7 @@
 import "./PromoCards.scss";
-import promo_icon_1 from "../assets/img/icons/promo-icon-1.png";
-import promo_icon_2 from "../assets/img/icons/promo-icon-2.png";
-import promo_icon_3 from "../assets/img/icons/promo-icon-3.png";
+import promo_icon_1 from "../assets/img/icons/promo-icon-1.svg";
+import promo_icon_2 from "../assets/img/icons/promo-icon-2.svg";
+import promo_icon_3 from "../assets/img/icons/promo-icon-3.svg";
 
 const promoData = [
   {
