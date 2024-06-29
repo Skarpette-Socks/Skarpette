@@ -11,7 +11,13 @@
 
   &__logo {
     fill: $primary-800;
-    width: 192px;
+    width: 130px;
+    height: 32px;
+
+    @include on-tablet {
+      width: 192px;
+      height: 48px;
+    }
 
   }
 
@@ -46,6 +52,10 @@
     }
   }
 
+  &__description {
+    font-weight: 600;
+  }
+
   &__description2 {
     color: $grayscale-600;
   }
@@ -53,6 +63,7 @@
   &__subtitle {
     margin-bottom: 24px;
     color: $grayscale-400;
+    text-transform: uppercase;
   }
 
   &__categories {
@@ -151,6 +162,7 @@
 
   &__graytitle {
     color: $grayscale-400;
+    line-height: 16px;
   }
 
   &__info-container {
@@ -193,6 +205,7 @@
     flex-direction: column;
     gap: 16px;
     color: $grayscale-600;
+    line-height: 16px;
 
     @include on-tablet {
       grid-column: 1/5;
@@ -211,7 +224,7 @@
     display: flex;
     flex-direction: row;
     gap: 24px;
-
+    height: 16px;
     @include on-tablet {
       grid-column: -3/-1;
     }
@@ -222,6 +235,7 @@
   }
 
   &__company-name {
+    line-height: 16px;
     @include on-tablet {
       grid-column: 1/-1;
     }
