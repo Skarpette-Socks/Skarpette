@@ -15,7 +15,6 @@ const skarpetteSchema = new mongoose.Schema({
     },
     price2: {
         type: Number,
-        required: true,
     },
     vendor_code: {
         type: Number,
@@ -33,10 +32,16 @@ const skarpetteSchema = new mongoose.Schema({
             required: true,
         },
     ],
-    image_url: {
+    main_image_url: {
         type: String,
         required: true,
     },
+    additional_images: [
+        {
+            type: String,
+            required: true,
+        },
+    ],
     composition_and_care: {
         composition: {
             type: Map,
