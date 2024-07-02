@@ -79,6 +79,21 @@ const getSkarpetteByName = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+const getSkarpetteByVendorCode = async (req, res) => {
+    const vendor_code = parseInt(req.params.vendor_code);
+    if (isNaN(vendor_code)) {
+        return res.status(400).json({ error: 'Invalid vendor code format' });
+    }
+    try {
+        const skarpettes = await Skarpette.find({ vendor_code: vendor_code });
+        if (skarpettes.length === 0) {
+            return res.status(404).json('Skarpettes not found');
+        }
+        res.status(200).json(skarpettes);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 module.exports = {
     createSkarpette,
     deleteSkarpette,
@@ -86,4 +101,5 @@ module.exports = {
     getAllSkarpettes,
     updateSkarpette,
     getSkarpetteByName,
+    getSkarpetteByVendorCode,
 };
