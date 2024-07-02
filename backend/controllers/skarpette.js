@@ -65,11 +65,25 @@ const deleteSkarpette = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
+const getSkarpetteByName = async (req, res) => {
+    const name = req.params.name;
+    try {
+        const skarpettes = await Skarpette.find({
+            name: { $regex: new RegExp(name, 'i') },
+        });
+        if (skarpettes.length === 0) {
+            return res.status(404).json('Skarpettes not found');
+        }
+        res.status(200).json(skarpettes);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 module.exports = {
     createSkarpette,
     deleteSkarpette,
     getSkarpetteById,
     getAllSkarpettes,
     updateSkarpette,
+    getSkarpetteByName,
 };
