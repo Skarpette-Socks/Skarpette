@@ -3,6 +3,8 @@
 
 .custom-slider {
   @include content-padding-inline;
+  max-width: 1440px;
+  margin-inline: auto;
 
   &__slide-content {
     display: flex !important;
