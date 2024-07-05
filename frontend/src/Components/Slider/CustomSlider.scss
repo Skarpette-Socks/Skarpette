@@ -240,3 +240,10 @@ svg {
     display: block;
   }
 }
+
+.slick-prev, .slick-next {
+  display: none !important;
+  @include on-desktop {
+    display: block !important;
+  }
+}
