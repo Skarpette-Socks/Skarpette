@@ -10,12 +10,12 @@
 
   @include on-tablet {
     margin: 120px 78px 0;
+    padding: 40px;
   }
 
   @include on-desktop {
     max-width: 1284px;
     margin: 120px auto 0;
-    padding: 40px;
   }
 
   &__top-bar {
