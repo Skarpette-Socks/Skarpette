@@ -81,6 +81,16 @@
       display: inline-block;
     }
 
+    a:not(:last-child) {
+      width: 20px;
+      height: 20px;
+
+      @include on-tablet {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
     &-cart {
       display: flex;
       align-items: center;
