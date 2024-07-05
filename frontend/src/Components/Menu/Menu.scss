@@ -9,8 +9,8 @@
   width: 75%;
   height: calc(100% - 100px); // Учитываем отступ сверху
   background-color: #fff;
-  transition: left 0.3s ease;
-  z-index: 1000;
+  transition: none;
+  z-index: 1001;
   display: flex;
   flex-direction: column;
   padding-inline: 16px;
@@ -88,5 +88,23 @@
       justify-content: center;
       text-align: center;
     }
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 25%; // Занимает оставшуюся часть экрана справа от меню
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: none; // Убираем плавный переход
+  z-index: 1000;
+  pointer-events: none;
+
+  &--active {
+    opacity: 1;
+    pointer-events: auto;
   }
 }
