@@ -3,8 +3,7 @@
 
 .subHeader {
   height: 32px;
-  max-width: 1284px;
-  margin: 0 auto;
+  width: 100%;
 
   @include on-tablet {
     height: 40px;
