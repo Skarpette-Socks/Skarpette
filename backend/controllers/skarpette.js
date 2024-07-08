@@ -96,7 +96,39 @@ const getSkarpettesByNameOrVendorCode = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+const getFilteredSkarpettes = async (req, res) => {
+    try {
+        const { categories, color, size } = req.query;
 
+        let filter = {};
+
+        if (categories) {
+            filter.categories = { $in: categories.split(',') };
+        }
+        if (color) {
+            filter.color = { $in: color.split(',') };
+        }
+        if (size) {
+            filter.size = { $in: size.split(',') };
+        }
+
+        const skarpette = await Skarpette.find(filter);
+        res.status(200).json(skarpette);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const clearDB = async (req, res) => {
+    try {
+        await Skarpette.deleteMany({});
+        res.status(200).json({
+            message: 'Skarpette collection cleared successfully.',
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 module.exports = {
     createSkarpette,
     deleteSkarpette,
@@ -104,4 +136,6 @@ module.exports = {
     getAllSkarpettes,
     updateSkarpette,
     getSkarpettesByNameOrVendorCode,
+    getFilteredSkarpettes,
+    clearDB,
 };

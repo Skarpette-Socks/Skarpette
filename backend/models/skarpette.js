@@ -54,6 +54,12 @@ const skarpetteSchema = new mongoose.Schema({
             required: true,
         },
     },
+    categories: [
+        {
+            type: String,
+            required: true,
+        },
+    ],
 });
 
 const Skarpette = mongoose.model('Skarpette', skarpetteSchema);
