@@ -19,6 +19,7 @@ const skarpetteSchema = new mongoose.Schema({
     vendor_code: {
         type: Number,
         required: true,
+        unique: true,
     },
     color: [
         {
