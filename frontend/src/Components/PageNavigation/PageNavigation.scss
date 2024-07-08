@@ -3,6 +3,8 @@
 
 .page-navigation {
   @include content-padding-inline;
+  max-width: 1440px;
+  margin-inline: auto;
 
   margin-top: 8px;
 
@@ -11,20 +13,26 @@
   }
 
   &__back {
-    display: flex;
-    gap: 4px;
+    display: inline-flex;
     align-items: center;
     text-decoration: none;
 
     img {
       width: 16px;
       height: 16px;
+      margin-right: 4px;
+      display: block;
+      position: relative;
+      top: -0.7px; // Тонкая настройка, при необходимости измените значение
     }
 
     span {
       font-weight: 500;
       font-size: 14px;
       color: $grayscale-1000;
+      line-height: 1;
+      display: flex;
+      align-items: center;
     }
   }
 

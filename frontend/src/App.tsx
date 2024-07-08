@@ -8,7 +8,7 @@ import NavBar from "./Components/NavBar/NavBar";
 import SubHeader from "./Components/SubHeader/SubHeader";
 
 // Импорты страниц
-import AboutUs from "./Pages/AboutUs";
+import AboutUs from "./Pages/AboutUs/AboutUs";
 import Cart from "./Pages/Cart";
 import Catalog from "./Pages/Catalog";
 import Contacts from "./Pages/Contacts";
