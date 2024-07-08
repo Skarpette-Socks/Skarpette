@@ -1,0 +1,137 @@
+@import "../../Components/assets/styles/mixins";
+@import "../../Components/assets/styles/variables";
+
+.about-us {
+  @include container-grid;
+  @include content-padding-inline;
+  display: grid;
+  margin-top: 40px;
+
+  @include on-desktop {
+    padding-inline: 0;
+  }
+
+  &__title {
+    grid-column: 1 / -1;
+    background-color: $grayscale-50;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+
+    @include on-tablet {
+      margin-top: 64px;
+    }
+
+    @include on-desktop {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr); // 12-column grid
+    }
+
+    h1 {
+      font-weight: 500;
+      font-size: 40px;
+      color: $grayscale-1000;
+      text-align: center;
+      margin: 24px;
+
+      @include on-tablet {
+        font-size: 64px;
+        text-align: left;
+        margin-left: 40px;
+      }
+      @include on-desktop {
+        grid-column: 1 / 5;
+        white-space: nowrap;
+        margin: 40px;
+      }
+    }
+
+    img {
+      width: 100%;
+      border-radius: 16px;
+
+      @include on-desktop {
+        grid-column: 7 / -1;
+      }
+    }
+  }
+
+  &__main-info {
+    grid-column: 1/-1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 40px;
+    @include on-tablet {
+      margin-top: 64px;
+    }
+    @include on-desktop {
+      display: grid;
+      grid-column: 1/7;
+    }
+
+    section {
+      font-weight: 500;
+      font-size: 16px;
+      color: $grayscale-1000;
+
+      @include on-desktop {
+        font-size: 18px;
+      }
+    }
+  }
+
+  &__socks {
+    grid-column: 1/-1;
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin-top: 40px;
+
+      @include on-tablet {
+        margin-top: 64px;
+      }
+
+      @include on-desktop {
+        height: 400px;
+        background-size: cover;
+      }
+    }
+
+    &--last-img {
+      img {
+        @include on-desktop {
+          height: 560px;
+        }
+      }
+    }
+  }
+
+  &__detailed-info {
+    grid-column: 1/-1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 40px;
+
+    @include on-tablet {
+      margin-top: 64px;
+    }
+
+    @include on-desktop {
+      grid-column: 7 / -1;
+    }
+
+    section {
+      font-weight: 500;
+      font-size: 16px;
+      color: $grayscale-1000;
+
+      @include on-desktop {
+        font-size: 18px;
+      }
+    }
+  }
+}
