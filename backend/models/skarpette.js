@@ -19,6 +19,7 @@ const skarpetteSchema = new mongoose.Schema({
     vendor_code: {
         type: Number,
         required: true,
+        unique: true,
     },
     color: [
         {
@@ -53,6 +54,12 @@ const skarpetteSchema = new mongoose.Schema({
             required: true,
         },
     },
+    categories: [
+        {
+            type: String,
+            required: true,
+        },
+    ],
 });
 
 const Skarpette = mongoose.model('Skarpette', skarpetteSchema);
