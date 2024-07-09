@@ -18,10 +18,6 @@
     display: flex;
     flex-direction: column;
 
-    @include on-tablet {
-      margin-top: 64px;
-    }
-
     @include on-desktop {
       display: grid;
       grid-template-columns: repeat(12, 1fr); // 12-column grid
