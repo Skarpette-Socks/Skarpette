@@ -3,13 +3,14 @@ import React from "react";
 import "./MainPageListGoods.scss";
 import chevron from "../assets/img/icons/chevron-right.svg";
 import Item from "../Item/Item";
-import image from "../assets/img/item-image.png";
+import image from "../assets/img/velo_rezym_01.png";
 
 interface Props {
   title: string;
+  catalogButton?: boolean;
 }
 
-const MainPageListGoods: React.FC<Props> = ({ title }) => {
+const MainPageListGoods: React.FC<Props> = ({ title, catalogButton = false }) => {
   return (
     <div className="list-goods">
       <div className="list-goods__container">
@@ -21,7 +22,7 @@ const MainPageListGoods: React.FC<Props> = ({ title }) => {
               src={chevron}
               alt="button img"
             />
-            <div className="list-goods__tablet-button">Подивитись всі</div>
+            {catalogButton && <div className="list-goods__tablet-button">Подивитись всі</div>}
           </a>
         </div>
 

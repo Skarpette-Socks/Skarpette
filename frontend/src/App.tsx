@@ -14,6 +14,7 @@ import Catalog from "./Pages/Catalog";
 import Contacts from "./Pages/Contacts";
 import Favorites from "./Pages/Favorites";
 import PaymentDelivery from "./Pages/PaymentDelivery/PaymentDelivery";
+import Product from "./Pages/Product";
 import Promotions from "./Pages/Promotions";
 import Shop from "./Pages/Shop";
 
@@ -27,6 +28,8 @@ const routes = [
   { path: "/contacts", element: <Contacts /> },
   { path: "/favorites", element: <Favorites /> },
   { path: "/cart", element: <Cart /> },
+  { path: "/product", element: <Product /> },
+
 ];
 
 const App: React.FC = () => {
