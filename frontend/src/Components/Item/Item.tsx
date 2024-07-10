@@ -16,7 +16,7 @@ const Item: React.FC<ItemProps> = ({
   old_price,
 }) => {
   return (
-    <div className="item">
+    <a href="/product" className="item">
       <img src={image} alt="item image" className="item__image" />
       <p className="item__category">{category}</p>
       <p className="item__name">{name}</p>
@@ -26,7 +26,7 @@ const Item: React.FC<ItemProps> = ({
           <div className="item__price-old">{old_price} грн</div>
         )}
       </div>
-    </div>
+    </a>
   );
 };
 
