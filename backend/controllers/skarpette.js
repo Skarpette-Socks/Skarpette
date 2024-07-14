@@ -1,14 +1,77 @@
 const Skarpette = require('../models/skarpette');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const s3Client = new S3Client({
+    region: process.env.AWSREGION,
+    endpoint: `https://s3.${process.env.AWSREGION}.amazonaws.com`,
+    credentials: {
+        accessKeyId: process.env.AWSACCESSKEYID,
+        secretAccessKey: process.env.AWSSECRETACCESSKEY,
+    },
+});
+
+async function uploadImageToS3(buffer, destination) {
+    const params = {
+        Bucket: process.env.AWSBUCKETNAME,
+        Key: destination,
+        Body: buffer,
+    };
+
+    const command = new PutObjectCommand(params);
+
+    try {
+        const data = await s3Client.send(command);
+        return `https://${params.Bucket}.s3.${process.env.AWSREGION}.amazonaws.com/${destination}`;
+    } catch (error) {
+        console.error('Error uploading image to S3:', error);
+        throw error;
+    }
+}
 
 const createSkarpette = async (req, res) => {
     try {
         const skarpetteData = req.body;
+
+        //main img upload
+        if (req.files['main_image'] && req.files['main_image'][0]) {
+            const mainImageFile = req.files['main_image'][0];
+            const mainImageUrl = await uploadImageToS3(
+                mainImageFile.buffer,
+                `main_images/${mainImageFile.originalname}`
+            );
+            skarpetteData.main_image_url = mainImageUrl;
+        }
+
+        //additional img upload
+        if (req.files['additional_images']) {
+            const additionalImages = req.files['additional_images'];
+            const additionalImagesUrls = await Promise.all(
+                additionalImages.map(async (file) => {
+                    const imageUrl = await uploadImageToS3(
+                        file.buffer,
+                        `additional_images/${file.originalname}`
+                    );
+                    return imageUrl;
+                })
+            );
+            skarpetteData.additional_images = additionalImagesUrls;
+        }
+
+        if (!skarpetteData.main_image_url) {
+            throw new Error('main_image_url is required');
+        }
+
         const newSkarpette = await Skarpette.create(skarpetteData);
         res.status(201).json(newSkarpette);
     } catch (error) {
+        console.error('Error creating skarpette:', error);
         res.status(400).json({ error: error.message });
     }
 };
+
 const getSkarpetteById = async (req, res) => {
     const { id } = req.params;
     try {
