@@ -6,6 +6,10 @@
   max-width: 350px;
   text-decoration: none;
   
+  @include on-desktop {
+    max-width: 303px;
+  }
+
   &__image {
     border-radius: 8px;
     width: 100%;
