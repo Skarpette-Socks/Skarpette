@@ -9,6 +9,96 @@
   @include on-tablet {
     margin-top: 64px;
   }
+
+  &__zoom {
+    display: none;
+
+    @include on-tablet {
+      display: block;
+    }
+
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba($color: #000000, $alpha: 0.5);
+    z-index: 1000;
+
+    &-img-btn {
+      display: flex;
+      gap: 24px;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &-img-button {
+      width: 40px;
+      height: 40px;
+      justify-content: center;
+      align-items: center;
+      background-color: $grayscale-0;
+      border-radius: 50%;
+      cursor: pointer;
+  
+      display: none;
+  
+      @include on-tablet {
+        display: flex;
+      }
+    }
+
+    &-image {
+      width: 650px;
+      height: 650px;
+      border-radius: 12px;
+      background-color: $grayscale-50;
+  
+      & img {
+        width: 100%;
+        border-radius: 12px;
+      }
+    }
+
+    &-image-circle-container {
+      position: absolute;
+      display: flex;
+      gap: 8px;
+      bottom: 32px;
+      left: 0;
+      right: 0;
+      justify-content: center;
+  
+      & .product__image-circle {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 1px solid $grayscale-400;
+        background-color: $grayscale-50;
+    
+        &.active {
+          background-color: $primary-800;
+          border: none;
+        }
+      }
+    }
+
+    &-close-btn {
+      cursor: pointer;
+      position: absolute;
+      top: 40px;
+      right: 40px;
+      background: transparent;
+      border: none;
+  
+      & img {
+        filter: invert(100%);
+  
+      }
+    }
+  }
+
   
   &__container {
     @include container-grid;
@@ -35,14 +125,20 @@
 
   &__image-container {
     position: relative;
-    // width: 100%;
-  }
+    
+    @include on-desktop {
+      max-width: 490px;
+      max-height: 484px;
+      margin-right: 40px;
+    }
 
-  &__image-item {
-    width: 100%;
-    border-radius: 12px;
-    cursor: zoom-in;
-    background-color: $grayscale-50;
+    & > img {
+      width: 100%;
+      border-radius: 12px;
+      cursor: zoom-in;
+      background-color: $grayscale-50;
+
+    }
   }
 
   &__image-circle-container {
@@ -118,7 +214,7 @@
     width: 56px;
     height: 56px;
     border-radius: 12px;
-    box-sizing: content-box;
+    box-sizing: border-box;
     cursor: pointer;
 
     @include on-desktop {
@@ -148,6 +244,7 @@
 
   &__article {
     color: $grayscale-400;
+    line-height: 16px;
     margin-bottom: 8px;
 
     @include on-tablet {
@@ -159,6 +256,8 @@
 
   &__title {
     line-height: 32px;
+    font-size: 40px;
+    max-width: 408px;
     margin-bottom: 24px;
 
     @include on-tablet {
@@ -176,6 +275,7 @@
     &-detail {
       color: $grayscale-600;
       margin-bottom: 32px;
+      font-size: 14px;
     }
   }
 
@@ -201,7 +301,7 @@
     background-color: $primary-800;
     color: $grayscale-0;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 18px;
     border: none;
     cursor: pointer;
     border-radius: 100px;
@@ -224,6 +324,7 @@
     width: 48px;
     border: 1px solid $grayscale-200;
     border-radius: 50%;
+    cursor: pointer;
 
     @include on-tablet {
       height: 60px;
@@ -234,7 +335,6 @@
   &__heart-img {
     height: 16px;
     width: 16px;
-    cursor: pointer;
 
     @include on-tablet {
       height: 24px;
@@ -296,6 +396,8 @@
 
   &__size-button {
     padding: 12px;
+    font-size: 14px;
+    font-weight: 500;
     border: 1px solid $grayscale-200;
     border-radius: 8px;
     display: inline-block;
@@ -309,6 +411,7 @@
 
     &.active {
       border-color: $primary-800;
+      font-weight: 600;
     }
   }
 }

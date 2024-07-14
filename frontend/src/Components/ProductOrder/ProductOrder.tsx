@@ -13,10 +13,11 @@ import chevronRight from "../assets/img/icons/chevron-right.svg";
 
 import heart from "../assets/img/icons/heart.svg";
 import plus from "../assets/img/icons/plus.svg";
-import minus from "../assets/img/icons/minus.svg";
+import close from "../assets/img/icons/close.svg";
 import ProductSizeButton from "./ProductSizeButton";
 import ProductImages from "./ProductImages";
 import ProductImageCircle from "./ProductImageCircle";
+import ProductZoom from "./ProductZoom";
 
 interface Props {
   name: string;
@@ -26,10 +27,11 @@ const ProductOrder: React.FC<Props> = ({ name }) => {
   const [descriptionOpened, setDescriptionOpened] = useState(false);
   const [warehouseOpened, setWarehouseOpened] = useState(false);
   const [paymentOpened, setPaymentOpened] = useState(false);
-
-  
+  const [zoomImageOpened, setZoomImageOpened] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(0);
   const [selectedSize, setSelectedSize] = useState<number>(0);
+  
+  
   
   const imgArr = [productImage, product2, product3, product4, product5];
 
@@ -51,8 +53,39 @@ const ProductOrder: React.FC<Props> = ({ name }) => {
     },
   ];
 
+  const selectPhoto = ( num:number ) => {
+    if (num >= 1) {
+      if (selectedPhoto >= imgArr.length - 1) {
+        setSelectedPhoto(0);
+
+        return;
+      }
+    } else {
+      if (selectedPhoto === 0) {
+        setSelectedPhoto(imgArr.length - 1);
+
+        return;
+      }
+    }
+
+    setSelectedPhoto(selectedPhoto + num);
+  }
+
+  const handleZoom = () => {
+    if (window.innerWidth >= 768) {
+      setZoomImageOpened(true)
+    }
+  }
+
   return (
     <div className="product">
+      {zoomImageOpened && 
+        <ProductZoom 
+          isOpen={setZoomImageOpened}
+          selectedPhoto={selectedPhoto}
+          imgArr={imgArr}
+        />
+      }
       <div className="product__container">
         <div className="product__images">
           <div className="product__main-image">
@@ -60,7 +93,7 @@ const ProductOrder: React.FC<Props> = ({ name }) => {
               <img
                 src={imgArr[selectedPhoto]}
                 alt="product image"
-                className="product__image-item"
+                onClick={handleZoom}
               />
 
               {imgArr.length > 1 && 
@@ -75,32 +108,27 @@ const ProductOrder: React.FC<Props> = ({ name }) => {
                 </div>
               }
 
+              <div 
+                className="product__img-button left"
+                onClick={() => selectPhoto(-1)}
+              >
+                <img 
+                  src={chevronLeft} 
+                  alt="chevronLeft" 
+                  className="product__img-button-chevron" 
+                />
+              </div>
 
-              {selectedPhoto !== 0 &&
-                <div 
-                  className="product__img-button left"
-                  onClick={() => (setSelectedPhoto(selectedPhoto - 1))}
-                >
-                  <img 
-                    src={chevronLeft} 
-                    alt="chevronLeft" 
-                    className="product__img-button-chevron" 
-                  />
-                </div>
-              }
-
-              {selectedPhoto !== imgArr.length - 1 &&
-                <div 
-                  className="product__img-button right"
-                  onClick={() => (setSelectedPhoto(selectedPhoto + 1))}
-                >
-                  <img 
-                    src={chevronRight} 
-                    alt="chevronRight" 
-                    className="product__img-button-chevron" 
-                  />
-                </div>
-              }
+              <div 
+                className="product__img-button right"
+                onClick={() => selectPhoto(1)}
+              >
+                <img 
+                  src={chevronRight} 
+                  alt="chevronRight" 
+                  className="product__img-button-chevron" 
+                />
+              </div>
             </div>
           </div>
 
@@ -163,7 +191,7 @@ const ProductOrder: React.FC<Props> = ({ name }) => {
 
                 <span className="product__dropdown-button">
                   {descriptionOpened ? (
-                    <img src={minus} alt="Minus" />
+                    <img src={close} alt="Minus" />
                   ) : (
                     <img src={plus} alt="Plus" />
                   )}
@@ -190,7 +218,7 @@ const ProductOrder: React.FC<Props> = ({ name }) => {
 
                 <span className="product__dropdown-button">
                   {warehouseOpened ? (
-                    <img src={minus} alt="Minus" />
+                    <img src={close} alt="Minus" />
                   ) : (
                     <img src={plus} alt="Plus" />
                   )}
@@ -217,7 +245,7 @@ const ProductOrder: React.FC<Props> = ({ name }) => {
 
                 <span className="product__dropdown-button">
                   {paymentOpened ? (
-                    <img src={minus} alt="Minus" />
+                    <img src={close} alt="Minus" />
                   ) : (
                     <img src={plus} alt="Plus" />
                   )}

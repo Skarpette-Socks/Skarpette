@@ -5,6 +5,7 @@ import chevron from "../assets/img/icons/chevron-right.svg";
 import Item from "../Item/Item";
 import image from "../assets/img/velo_rezym_01.png";
 
+
 interface Props {
   title: string;
   catalogButton?: boolean;
@@ -17,11 +18,13 @@ const MainPageListGoods: React.FC<Props> = ({ title, catalogButton = false }) =>
         <div className="list-goods__head">
           <div className="list-goods__title">{title}</div>
           <a href="/catalog" className="list-goods__button">
-            <img
-              className="list-goods__mob-button"
-              src={chevron}
-              alt="button img"
-            />
+            {catalogButton && 
+              <img
+                className="list-goods__mob-button"
+                src={chevron}
+                alt="button img"
+              />
+            }
             {catalogButton && <div className="list-goods__tablet-button">Подивитись всі</div>}
           </a>
         </div>
