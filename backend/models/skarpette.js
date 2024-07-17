@@ -33,11 +33,7 @@ const skarpetteSchema = new mongoose.Schema({
             required: true,
         },
     ],
-    main_image_url: {
-        type: String,
-        required: true,
-    },
-    additional_images: [
+    images_urls: [
         {
             type: String,
             required: true,
@@ -54,12 +50,18 @@ const skarpetteSchema = new mongoose.Schema({
             required: true,
         },
     },
-    categories: [
-        {
-            type: String,
-            required: true,
-        },
-    ],
+    type: {
+        type: String,
+        required: true,
+    },
+    style: {
+        type: String,
+        required: true,
+    },
+    is_new: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const Skarpette = mongoose.model('Skarpette', skarpetteSchema);

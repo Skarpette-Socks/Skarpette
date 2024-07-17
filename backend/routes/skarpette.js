@@ -21,10 +21,7 @@ router.get('/search', skarpetteController.getSkarpettesByNameOrVendorCode);
 router.get('/filter', skarpetteController.getFilteredSkarpettes);
 router.post(
     '/',
-    upload.fields([
-        { name: 'main_image', maxCount: 1 },
-        { name: 'additional_images', maxCount: 3 },
-    ]),
+    upload.array('images'), // Поле має називатись 'images'
     skarpetteController.createSkarpette
 );
 router.delete('/:id', skarpetteController.deleteSkarpette);

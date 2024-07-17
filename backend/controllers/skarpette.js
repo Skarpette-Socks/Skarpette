@@ -1,5 +1,9 @@
 const Skarpette = require('../models/skarpette');
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const {
+    S3Client,
+    PutObjectCommand,
+    DeleteObjectCommand,
+} = require('@aws-sdk/client-s3');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -31,37 +35,50 @@ async function uploadImageToS3(buffer, destination) {
     }
 }
 
+async function deleteImageFromS3(imageUrl) {
+    const params = {
+        Bucket: process.env.AWSBUCKETNAME,
+        Key: imageUrl.split(
+            `${process.env.AWSBUCKETNAME}.s3.${process.env.AWSREGION}.amazonaws.com/`
+        )[1],
+    };
+
+    const command = new DeleteObjectCommand(params);
+
+    try {
+        const data = await s3Client.send(command);
+        return data;
+    } catch (error) {
+        console.error('Error deleting image from S3:', error);
+        throw error;
+    }
+}
+
 const createSkarpette = async (req, res) => {
     try {
         const skarpetteData = req.body;
+        skarpetteData.images_urls = [];
 
-        //main img upload
-        if (req.files['main_image'] && req.files['main_image'][0]) {
-            const mainImageFile = req.files['main_image'][0];
-            const mainImageUrl = await uploadImageToS3(
-                mainImageFile.buffer,
-                `main_images/${mainImageFile.originalname}`
-            );
-            skarpetteData.main_image_url = mainImageUrl;
-        }
+        // Логування файлів
+        console.log('Files:', req.files);
 
-        //additional img upload
-        if (req.files['additional_images']) {
-            const additionalImages = req.files['additional_images'];
-            const additionalImagesUrls = await Promise.all(
-                additionalImages.map(async (file) => {
+        // Upload images
+        if (req.files && req.files.length > 0) {
+            const images = req.files;
+            const imagesUrls = await Promise.all(
+                images.map(async (file) => {
                     const imageUrl = await uploadImageToS3(
                         file.buffer,
-                        `additional_images/${file.originalname}`
+                        `images/${file.originalname}`
                     );
                     return imageUrl;
                 })
             );
-            skarpetteData.additional_images = additionalImagesUrls;
+            skarpetteData.images_urls = imagesUrls;
         }
 
-        if (!skarpetteData.main_image_url) {
-            throw new Error('main_image_url is required');
+        if (skarpetteData.images_urls.length === 0) {
+            throw new Error('At least one image is required');
         }
 
         const newSkarpette = await Skarpette.create(skarpetteData);
@@ -122,6 +139,12 @@ const deleteSkarpette = async (req, res) => {
         if (!skarpette) {
             return res.status(404).json({ error: 'Skarpette not found' });
         }
+
+        const deletePromises = skarpette.images_urls.map((imageUrl) =>
+            deleteImageFromS3(imageUrl)
+        );
+        await Promise.all(deletePromises);
+
         await skarpette.deleteOne();
         res.status(200).json('Skarpette has been deleted');
     } catch (error) {
@@ -161,18 +184,12 @@ const getSkarpettesByNameOrVendorCode = async (req, res) => {
 };
 const getFilteredSkarpettes = async (req, res) => {
     try {
-        const { categories, color, size } = req.query;
+        const { type } = req.query;
 
         let filter = {};
 
-        if (categories) {
-            filter.categories = { $in: categories.split(',') };
-        }
-        if (color) {
-            filter.color = { $in: color.split(',') };
-        }
-        if (size) {
-            filter.size = { $in: size.split(',') };
+        if (type) {
+            filter.type = type;
         }
 
         const skarpette = await Skarpette.find(filter);
