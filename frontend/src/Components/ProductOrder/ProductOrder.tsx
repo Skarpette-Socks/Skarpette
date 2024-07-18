@@ -61,7 +61,7 @@ const ProductOrder: React.FC<Props> = ({ name }) => {
         return;
       }
     } else {
-      if (selectedPhoto === 0) {
+      if (selectedPhoto <= 0) {
         setSelectedPhoto(imgArr.length - 1);
 
         return;

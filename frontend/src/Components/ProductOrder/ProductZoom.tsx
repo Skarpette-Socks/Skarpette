@@ -40,6 +40,8 @@ const ProductZoom: React.FC<Props> = ({ isOpen, selectedPhoto, imgArr }) => {
     isOpen(false);
 
     document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.overflow = "scroll"
     document.body.style.width = "";
     window.scrollTo(0, scrollY);
   };
@@ -47,7 +49,9 @@ const ProductZoom: React.FC<Props> = ({ isOpen, selectedPhoto, imgArr }) => {
   useEffect(() => {
     const scrollPosition = window.scrollY;
     setScrollY(scrollPosition);
-    document.body.style.position = "absolute";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.overflow = "hidden"
     document.body.style.width = "100%";
   }, [isOpen, scrollY]);
 
