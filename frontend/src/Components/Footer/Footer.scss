@@ -121,6 +121,10 @@
     width: 24px;
     height: 24px;
     fill: $grayscale-400;
+
+    & img {
+      filter: invert(50%);
+    }
   }
 
   &__greyline {
