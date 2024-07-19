@@ -11,7 +11,7 @@ import SubHeader from "./Components/SubHeader/SubHeader";
 import AboutUs from "./Pages/AboutUs/AboutUs";
 import Cart from "./Pages/Cart";
 import Catalog from "./Pages/Catalog";
-import Contacts from "./Pages/Contacts";
+import Contacts from "./Pages/Contacts/Contacts";
 import Favorites from "./Pages/Favorites";
 import PaymentDelivery from "./Pages/PaymentDelivery/PaymentDelivery";
 import Product from "./Pages/Product";
