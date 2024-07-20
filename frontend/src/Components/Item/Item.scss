@@ -5,14 +5,26 @@
   width: 100%;
   max-width: 350px;
   text-decoration: none;
-  
+
   @include on-desktop {
     max-width: 303px;
   }
 
   &__image {
     border-radius: 8px;
-    width: 100%;
+    width: 152px;
+    height: 164px;
+    object-fit: cover;
+
+    @include on-tablet {
+      width: 294px;
+      height: 340px;
+    }
+
+    @include on-desktop {
+      width: 303px;
+      height: 340px;
+    }
   }
 
   &__category {
@@ -35,7 +47,6 @@
     @include on-tablet {
       margin-top: 8px;
       font-size: 18px;
-
     }
   }
 

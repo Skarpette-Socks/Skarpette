@@ -131,3 +131,21 @@
     }
   }
 }
+
+.items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.item {
+  flex: 1 1 25%; /* 25% для 4 элементов в строку */
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+@include on-tablet {
+  .item {
+    flex: 1 1 50%; /* 50% для 2 элементов в строку */
+  }
+}
