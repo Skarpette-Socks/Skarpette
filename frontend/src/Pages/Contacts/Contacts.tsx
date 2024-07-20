@@ -9,7 +9,7 @@ const Contacts: React.FC = () => {
       <div className="container">
         <div className="contacts">
           <div className="contacts__left-column">
-            <h1>Напишіть нам</h1>
+            <div className="contacts__title">Напишіть нам</div>
             <p className="contacts__greeting">
               Будемо раді поспілкуватись з вами та відповісти на всі ваші
               питання.
