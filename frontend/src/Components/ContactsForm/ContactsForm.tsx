@@ -3,7 +3,9 @@ import "./ContactsForm.scss";
 const ContactsForm = () => {
   return (
     <form action="#" className="contacts-form">
-      <p id="contacts-form__title">Форма для зв’язку</p>
+      <p className="contacts-form__title" id="contacts-form__title">
+        Форма для зв’язку
+      </p>
       <input
         type="text"
         required
@@ -12,18 +14,17 @@ const ContactsForm = () => {
       />
 
       <input
-        type="text"
+        type="email"
         required
         placeholder="Електронна пошта"
         className="contacts-form__email"
       />
 
-      <input
-        type="text"
+      <textarea
         required
         placeholder="Повідомлення"
         className="contacts-form__message"
-      />
+      ></textarea>
 
       <input
         type="submit"
