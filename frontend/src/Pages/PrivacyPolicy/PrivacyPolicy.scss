@@ -6,13 +6,12 @@
   @include content-padding-inline;
   display: grid;
   max-width: 1440px !important;
-  margin-inline: 0 !important;
 
   &__questions {
     grid-column: 1/-1;
     order: 1;
     margin-top: 40px;
-    
+
     @include on-desktop {
       margin-top: 64px;
       grid-column: 9/-1;
