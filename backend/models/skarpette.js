@@ -62,6 +62,10 @@ const skarpetteSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    is_in_stock: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 const Skarpette = mongoose.model('Skarpette', skarpetteSchema);

@@ -59,9 +59,6 @@ const createSkarpette = async (req, res) => {
         const skarpetteData = req.body;
         skarpetteData.images_urls = [];
 
-        // Логування файлів
-        console.log('Files:', req.files);
-
         // Upload images
         if (req.files && req.files.length > 0) {
             const images = req.files;
@@ -186,7 +183,7 @@ const getFilteredSkarpettes = async (req, res) => {
     try {
         const { type } = req.query;
 
-        let filter = {};
+        let filter = { is_in_stock: true };
 
         if (type) {
             filter.type = type;
