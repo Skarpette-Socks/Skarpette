@@ -10,10 +10,8 @@ const PrivacyPolicy: React.FC = () => {
         homeLink="/"
         linkHref="/privacy-policy"
       />
+
       <div className="privacy">
-        <div className="privacy__questions">
-          <Questions />
-        </div>
         <div className="privacy__text">
           <h2 className="privacy__title">Політика конфіденційності</h2>
 
@@ -125,6 +123,10 @@ const PrivacyPolicy: React.FC = () => {
               товарів/послуг.
             </p>
           </section>
+        </div>
+        
+        <div className="privacy__questions">
+          <Questions />
         </div>
       </div>
     </>
