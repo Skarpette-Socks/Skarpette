@@ -43,9 +43,15 @@
     border: 1px solid $grayscale-200;
     background-color: $grayscale-0;
     padding: 14px 12px;
+    font-size: 16px;
+    font-weight: 500;
 
     @include on-tablet {
       height: 60px;
+    }
+
+    @include on-desktop {
+      font-size: 18px;
     }
   }
 
