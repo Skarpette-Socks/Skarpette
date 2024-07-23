@@ -19,11 +19,9 @@ const upload = multer({
 router.delete('/clear', skarpetteController.clearDB);
 router.get('/search', skarpetteController.getSkarpettesByNameOrVendorCode);
 router.get('/filter', skarpetteController.getFilteredSkarpettes);
-router.post(
-    '/',
-    upload.array('images'), // Поле має називатись 'images'
-    skarpetteController.createSkarpette
-);
+router.get('/favorites', skarpetteController.getFavotireSkarpettes);
+router.get('/new', skarpetteController.getNewSkarpettes);
+router.post('/', upload.array('images'), skarpetteController.createSkarpette);
 router.delete('/:id', skarpetteController.deleteSkarpette);
 router.get('/:id', skarpetteController.getSkarpetteById);
 router.get('/', skarpetteController.getAllSkarpettes);

@@ -62,6 +62,10 @@ const skarpetteSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    is_favorite: {
+        type: Boolean,
+        default: false,
+    },
     is_in_stock: {
         type: Boolean,
         default: true,

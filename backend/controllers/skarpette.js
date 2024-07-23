@@ -34,7 +34,6 @@ async function uploadImageToS3(buffer, destination) {
         throw error;
     }
 }
-
 async function deleteImageFromS3(imageUrl) {
     const params = {
         Bucket: process.env.AWSBUCKETNAME,
@@ -53,7 +52,17 @@ async function deleteImageFromS3(imageUrl) {
         throw error;
     }
 }
-
+const findSkarpettesByCriteria = async (criteria, res) => {
+    try {
+        const skarpettes = await Skarpette.find(criteria);
+        if (!skarpettes || skarpettes.length === 0) {
+            return res.status(404).json('Skarpettes not found');
+        }
+        res.status(200).json(skarpettes);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 const createSkarpette = async (req, res) => {
     try {
         const skarpetteData = req.body;
@@ -85,7 +94,6 @@ const createSkarpette = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
-
 const getSkarpetteById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -109,6 +117,12 @@ const getAllSkarpettes = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
+};
+const getNewSkarpettes = async (req, res) => {
+    await findSkarpettesByCriteria({ is_new: true }, res);
+};
+const getFavotireSkarpettes = async (req, res) => {
+    await findSkarpettesByCriteria({ is_favorite: true }, res);
 };
 const updateSkarpette = async (req, res) => {
     const { id } = req.params;
@@ -189,13 +203,11 @@ const getFilteredSkarpettes = async (req, res) => {
             filter.type = type;
         }
 
-        const skarpette = await Skarpette.find(filter);
-        res.status(200).json(skarpette);
+        await findSkarpettesByCriteria(filter, res);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
-
 const clearDB = async (req, res) => {
     try {
         await Skarpette.deleteMany({});
@@ -215,4 +227,6 @@ module.exports = {
     getSkarpettesByNameOrVendorCode,
     getFilteredSkarpettes,
     clearDB,
+    getNewSkarpettes,
+    getFavotireSkarpettes,
 };
