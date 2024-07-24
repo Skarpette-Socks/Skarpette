@@ -109,6 +109,11 @@ const getSkarpetteById = async (req, res) => {
 const getAllSkarpettes = async (req, res) => {
     //Skarpettes?
     try {
+        if (req.query.filter) {
+            return res
+                .status(400)
+                .json({ error: 'There should not be any query parameters' });
+        }
         const skarpettes = await Skarpette.find();
         if (!skarpettes) {
             return res.status(404).json('Skarpettes not found');
