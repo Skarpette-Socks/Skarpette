@@ -62,18 +62,5 @@
     }
   }
 
-  &__goods-list {
-    grid-column: 1/-1;
 
-    display: grid;  
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px 24px;
-    justify-content: center;
-    place-items: center;
-
-    @include on-desktop {
-      grid-template-columns: repeat(4, 1fr);
-
-    }
-  }
 }
