@@ -29,7 +29,7 @@ const MainPageListGoods: React.FC<Props> = ({ title, catalogButton = false }) =>
           </a>
         </div>
 
-        <div className="list-goods__goods-list">
+        <div className="list-goods__goods-list items-list">
           <Item
             image={image}
             category="Жіночі"
