@@ -17,6 +17,7 @@ import PaymentDelivery from "./Pages/PaymentDelivery/PaymentDelivery";
 import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
 import Product from "./Pages/Product";
 import Promotions from "./Pages/Promotions";
+import Returning from "./Pages/Returning/Returning";
 import Shop from "./Pages/Shop";
 
 // Конфигурация маршрутов
@@ -31,6 +32,7 @@ const routes = [
   { path: "/cart", element: <Cart /> },
   { path: "/product", element: <Product /> },
   { path: "/privacy-policy", element: <PrivacyPolicy /> },
+  { path: "/return-of-goods", element: <Returning /> },
 ];
 
 const App: React.FC = () => {

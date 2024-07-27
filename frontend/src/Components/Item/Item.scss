@@ -1,13 +1,39 @@
 @import "../assets/styles/mixins";
 @import "../assets/styles/variables";
 
+.items-list {
+  grid-column: 1/-1;
+
+  display: grid;  
+  grid-template-columns: repeat(auto-fill, 152px);
+  gap: 32px 24px;
+  justify-content: center;
+  place-items: center;
+
+  @include on-tablet {
+    grid-template-columns: repeat(auto-fill, 294px);
+
+  }
+
+  @include on-desktop {
+    grid-template-columns: repeat(auto-fill, 303px);
+
+  }
+}
+
 .item {
   width: 100%;
   max-width: 350px;
   text-decoration: none;
 
+  width: 152px;
+
+  @include on-tablet {
+    width: 294px;
+  }
+
   @include on-desktop {
-    max-width: 303px;
+    width: 303px;
   }
 
   &__image {

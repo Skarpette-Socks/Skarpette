@@ -119,74 +119,76 @@ const Reviews: React.FC = () => {
 
   return (
     <div className="reviews">
-      <div className="reviews__top-bar">
-        <p className="reviews__title">Що про нас кажуть клієнти?</p>
-        <button
-          className="reviews__feedback-button"
-          onClick={handleOpenReviewModal}
-        >
-          Залишити відгук
-        </button>
-      </div>
+      <div className="reviews__container">
+        <div className="reviews__top-bar">
+          <p className="reviews__title">Що про нас кажуть клієнти?</p>
+          <button
+            className="reviews__feedback-button"
+            onClick={handleOpenReviewModal}
+          >
+            Залишити відгук
+          </button>
+        </div>
 
-      <div className={`reviews__slider reviews__slider--${screenType}`}>
-        {visibleReviews.map((review) => (
-          <div key={review.id} className="reviews__item ">
-            <div className="reviews__stars">
-              {[...Array(5)].map((_, i) => (
-                <span key={i} className="reviews__stars-item">
-                  <img src={star_icon_active} alt="star_icon_active" />
+        <div className={`reviews__slider reviews__slider--${screenType}`}>
+          {visibleReviews.map((review) => (
+            <div key={review.id} className="reviews__item ">
+              <div className="reviews__stars">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="reviews__stars-item">
+                    <img src={star_icon_active} alt="star_icon_active" />
+                  </span>
+                ))}
+              </div>
+              <h3 className="reviews__item-name">
+                {review.name}
+                <span>
+                  <img src={verify_icon} alt="" />
                 </span>
-              ))}
+              </h3>
+              <p className="reviews__item-comment">{review.comment}</p>
             </div>
-            <h3 className="reviews__item-name">
-              {review.name}
-              <span>
-                <img src={verify_icon} alt="" />
-              </span>
-            </h3>
-            <p className="reviews__item-comment">{review.comment}</p>
-          </div>
-        ))}
-      </div>
-      <div className="reviews__controls">
-        <button className="reviews__controls-button" onClick={goToPrevious}>
-          <svg
-            width="24"
-            height="24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M15 6L9 12L15 18" stroke="black" />
-          </svg>
-        </button>
+          ))}
+        </div>
+        <div className="reviews__controls">
+          <button className="reviews__controls-button" onClick={goToPrevious}>
+            <svg
+              width="24"
+              height="24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M15 6L9 12L15 18" stroke="black" />
+            </svg>
+          </button>
 
-        <span className="reviews__controls-page">
-          <span className="reviews__controls-page-current-page">
-            {currentPage}
+          <span className="reviews__controls-page">
+            <span className="reviews__controls-page-current-page">
+              {currentPage}
+            </span>
+            <span className="reviews__controls-page-total-page">/</span>
+            <span className="reviews__controls-page-total-page">
+              {totalPages}
+            </span>
           </span>
-          <span className="reviews__controls-page-total-page">/</span>
-          <span className="reviews__controls-page-total-page">
-            {totalPages}
-          </span>
-        </span>
 
-        <button className="reviews__controls-button" onClick={goToNext}>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M9 6L15 12L9 18" stroke="black" />
-          </svg>
-        </button>
+          <button className="reviews__controls-button" onClick={goToNext}>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M9 6L15 12L9 18" stroke="black" />
+            </svg>
+          </button>
+        </div>
+        <ReviewModal
+          isOpen={isReviewModalOpen}
+          onClose={handleCloseReviewModal}
+        />
       </div>
-      <ReviewModal
-        isOpen={isReviewModalOpen}
-        onClose={handleCloseReviewModal}
-      />
     </div>
   );
 };
