@@ -32,7 +32,11 @@
     gap: 0;
     border-radius: 16px;
     width: 100%;
-    padding: 0 16px 14px 20px;
+    padding: 26px 24px 24px 24px;
+
+    @include on-tablet {
+      padding: 16px;
+    }
   }
 
   &-item {
@@ -45,7 +49,8 @@
     font-weight: 500;
     font-size: 16px;
     position: relative;
-    padding-top: 12px;
+    // padding-top: 12px;
+    gap: 12px;
 
     &-icon {
       margin-left: auto;
