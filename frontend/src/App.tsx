@@ -10,7 +10,6 @@ import SubHeader from "./Components/SubHeader/SubHeader";
 // Импорты страниц
 import AboutUs from "./Pages/AboutUs/AboutUs";
 import Cart from "./Pages/Cart";
-import Catalog from "./Pages/Catalog";
 import Contacts from "./Pages/Contacts/Contacts";
 import Favorites from "./Pages/Favorites";
 import KidsSocks from "./Pages/KidsSocks/KidsSocks";
@@ -26,7 +25,6 @@ import WomanSocks from "./Pages/WomanSocks/WomanSocks";
 // Конфигурация маршрутов
 const routes = [
   { path: "/", element: <Shop /> },
-  { path: "/catalog", element: <Catalog /> },
   { path: "/offers", element: <Promotions /> },
   { path: "/about-us", element: <AboutUs /> },
   { path: "/payment-and-delivery", element: <PaymentDelivery /> },
