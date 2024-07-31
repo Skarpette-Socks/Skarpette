@@ -1,0 +1,38 @@
+@import "../../Components/assets/styles/mixins";
+@import "../../Components/assets/styles/variables";
+
+.mobile-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 64px;
+
+  &__arrow {
+    width: 48px;
+    height: 48px;
+    border-radius: 100px;
+    border: 1px solid $grayscale-200;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &__info {
+    display: flex;
+    gap: 7px;
+    font-size: 18px;
+    font-weight: 500;
+    color: $grayscale-400;
+
+    & > *:first-child {
+      color: $grayscale-1000;
+    }
+  }
+}

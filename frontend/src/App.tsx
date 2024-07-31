@@ -13,12 +13,15 @@ import Cart from "./Pages/Cart";
 import Catalog from "./Pages/Catalog";
 import Contacts from "./Pages/Contacts/Contacts";
 import Favorites from "./Pages/Favorites";
+import KidsSocks from "./Pages/KidsSocks/KidsSocks";
+import MenSocks from "./Pages/MenSocks/MenSocks";
 import PaymentDelivery from "./Pages/PaymentDelivery/PaymentDelivery";
 import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
 import Product from "./Pages/Product";
 import Promotions from "./Pages/Promotions";
 import Returning from "./Pages/Returning/Returning";
 import Shop from "./Pages/Shop";
+import WomanSocks from "./Pages/WomanSocks/WomanSocks";
 
 // Конфигурация маршрутов
 const routes = [
@@ -33,6 +36,9 @@ const routes = [
   { path: "/product", element: <Product /> },
   { path: "/privacy-policy", element: <PrivacyPolicy /> },
   { path: "/return-of-goods", element: <Returning /> },
+  { path: "/womens-socks", element: <WomanSocks /> },
+  { path: "/mens-socks", element: <MenSocks /> },
+  { path: "/kids-socks", element: <KidsSocks /> },
 ];
 
 const App: React.FC = () => {

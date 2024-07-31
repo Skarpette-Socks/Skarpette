@@ -1,0 +1,35 @@
+@import "../../Components/assets/styles/mixins";
+@import "../../Components/assets/styles/variables";
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 80px;
+  gap: 8px;
+
+  &__button {
+    width: 48px;
+    height: 48px;
+    border: 1px solid $grayscale-200;
+    border-radius: 50%;
+    background-color: transparent;
+    cursor: pointer;
+    transition:
+      background-color 0.3s,
+      border-color 0.3s;
+
+    font-size: 18px;
+    font-weight: 500;
+    color: $grayscale-800;
+  }
+
+  &__button:hover {
+    background-color: #f0f0f0;
+  }
+
+  &__button.active {
+    border-color: #000;
+    background-color: #fff;
+  }
+}
