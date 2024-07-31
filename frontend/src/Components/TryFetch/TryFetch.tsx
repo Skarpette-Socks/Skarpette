@@ -1,6 +1,6 @@
 // import React, { useEffect, useState } from "react";
 // import Item from "../Item/Item";
-// import { fetchData } from "../../api/fetchAllData";
+// import { fetchAllData } from "../../api/fetchAllData";
 
 // interface DataItem {
 //   _id: string;
@@ -21,7 +21,7 @@
 //   const loadData = async () => {
 //     setLoading(true);
 //     try {
-//       const result = await fetchData();
+//       const result = await fetchAllData();
 //       setData(result);
 //     } catch (error) {
 //       setError(error.message);
