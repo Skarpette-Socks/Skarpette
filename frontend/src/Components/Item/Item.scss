@@ -1,25 +1,25 @@
 @import "../assets/styles/mixins";
 @import "../assets/styles/variables";
 
-// .items-list {
-//   grid-column: 1/-1;
+.items-list {
+  grid-column: 1/-1;
 
-//   display: grid;
-//   grid-template-columns: repeat(auto-fill, 152px);
-//   gap: 32px 24px;
-//   justify-content: center;
-//   place-items: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 152px);
+  gap: 32px 24px;
+  justify-content: center;
+  place-items: center;
 
-//   @include on-tablet {
-//     grid-template-columns: repeat(auto-fill, 294px);
+  @include on-tablet {
+    grid-template-columns: repeat(auto-fill, 294px);
 
-//   }
+  }
 
-//   @include on-desktop {
-//     grid-template-columns: repeat(auto-fill, 303px);
+  @include on-desktop {
+    grid-template-columns: repeat(auto-fill, 303px);
 
-//   }
-// }
+  }
+}
 
 .item {
   width: 100%;
