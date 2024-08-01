@@ -92,6 +92,7 @@ const SocksPage: React.FC<SocksPageProps> = ({
               name={item.name}
               new_price={item.price}
               old_price={item.price2}
+              isNew={item.is_new}
             />
           ))}
         </div>

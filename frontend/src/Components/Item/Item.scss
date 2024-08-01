@@ -1,31 +1,31 @@
 @import "../assets/styles/mixins";
 @import "../assets/styles/variables";
 
-.items-list {
-  grid-column: 1/-1;
+// .items-list {
+//   grid-column: 1/-1;
 
-  display: grid;  
-  grid-template-columns: repeat(auto-fill, 152px);
-  gap: 32px 24px;
-  justify-content: center;
-  place-items: center;
+//   display: grid;
+//   grid-template-columns: repeat(auto-fill, 152px);
+//   gap: 32px 24px;
+//   justify-content: center;
+//   place-items: center;
 
-  @include on-tablet {
-    grid-template-columns: repeat(auto-fill, 294px);
+//   @include on-tablet {
+//     grid-template-columns: repeat(auto-fill, 294px);
 
-  }
+//   }
 
-  @include on-desktop {
-    grid-template-columns: repeat(auto-fill, 303px);
+//   @include on-desktop {
+//     grid-template-columns: repeat(auto-fill, 303px);
 
-  }
-}
+//   }
+// }
 
 .item {
   width: 100%;
   max-width: 350px;
   text-decoration: none;
-
+  position: relative;
   width: 152px;
 
   @include on-tablet {
@@ -105,6 +105,67 @@
 
     @include on-tablet {
       font-size: 16px;
+    }
+  }
+
+  &__new {
+    position: absolute;
+    border: 1px solid $grayscale-200;
+    background-color: $grayscale-50;
+    width: 43px;
+    height: 32px;
+    border-radius: 100px;
+    top: 4px;
+    left: 4px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 12px;
+    font-weight: 600; //??
+    color: $grayscale-800;
+
+    @include on-tablet {
+      top: 16px;
+      left: 16px;
+      width: 55px;
+      height: 40px;
+    }
+  }
+
+  &__favorite {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: $grayscale-0;
+    border: none;
+    border-radius: 100px;
+
+    cursor: pointer;
+
+    @include on-tablet {
+      width: 40px;
+      height: 40px;
+      top: 16px;
+      right: 16px;
+    }
+
+    &-icon {
+      width: 20px;
+      height: 20px;
+
+      @include on-tablet {
+        width: 24px;
+        height: 24px;
+      }
     }
   }
 }

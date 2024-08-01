@@ -6,6 +6,7 @@ interface DataItem {
   type: string;
   price: number;
   price2?: number;
+  is_new?: boolean;
 }
 
-export default DataItem
+export default DataItem;
