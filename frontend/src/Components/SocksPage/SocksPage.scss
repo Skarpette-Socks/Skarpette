@@ -3,7 +3,7 @@
 
 .socks {
   @include content-padding-inline;
-  max-width:  1440px;
+  max-width: 1440px;
   margin-inline: auto;
 
   &__title {
@@ -25,7 +25,8 @@
     // grid-template-rows: auto; /* Высота строк автоматическая */
     margin-top: 56px;
     grid-row-gap: 32px; /* Отступ между строками */
-
+    justify-items: center;
+    
     @include on-desktop {
       grid-template-columns: repeat(4, 1fr); /* 4 колонки на широких экранах */
       margin-top: 80px;
