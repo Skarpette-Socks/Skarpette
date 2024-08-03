@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import "./CategoriesCarousel.scss";
 import "slick-carousel/slick/slick.css";
@@ -33,10 +34,10 @@ const CategoriesCarousel: React.FC = () => {
 
             if (categoriesToShow > index) {
               return (
-                <a 
+                <Link 
                   className="categories-carousel__item"
                   key={index}
-                  href={link}
+                  to={link}
                 >
                   <img
                     src={`src/Components/assets/img/carousel-img${index + 1}.png`}
@@ -46,7 +47,7 @@ const CategoriesCarousel: React.FC = () => {
                   <div className="categories-carousel__item-text">
                     {name}
                   </div>
-                </a>
+                </Link>
               );
             }
           })}

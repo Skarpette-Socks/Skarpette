@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface Item {
   name: string;
@@ -16,9 +17,9 @@ const FooterLinks: React.FC<ItemsProps> = ({ items }) => {
         const { name, link } = item;
 
         return (
-          <a key={name} href={link} className="footer__links-item">
+          <Link key={name} to={link} className="footer__links-item">
             {name}
-          </a>
+          </Link>
         );
       })}
     </div>

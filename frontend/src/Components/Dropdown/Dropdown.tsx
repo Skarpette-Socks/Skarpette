@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./Dropdown.scss";
 
 import arrow_right from "../assets/img/icons/chevron-right.svg";
@@ -32,10 +33,10 @@ const Dropdown: React.FC = () => {
             const {name, link} = option;
 
             return (
-              <a
+              <Link
               key={name}
               className="dropdown-item"
-              href={link}
+              to={link}
               onClick={() => {
                 setIsActive(false);
               }}
@@ -44,7 +45,7 @@ const Dropdown: React.FC = () => {
               <span className="dropdown-item-icon">
                 <img src={arrow_right} alt="arrow right" />
               </span>
-            </a>
+            </Link>
             );
           })}
         </div>
