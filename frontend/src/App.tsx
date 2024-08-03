@@ -1,3 +1,7 @@
+// Импорты библиотек
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 // Импорты стилей
 import "./App.css";
 import "./Components/assets/styles/main.scss";
@@ -22,35 +26,30 @@ import Returning from "./Pages/Returning/Returning";
 import Shop from "./Pages/Shop";
 import WomanSocks from "./Pages/WomanSocks/WomanSocks";
 
-// Конфигурация маршрутов
-const routes = [
-  { path: "/", element: <Shop /> },
-  { path: "/offers", element: <Promotions /> },
-  { path: "/about-us", element: <AboutUs /> },
-  { path: "/payment-and-delivery", element: <PaymentDelivery /> },
-  { path: "/contacts", element: <Contacts /> },
-  { path: "/favorites", element: <Favorites /> },
-  { path: "/cart", element: <Cart /> },
-  { path: "/product", element: <Product /> },
-  { path: "/privacy-policy", element: <PrivacyPolicy /> },
-  { path: "/return-of-goods", element: <Returning /> },
-  { path: "/womens-socks", element: <WomanSocks /> },
-  { path: "/mens-socks", element: <MenSocks /> },
-  { path: "/kids-socks", element: <KidsSocks /> },
-];
-
 const App: React.FC = () => {
-  const currentPath = window.location.pathname;
-  const currentRoute =
-    routes.find((route) => route.path === currentPath) || routes[0];
-
   return (
-    <div className="App">
-      <SubHeader />
-      <NavBar />
-      {currentRoute.element}
-      <Footer />
-    </div>
+    <Router>
+      <div className="App">
+        <SubHeader />
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<Shop />} />
+          <Route path="/offers" element={<Promotions />} />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/payment-and-delivery" element={<PaymentDelivery />} />
+          <Route path="/contacts" element={<Contacts />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/product" element={<Product />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/return-of-goods" element={<Returning />} />
+          <Route path="/womens-socks" element={<WomanSocks />} />
+          <Route path="/mens-socks" element={<MenSocks />} />
+          <Route path="/kids-socks" element={<KidsSocks />} />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
   );
 };
 

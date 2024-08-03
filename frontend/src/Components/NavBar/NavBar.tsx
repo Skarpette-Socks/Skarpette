@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./NavBar.scss";
 import Menu from "../Menu/Menu"; // Adjust the path as necessary
 
@@ -26,9 +27,9 @@ const NavBar: React.FC = () => {
           className="navBar__burger-menu"
           onClick={toggleMenu}
         />
-        <a href="/">
+        <Link to="/">
           <img src={logo} alt="site logo" className="navBar__logo-img" />
-        </a>
+        </Link>
       </div>
       <NavBarMenu />
       <Menu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
@@ -44,16 +45,16 @@ const NavBarMenu: React.FC = () => {
         <Dropdown />
       </li>
       <li className="navBar__item">
-        <a href="/offers">Акції</a>
+        <Link to="/offers">Акції</Link>
       </li>
       <li className="navBar__item">
-        <a href="/about-us">Про нас</a>
+        <Link to="/about-us">Про нас</Link>
       </li>
       <li className="navBar__item">
-        <a href="/payment-and-delivery">Оплата та доставка</a>
+        <Link to="/payment-and-delivery">Оплата та доставка</Link>
       </li>
       <li className="navBar__item">
-        <a href="/contacts">Контакти</a>
+        <Link to="/contacts">Контакти</Link>
       </li>
     </ul>
   );
@@ -61,19 +62,19 @@ const NavBarMenu: React.FC = () => {
 
 const NavBarActions: React.FC = () => (
   <div className="navBar__actions">
-    <a href="#">
+    <Link to="#">
       <img src={search_icon} alt="Search" />
-    </a>
-    <a href="/favorites">
+    </Link>
+    <Link to="/favorites">
       <img src={heart_icon} alt="Favorites" />
-    </a>
-    <a href="/cart">
+    </Link>
+    <Link to="/cart">
       <div className="navBar__actions-cart">
         <img src={cart} alt="cart icon" className="navBar__actions-cart-icon" />
         <p className="navBar__actions-cart-text">Кошик</p>
         <div className="navBar__actions-cart-count">2</div>
       </div>
-    </a>
+    </Link>
   </div>
 );
 
