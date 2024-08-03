@@ -1,6 +1,6 @@
 // Импорты библиотек
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 
 // Импорты стилей
 import "./App.css";
@@ -25,6 +25,7 @@ import Promotions from "./Pages/Promotions";
 import Returning from "./Pages/Returning/Returning";
 import Shop from "./Pages/Shop";
 import WomanSocks from "./Pages/WomanSocks/WomanSocks";
+import ScrollToTop from "./Components/ScrollToTop/ScrollToTop";
 
 const App: React.FC = () => {
   return (
@@ -32,6 +33,7 @@ const App: React.FC = () => {
       <div className="App">
         <SubHeader />
         <NavBar />
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Shop />} />
           <Route path="/offers" element={<Promotions />} />
