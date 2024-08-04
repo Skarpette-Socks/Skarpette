@@ -89,7 +89,7 @@ const SocksPage: React.FC<SocksPageProps> = ({
       <div className="socks">
         <h1 className="socks__title">{title}</h1>
 
-        <div className="socks__items">
+        <div className="socks__items items-list">
           {currentItems.map((item) => (
             <Item
               key={item._id}
