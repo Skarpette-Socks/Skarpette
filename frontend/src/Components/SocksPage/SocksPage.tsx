@@ -87,6 +87,7 @@ const SocksPage: React.FC<SocksPageProps> = ({
           {currentItems.map((item) => (
             <Item
               key={item._id}
+              vendor_code={item.vendor_code}
               image={item.images_urls?.[0] || ""}
               category={item.type}
               name={item.name}

@@ -5,7 +5,7 @@ import cn from "classnames";
 
 interface buttonInfo {
   size: string;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 interface Props {
