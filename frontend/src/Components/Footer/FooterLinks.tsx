@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface Item {
   name: string;
@@ -10,15 +11,24 @@ interface ItemsProps {
 }
 
 const FooterLinks: React.FC<ItemsProps> = ({ items }) => {
+
   return (
     <div className="footer__links">
       {items.map((item) => {
         const { name, link } = item;
 
         return (
-          <a key={name} href={link} className="footer__links-item">
-            {name}
-          </a>
+          <>
+            <Link 
+              key={name} 
+              to={link} 
+              className="footer__links-item"
+              onClick={() => window.scrollTo(0, 0)}
+            >
+              {name}
+            </Link>
+
+          </>
         );
       })}
     </div>

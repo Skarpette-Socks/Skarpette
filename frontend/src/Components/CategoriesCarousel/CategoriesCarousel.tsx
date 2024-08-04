@@ -8,6 +8,7 @@ import scroll from "../assets/img/icons/scroll.svg";
 
 
 import items from "../../../../backend/bd/categories.json";
+import { Link } from "react-router-dom";
 
 const CategoriesCarousel: React.FC = () => {
   const categoriesToShow = 6;
@@ -33,10 +34,10 @@ const CategoriesCarousel: React.FC = () => {
 
             if (categoriesToShow > index) {
               return (
-                <a 
+                <Link 
                   className="categories-carousel__item"
                   key={index}
-                  href={link}
+                  to={link}
                 >
                   <img
                     src={`src/Components/assets/img/carousel-img${index + 1}.png`}
@@ -46,7 +47,7 @@ const CategoriesCarousel: React.FC = () => {
                   <div className="categories-carousel__item-text">
                     {name}
                   </div>
-                </a>
+                </Link>
               );
             }
           })}
