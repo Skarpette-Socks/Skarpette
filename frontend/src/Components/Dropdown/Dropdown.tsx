@@ -49,7 +49,7 @@ const Dropdown: React.FC<Props> = ({ toggleMenu }) => {
                 to={link}
                 onClick={toggleFunc}
               >
-                {name}
+                {name} шкарпетки
                 <span className="dropdown-item-icon">
                   <img src={arrow_right} alt="arrow right" />
                 </span>
