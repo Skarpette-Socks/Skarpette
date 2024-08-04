@@ -7,8 +7,18 @@ import arrow_up from "../assets/img/icons/caret-up-filled.svg";
 import arrow_down from "../assets/img/icons/caret-down-filled.svg";
 import options from "../../../../backend/bd/categories.json";
 
-const Dropdown: React.FC = () => {
+interface Props {
+  toggleMenu: () => void;
+}
+
+const Dropdown: React.FC<Props> = ({ toggleMenu }) => {
   const [isActive, setIsActive] = useState(false);
+
+  const toggleFunc = () => {
+    setIsActive(false);
+    toggleMenu();
+    window.scrollTo(0, 0);
+  }
 
   return (
     <div className="dropdown">
@@ -37,9 +47,7 @@ const Dropdown: React.FC = () => {
                 key={name}
                 className="dropdown-item"
                 to={link}
-                onClick={() => {
-                  setIsActive(false);
-                }}
+                onClick={toggleFunc}
               >
                 {name}
                 <span className="dropdown-item-icon">

@@ -57,7 +57,7 @@ const Menu: React.FC<MenuProps> = ({ isOpen, toggleMenu }) => {
       >
         <ul>
           <li className="menu__button">
-            <Dropdown />
+              <Dropdown toggleMenu={toggleMenu}/>
           </li>
           <li className="menu__item">
             <Link to="/offers" onClick={toggleMenu}>
