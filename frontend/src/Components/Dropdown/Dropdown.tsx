@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Dropdown.scss";
 
@@ -13,6 +13,26 @@ interface Props {
 
 const Dropdown: React.FC<Props> = ({ toggleMenu }) => {
   const [isActive, setIsActive] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsActive(false);
+      }
+    };
+
+    if (isActive) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isActive]);
+
 
   const toggleFunc = () => {
     setIsActive(false);
@@ -21,7 +41,7 @@ const Dropdown: React.FC<Props> = ({ toggleMenu }) => {
   }
 
   return (
-    <div className="dropdown">
+    <div className="dropdown" ref={menuRef}>
       <div
         className="dropdown-btn"
         onClick={() => {
@@ -49,7 +69,9 @@ const Dropdown: React.FC<Props> = ({ toggleMenu }) => {
                 to={link}
                 onClick={toggleFunc}
               >
-                {name} шкарпетки
+                <div className="dropdown-item-text">
+                  {name} шкарпетки
+                </div>
                 <span className="dropdown-item-icon">
                   <img src={arrow_right} alt="arrow right" />
                 </span>
