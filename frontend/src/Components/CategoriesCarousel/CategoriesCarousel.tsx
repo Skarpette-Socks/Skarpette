@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import "./CategoriesCarousel.scss";
 import "slick-carousel/slick/slick.css";

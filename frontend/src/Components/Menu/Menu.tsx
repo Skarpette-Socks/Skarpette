@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Dropdown from "../Dropdown/Dropdown";
 import cart from "../assets/img/icons/cart.svg";
 import "./Menu.scss";

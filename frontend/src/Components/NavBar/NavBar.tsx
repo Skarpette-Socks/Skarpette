@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./NavBar.scss";
 import Menu from "../Menu/Menu"; // Adjust the path as necessary
 
