@@ -57,7 +57,7 @@ const SocksPage: React.FC<SocksPageProps> = ({
   }, [updateItemsPerPage]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 150);
   }, [currentPage]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -87,6 +87,7 @@ const SocksPage: React.FC<SocksPageProps> = ({
           {currentItems.map((item) => (
             <Item
               key={item._id}
+              vendor_code={item.vendor_code}
               image={item.images_urls?.[0] || ""}
               category={item.type}
               name={item.name}

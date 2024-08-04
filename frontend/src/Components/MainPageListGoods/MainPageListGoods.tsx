@@ -56,6 +56,7 @@ const MainPageListGoods: React.FC<Props> = ({
             visibleGoods.map((item) => (
               <Item
                 key={item._id}
+                vendor_code={item.vendor_code}
                 image={item.images_urls?.[0] || ""}
                 category={item.type}
                 name={item.name}

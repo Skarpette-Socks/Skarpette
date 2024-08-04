@@ -6,6 +6,7 @@ import arrow_right from "../assets/img/icons/chevron-right.svg";
 import arrow_up from "../assets/img/icons/caret-up-filled.svg";
 import arrow_down from "../assets/img/icons/caret-down-filled.svg";
 import options from "../../../../backend/bd/categories.json";
+import { Link } from "react-router-dom";
 
 const Dropdown: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
@@ -34,18 +35,18 @@ const Dropdown: React.FC = () => {
 
             return (
               <Link
-              key={name}
-              className="dropdown-item"
-              to={link}
-              onClick={() => {
-                setIsActive(false);
-              }}
-            >
-              {name}
-              <span className="dropdown-item-icon">
-                <img src={arrow_right} alt="arrow right" />
-              </span>
-            </Link>
+                key={name}
+                className="dropdown-item"
+                to={link}
+                onClick={() => {
+                  setIsActive(false);
+                }}
+              >
+                {name}
+                <span className="dropdown-item-icon">
+                  <img src={arrow_right} alt="arrow right" />
+                </span>
+              </Link>
             );
           })}
         </div>

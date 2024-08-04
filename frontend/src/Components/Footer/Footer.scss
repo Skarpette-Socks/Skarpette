@@ -150,6 +150,10 @@
     @include on-tablet {
       margin-top: 0;
     }
+
+    &-item {
+      cursor: pointer;
+    }
   }
 
   &__dropdown-catalog, &__dropdown-about-us {

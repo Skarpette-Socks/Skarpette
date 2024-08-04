@@ -11,15 +11,24 @@ interface ItemsProps {
 }
 
 const FooterLinks: React.FC<ItemsProps> = ({ items }) => {
+
   return (
     <div className="footer__links">
       {items.map((item) => {
         const { name, link } = item;
 
         return (
-          <Link key={name} to={link} className="footer__links-item">
-            {name}
-          </Link>
+          <>
+            <Link 
+              key={name} 
+              to={link} 
+              className="footer__links-item"
+              onClick={() => window.scrollTo(0, 0)}
+            >
+              {name}
+            </Link>
+
+          </>
         );
       })}
     </div>

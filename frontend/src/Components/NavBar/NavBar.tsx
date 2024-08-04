@@ -10,6 +10,7 @@ import menu from "../assets/img/icons/menu.svg";
 import close_icon from "../assets/img/icons/close.svg";
 import cart from "../assets/img/icons/cart.svg";
 import Dropdown from "../Dropdown/Dropdown";
+import { Link } from "react-router-dom";
 
 const NavBar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

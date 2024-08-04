@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Dropdown from "../Dropdown/Dropdown";
 import cart from "../assets/img/icons/cart.svg";
 import "./Menu.scss";
+import { Link } from "react-router-dom";
 
 interface MenuProps {
   isOpen: boolean;

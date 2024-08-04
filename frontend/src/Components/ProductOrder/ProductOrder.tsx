@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import "./ProductOrder.scss";
 
-import productImage from "../assets/img/velo_rezym_01.png";
-import product2 from "../assets/img/product2.png";
-import product3 from "../assets/img/product3.png";
-import product4 from "../assets/img/product4.png";
-import product5 from "../assets/img/product5.png";
-
 import chevronLeft from "../assets/img/icons/chevron-left.svg";
 import chevronRight from "../assets/img/icons/chevron-right.svg";
 
@@ -18,12 +12,13 @@ import ProductSizeButton from "./ProductSizeButton";
 import ProductImages from "./ProductImages";
 import ProductImageCircle from "./ProductImageCircle";
 import ProductZoom from "./ProductZoom";
+import DataItem from "../../types/DataItem";
 
 interface Props {
-  name: string;
+  item: DataItem;
 }
 
-const ProductOrder: React.FC<Props> = ({ name }) => {
+const ProductOrder: React.FC<Props> = ({ item }) => {
   const [descriptionOpened, setDescriptionOpened] = useState(false);
   const [warehouseOpened, setWarehouseOpened] = useState(false);
   const [paymentOpened, setPaymentOpened] = useState(false);
@@ -31,21 +26,13 @@ const ProductOrder: React.FC<Props> = ({ name }) => {
   const [selectedPhoto, setSelectedPhoto] = useState(0);
   const [selectedSize, setSelectedSize] = useState<number>(0);
   
-  
-  
-  const imgArr = [productImage, product2, product3, product4, product5];
-
-  const article = "0883291";
-  const price = 120;
-
+  const imgArr = item?.images_urls;
   const sizeButtons = [
     {
       size: "25-27",
-      disabled: false,
     },
     {
       size: "27-29",
-      disabled: false,
     },
     {
       size: "29-31",
@@ -76,6 +63,17 @@ const ProductOrder: React.FC<Props> = ({ name }) => {
       setZoomImageOpened(true)
     }
   }
+
+  if (!imgArr) {
+    return (
+      <>
+        <h1
+          style={{ textAlign: 'center', margin: '50px' }}
+          ><strong>Щось пішло не так ;&#40;</strong></h1>
+      </>
+    );
+  }
+
 
   return (
     <div className="product">
@@ -147,9 +145,9 @@ const ProductOrder: React.FC<Props> = ({ name }) => {
         </div>
 
         <div className="product__info">
-          <div className="product__article">Артикул {article}</div>
-          <h1 className="product__title">{name}</h1>
-          <div className="product__price">{price} грн</div>
+          <div className="product__article">Артикул {item?.vendor_code}</div>
+          <h1 className="product__title">{item?.name}</h1>
+          <div className="product__price">{item?.price} грн</div>
           <div className="product__price-detail">
             Без урахування ціни доставки
           </div>
@@ -200,7 +198,7 @@ const ProductOrder: React.FC<Props> = ({ name }) => {
 
               {descriptionOpened && (
                 <div className="product__dropdown-text">
-                  Тут буде опис товару
+                  {item?.description}
                 </div>
               )}
             </div>

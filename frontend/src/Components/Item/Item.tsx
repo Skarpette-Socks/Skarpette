@@ -5,6 +5,7 @@ import fill_heart_icon from "../assets/img/icons/heart-filled.svg";
 import { useState } from "react";
 
 interface ItemProps {
+  vendor_code: string;
   image: string;
   category: string;
   name: string;
@@ -15,6 +16,7 @@ interface ItemProps {
 }
 
 const Item: React.FC<ItemProps> = ({
+  vendor_code,
   image,
   category,
   name,
@@ -30,7 +32,7 @@ const Item: React.FC<ItemProps> = ({
   };
 
   return (
-    <a href="/product" className="item">
+    <a href={`/product/${vendor_code}`} className="item">
       <div className="item__image-container">
         <img src={image} alt="item image" className="item__image" />
         {isNew && <span className="item__new">NEW</span>}

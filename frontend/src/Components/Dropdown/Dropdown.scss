@@ -37,6 +37,10 @@
     @include on-tablet {
       padding: 16px;
     }
+
+    @include on-desktop {
+      padding-inline: 0px;
+    }
   }
 
   &-item {
