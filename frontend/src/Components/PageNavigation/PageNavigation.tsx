@@ -2,7 +2,6 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./PageNavigation.scss";
 import arrow_left from "../assets/img/icons/arrow-left.svg";
-import { Link, useNavigate } from "react-router-dom";
 
 interface PageNavigationProps {
   linkText: string;

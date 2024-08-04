@@ -9,7 +9,6 @@ import scroll from "../assets/img/icons/scroll.svg";
 
 
 import items from "../../../../backend/bd/categories.json";
-import { Link } from "react-router-dom";
 
 const CategoriesCarousel: React.FC = () => {
   const categoriesToShow = 6;

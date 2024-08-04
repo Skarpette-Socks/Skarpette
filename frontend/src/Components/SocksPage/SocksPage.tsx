@@ -26,6 +26,7 @@ const SocksPage: React.FC<SocksPageProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [isFirstRender, setIsFirstRender] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
@@ -50,6 +51,7 @@ const SocksPage: React.FC<SocksPageProps> = ({
   useEffect(() => {
     updateItemsPerPage();
     window.addEventListener("resize", updateItemsPerPage);
+    // window.scrollTo(0, 100);
 
     return () => {
       window.removeEventListener("resize", updateItemsPerPage);
@@ -57,7 +59,11 @@ const SocksPage: React.FC<SocksPageProps> = ({
   }, [updateItemsPerPage]);
 
   useEffect(() => {
-    window.scrollTo(0, 150);
+    if (isFirstRender) {
+      setIsFirstRender(false);
+    } else {
+      window.scrollTo(0, 150);
+    }
   }, [currentPage]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
