@@ -42,6 +42,10 @@ const routes = [
 ];
 
 const App = () => {
+  // const currentPath = window.location.pathname;
+  // const currentRoute =
+  //   routes.find((route) => route.path === currentPath) || routes[0];
+
   return (
     <Router>
       <div className="App">

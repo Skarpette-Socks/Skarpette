@@ -60,7 +60,7 @@ const Product: React.FC = () => {
   }
 
 
-  if (!item) {
+  if (!item || VENDOR_CODE === '') {
     return (
       <>
         <h1
