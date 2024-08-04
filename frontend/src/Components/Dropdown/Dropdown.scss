@@ -58,6 +58,10 @@
 
     &-icon {
       margin-left: auto;
+
+      & img {
+        filter: invert(50%);
+      }
     }
   }
 
