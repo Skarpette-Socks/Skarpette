@@ -34,7 +34,7 @@ const routes = [
   { path: "/contacts", element: <Contacts /> },
   { path: "/favorites", element: <Favorites /> },
   { path: "/cart", element: <Cart /> },
-  { path: "/product/:VENDOR_CODE", element: <Product /> }, // Оновлений маршрут
+  { path: "/product/:VENDOR_CODE", element: <Product /> },
   { path: "/privacy-policy", element: <PrivacyPolicy /> },
   { path: "/return-of-goods", element: <Returning /> },
   { path: "/womens-socks", element: <WomanSocks /> },

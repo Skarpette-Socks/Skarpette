@@ -23,6 +23,8 @@ const Product: React.FC = () => {
         setLoading(true);
         try {
           const result = await fetchDataItem(+VENDOR_CODE);
+          console.log('result', result);
+
           setItem(result[0]);
         } catch (error: any) {
           setError(error.message);
