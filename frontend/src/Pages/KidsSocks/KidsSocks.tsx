@@ -1,5 +1,6 @@
 import { getKidsSocks } from "../../api/fetchDataByCategory";
 import SocksPage from "../../Components/SocksPage/SocksPage";
+import {kidsSizes } from "../../types/Sizes";
 
 const KidsSocks = () => (
   <SocksPage
@@ -7,6 +8,7 @@ const KidsSocks = () => (
     title="Дитячі шкарпетки"
     linkText="Дитячі шкарпетки"
     linkHref="/kids-socks"
+    sizes={kidsSizes}
   />
 );
 

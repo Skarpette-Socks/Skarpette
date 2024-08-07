@@ -26,11 +26,18 @@
     margin-top: 56px;
     grid-row-gap: 32px; /* Отступ между строками */
     justify-items: center;
-    
+
     @include on-desktop {
       grid-template-columns: repeat(4, 1fr); /* 4 колонки на широких экранах */
       margin-top: 80px;
       grid-row-gap: 64px; /* Отступ между строками */
     }
+  }
+
+  &__no-items {
+    font-size: 28px;
+    color: $grayscale-1000;
+    text-align: center;
+    margin-top: 20px;
   }
 }
