@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./ProductOrder.scss";
 
 import chevronLeft from "../assets/img/icons/chevron-left.svg";
@@ -25,6 +25,9 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
   const [zoomImageOpened, setZoomImageOpened] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(0);
   const [selectedSize, setSelectedSize] = useState<number>(0);
+  const productImage = useRef<HTMLImageElement>(null);
+  const [imgHeight, setImgHeight] = useState(0);
+  // const imgWidth = img.innerWidth;
   
   const imgArr = item?.images_urls;
   const sizeButtons = [
@@ -39,6 +42,32 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
       disabled: true,
     },
   ];
+
+  useEffect(() => {
+    if (productImage.current) {
+      const handleResize = () => {
+        const imgWidth = productImage.current!.offsetWidth;
+        setImgHeight(imgWidth + (imgWidth / 8));
+      };
+
+      handleResize();
+      window.addEventListener('resize', handleResize);
+
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }
+  }, [productImage.current]);
+
+  if (!imgArr) {
+    return (
+      <>
+        <h1
+          style={{ textAlign: 'center', margin: '50px' }}
+          ><strong>Щось пішло не так ;&#40;</strong></h1>
+      </>
+    );
+  }
 
   const selectPhoto = ( num:number ) => {
     if (num >= 1) {
@@ -64,16 +93,6 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
     }
   }
 
-  if (!imgArr) {
-    return (
-      <>
-        <h1
-          style={{ textAlign: 'center', margin: '50px' }}
-          ><strong>Щось пішло не так ;&#40;</strong></h1>
-      </>
-    );
-  }
-
 
   return (
     <div className="product">
@@ -86,47 +105,50 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
       }
       <div className="product__container">
         <div className="product__images">
-          <div className="product__main-image">
-            <div className="product__image-container">
-              <img
-                src={imgArr[selectedPhoto]}
-                alt="product image"
-                onClick={handleZoom}
+          <div 
+            className="product__image-container"
+            style={{height: `${imgHeight}px`}}
+          >
+            <img
+              ref={productImage}
+              src={imgArr[selectedPhoto]}
+              alt="product image"
+              onClick={handleZoom}
+              style={{height: `${imgHeight}px`}}
+            />
+
+            {imgArr.length > 1 && 
+              <div className="product__image-circle-container">
+                {imgArr.map((item, index) => (
+                  <ProductImageCircle 
+                    key={item} 
+                    index={index}
+                    selectedPhoto={selectedPhoto}
+                  />
+                ))}
+              </div>
+            }
+
+            <div 
+              className="product__img-button left"
+              onClick={() => selectPhoto(-1)}
+            >
+              <img 
+                src={chevronLeft} 
+                alt="chevronLeft" 
+                className="product__img-button-chevron" 
               />
+            </div>
 
-              {imgArr.length > 1 && 
-                <div className="product__image-circle-container">
-                  {imgArr.map((item, index) => (
-                    <ProductImageCircle 
-                      key={item} 
-                      index={index}
-                      selectedPhoto={selectedPhoto}
-                    />
-                  ))}
-                </div>
-              }
-
-              <div 
-                className="product__img-button left"
-                onClick={() => selectPhoto(-1)}
-              >
-                <img 
-                  src={chevronLeft} 
-                  alt="chevronLeft" 
-                  className="product__img-button-chevron" 
-                />
-              </div>
-
-              <div 
-                className="product__img-button right"
-                onClick={() => selectPhoto(1)}
-              >
-                <img 
-                  src={chevronRight} 
-                  alt="chevronRight" 
-                  className="product__img-button-chevron" 
-                />
-              </div>
+            <div 
+              className="product__img-button right"
+              onClick={() => selectPhoto(1)}
+            >
+              <img 
+                src={chevronRight} 
+                alt="chevronRight" 
+                className="product__img-button-chevron" 
+              />
             </div>
           </div>
 

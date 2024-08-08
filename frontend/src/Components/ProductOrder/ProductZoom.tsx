@@ -12,7 +12,11 @@ interface Props {
   imgArr: string[];
 }
 
-const ProductZoom: React.FC<Props> = ({ isOpen, selectedPhoto, imgArr }) => {
+const ProductZoom: React.FC<Props> = ({ 
+    isOpen, 
+    selectedPhoto, 
+    imgArr
+  }) => {
   const [scrollY, setScrollY] = useState(0);
   const [selectedPhotoZoom, setSelectedPhotoZoom] = useState(selectedPhoto);
 
