@@ -284,6 +284,18 @@
     font-size: 24px;
     font-weight: 500;
     line-height: 24px;
+    margin-right: 8px;
+    display: inline-block;
+
+    &-old {
+      font-size: 20px;
+      line-height: 24px;
+      font-weight: 500;
+      display: inline-block;
+      text-decoration: line-through;
+      color: $grayscale-400;
+
+    }
 
     &-detail {
       color: $grayscale-600;

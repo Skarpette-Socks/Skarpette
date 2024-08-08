@@ -21,14 +21,14 @@
   &__items {
     display: grid;
     gap: 24px; /* Отступы между элементами*/
-    grid-template-columns: repeat(2, 1fr); /* По умолчанию 2 колонки */
+    // grid-template-columns: repeat(2, 1fr); /* По умолчанию 2 колонки */
     // grid-template-rows: auto; /* Высота строк автоматическая */
     margin-top: 56px;
     grid-row-gap: 32px; /* Отступ между строками */
     justify-items: center;
 
     @include on-desktop {
-      grid-template-columns: repeat(4, 1fr); /* 4 колонки на широких экранах */
+      // grid-template-columns: repeat(4, 1fr); /* 4 колонки на широких экранах */
       margin-top: 80px;
       grid-row-gap: 64px; /* Отступ между строками */
     }
