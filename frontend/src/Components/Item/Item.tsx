@@ -55,7 +55,7 @@ const Item: React.FC<ItemProps> = ({
       </div>
       <div className="item__info">
         <p className="item__category">{category}</p>
-        <p className="item__name">{name}</p>
+        <p className="item__name" title={name}>{name}</p>
         <div className="item__prices">
           <div className="item__price-new">{new_price} грн</div>
           {old_price !== undefined && (

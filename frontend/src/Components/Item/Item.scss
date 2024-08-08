@@ -69,6 +69,9 @@
     font-weight: 600;
     font-size: 16px;
     color: $grayscale-1000;
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
 
     @include on-tablet {
       margin-top: 8px;
