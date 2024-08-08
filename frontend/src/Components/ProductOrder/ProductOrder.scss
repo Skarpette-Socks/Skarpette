@@ -50,13 +50,15 @@
     }
 
     &-image {
-      width: 650px;
+      width: 580px;
       height: 650px;
       border-radius: 12px;
       background-color: $grayscale-50;
   
       & img {
-        width: 100%;
+        width: 580px;
+        height: 650px;
+
         border-radius: 12px;
       }
     }
@@ -125,20 +127,12 @@
     }
   }
 
-  &__main-image {
-    @include on-desktop {
-      width: 100%;
-    }
-
-  }
-
   &__image-container {
     position: relative;
-    
-    @include on-desktop {
-      grid-column: 2/7;
 
+    @include on-desktop {
       width: 100%;
+      grid-column: 2/7;
     }
 
     & > img {
@@ -146,7 +140,6 @@
       border-radius: 12px;
       cursor: zoom-in;
       background-color: $grayscale-50;
-
     }
   }
 
