@@ -52,6 +52,23 @@ async function deleteImageFromS3(imageUrl) {
         throw error;
     }
 }
+async function generateUniqueVendorCode() {
+    let vendorCode;
+    let isUnique = false;
+
+    while (!isUnique) {
+        vendorCode = Math.floor(1000000 + Math.random() * 9000000);
+        const existingSkarpette = await Skarpette.findOne({
+            vendor_code: vendorCode,
+        });
+        if (!existingSkarpette) {
+            isUnique = true;
+        }
+    }
+
+    return vendorCode;
+}
+
 const findSkarpettesByCriteria = async (criteria, res) => {
     try {
         const skarpettes = await Skarpette.find(criteria);
@@ -67,6 +84,8 @@ const createSkarpette = async (req, res) => {
     try {
         const skarpetteData = req.body;
         skarpetteData.images_urls = [];
+
+        skarpetteData.vendor_code = await generateUniqueVendorCode();
 
         // Upload images
         if (req.files && req.files.length > 0) {
@@ -85,6 +104,11 @@ const createSkarpette = async (req, res) => {
 
         if (skarpetteData.images_urls.length === 0) {
             throw new Error('At least one image is required');
+        }
+
+        if (!skarpetteData.size || skarpetteData.size.length === 0) {
+            const sizesByType = getSizesByType(skarpetteData.type);
+            skarpetteData.size = sizesByType;
         }
 
         const newSkarpette = await Skarpette.create(skarpetteData);
