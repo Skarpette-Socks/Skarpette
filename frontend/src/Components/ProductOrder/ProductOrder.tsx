@@ -59,7 +59,7 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
     }
   }, [productImage.current]);
 
-  if (!imgArr) {
+  if (!imgArr || !item) {
     return (
       <>
         <h1
@@ -167,9 +167,12 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
         </div>
 
         <div className="product__info">
-          <div className="product__article">Артикул {item?.vendor_code}</div>
-          <h1 className="product__title">{item?.name}</h1>
-          <div className="product__price">{item?.price} грн</div>
+          <div className="product__article">Артикул {item.vendor_code}</div>
+          <h1 className="product__title">{item.name}</h1>
+          <div className="product__price">{item.price} грн</div>
+          {item.price2 && 
+            <div className="product__price-old">{item.price2} грн</div>
+          }
           <div className="product__price-detail">
             Без урахування ціни доставки
           </div>
@@ -177,7 +180,7 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
           {false && <div className="product__colors-container">Колір:</div>}
 
           <div className="product__sizes-container">
-            <div className="product__sizes-title">Розмір:</div>
+            <div className="product__sizes-title">Розмір(см):</div>
 
             <div className="product__sizes-buttons">
               {sizeButtons.map((size, index) => (
@@ -220,13 +223,13 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
 
               {descriptionOpened && (
                 <div className="product__dropdown-text">
-                  {item?.description}
+                  {item.description}
                 </div>
               )}
             </div>
 
             <div className="product__greyline"></div>
-
+            
             <div 
               className="product__dropdown-warehouse"
               onClick={() => setWarehouseOpened(!warehouseOpened)}
@@ -247,10 +250,11 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
 
               {warehouseOpened && (
                 <div className="product__dropdown-text">
-                  Тут буде склад товару
+                  {item.composition_and_care}
                 </div>
               )}
             </div>
+
 
             <div className="product__greyline"></div>
 

@@ -1,15 +1,10 @@
-interface Compozition_and_care {
-  compozition: string;
-  care: string;
-}
-
 interface DataItem {
   _id: string;
   name: string;
   description?: string;
   vendor_code: string;
   images_urls: string[] | undefined;
-  compozition_and_care?: Compozition_and_care;
+  composition_and_care?: string;
   type: string;
   style: string;
   price: number;
