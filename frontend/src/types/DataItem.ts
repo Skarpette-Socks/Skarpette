@@ -1,6 +1,6 @@
 interface sizeItem {
   size: string;
-  is_available?:boolean;
+  is_available:boolean;
 }
 
 interface DataItem {

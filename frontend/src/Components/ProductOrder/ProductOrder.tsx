@@ -24,7 +24,7 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
   const [paymentOpened, setPaymentOpened] = useState(false);
   const [zoomImageOpened, setZoomImageOpened] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(0);
-  const [selectedSize, setSelectedSize] = useState<number>();
+  const [selectedSize, setSelectedSize] = useState<number | undefined>();
   const [imgHeight, setImgHeight] = useState(0);
   const productImage = useRef<HTMLImageElement>(null);
   
@@ -77,6 +77,16 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
   const handleZoom = () => {
     if (window.innerWidth >= 768) {
       setZoomImageOpened(true)
+    }
+  }
+
+  const setSize = (index: number, is_available:boolean) => {
+    if (is_available) {
+      if (index === selectedSize) {
+        setSelectedSize(undefined)
+      } else {
+        setSelectedSize(index)
+      }
     }
   }
 
@@ -175,14 +185,18 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
                   key={index}
                   index={index}
                   selectedSize={selectedSize}
-                  setSelectedSize={setSelectedSize}
+                  setSize={setSize}
                 />
               ))}
             </div>
           </div>
 
           <div className="product__buttons-cart-fav">
-            <button className="product__add-to-cart">Додати у кошик</button>
+            <button 
+              className={`product__add-to-cart 
+                ${selectedSize === undefined ? `disabled`: ``}
+              `}
+            >Додати у кошик</button>
             <button className="product__add-to-fav">
               <img src={heart} className="product__heart-img"></img>
             </button>

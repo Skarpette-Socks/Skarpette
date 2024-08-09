@@ -5,21 +5,21 @@ import cn from "classnames";
 
 interface buttonInfo {
   size: string;
-  is_available?: boolean;
+  is_available: boolean;
 }
 
 interface Props {
   button: string | buttonInfo;
   index: number;
-  selectedSize: number;
-  setSelectedSize: (index: number) => void;
+  selectedSize: number | undefined;
+  setSize: (index: number, is_available:boolean) => void;
 }
 
 const ProductSizeButton: React.FC<Props> = ({
   button,
   index,
   selectedSize,
-  setSelectedSize,
+  setSize,
 }) => {
   if (typeof button !== 'string') {
     const { size, is_available } = button;
@@ -33,7 +33,7 @@ const ProductSizeButton: React.FC<Props> = ({
               : `${selectedSize === index ? ` active` : ``}`
           }`
         )}
-        onClick={() => is_available && setSelectedSize(index)}
+        onClick={() => setSize(index, is_available)}
       >
         {size}
       </div>
