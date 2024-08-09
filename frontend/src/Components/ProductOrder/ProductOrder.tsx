@@ -24,24 +24,11 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
   const [paymentOpened, setPaymentOpened] = useState(false);
   const [zoomImageOpened, setZoomImageOpened] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(0);
-  const [selectedSize, setSelectedSize] = useState<number>(0);
-  const productImage = useRef<HTMLImageElement>(null);
+  const [selectedSize, setSelectedSize] = useState<number>();
   const [imgHeight, setImgHeight] = useState(0);
-  // const imgWidth = img.innerWidth;
+  const productImage = useRef<HTMLImageElement>(null);
   
   const imgArr = item?.images_urls;
-  const sizeButtons = [
-    {
-      size: "25-27",
-    },
-    {
-      size: "27-29",
-    },
-    {
-      size: "29-31",
-      disabled: true,
-    },
-  ];
 
   useEffect(() => {
     if (productImage.current) {
@@ -92,7 +79,6 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
       setZoomImageOpened(true)
     }
   }
-
 
   return (
     <div className="product">
@@ -183,7 +169,7 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
             <div className="product__sizes-title">Розмір(см):</div>
 
             <div className="product__sizes-buttons">
-              {sizeButtons.map((size, index) => (
+              {item.size.map((size, index) => (
                 <ProductSizeButton
                   button={size}
                   key={index}
