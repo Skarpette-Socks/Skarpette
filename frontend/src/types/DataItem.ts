@@ -1,3 +1,8 @@
+interface sizeItem {
+  size: string;
+  is_available:boolean;
+}
+
 interface DataItem {
   _id: string;
   name: string;
@@ -10,7 +15,7 @@ interface DataItem {
   price: number;
   price2?: number;
   is_new?: boolean;
-  size: string[];
+  size: string[] | sizeItem[];
 }
 
 export default DataItem;

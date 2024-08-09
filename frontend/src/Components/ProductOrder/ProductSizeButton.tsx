@@ -5,38 +5,40 @@ import cn from "classnames";
 
 interface buttonInfo {
   size: string;
-  disabled?: boolean;
+  is_available: boolean;
 }
 
 interface Props {
-  button: buttonInfo;
+  button: string | buttonInfo;
   index: number;
-  selectedSize: number;
-  setSelectedSize: (index: number) => void;
+  selectedSize: number | undefined;
+  setSize: (index: number, is_available:boolean) => void;
 }
 
 const ProductSizeButton: React.FC<Props> = ({
   button,
   index,
   selectedSize,
-  setSelectedSize,
+  setSize,
 }) => {
-  const { size, disabled } = button;
-
-  return (
-    <div
-      className={cn(
-        `product__size-button${
-          disabled === true
-            ? ` disabled`
-            : `${selectedSize === index ? ` active` : ``}`
-        }`
-      )}
-      onClick={() => !disabled && setSelectedSize(index)}
-    >
-      {size}
-    </div>
-  );
+  if (typeof button !== 'string') {
+    const { size, is_available } = button;
+  
+    return (
+      <div
+        className={cn(
+          `product__size-button${
+            is_available === false
+              ? ` disabled`
+              : `${selectedSize === index ? ` active` : ``}`
+          }`
+        )}
+        onClick={() => setSize(index, is_available)}
+      >
+        {size}
+      </div>
+    );
+  }
 };
 
 export default ProductSizeButton;
