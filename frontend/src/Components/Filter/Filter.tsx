@@ -26,7 +26,7 @@ const Filter: React.FC<FilterProps> = ({
 }) => {
   const [openFilter, setOpenFilter] = useState<"style" | "size" | null>(null);
 
-  const styles = ["Mono", "Класичні", "Спортивні", "Медичні"];
+  const styles = ["Короткі", "Класичні", "Спортивні", "Медичні"];
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleFilter = (filter: "style" | "size") => {

@@ -1,3 +1,3 @@
-export const menSizes = ["27-29", "43-46", "47-50"];
-export const womenSizes = ["35-38", "39-42"];
-export const kidsSizes = ["20-24", "25-30", "31-35"];
+export const menSizes = ["25-27", "27-29", "29-31"];
+export const womenSizes = ["23-25", "25-27"];
+export const kidsSizes = ["16","18" ,"19-21", "21-23","23-25"];
