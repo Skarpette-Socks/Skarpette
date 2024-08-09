@@ -70,17 +70,24 @@ const SocksPage: React.FC<SocksPageProps> = ({
     }
   }, [currentPage]);
 
-  const filteredSocks = socks.filter((sock) => {
+  const filteredSocks = socks.filter((sock: DataItem) => {
     const matchesStyle =
       selectedStyles.length === 0 || selectedStyles.includes(sock.style);
 
     const matchesSize =
       selectedSizes.length === 0 ||
-      selectedSizes.some((selectedSize) => sock.size.includes(selectedSize));
+      (Array.isArray(sock.size) &&
+        sock.size.some((sizeObj) => {
+          if (typeof sizeObj === "string") {
+            return selectedSizes.includes(sizeObj);
+          } else if (typeof sizeObj === "object" && "size" in sizeObj) {
+            return selectedSizes.includes(sizeObj.size);
+          }
+          return false;
+        }));
 
     return matchesStyle && matchesSize;
   });
-  console.log(filteredSocks);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -136,7 +143,9 @@ const SocksPage: React.FC<SocksPageProps> = ({
         />
 
         {filteredSocks.length === 0 ? (
-          <div className="socks__no-items">За Вашим запитом нічого не знайдено :(</div> 
+          <div className="socks__no-items">
+            За Вашим запитом нічого не знайдено :(
+          </div>
         ) : (
           <>
             <div className="socks__items items-list">

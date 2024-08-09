@@ -4,6 +4,7 @@ import "./Filter.scss";
 import arrow_up from "../assets/img/icons/caret-up-filled.svg";
 import arrow_down from "../assets/img/icons/caret-down-filled.svg";
 import close_white from "../assets/img/icons/close-white.svg";
+import close_icon from '../assets/img/icons/close.svg';
 
 interface FilterProps {
   selectedStyles: string[];
@@ -25,22 +26,30 @@ const Filter: React.FC<FilterProps> = ({
   onClearSizes,
 }) => {
   const [openFilter, setOpenFilter] = useState<"style" | "size" | null>(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [showMobileModal, setShowMobileModal] = useState(false);
 
-  const styles = ["Mono", "Класичні", "Спортивні", "Медичні"];
+  const styles = ["Короткі", "Класичні", "Спортивні", "Медичні"];
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleFilter = (filter: "style" | "size") => {
-    setOpenFilter((prev) => (prev === filter ? null : filter));
+    if (isMobile) {
+      setShowMobileModal(true);
+    } else {
+      setOpenFilter((prev) => (prev === filter ? null : filter));
+    }
   };
 
   const handleSave = () => {
     setOpenFilter(null);
+    setShowMobileModal(false);
   };
 
   const handleClear = () => {
     onClearStyles();
     onClearSizes();
     setOpenFilter(null);
+    setShowMobileModal(false);
   };
 
   const handleClearAll = () => {
@@ -55,7 +64,7 @@ const Filter: React.FC<FilterProps> = ({
     items.map((item) => (
       <div key={item} className="filter__category-items">
         <label className="filter__category-item">
-          {item}
+          <span className="filter__category-item-text">{item}</span>
           <input
             type="checkbox"
             checked={selectedItems.includes(item)}
@@ -86,10 +95,9 @@ const Filter: React.FC<FilterProps> = ({
       <div className="filter__category">
         {filterType === "style"
           ? renderCheckboxes(styles, selectedStyles, onStyleChange)
-          : renderCheckboxes(sizes, selectedSizes, onSizeChange)}{" "}
-        {/* Используем переданные размеры */}
+          : renderCheckboxes(sizes, selectedSizes, onSizeChange)}
       </div>
-      <div className="filter__actions">
+      <div className="filter__dropdown-buttons">
         <button onClick={handleSave} className="filter__actions-save-button">
           Зберегти
         </button>
@@ -99,6 +107,40 @@ const Filter: React.FC<FilterProps> = ({
       </div>
     </div>
   );
+
+  const renderSelectedFilters = () => (
+    <div className="filter__selected-filters">
+      {[...selectedStyles, ...selectedSizes].map((item) => (
+        <span key={item} className="filter__selected-filter">
+          {item}
+          <button
+            onClick={() =>
+              selectedStyles.includes(item)
+                ? onStyleChange(item)
+                : onSizeChange(item)
+            }
+            className="filter__close-icon"
+          >
+            <img src={close_white} alt="close_white" />
+          </button>
+        </span>
+      ))}
+      {[...selectedStyles, ...selectedSizes].length > 0 && (
+        <button onClick={handleClearAll} className="filter__clear-all-button">
+          Очистити всі
+        </button>
+      )}
+    </div>
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -133,28 +175,48 @@ const Filter: React.FC<FilterProps> = ({
       {openFilter === "style" && renderFilterDropdown("style")}
       {openFilter === "size" && renderFilterDropdown("size")}
 
-      <div className="filter__selected-filters">
-        {[...selectedStyles, ...selectedSizes].map((item) => (
-          <span key={item} className="filter__selected-filter">
-            {item}
-            <button
-              onClick={() =>
-                selectedStyles.includes(item)
-                  ? onStyleChange(item)
-                  : onSizeChange(item)
-              }
-              className="filter__close-icon"
-            >
-              <img src={close_white} alt="close_white" />
-            </button>
-          </span>
-        ))}
-        {[...selectedStyles, ...selectedSizes].length > 0 && (
-          <button onClick={handleClearAll} className="filter__clear-all-button">
-            Очистити все
-          </button>
-        )}
-      </div>
+      {renderSelectedFilters()}
+
+      {isMobile && showMobileModal && (
+        <div className="filter__mobile-overlay">
+          <div className="filter__mobile-content">
+            <div className="filter__mobile-header">
+              <h2>Фільтри</h2>
+              <button
+                onClick={() => setShowMobileModal(false)}
+                className="filter__close-button"
+              >
+                <img src={close_icon} alt="close_icon" />
+              </button>
+            </div>
+
+            <div className="filter__mobile-body">
+              <h3>Стиль</h3>
+              {renderCheckboxes(styles, selectedStyles, onStyleChange)}
+              <div className="filter__mobile-break-line"></div>
+
+              <h3>Розмір</h3>
+              {renderCheckboxes(sizes, selectedSizes, onSizeChange)}
+              <div className="filter__mobile-break-line"></div>
+            </div>
+
+            <div className="filter__dropdown-buttons">
+              <button
+                onClick={handleSave}
+                className="filter__actions-save-button"
+              >
+                Зберегти
+              </button>
+              <button
+                onClick={handleClear}
+                className="filter__actions-clear-button"
+              >
+                Очистити
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
