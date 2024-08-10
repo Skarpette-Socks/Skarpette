@@ -50,6 +50,18 @@ const SocksPage: React.FC<SocksPageProps> = ({
     loadData();
   }, [fetchSocks]);
 
+  // const newSock: DataItem = socks[0];
+  // if (Array.isArray(newSock.size) && newSock.size.length > 0) {
+  //   // Перевірка, що перший елемент масиву є об'єктом типу sizeItem
+  //   if (typeof newSock.size[0] === 'object' && 'is_available' in newSock.size[0]) {
+  //     newSock.size[0].is_available = false;
+  //     const newArr = [newSock, ...socks];
+    
+  //     setSocks(newArr);
+  //   }
+  // }
+
+
   const updateItemsPerPage = useCallback(() => {
     setItemsPerPage(window.innerWidth >= 768 ? 16 : 12);
   }, []);
@@ -70,6 +82,7 @@ const SocksPage: React.FC<SocksPageProps> = ({
     }
   }, [currentPage]);
 
+
   const filteredSocks = socks.filter((sock: DataItem) => {
     const matchesStyle =
       selectedStyles.length === 0 || selectedStyles.includes(sock.style);
@@ -81,7 +94,9 @@ const SocksPage: React.FC<SocksPageProps> = ({
           if (typeof sizeObj === "string") {
             return selectedSizes.includes(sizeObj);
           } else if (typeof sizeObj === "object" && "size" in sizeObj) {
-            return selectedSizes.includes(sizeObj.size);
+            if (sizeObj.is_available === true) {
+              return selectedSizes.includes(sizeObj.size);
+            }
           }
           return false;
         }));
