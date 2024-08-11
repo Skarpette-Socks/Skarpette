@@ -5,7 +5,7 @@ import fill_heart_icon from "../assets/img/icons/heart-filled.svg";
 import { useState } from "react";
 
 interface ItemProps {
-  vendor_code: string;
+  vendor_code: number;
   image: string;
   category: string;
   name: string;

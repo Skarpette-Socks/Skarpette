@@ -8,6 +8,7 @@ import Item from "../../Components/Item/Item";
 import MobilePagination from "../../Components/MobilePagination/MobilePagination";
 import Pagination from "../../Components/Pagination/Pagination";
 import Filter from "../Filter/Filter"; // Import the filter component
+import Sort from "../Sort/Sort";
 
 interface SocksPageProps {
   fetchSocks: () => Promise<DataItem[]>;
@@ -70,6 +71,10 @@ const SocksPage: React.FC<SocksPageProps> = ({
     }
   }, [currentPage]);
 
+
+  socks.sort((a, b) => a.vendor_code - b.vendor_code);
+  const [sortedItems, setSortedItems] = useState<DataItem[]>([]);  
+
   const filteredSocks = socks.filter((sock: DataItem) => {
     const matchesStyle =
       selectedStyles.length === 0 || selectedStyles.includes(sock.style);
@@ -81,19 +86,22 @@ const SocksPage: React.FC<SocksPageProps> = ({
           if (typeof sizeObj === "string") {
             return selectedSizes.includes(sizeObj);
           } else if (typeof sizeObj === "object" && "size" in sizeObj) {
-            return selectedSizes.includes(sizeObj.size);
+            if (sizeObj.is_available === true) {
+              return selectedSizes.includes(sizeObj.size);
+            }
           }
           return false;
-        }));
+        })
+      );
 
     return matchesStyle && matchesSize;
   });
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredSocks.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = sortedItems.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = Math.ceil(filteredSocks.length / itemsPerPage);
+  const totalPages = Math.ceil(sortedItems.length / itemsPerPage);
 
   const isMobile = window.innerWidth < 768;
 
@@ -132,17 +140,26 @@ const SocksPage: React.FC<SocksPageProps> = ({
       <div className="socks">
         <h1 className="socks__title">{title}</h1>
 
-        <Filter
-          selectedStyles={selectedStyles}
-          selectedSizes={selectedSizes}
-          onStyleChange={handleStyleChange}
-          onSizeChange={handleSizeChange}
-          onClearSizes={handleClearSizes}
-          onClearStyles={handleClearStyles}
-          sizes={sizes} // Передаем размеры в компонент Filter
-        />
+        <div className="socks__filter-sort">
+          <Filter
+            selectedStyles={selectedStyles}
+            selectedSizes={selectedSizes}
+            onStyleChange={handleStyleChange}
+            onSizeChange={handleSizeChange}
+            onClearSizes={handleClearSizes}
+            onClearStyles={handleClearStyles}
+            sizes={sizes} // Передаем размеры в компонент Filter
+          />
 
-        {filteredSocks.length === 0 ? (
+          <Sort 
+            items={filteredSocks}
+            selectedStyles={selectedStyles}
+            selectedSizes={selectedSizes}
+            setSortedItems={setSortedItems}
+          />
+        </div>
+
+        {sortedItems.length === 0 ? (
           <div className="socks__no-items">
             За Вашим запитом нічого не знайдено :(
           </div>
