@@ -4,7 +4,7 @@ import "./Filter.scss";
 import arrow_up from "../assets/img/icons/caret-up-filled.svg";
 import arrow_down from "../assets/img/icons/caret-down-filled.svg";
 import close_white from "../assets/img/icons/close-white.svg";
-import close_icon from '../assets/img/icons/close.svg';
+import close_icon from "../assets/img/icons/close.svg";
 
 interface FilterProps {
   selectedStyles: string[];
@@ -31,12 +31,13 @@ const Filter: React.FC<FilterProps> = ({
 
   const styles = ["Короткі", "Класичні", "Спортивні", "Медичні"];
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const filterButtonsRef = useRef<HTMLDivElement>(null);
 
   const toggleFilter = (filter: "style" | "size") => {
     if (isMobile) {
       setShowMobileModal(true);
     } else {
-      setOpenFilter((prev) => (prev === filter ? null : filter));
+      setOpenFilter((prevFilter) => (prevFilter === filter ? null : filter));
     }
   };
 
@@ -75,16 +76,12 @@ const Filter: React.FC<FilterProps> = ({
       </div>
     ));
 
-  const renderFilterButton = (
-    label: string,
-    isOpen: boolean,
-    onClick: () => void
-  ) => (
-    <button onClick={onClick} className="filter__button">
+  const renderFilterButton = (label: string, filter: "style" | "size") => (
+    <button onClick={() => toggleFilter(filter)} className="filter__button">
       {label}
       <img
-        src={isOpen ? arrow_up : arrow_down}
-        alt={isOpen ? "arrow_up" : "arrow_down"}
+        src={openFilter === filter ? arrow_up : arrow_down}
+        alt={openFilter === filter ? "arrow_up" : "arrow_down"}
         className="filter__button-icon"
       />
     </button>
@@ -146,7 +143,9 @@ const Filter: React.FC<FilterProps> = ({
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        !dropdownRef.current.contains(event.target as Node) &&
+        filterButtonsRef.current &&
+        !filterButtonsRef.current.contains(event.target as Node)
       ) {
         setOpenFilter(null);
       }
@@ -162,13 +161,9 @@ const Filter: React.FC<FilterProps> = ({
     <div className="filter">
       <div className="filter__header">
         <span className="filter__header-title">Фільтри:</span>
-        <div className="filter__buttons">
-          {renderFilterButton("Стиль", openFilter === "style", () =>
-            toggleFilter("style")
-          )}
-          {renderFilterButton("Розмір", openFilter === "size", () =>
-            toggleFilter("size")
-          )}
+        <div className="filter__buttons" ref={filterButtonsRef}>
+          {renderFilterButton("Стиль", "style")}
+          {renderFilterButton("Розмір", "size")}
         </div>
       </div>
 
