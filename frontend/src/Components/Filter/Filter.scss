@@ -2,11 +2,11 @@
 @import "../assets/styles/variables";
 
 .filter {
+  // display: inline-block;
   &__header {
     display: flex;
     align-items: center;
     gap: 24px;
-    margin-top: 48px;
   }
 
   &__header-title {
