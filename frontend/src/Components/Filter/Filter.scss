@@ -3,13 +3,19 @@
 
 .filter {
   // display: inline-block;
+    position: relative;
+
   &__header {
+    position: relative;
+
     display: flex;
     align-items: center;
     gap: 24px;
   }
 
   &__header-title {
+    position: relative;
+
     font-size: 16px;
     font-weight: 600;
     color: $grayscale-1000;
@@ -18,6 +24,8 @@
   }
 
   &__buttons {
+    position: relative;
+
     display: flex;
     gap: 24px;
     align-items: center;
@@ -43,7 +51,8 @@
   &__dropdown {
     position: absolute;
     z-index: 10;
-    left: 174px;
+    left: 96px;
+    width: 200px;
     background-color: $grayscale-0;
     border-radius: 16px;
     padding: 16px;
