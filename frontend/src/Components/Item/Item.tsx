@@ -9,8 +9,8 @@ interface ItemProps {
   image: string;
   category: string;
   name: string;
-  new_price: number;
-  old_price?: number;
+  price: number;
+  discount_price?: number;
   isNew?: boolean;
   discount?: number;
 }
@@ -20,8 +20,8 @@ const Item: React.FC<ItemProps> = ({
   image,
   category,
   name,
-  new_price,
-  old_price,
+  price,
+  discount_price,
   isNew,
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -57,9 +57,13 @@ const Item: React.FC<ItemProps> = ({
         <p className="item__category">{category}</p>
         <p className="item__name" title={name}>{name}</p>
         <div className="item__prices">
-          <div className="item__price-new">{new_price} грн</div>
-          {old_price !== undefined && (
-            <div className="item__price-old">{old_price} грн</div>
+          {discount_price ? (
+            <>
+              <div className="item__price-new">{discount_price} грн</div>
+              <div className="item__price-old">{price} грн</div>
+            </>
+          ) : (
+            <div className="item__price-new">{price} грн</div>
           )}
         </div>
       </div>

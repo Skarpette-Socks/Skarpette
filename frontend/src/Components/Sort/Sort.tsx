@@ -62,7 +62,7 @@ const Sort: React.FC<SortProps> = ({ items, selectedStyles, selectedSizes, setSo
     return items.sort((a, b) => {
       const discountA = a.price2 ? ((a.price2 - a.price) / a.price2) * 100 : 0;
       const discountB = b.price2 ? ((b.price2 - b.price) / b.price2) * 100 : 0;
-      return discountB - discountA;
+      return discountA - discountB;
     });
   };
 
