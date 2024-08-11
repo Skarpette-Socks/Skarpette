@@ -173,8 +173,8 @@ const SocksPage: React.FC<SocksPageProps> = ({
                   image={item.images_urls?.[0] || ""}
                   category={item.type}
                   name={item.name}
-                  new_price={item.price}
-                  old_price={item.price2}
+                  price={item.price}
+                  discount_price={item.price2}
                   isNew={item.is_new}
                 />
               ))}
