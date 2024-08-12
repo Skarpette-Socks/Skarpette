@@ -1,0 +1,59 @@
+@import "../../Components/assets/styles/mixins";
+@import "../../Components/assets/styles/variables";
+
+.favorites {
+  @include content-padding-inline;
+  max-width: 1440px;
+
+  margin: 0 auto;
+
+  &__title {
+    font-size: 40px;
+    font-weight: 500;
+    color: $grayscale-800;
+    margin-top: 40px;
+
+    @include on-tablet {
+      font-size: 64px;
+      margin-top: 64px;
+    }
+  }
+
+  &__text {
+    font-size: 14px;
+    font-weight: 500;
+    color: $grayscale-600;
+    margin-top: 16px;
+
+    @include on-tablet {
+      font-size: 16px;
+      margin-top: 48px;
+      width: 630px;
+    }
+
+    &--error {
+      @include content-padding-inline;
+      margin: 0 auto;
+      text-align: center;
+    }
+  }
+  &__items {
+    grid-column: 1/-1;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 152px);
+    gap: 32px 24px;
+    justify-content: space-between;
+    place-items: center;
+    margin-top: 32px;
+
+    @include on-tablet {
+      grid-template-columns: repeat(auto-fill, 294px);
+      margin-top: 80px;
+    }
+
+    @include on-desktop {
+      grid-template-columns: repeat(auto-fill, 303px);
+    }
+  }
+}
