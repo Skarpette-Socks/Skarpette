@@ -29,8 +29,6 @@
     margin-bottom: 32px;
     @include container-grid;
     
-
-
     & a {
       text-decoration: none;
       color: $grayscale-1000;
@@ -64,6 +62,8 @@
     margin-bottom: 24px;
     color: $grayscale-400;
     text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 500;
   }
 
   &__categories {
@@ -153,6 +153,8 @@
 
     &-item {
       cursor: pointer;
+      font-weight: 500;
+      font-size: 16px;
     }
   }
 
@@ -171,13 +173,14 @@
   &__graytitle {
     color: $grayscale-400;
     line-height: 16px;
+    font-size: 14px;
   }
 
   &__info-container {
     display: flex;
     flex-direction: column;
     gap: 20px;
-
+    font-weight: 500;
   }
 
   &__phone-number, &__email {

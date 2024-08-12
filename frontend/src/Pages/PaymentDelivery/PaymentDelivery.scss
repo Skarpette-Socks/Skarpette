@@ -8,9 +8,11 @@
   gap: 48px;
   max-width: 1440px;
   margin-inline: auto;
+  margin-top: 40px;
 
   @include on-tablet {
     gap: 64px;
+    margin-top: 64px;
   }
 
   @include on-desktop {
@@ -29,7 +31,6 @@
   }
 
   &__questions {
-    margin-top: 48px;
     display: flex;
 
     @include on-desktop {
