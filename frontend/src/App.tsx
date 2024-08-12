@@ -1,20 +1,18 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { FavoritesProvider } from "./Context/FavoritesContext"; // Импортируйте ваш провайдер
 
-// Импорты стилей
-import './App.css';
-import './Components/assets/styles/main.scss';
+import "./App.css";
+import "./Components/assets/styles/main.scss";
 
-// Импорты компонентов
-import Footer from './Components/Footer/Footer';
-import NavBar from './Components/NavBar/NavBar';
-import SubHeader from './Components/SubHeader/SubHeader';
+import Footer from "./Components/Footer/Footer";
+import NavBar from "./Components/NavBar/NavBar";
+import SubHeader from "./Components/SubHeader/SubHeader";
 
-// Импорты страниц
 import AboutUs from "./Pages/AboutUs/AboutUs";
 import Cart from "./Pages/Cart";
 import Contacts from "./Pages/Contacts/Contacts";
-import Favorites from "./Pages/Favorites";
+import Favorites from "./Pages/Favourites/Favorites";
 import KidsSocks from "./Pages/KidsSocks/KidsSocks";
 import MenSocks from "./Pages/MenSocks/MenSocks";
 import PaymentDelivery from "./Pages/PaymentDelivery/PaymentDelivery";
@@ -25,7 +23,6 @@ import Returning from "./Pages/Returning/Returning";
 import Shop from "./Pages/Shop";
 import WomanSocks from "./Pages/WomanSocks/WomanSocks";
 
-// Конфигурация маршрутов
 const routes = [
   { path: "/", element: <Shop /> },
   { path: "/offers", element: <Promotions /> },
@@ -44,18 +41,20 @@ const routes = [
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <div className="App">
-        <SubHeader />
-        <NavBar />
-        <Routes>
-          {routes.map((route, index) => (
-            <Route key={index} path={route.path} element={route.element} />
-          ))}
-        </Routes>
-        <Footer />
-      </div>
-    </Router>
+    <FavoritesProvider>
+      <Router>
+        <div className="App">
+          <SubHeader />
+          <NavBar />
+          <Routes>
+            {routes.map((route, index) => (
+              <Route key={index} path={route.path} element={route.element} />
+            ))}
+          </Routes>
+          <Footer />
+        </div>
+      </Router>
+    </FavoritesProvider>
   );
 };
 

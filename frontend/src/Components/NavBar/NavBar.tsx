@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useFavorites } from "../../Context/FavoritesContext"; // Импортируем контекст избранных товаров
 import "./NavBar.scss";
-import Menu from "../Menu/Menu"; // Adjust the path as necessary
 
 import search_icon from "../assets/img/icons/search.svg";
 import heart_icon from "../assets/img/icons/heart.svg";
@@ -9,6 +9,7 @@ import logo from "../assets/img/icons/logo-black.svg";
 import menu from "../assets/img/icons/menu.svg";
 import close_icon from "../assets/img/icons/close.svg";
 import cart from "../assets/img/icons/cart.svg";
+import Menu from "../Menu/Menu";
 import Dropdown from "../Dropdown/Dropdown";
 
 const NavBar: React.FC = () => {
@@ -44,7 +45,7 @@ const NavBarMenu: React.FC = () => {
       <li>
         <Dropdown />
       </li>
-      <li className="navBar__item">
+      <li>
         <Link to="/offers">Акції</Link>
       </li>
       <li className="navBar__item">
@@ -60,22 +61,35 @@ const NavBarMenu: React.FC = () => {
   );
 };
 
-const NavBarActions: React.FC = () => (
-  <div className="navBar__actions">
-    <Link to="#">
-      <img src={search_icon} alt="Search" />
-    </Link>
-    <Link to="/favorites">
-      <img src={heart_icon} alt="Favorites" />
-    </Link>
-    <Link to="/cart">
-      <div className="navBar__actions-cart">
-        <img src={cart} alt="cart icon" className="navBar__actions-cart-icon" />
-        <p className="navBar__actions-cart-text">Кошик</p>
-        <div className="navBar__actions-cart-count">2</div>
-      </div>
-    </Link>
-  </div>
-);
+const NavBarActions: React.FC = () => {
+  const { favorites } = useFavorites(); // Получаем список избранных товаров
+
+  return (
+    <div className="navBar__actions">
+      <Link to="#">
+        <img src={search_icon} alt="Search" />
+      </Link>
+      <Link to="/favorites" className="navBar__actions-favorites">
+        <img src={heart_icon} alt="Favorites" />
+        {favorites.length > 0 && (
+          <div className="navBar__actions-favorites-count">
+            {favorites.length}
+          </div>
+        )}
+      </Link>
+      <Link to="/cart">
+        <div className="navBar__actions-cart">
+          <img
+            src={cart}
+            alt="cart icon"
+            className="navBar__actions-cart-icon"
+          />
+          <p className="navBar__actions-cart-text">Кошик</p>
+          <div className="navBar__actions-cart-count">2</div>
+        </div>
+      </Link>
+    </div>
+  );
+};
 
 export default NavBar;
