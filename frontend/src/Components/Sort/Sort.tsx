@@ -58,12 +58,15 @@ const Sort: React.FC<SortProps> = ({ items, selectedStyles, selectedSizes, setSo
   
   const sortByBestDiscount = (items: DataItem[]): DataItem[] => {
     setSortText('Спочатку найвигідніші');
+    const discountItems = items
+      .filter(item => item.discountPercentage)
+      .sort((a, b) => (b.discountPercentage ?? 0) - (a.discountPercentage ?? 0));
 
-    return items.sort((a, b) => {
-      const discountA = a.price2 ? ((a.price2 - a.price) / a.price2) * 100 : 0;
-      const discountB = b.price2 ? ((b.price2 - b.price) / b.price2) * 100 : 0;
-      return discountA - discountB;
-    });
+    const noneDiscountItems = items
+      .filter(item => !item.discountPercentage)
+      .sort((a, b) => a.price - b.price);
+
+      return discountItems.concat(noneDiscountItems);
   };
 
   useEffect(() => {
