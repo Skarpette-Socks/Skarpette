@@ -16,6 +16,7 @@ interface DataItem {
   price2?: number;
   is_new?: boolean;
   size: string[] | sizeItem[];
+  discountPercentage?: number;
 }
 
 export default DataItem;
