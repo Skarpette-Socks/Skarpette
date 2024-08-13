@@ -16,7 +16,6 @@ const upload = multer({
     },
 });
 
-router.delete('/clear', skarpetteController.clearDB);
 router.get('/search', skarpetteController.getSkarpettesByNameOrVendorCode);
 router.get('/filter', skarpetteController.getFilteredSkarpettes);
 router.get('/favorites', skarpetteController.getFavotireSkarpettes);

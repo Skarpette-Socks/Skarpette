@@ -72,7 +72,18 @@ const skarpetteSchema = new mongoose.Schema({
         type: Boolean,
         default: true,
     },
+    discountPercentage: {
+        type: Number,
+    },
 });
+
+skarpetteSchema.methods.calculateDiscount = function () {
+    if (this.price2 && this.price2 < this.price) {
+        const discount = ((this.price - this.price2) / this.price) * 100;
+        return Math.ceil(discount);
+    }
+    return 0;
+};
 
 function getSizesByType(type) {
     const sizes = {

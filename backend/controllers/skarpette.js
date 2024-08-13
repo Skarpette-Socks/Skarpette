@@ -180,9 +180,18 @@ const deleteSkarpette = async (req, res) => {
             return res.status(404).json({ error: 'Skarpette not found' });
         }
 
-        const deletePromises = skarpette.images_urls.map((imageUrl) =>
-            deleteImageFromS3(imageUrl)
-        );
+        const deletePromises = skarpette.images_urls.map(async (imageUrl) => {
+            const otherUses = await Skarpette.find({
+                images_urls: imageUrl,
+                _id: { $ne: id },
+            });
+
+            if (otherUses.length === 0) {
+                await deleteImageFromS3(imageUrl);
+                console.log(`Deleted image: ${imageUrl}`);
+            }
+        });
+
         await Promise.all(deletePromises);
 
         await skarpette.deleteOne();
@@ -237,16 +246,6 @@ const getFilteredSkarpettes = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-const clearDB = async (req, res) => {
-    try {
-        await Skarpette.deleteMany({});
-        res.status(200).json({
-            message: 'Skarpette collection cleared successfully.',
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
 module.exports = {
     createSkarpette,
     deleteSkarpette,
@@ -255,7 +254,6 @@ module.exports = {
     updateSkarpette,
     getSkarpettesByNameOrVendorCode,
     getFilteredSkarpettes,
-    clearDB,
     getNewSkarpettes,
     getFavotireSkarpettes,
 };
