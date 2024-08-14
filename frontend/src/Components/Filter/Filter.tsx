@@ -229,7 +229,7 @@ const Filter: React.FC<FilterProps> = ({
               {renderCheckboxes(styles, selectedStyles, onStyleChange)}
               <div className="filter__mobile-break-line"></div>
 
-              <h3>Розмір</h3>
+              <h3 className="filter__mobile-body-text">Розмір (см)</h3>
               {renderCheckboxes(sizes, selectedSizes, onSizeChange)}
             </div>
 

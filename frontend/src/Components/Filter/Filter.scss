@@ -237,6 +237,10 @@
       font-weight: 500;
       color: $grayscale-1000;
     }
+
+    &-text {
+      margin-top: 16px;
+    }
   }
 
   &__category-items {
