@@ -77,13 +77,13 @@ const skarpetteSchema = new mongoose.Schema({
     },
 });
 
-skarpetteSchema.methods.calculateDiscount = function () {
-    if (this.price2 && this.price2 < this.price) {
-        const discount = ((this.price - this.price2) / this.price) * 100;
+function calculateDiscount(price, price2) {
+    if (price2 && price2 < price) {
+        const discount = ((price - price2) / price) * 100;
         return Math.ceil(discount);
     }
     return 0;
-};
+}
 
 function getSizesByType(type) {
     const sizes = {
@@ -99,6 +99,7 @@ skarpetteSchema.pre('save', function (next) {
     if (this.size.length === 0 && getSizesByType(this.type)) {
         this.size = getSizesByType(this.type);
     }
+    this.discountPercentage = calculateDiscount(this.price, this.price2);
     next();
 });
 
