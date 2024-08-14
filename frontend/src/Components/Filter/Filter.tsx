@@ -5,6 +5,7 @@ import arrow_up from "../assets/img/icons/caret-up-filled.svg";
 import arrow_down from "../assets/img/icons/caret-down-filled.svg";
 import close_white from "../assets/img/icons/close-white.svg";
 import close_icon from "../assets/img/icons/close.svg";
+import plus_icon from "../assets/img/icons/plus.svg";
 
 interface FilterProps {
   selectedStyles: string[];
@@ -160,19 +161,31 @@ const Filter: React.FC<FilterProps> = ({
   return (
     <div className="filter">
       <div className="filter__header">
-        <span className="filter__header-title">Фільтри:</span>
-        <div className="filter__buttons" ref={filterButtonsRef}>
-          {renderFilterButton("Стиль", "style")}
-          {renderFilterButton("Розмір", "size")}
-        </div>
+        {isMobile ? (
+          <button
+            onClick={() => setShowMobileModal(true)}
+            className="filter__mobile-button"
+          >
+            <span className="filter__header-title">Фільтри</span>
+            <img src={plus_icon} alt="plus" />
+          </button>
+        ) : (
+          <>
+            <span className="filter__header-title">Фільтри:</span>
+            <div className="filter__buttons" ref={filterButtonsRef}>
+              {renderFilterButton("Стиль", "style")}
+              {renderFilterButton("Розмір (см)", "size")}
+            </div>
+          </>
+        )}
       </div>
 
-      {openFilter === "style" && renderFilterDropdown("style")}
-      {openFilter === "size" && renderFilterDropdown("size")}
+      {!isMobile && openFilter === "style" && renderFilterDropdown("style")}
+      {!isMobile && openFilter === "size" && renderFilterDropdown("size")}
 
       {renderSelectedFilters()}
 
-      {isMobile && showMobileModal && (
+      {showMobileModal && (
         <div className="filter__mobile-overlay">
           <div className="filter__mobile-content">
             <div className="filter__mobile-header">
@@ -192,7 +205,6 @@ const Filter: React.FC<FilterProps> = ({
 
               <h3>Розмір</h3>
               {renderCheckboxes(sizes, selectedSizes, onSizeChange)}
-              <div className="filter__mobile-break-line"></div>
             </div>
 
             <div className="filter__dropdown-buttons">
