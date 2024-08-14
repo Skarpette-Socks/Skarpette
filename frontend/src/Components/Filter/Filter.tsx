@@ -163,7 +163,7 @@ const Filter: React.FC<FilterProps> = ({
         <span className="filter__header-title">Фільтри:</span>
         <div className="filter__buttons" ref={filterButtonsRef}>
           {renderFilterButton("Стиль", "style")}
-          {renderFilterButton("Розмір", "size")}
+          {renderFilterButton("Розмір (см)", "size")}
         </div>
       </div>
 
