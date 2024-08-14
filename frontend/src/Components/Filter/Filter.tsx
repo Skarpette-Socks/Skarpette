@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Filter.scss";
 
+// Импорт иконок
 import arrow_up from "../assets/img/icons/caret-up-filled.svg";
 import arrow_down from "../assets/img/icons/caret-down-filled.svg";
 import close_white from "../assets/img/icons/close-white.svg";
@@ -30,29 +31,32 @@ const Filter: React.FC<FilterProps> = ({
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [showMobileModal, setShowMobileModal] = useState(false);
 
-  const styles = ["Короткі", "Класичні", "Спортивні", "Медичні"];
   const dropdownRef = useRef<HTMLDivElement>(null);
   const filterButtonsRef = useRef<HTMLDivElement>(null);
+  const styles = ["Короткі", "Класичні", "Спортивні", "Медичні"];
 
+  // Блокировка прокрутки
   const lockScroll = () => {
     document.body.style.overflow = "hidden";
     document.body.style.paddingRight = `${window.innerWidth - document.body.offsetWidth}px`;
   };
 
+  // Разблокировка прокрутки
   const unlockScroll = () => {
     document.body.style.overflow = "";
     document.body.style.paddingRight = "";
   };
 
-  const toggleMobileModal = () => {
-    if (!showMobileModal) {
-      lockScroll();
-    } else {
-      unlockScroll();
-    }
-    setShowMobileModal(!showMobileModal);
-  };
+const toggleMobileModal = () => {
+  if (showMobileModal) {
+    unlockScroll();
+  } else {
+    lockScroll();
+  }
+  setShowMobileModal(!showMobileModal);
+};
 
+  // Переключение фильтра
   const toggleFilter = (filter: "style" | "size") => {
     if (isMobile) {
       toggleMobileModal();
@@ -61,6 +65,7 @@ const Filter: React.FC<FilterProps> = ({
     }
   };
 
+  // Сохранение фильтров
   const handleSave = () => {
     setOpenFilter(null);
     if (isMobile) {
@@ -68,6 +73,7 @@ const Filter: React.FC<FilterProps> = ({
     }
   };
 
+  // Очистка фильтров
   const handleClear = () => {
     onClearStyles();
     onClearSizes();
@@ -77,10 +83,12 @@ const Filter: React.FC<FilterProps> = ({
     }
   };
 
+  // Очистка всех фильтров
   const handleClearAll = () => {
     handleClear();
   };
 
+  // Отрисовка чекбоксов для фильтров
   const renderCheckboxes = (
     items: string[],
     selectedItems: string[],
@@ -100,6 +108,7 @@ const Filter: React.FC<FilterProps> = ({
       </div>
     ));
 
+  // Отрисовка кнопок фильтров
   const renderFilterButton = (label: string, filter: "style" | "size") => (
     <button onClick={() => toggleFilter(filter)} className="filter__button">
       {label}
@@ -111,6 +120,7 @@ const Filter: React.FC<FilterProps> = ({
     </button>
   );
 
+  // Отрисовка выпадающего списка фильтров
   const renderFilterDropdown = (filterType: "style" | "size") => (
     <div className="filter__dropdown" ref={dropdownRef}>
       <div className="filter__category">
@@ -129,6 +139,7 @@ const Filter: React.FC<FilterProps> = ({
     </div>
   );
 
+  // Отрисовка выбранных фильтров
   const renderSelectedFilters = () => (
     <div className="filter__selected-filters">
       {[...selectedStyles, ...selectedSizes].map((item) => (
@@ -154,22 +165,25 @@ const Filter: React.FC<FilterProps> = ({
     </div>
   );
 
-  useEffect(() => {
-    const handleResize = () => {
-      const newIsMobile = window.innerWidth < 768;
-      setIsMobile(newIsMobile);
-      if (!newIsMobile && showMobileModal) {
-        toggleMobileModal();
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
+  // Обработчик изменения размера экрана
+useEffect(() => {
+  const handleResize = () => {
+    const newIsMobile = window.innerWidth < 768;
+    setIsMobile(newIsMobile);
+    if (!newIsMobile && showMobileModal) {
       unlockScroll();
-    };
-  }, [showMobileModal]);
+      setShowMobileModal(false);
+    }
+  };
 
+  window.addEventListener("resize", handleResize);
+  return () => {
+    window.removeEventListener("resize", handleResize);
+    unlockScroll(); // Разблокировка прокрутки при размонтировании
+  };
+}, [showMobileModal]);
+
+  // Обработчик клика вне области фильтра
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (

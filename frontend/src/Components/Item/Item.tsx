@@ -12,6 +12,7 @@ interface ItemProps {
   price: number;
   discount_price?: number;
   isNew?: boolean;
+  discountPercentage?: number;
 }
 
 const Item: React.FC<ItemProps> = ({
@@ -22,12 +23,17 @@ const Item: React.FC<ItemProps> = ({
   price,
   discount_price,
   isNew,
+  discountPercentage,
 }) => {
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
-    setIsFavorite(favorites.some((item: { vendor_code: number; }) => item.vendor_code === vendor_code));
+    setIsFavorite(
+      favorites.some(
+        (item: { vendor_code: number }) => item.vendor_code === vendor_code
+      )
+    );
   }, [favorites, vendor_code]);
 
   const toggleFavorite = (e: React.MouseEvent) => {
@@ -52,6 +58,10 @@ const Item: React.FC<ItemProps> = ({
       <div className="item__image-container">
         <img src={image} alt="item image" className="item__image" />
         {isNew && <span className="item__new">NEW</span>}
+
+        {discountPercentage !== undefined && discountPercentage > 0 && (
+          <span className="item__discount">-{discountPercentage}%</span>
+        )}
 
         <button className="item__favorite" onClick={toggleFavorite}>
           {isFavorite ? (
