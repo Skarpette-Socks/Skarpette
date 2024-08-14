@@ -1,11 +1,13 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useEffect, useRef, useState } from "react";
 import "./ProductOrder.scss";
 
 import chevronLeft from "../assets/img/icons/chevron-left.svg";
 import chevronRight from "../assets/img/icons/chevron-right.svg";
 
+import heartIcon from "../assets/img/icons/heart.svg";
+import fillHeartIcon from "../assets/img/icons/heart-filled.svg";
 
-import heart from "../assets/img/icons/heart.svg";
 import plus from "../assets/img/icons/plus.svg";
 import minus from "../assets/img/icons/minus.svg";
 import close from "../assets/img/icons/close.svg";
@@ -14,6 +16,7 @@ import ProductImages from "./ProductImages";
 import ProductImageCircle from "./ProductImageCircle";
 import ProductZoom from "./ProductZoom";
 import DataItem from "../../types/DataItem";
+import { useFavorites } from "../../Context/FavoritesContext";
 
 interface Props {
   item: DataItem;
@@ -27,24 +30,24 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
   const [selectedPhoto, setSelectedPhoto] = useState(0);
   const [selectedSize, setSelectedSize] = useState<number | undefined>();
   const [imgHeight, setImgHeight] = useState(0);
-  const [counter, setCounter] = useState<number | ''>(1);
+  const [counter, setCounter] = useState<number | "">(1);
   const [isFocused, setIsFocused] = useState(false);
   const productImage = useRef<HTMLImageElement>(null);
-  
+
   const imgArr = item?.images_urls;
 
   useEffect(() => {
     if (productImage.current) {
       const handleResize = () => {
         const imgWidth = productImage.current!.offsetWidth;
-        setImgHeight(imgWidth + (imgWidth / 8));
+        setImgHeight(imgWidth + imgWidth / 8);
       };
 
       handleResize();
-      window.addEventListener('resize', handleResize);
+      window.addEventListener("resize", handleResize);
 
       return () => {
-        window.removeEventListener('resize', handleResize);
+        window.removeEventListener("resize", handleResize);
       };
     }
   }, [productImage.current]);
@@ -52,14 +55,14 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
   if (!imgArr || !item) {
     return (
       <>
-        <h1
-          style={{ textAlign: 'center', margin: '50px' }}
-          ><strong>Щось пішло не так ;&#40;</strong></h1>
+        <h1 style={{ textAlign: "center", margin: "50px" }}>
+          <strong>Щось пішло не так ;&#40;</strong>
+        </h1>
       </>
     );
   }
 
-  const selectPhoto = ( num:number ) => {
+  const selectPhoto = (num: number) => {
     if (num >= 1) {
       if (selectedPhoto >= imgArr.length - 1) {
         setSelectedPhoto(0);
@@ -75,28 +78,28 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
     }
 
     setSelectedPhoto(selectedPhoto + num);
-  }
+  };
 
   const handleZoom = () => {
     if (window.innerWidth >= 768) {
-      setZoomImageOpened(true)
+      setZoomImageOpened(true);
     }
-  }
+  };
 
-  const setSize = (index: number, is_available:boolean) => {
+  const setSize = (index: number, is_available: boolean) => {
     if (is_available) {
       if (index === selectedSize) {
-        setSelectedSize(undefined)
+        setSelectedSize(undefined);
       } else {
-        setSelectedSize(index)
+        setSelectedSize(index);
       }
     }
-  }
+  };
 
   const handleDecrement = () => {
     setCounter((prevCounter) => {
-      if (typeof prevCounter === 'number') {
-        return Math.max(prevCounter - 1, 1)
+      if (typeof prevCounter === "number") {
+        return Math.max(prevCounter - 1, 1);
       } else {
         return 1;
       }
@@ -105,8 +108,8 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
 
   const handleIncrement = () => {
     setCounter((prevCounter) => {
-      if (typeof prevCounter === 'number') {
-        return Math.min(prevCounter + 1, 99)
+      if (typeof prevCounter === "number") {
+        return Math.min(prevCounter + 1, 99);
       } else {
         return 1;
       }
@@ -119,7 +122,7 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
       setCounter(Math.min(Math.max(value, 1), 99));
     } else {
       if (isFocused) {
-        setCounter('');
+        setCounter("");
       } else {
         setCounter(1);
       }
@@ -127,72 +130,86 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
   };
 
   const setOnBlur = () => {
-    if (counter === '' || counter === 0) {
+    if (counter === "" || counter === 0) {
       setCounter(1);
     }
-  }
+  };
+
+  const { addToFavorites, removeFromFavorites, favorites } = useFavorites();
+
+  const isFavorite = favorites.some(
+    (favoriteItem) => favoriteItem.vendor_code === item.vendor_code
+  );
+
+  const handleFavoriteClick = () => {
+    if (isFavorite) {
+      removeFromFavorites(item.vendor_code);
+    } else {
+      addToFavorites(item);
+    }
+  };
 
   return (
     <div className="product">
-      {zoomImageOpened && 
-        <ProductZoom 
+      {zoomImageOpened && (
+        <ProductZoom
           isOpen={setZoomImageOpened}
           selectedPhoto={selectedPhoto}
           imgArr={imgArr}
         />
-      }
+      )}
       <div className="product__container">
         <div className="product__images">
-          <div 
+          <div
             className="product__image-container"
-            style={{height: `${imgHeight}px`}}
+            style={{ height: `${imgHeight}px` }}
           >
             <img
               ref={productImage}
               src={imgArr[selectedPhoto]}
               alt="product image"
               onClick={handleZoom}
-              style={{height: `${imgHeight}px`}}
+              style={{ height: `${imgHeight}px` }}
             />
 
-            {imgArr.length > 1 && 
+            {imgArr.length > 1 && (
               <div className="product__image-circle-container">
                 {imgArr.map((item, index) => (
-                  <ProductImageCircle 
-                    key={item} 
+                  <ProductImageCircle
+                    key={item}
                     index={index}
                     selectedPhoto={selectedPhoto}
                   />
                 ))}
               </div>
-            }
+            )}
 
-            <div 
+            <div
               className="product__img-button left"
               onClick={() => selectPhoto(-1)}
             >
-              <img 
-                src={chevronLeft} 
-                alt="chevronLeft" 
-                className="product__img-button-chevron" 
+              <img
+                src={chevronLeft}
+                alt="chevronLeft"
+                className="product__img-button-chevron"
               />
             </div>
 
-            <div 
+            <div
               className="product__img-button right"
               onClick={() => selectPhoto(1)}
             >
-              <img 
-                src={chevronRight} 
-                alt="chevronRight" 
-                className="product__img-button-chevron" 
+              <img
+                src={chevronRight}
+                alt="chevronRight"
+                className="product__img-button-chevron"
               />
             </div>
           </div>
 
           <div className="product__minor-img-container">
             {imgArr.map((image, index) => (
-              <ProductImages 
+              <ProductImages
                 image={image}
                 key={index}
                 index={index}
@@ -201,16 +218,15 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
               />
             ))}
           </div>
-
         </div>
 
         <div className="product__info">
           <div className="product__article">Артикул {item.vendor_code}</div>
           <h1 className="product__title">{item.name}</h1>
           <div className="product__price">{item.price} грн</div>
-          {item.price2 && 
+          {item.price2 && (
             <div className="product__price-old">{item.price2} грн</div>
-          }
+          )}
           <div className="product__price-detail">
             Без урахування ціни доставки
           </div>
@@ -236,16 +252,16 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
           <div className="product__counter">
             <div className="product__counter-title">Кількість:</div>
             <div className="product__counter-buttons">
-              <button 
+              <button
                 className="product__counter-button"
                 onClick={handleDecrement}
                 disabled={counter === 1}
               >
                 <img src={minus} alt="Minus" />
               </button>
-              <input 
-                type="number" 
-                className="product__counter-input" 
+              <input
+                type="number"
+                className="product__counter-input"
                 min={1}
                 max={99}
                 value={counter}
@@ -253,7 +269,7 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
                 onFocus={() => setIsFocused(true)}
                 onBlur={setOnBlur}
               />
-              <button 
+              <button
                 className="product__counter-button"
                 onClick={handleIncrement}
                 disabled={counter === 99}
@@ -264,20 +280,38 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
           </div>
 
           <div className="product__buttons-cart-fav">
-            <button 
+            <button
               className={`product__add-to-cart 
-                ${selectedSize === undefined ? `disabled`: ``}
+                ${selectedSize === undefined ? `disabled` : ``}
               `}
-            >Додати у кошик</button>
-            <button className="product__add-to-fav">
-              <img src={heart} className="product__heart-img"></img>
+            >
+              Додати у кошик
+            </button>
+
+            <button
+              className="product__add-to-fav"
+              onClick={handleFavoriteClick}
+            >
+              {isFavorite ? (
+                <img
+                  src={fillHeartIcon}
+                  alt="Filled heart icon"
+                  className="item__favorite-icon"
+                />
+              ) : (
+                <img
+                  src={heartIcon}
+                  alt="Heart icon"
+                  className="item__favorite-icon"
+                />
+              )}
             </button>
           </div>
 
           <div className="product__dropdowns">
             <div className="product__greyline"></div>
 
-            <div 
+            <div
               className="product__dropdown-description"
               onClick={() => setDescriptionOpened(!descriptionOpened)}
             >
@@ -294,15 +328,13 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
               </div>
 
               {descriptionOpened && (
-                <div className="product__dropdown-text">
-                  {item.description}
-                </div>
+                <div className="product__dropdown-text">{item.description}</div>
               )}
             </div>
 
             <div className="product__greyline"></div>
-            
-            <div 
+
+            <div
               className="product__dropdown-warehouse"
               onClick={() => setWarehouseOpened(!warehouseOpened)}
             >
@@ -327,10 +359,9 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
               )}
             </div>
 
-
             <div className="product__greyline"></div>
 
-            <div 
+            <div
               className="product__dropdown-payment"
               onClick={() => setPaymentOpened(!paymentOpened)}
             >

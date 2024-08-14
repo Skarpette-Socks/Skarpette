@@ -34,9 +34,28 @@ const Filter: React.FC<FilterProps> = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const filterButtonsRef = useRef<HTMLDivElement>(null);
 
+  const lockScroll = () => {
+    document.body.style.overflow = "hidden";
+    document.body.style.paddingRight = `${window.innerWidth - document.body.offsetWidth}px`;
+  };
+
+  const unlockScroll = () => {
+    document.body.style.overflow = "";
+    document.body.style.paddingRight = "";
+  };
+
+  const toggleMobileModal = () => {
+    if (!showMobileModal) {
+      lockScroll();
+    } else {
+      unlockScroll();
+    }
+    setShowMobileModal(!showMobileModal);
+  };
+
   const toggleFilter = (filter: "style" | "size") => {
     if (isMobile) {
-      setShowMobileModal(true);
+      toggleMobileModal();
     } else {
       setOpenFilter((prevFilter) => (prevFilter === filter ? null : filter));
     }
@@ -44,14 +63,18 @@ const Filter: React.FC<FilterProps> = ({
 
   const handleSave = () => {
     setOpenFilter(null);
-    setShowMobileModal(false);
+    if (isMobile) {
+      toggleMobileModal();
+    }
   };
 
   const handleClear = () => {
     onClearStyles();
     onClearSizes();
     setOpenFilter(null);
-    setShowMobileModal(false);
+    if (isMobile) {
+      toggleMobileModal();
+    }
   };
 
   const handleClearAll = () => {
@@ -133,12 +156,19 @@ const Filter: React.FC<FilterProps> = ({
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      const newIsMobile = window.innerWidth < 768;
+      setIsMobile(newIsMobile);
+      if (!newIsMobile && showMobileModal) {
+        toggleMobileModal();
+      }
     };
 
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      unlockScroll();
+    };
+  }, [showMobileModal]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -162,12 +192,8 @@ const Filter: React.FC<FilterProps> = ({
     <div className="filter">
       <div className="filter__header">
         {isMobile ? (
-          <button
-            onClick={() => setShowMobileModal(true)}
-            className="filter__mobile-button"
-          >
-            <span className="filter__header-title">Фільтри</span>
-            <img src={plus_icon} alt="plus" />
+          <button onClick={toggleMobileModal} className="filter__mobile-button">
+            Фільтри <img src={plus_icon} alt="plus" />
           </button>
         ) : (
           <>
@@ -191,7 +217,7 @@ const Filter: React.FC<FilterProps> = ({
             <div className="filter__mobile-header">
               <h2>Фільтри</h2>
               <button
-                onClick={() => setShowMobileModal(false)}
+                onClick={toggleMobileModal}
                 className="filter__close-button"
               >
                 <img src={close_icon} alt="close_icon" />
