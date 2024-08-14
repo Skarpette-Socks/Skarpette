@@ -266,7 +266,7 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
           <div className="product__buttons-cart-fav">
             <button 
               className={`product__add-to-cart 
-                ${!selectedSize ? `disabled`: ``}
+                ${selectedSize === undefined ? `disabled`: ``}
               `}
             >Додати у кошик</button>
             <button className="product__add-to-fav">
