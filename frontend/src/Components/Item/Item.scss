@@ -12,12 +12,10 @@
 
   @include on-tablet {
     grid-template-columns: repeat(auto-fill, 294px);
-
   }
 
   @include on-desktop {
     grid-template-columns: repeat(auto-fill, 303px);
-
   }
 }
 
@@ -70,7 +68,7 @@
     font-size: 16px;
     color: $grayscale-1000;
     white-space: nowrap;
-    overflow: hidden; 
+    overflow: hidden;
     text-overflow: ellipsis;
 
     @include on-tablet {
@@ -134,6 +132,33 @@
       left: 16px;
       width: 55px;
       height: 40px;
+    }
+  }
+
+  &__discount {
+    position: absolute;
+    border: 1px solid $grayscale-800;
+    background-color: $grayscale-800;
+    width: 43px;
+    height: 32px;
+    border-radius: 100px;
+    top: 40px;
+    left: 4px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 12px;
+    font-weight: 600; //??
+    color: $grayscale-0;
+
+    @include on-tablet {
+      top: 64px;
+      left: 16px;
+      width: 55px;
+      height: 40px;
+      font-size: 14px;
     }
   }
 

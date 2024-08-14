@@ -151,7 +151,7 @@ const SocksPage: React.FC<SocksPageProps> = ({
             sizes={sizes} // Передаем размеры в компонент Filter
           />
 
-          <Sort 
+          <Sort
             items={filteredSocks}
             selectedStyles={selectedStyles}
             selectedSizes={selectedSizes}
@@ -176,6 +176,7 @@ const SocksPage: React.FC<SocksPageProps> = ({
                   price={item.price}
                   discount_price={item.price2}
                   isNew={item.is_new}
+                  discountPercentage={item.discountPercentage}
                 />
               ))}
             </div>
