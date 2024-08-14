@@ -7,6 +7,7 @@ import chevronRight from "../assets/img/icons/chevron-right.svg";
 
 import heart from "../assets/img/icons/heart.svg";
 import plus from "../assets/img/icons/plus.svg";
+import minus from "../assets/img/icons/minus.svg";
 import close from "../assets/img/icons/close.svg";
 import ProductSizeButton from "./ProductSizeButton";
 import ProductImages from "./ProductImages";
@@ -26,6 +27,8 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
   const [selectedPhoto, setSelectedPhoto] = useState(0);
   const [selectedSize, setSelectedSize] = useState<number | undefined>();
   const [imgHeight, setImgHeight] = useState(0);
+  const [counter, setCounter] = useState<number | ''>(1);
+  const [isFocused, setIsFocused] = useState(false);
   const productImage = useRef<HTMLImageElement>(null);
   
   const imgArr = item?.images_urls;
@@ -87,6 +90,45 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
       } else {
         setSelectedSize(index)
       }
+    }
+  }
+
+  const handleDecrement = () => {
+    setCounter((prevCounter) => {
+      if (typeof prevCounter === 'number') {
+        return Math.max(prevCounter - 1, 1)
+      } else {
+        return 1;
+      }
+    });
+  };
+
+  const handleIncrement = () => {
+    setCounter((prevCounter) => {
+      if (typeof prevCounter === 'number') {
+        return Math.min(prevCounter + 1, 99)
+      } else {
+        return 1;
+      }
+    });
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isNaN(parseInt(event.target.value, 10))) {
+      const value = parseInt(event.target.value, 10);
+      setCounter(Math.min(Math.max(value, 1), 99));
+    } else {
+      if (isFocused) {
+        setCounter('');
+      } else {
+        setCounter(1);
+      }
+    }
+  };
+
+  const setOnBlur = () => {
+    if (counter === '' || counter === 0) {
+      setCounter(1);
     }
   }
 
@@ -191,6 +233,36 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
             </div>
           </div>
 
+          <div className="product__counter">
+            <div className="product__counter-title">Кількість:</div>
+            <div className="product__counter-buttons">
+              <button 
+                className="product__counter-button"
+                onClick={handleDecrement}
+                disabled={counter === 1}
+              >
+                <img src={minus} alt="Minus" />
+              </button>
+              <input 
+                type="number" 
+                className="product__counter-input" 
+                min={1}
+                max={99}
+                value={counter}
+                onChange={handleChange}
+                onFocus={() => setIsFocused(true)}
+                onBlur={setOnBlur}
+              />
+              <button 
+                className="product__counter-button"
+                onClick={handleIncrement}
+                disabled={counter === 99}
+              >
+                <img src={plus} alt="Plus" />
+              </button>
+            </div>
+          </div>
+
           <div className="product__buttons-cart-fav">
             <button 
               className={`product__add-to-cart 
@@ -214,9 +286,9 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
 
                 <span className="product__dropdown-button">
                   {descriptionOpened ? (
-                    <img src={close} alt="Minus" />
+                    <img src={close} alt="Close" />
                   ) : (
-                    <img src={plus} alt="Plus" />
+                    <img src={plus} alt="Open" />
                   )}
                 </span>
               </div>
