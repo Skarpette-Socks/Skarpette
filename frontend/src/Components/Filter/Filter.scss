@@ -216,6 +216,19 @@
     }
   }
 
+  &__mobile-button {
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
   &__mobile-body {
     padding: 16px;
 
@@ -223,7 +236,6 @@
       font-size: 24px;
       font-weight: 500;
       color: $grayscale-1000;
-      margin-top: 40px;
     }
   }
 
