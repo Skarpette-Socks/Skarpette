@@ -15,7 +15,7 @@ interface DataItem {
   price: number;
   price2?: number;
   is_new?: boolean;
-  size: string[] | sizeItem[];
+  size: sizeItem[];
   discountPercentage?: number;
 }
 

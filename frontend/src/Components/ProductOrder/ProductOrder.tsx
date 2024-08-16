@@ -22,6 +22,12 @@ interface Props {
   item: DataItem;
 }
 
+interface CartItem {
+  vendor_code?: number,
+  size?: string;
+  count?: number
+}
+
 const ProductOrder: React.FC<Props> = ({ item }) => {
   const [descriptionOpened, setDescriptionOpened] = useState(false);
   const [warehouseOpened, setWarehouseOpened] = useState(false);
@@ -148,6 +154,55 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
       addToFavorites(item);
     }
   };
+
+
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    const savedCart = localStorage.getItem("cart");
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
+
+  
+  const addCartItem = () => {
+    let cartItem = {}
+  
+    if (selectedSize !== undefined) {
+      cartItem = {
+        vendor_code: item.vendor_code,
+        size: item.size[selectedSize].size,
+        count: counter
+      }
+
+      const duplicateIndexes = cartItems
+        .map((currentItem, currentIndex) => (
+          currentItem.vendor_code === item.vendor_code ? currentIndex : -1
+        ))
+        .filter(index => index !== -1);
+
+      let isChanged = false;
+
+      duplicateIndexes.map(duplicateItem => {
+        if (cartItems[duplicateItem]?.size === item.size[selectedSize].size) {
+          if (counter !== '' && cartItems[duplicateItem].count !== undefined) {
+            const newItem = cartItems[duplicateItem];
+            if (newItem.count) {
+              newItem.count += counter
+            }
+            setCartItems((cartItems) => [...cartItems])
+            isChanged = true;
+            return;
+          }
+        } 
+      })
+
+      if (!isChanged) {
+        setCartItems((cartItems) => [...cartItems, cartItem])
+      }
+    } 
+  }
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   return (
     <div className="product">
@@ -284,6 +339,7 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
               className={`product__add-to-cart 
                 ${selectedSize === undefined ? `disabled` : ``}
               `}
+              onClick={addCartItem}
             >
               Додати у кошик
             </button>

@@ -63,7 +63,7 @@ const NavBarMenu: React.FC = () => {
 
 const NavBarActions: React.FC = () => {
   const { favorites } = useFavorites(); // Получаем список избранных товаров
-
+  
   return (
     <div className="navBar__actions">
       <Link to="#">
@@ -85,7 +85,7 @@ const NavBarActions: React.FC = () => {
             className="navBar__actions-cart-icon"
           />
           <p className="navBar__actions-cart-text">Кошик</p>
-          <div className="navBar__actions-cart-count">2</div>
+          <div className="navBar__actions-cart-count">0</div>
         </div>
       </Link>
     </div>
