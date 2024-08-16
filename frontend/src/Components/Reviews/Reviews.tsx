@@ -12,110 +12,95 @@ interface Testimonial {
   comment: string;
 }
 
-const Reviews: React.FC = () => {
-  const [testimonials] = useState<Testimonial[]>([
-    {
-      id: 1,
-      name: "Аліна М.",
-      rating: 5,
-      comment:
-        "Неймовірно задоволена якістю. Пакування чудове. Жодного зауваження немає. Перевершили мої сподівання. Купуватиму ще.",
-    },
-    {
-      id: 2,
-      name: "Олександр К.",
-      rating: 4,
-      comment:
-        "Відчувається що використовуються гарні і якісні матеріали, в руці навіть круто так відчувається на дотик",
-    },
-    {
-      id: 3,
-      name: "Маріанна Т.",
-      rating: 5,
-      comment:
-        "Це просто ВАУ! Вперше бачу такі якісні шкарпетки! Ношу їх з неабияким задоволенням вже декілька років, і ще ніколи не було претензій",
-    },
+const testimonialsData: Testimonial[] = [
+  {
+    id: 1,
+    name: "Аліна М.",
+    rating: 5,
+    comment:
+      "Неймовірно задоволена якістю. Пакування чудове. Жодного зауваження немає. Перевершили мої сподівання. Купуватиму ще.",
+  },
+  {
+    id: 2,
+    name: "Олександр К.",
+    rating: 4,
+    comment:
+      "Відчувається що використовуються гарні і якісні матеріали, в руці навіть круто так відчувається на дотик.",
+  },
+  {
+    id: 3,
+    name: "Маріанна Т.",
+    rating: 5,
+    comment:
+      "Це просто ВАУ! Вперше бачу такі якісні шкарпетки! Ношу їх з неабияким задоволенням вже декілька років, і ще ніколи не було претензій.",
+  },
+  {
+    id: 4,
+    name: "Маріан.",
+    rating: 3,
+    comment:
+      "Це просто ВАУ! Вперше бачу такі якісні шкарпетки! Ношу їх з неабияким задоволенням вже декілька років, і ще ніколи не було претензій.",
+  },
+  {
+    id: 5,
+    name: "Олег М.",
+    rating: 5,
+    comment:
+      "Неймовірно задоволена якістю. Пакування чудове. Жодного зауваження немає. Перевершили мої сподівання. Купуватиму ще.",
+  },
+  {
+    id: 6,
+    name: "Аліна .",
+    rating: 5,
+    comment:
+      "Неймовірно задоволена якістю. Пакування чудове. Жодного зауваження немає. Перевершили мої сподівання. Купуватиму ще.",
+  },
+];
 
-    {
-      id: 4,
-      name: "Маріан.",
-      rating: 3,
-      comment:
-        "Це просто ВАУ! Вперше бачу такі якісні шкарпетки! Ношу їх з неабияким задоволенням вже декілька років, і ще ніколи не було претензій",
-    },
-    {
-      id: 5,
-      name: "Олег М.",
-      rating: 5,
-      comment:
-        "Неймовірно задоволена якістю. Пакування чудове. Жодного зауваження немає. Перевершили мої сподівання. Купуватиму ще.",
-    },
-    {
-      id: 6,
-      name: "Аліна .",
-      rating: 5,
-      comment:
-        "Неймовірно задоволена якістю. Пакування чудове. Жодного зауваження немає. Перевершили мої сподівання. Купуватиму ще.",
-    },
-  ]);
+const Reviews: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [screenType, setScreenType] = useState("desktop");
+  const [screenType, setScreenType] = useState(getScreenType());
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth <= 767) {
-        setScreenType("mobile");
-      } else if (window.innerWidth <= 1280) {
-        setScreenType("tablet");
-      } else {
-        setScreenType("desktop");
-      }
-    };
-
-    handleResize();
+    const handleResize = () => setScreenType(getScreenType());
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const getItemsPerPage = () => {
-    switch (screenType) {
-      case "mobile":
-        return 1;
-      case "tablet":
-        return 2;
-      case "desktop":
-        return 3;
-      default:
-        return 3;
-    }
-  };
+  function getScreenType() {
+    if (window.innerWidth <= 767) return "mobile";
+    if (window.innerWidth <= 1280) return "tablet";
+    return "desktop";
+  }
 
-  const itemsPerPage = getItemsPerPage();
-  const totalPages = Math.ceil(testimonials.length / itemsPerPage);
+  const itemsPerPage =
+    screenType === "mobile" ? 1 : screenType === "tablet" ? 2 : 3;
+  const totalPages = Math.ceil(testimonialsData.length / itemsPerPage);
 
-  const goToPrevious = () => {
+  const goToPrevious = () =>
     setCurrentPage((prev) => (prev > 1 ? prev - 1 : totalPages));
-  };
-
-  const goToNext = () => {
+  const goToNext = () =>
     setCurrentPage((prev) => (prev < totalPages ? prev + 1 : 1));
-  };
 
-  const getVisibleTestimonials = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    return testimonials.slice(startIndex, startIndex + itemsPerPage);
-  };
+  const visibleReviews = testimonialsData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
-  const handleOpenReviewModal = () => {
-    setIsReviewModalOpen(true);
-  };
-
-  const handleCloseReviewModal = () => {
-    setIsReviewModalOpen(false);
-  };
-
-  const visibleReviews = getVisibleTestimonials();
+  const renderStars = (rating: number) => (
+    <div className="reviews__stars">
+      {[...Array(5)].map((_, i) => (
+        <span key={i} className="reviews__stars-item">
+          <img
+            src={star_icon_active}
+            alt="star_icon_active"
+            style={{ opacity: i < rating ? 1 : 0.3 }}
+          />
+        </span>
+      ))}
+    </div>
+  );
 
   return (
     <div className="reviews">
@@ -124,7 +109,7 @@ const Reviews: React.FC = () => {
           <p className="reviews__title">Що про нас кажуть клієнти?</p>
           <button
             className="reviews__feedback-button"
-            onClick={handleOpenReviewModal}
+            onClick={() => setIsReviewModalOpen(true)}
           >
             Залишити відгук
           </button>
@@ -132,24 +117,19 @@ const Reviews: React.FC = () => {
 
         <div className={`reviews__slider reviews__slider--${screenType}`}>
           {visibleReviews.map((review) => (
-            <div key={review.id} className="reviews__item ">
-              <div className="reviews__stars">
-                {[...Array(5)].map((_, i) => (
-                  <span key={i} className="reviews__stars-item">
-                    <img src={star_icon_active} alt="star_icon_active" />
-                  </span>
-                ))}
-              </div>
+            <div key={review.id} className="reviews__item">
+              {renderStars(review.rating)}
               <h3 className="reviews__item-name">
                 {review.name}
                 <span>
-                  <img src={verify_icon} alt="" />
+                  <img src={verify_icon} alt="verify icon" />
                 </span>
               </h3>
               <p className="reviews__item-comment">{review.comment}</p>
             </div>
           ))}
         </div>
+
         <div className="reviews__controls">
           <button className="reviews__controls-button" onClick={goToPrevious}>
             <svg
@@ -166,9 +146,8 @@ const Reviews: React.FC = () => {
             <span className="reviews__controls-page-current-page">
               {currentPage}
             </span>
-            <span className="reviews__controls-page-total-page">/</span>
             <span className="reviews__controls-page-total-page">
-              {totalPages}
+              / {totalPages}
             </span>
           </span>
 
@@ -176,7 +155,6 @@ const Reviews: React.FC = () => {
             <svg
               width="24"
               height="24"
-              viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -184,9 +162,10 @@ const Reviews: React.FC = () => {
             </svg>
           </button>
         </div>
+
         <ReviewModal
           isOpen={isReviewModalOpen}
-          onClose={handleCloseReviewModal}
+          onClose={() => setIsReviewModalOpen(false)}
         />
       </div>
     </div>

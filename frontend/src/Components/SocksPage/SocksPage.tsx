@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useMemo } from "react";
 import "./SocksPage.scss";
 
 import DataItem from "../../types/DataItem";
@@ -7,7 +7,7 @@ import PageNavigation from "../../Components/PageNavigation/PageNavigation";
 import Item from "../../Components/Item/Item";
 import MobilePagination from "../../Components/MobilePagination/MobilePagination";
 import Pagination from "../../Components/Pagination/Pagination";
-import Filter from "../Filter/Filter"; // Import the filter component
+import Filter from "../Filter/Filter";
 import Sort from "../Sort/Sort";
 
 interface SocksPageProps {
@@ -15,7 +15,7 @@ interface SocksPageProps {
   title: string;
   linkText: string;
   linkHref: string;
-  sizes: string[]; // Новый проп для размеров
+  sizes: string[];
 }
 
 const SocksPage: React.FC<SocksPageProps> = ({
@@ -23,17 +23,20 @@ const SocksPage: React.FC<SocksPageProps> = ({
   title,
   linkText,
   linkHref,
-  sizes, // Получаем проп размеров
+  sizes,
 }) => {
   const [socks, setSocks] = useState<DataItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
-  const [isFirstRender, setIsFirstRender] = useState(true);
-
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [sortedItems, setSortedItems] = useState<DataItem[]>([]);
+
+  const updateItemsPerPage = useCallback(() => {
+    setItemsPerPage(window.innerWidth >= 768 ? 16 : 12);
+  }, []);
 
   useEffect(() => {
     const loadData = async () => {
@@ -51,10 +54,6 @@ const SocksPage: React.FC<SocksPageProps> = ({
     loadData();
   }, [fetchSocks]);
 
-  const updateItemsPerPage = useCallback(() => {
-    setItemsPerPage(window.innerWidth >= 768 ? 16 : 12);
-  }, []);
-
   useEffect(() => {
     updateItemsPerPage();
     window.addEventListener("resize", updateItemsPerPage);
@@ -64,74 +63,54 @@ const SocksPage: React.FC<SocksPageProps> = ({
   }, [updateItemsPerPage]);
 
   useEffect(() => {
-    if (isFirstRender) {
-      setIsFirstRender(false);
-    } else {
-      window.scrollTo(0, 150);
-    }
+    window.scrollTo(0, 150);
   }, [currentPage]);
 
+  const handleFilterChange = useCallback(
+    (type: "style" | "size", value: string) => {
+      if (type === "style") {
+        setSelectedStyles((prev) =>
+          prev.includes(value)
+            ? prev.filter((s) => s !== value)
+            : [...prev, value]
+        );
+      } else if (type === "size") {
+        setSelectedSizes((prev) =>
+          prev.includes(value)
+            ? prev.filter((s) => s !== value)
+            : [...prev, value]
+        );
+      }
+    },
+    []
+  );
 
-  socks.sort((a, b) => a.vendor_code - b.vendor_code);
-  const [sortedItems, setSortedItems] = useState<DataItem[]>([]);  
+  const filteredSocks = useMemo(() => {
+    return socks.filter((sock) => {
+      const matchesStyle =
+        selectedStyles.length === 0 || selectedStyles.includes(sock.style);
+      const matchesSize =
+        selectedSizes.length === 0 ||
+        (Array.isArray(sock.size) &&
+          sock.size.some((sizeObj) =>
+            typeof sizeObj === "string"
+              ? selectedSizes.includes(sizeObj)
+              : sizeObj.is_available && selectedSizes.includes(sizeObj.size)
+          ));
 
-  const filteredSocks = socks.filter((sock: DataItem) => {
-    const matchesStyle =
-      selectedStyles.length === 0 || selectedStyles.includes(sock.style);
-
-    const matchesSize =
-      selectedSizes.length === 0 ||
-      (Array.isArray(sock.size) &&
-        sock.size.some((sizeObj) => {
-          if (typeof sizeObj === "string") {
-            return selectedSizes.includes(sizeObj);
-          } else if (typeof sizeObj === "object" && "size" in sizeObj) {
-            if (sizeObj.is_available === true) {
-              return selectedSizes.includes(sizeObj.size);
-            }
-          }
-          return false;
-        })
-      );
-
-    return matchesStyle && matchesSize;
-  });
+      return matchesStyle && matchesSize;
+    });
+  }, [socks, selectedStyles, selectedSizes]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = sortedItems.slice(indexOfFirstItem, indexOfLastItem);
 
   const totalPages = Math.ceil(sortedItems.length / itemsPerPage);
-
   const isMobile = window.innerWidth < 768;
 
-  const handleStyleChange = (style: string) => {
-    setSelectedStyles((prev) =>
-      prev.includes(style) ? prev.filter((s) => s !== style) : [...prev, style]
-    );
-  };
-
-  const handleSizeChange = (size: string) => {
-    setSelectedSizes((prev) =>
-      prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size]
-    );
-  };
-
-  const handleClearStyles = () => {
-    setSelectedStyles([]);
-  };
-
-  const handleClearSizes = () => {
-    setSelectedSizes([]);
-  };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <>
@@ -144,11 +123,11 @@ const SocksPage: React.FC<SocksPageProps> = ({
           <Filter
             selectedStyles={selectedStyles}
             selectedSizes={selectedSizes}
-            onStyleChange={handleStyleChange}
-            onSizeChange={handleSizeChange}
-            onClearSizes={handleClearSizes}
-            onClearStyles={handleClearStyles}
-            sizes={sizes} // Передаем размеры в компонент Filter
+            onStyleChange={(style) => handleFilterChange("style", style)}
+            onSizeChange={(size) => handleFilterChange("size", size)}
+            onClearSizes={() => setSelectedSizes([])}
+            onClearStyles={() => setSelectedStyles([])}
+            sizes={sizes}
           />
 
           <Sort
