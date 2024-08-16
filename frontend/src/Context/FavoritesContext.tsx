@@ -5,6 +5,7 @@ import React, {
   useContext,
   ReactNode,
   useEffect,
+  useMemo,
 } from "react";
 
 interface FavoriteItem {
@@ -37,17 +38,25 @@ export const useFavorites = () => {
 export const FavoritesProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [favorites, setFavorites] = useState<FavoriteItem[]>(() => {
+  const initialFavorites = useMemo(() => {
     const savedFavorites = localStorage.getItem("favorites");
     return savedFavorites ? JSON.parse(savedFavorites) : [];
-  });
+  }, []);
+
+  const [favorites, setFavorites] = useState<FavoriteItem[]>(initialFavorites);
 
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
   const addToFavorites = (item: FavoriteItem) => {
-    setFavorites((prevFavorites) => [...prevFavorites, item]);
+    setFavorites((prevFavorites) => {
+      // Проверка на наличие элемента в избранном
+      if (prevFavorites.some((fav) => fav.vendor_code === item.vendor_code)) {
+        return prevFavorites; // Если элемент уже в избранном, не добавляем его повторно
+      }
+      return [...prevFavorites, item];
+    });
   };
 
   const removeFromFavorites = (vendor_code: number) => {
