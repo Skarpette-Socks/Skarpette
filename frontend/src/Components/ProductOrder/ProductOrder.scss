@@ -347,51 +347,6 @@
     &-title {
       margin-bottom: 8px;
     }
-
-    &-buttons {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    &-button {
-      border: 1px solid $grayscale-200;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      text-align: center;
-      padding: 12px;
-      cursor: pointer;
-      background-color: transparent;
-
-      &:disabled {
-        opacity: 0.7;
-        cursor: default;
-
-        & img {
-          filter: opacity(50%);
-        }
-      }
-
-      & img {
-        height: 16px;
-        width: 16px;
-      }
-    }
-
-    &-input {
-      width: 32px;
-      height: 20px;
-      text-align: center;
-      border: none;
-
-      &::-webkit-outer-spin-button,
-      &::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-      
-      }
-    }
   }
 
   &__buttons-cart-fav {

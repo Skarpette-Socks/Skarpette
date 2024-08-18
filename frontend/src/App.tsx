@@ -22,6 +22,7 @@ import Promotions from "./Pages/Promotions";
 import Returning from "./Pages/Returning/Returning";
 import Shop from "./Pages/Shop";
 import WomanSocks from "./Pages/WomanSocks/WomanSocks";
+import { CartProvider } from "./Context/CartContext";
 
 const routes = [
   { path: "/", element: <Shop /> },
@@ -42,18 +43,20 @@ const routes = [
 const App: React.FC = () => {
   return (
     <FavoritesProvider>
-      <Router>
-        <div className="App">
-          <SubHeader />
-          <NavBar />
-          <Routes>
-            {routes.map((route, index) => (
-              <Route key={index} path={route.path} element={route.element} />
-            ))}
-          </Routes>
-          <Footer />
-        </div>
-      </Router>
+      <CartProvider>
+        <Router>
+          <div className="App">
+            <SubHeader />
+            <NavBar />
+            <Routes>
+              {routes.map((route, index) => (
+                <Route key={index} path={route.path} element={route.element} />
+              ))}
+            </Routes>
+            <Footer />
+          </div>
+        </Router>
+      </CartProvider>
     </FavoritesProvider>
   );
 };

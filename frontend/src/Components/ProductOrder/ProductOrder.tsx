@@ -9,7 +9,6 @@ import heartIcon from "../assets/img/icons/heart.svg";
 import fillHeartIcon from "../assets/img/icons/heart-filled.svg";
 
 import plus from "../assets/img/icons/plus.svg";
-import minus from "../assets/img/icons/minus.svg";
 import close from "../assets/img/icons/close.svg";
 import ProductSizeButton from "./ProductSizeButton";
 import ProductImages from "./ProductImages";
@@ -17,15 +16,11 @@ import ProductImageCircle from "./ProductImageCircle";
 import ProductZoom from "./ProductZoom";
 import DataItem from "../../types/DataItem";
 import { useFavorites } from "../../Context/FavoritesContext";
+import { useCartItems } from "../../Context/CartContext";
+import CounterButton from "../CounterButton/CounterButton";
 
 interface Props {
   item: DataItem;
-}
-
-interface CartItem {
-  vendor_code?: number,
-  size?: string;
-  count?: number
 }
 
 const ProductOrder: React.FC<Props> = ({ item }) => {
@@ -37,7 +32,6 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
   const [selectedSize, setSelectedSize] = useState<number | undefined>();
   const [imgHeight, setImgHeight] = useState(0);
   const [counter, setCounter] = useState<number | "">(1);
-  const [isFocused, setIsFocused] = useState(false);
   const productImage = useRef<HTMLImageElement>(null);
 
   const imgArr = item?.images_urls;
@@ -102,45 +96,6 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
     }
   };
 
-  const handleDecrement = () => {
-    setCounter((prevCounter) => {
-      if (typeof prevCounter === "number") {
-        return Math.max(prevCounter - 1, 1);
-      } else {
-        return 1;
-      }
-    });
-  };
-
-  const handleIncrement = () => {
-    setCounter((prevCounter) => {
-      if (typeof prevCounter === "number") {
-        return Math.min(prevCounter + 1, 99);
-      } else {
-        return 1;
-      }
-    });
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isNaN(parseInt(event.target.value, 10))) {
-      const value = parseInt(event.target.value, 10);
-      setCounter(Math.min(Math.max(value, 1), 99));
-    } else {
-      if (isFocused) {
-        setCounter("");
-      } else {
-        setCounter(1);
-      }
-    }
-  };
-
-  const setOnBlur = () => {
-    if (counter === "" || counter === 0) {
-      setCounter(1);
-    }
-  };
-
   const { addToFavorites, removeFromFavorites, favorites } = useFavorites();
 
   const isFavorite = favorites.some(
@@ -155,54 +110,7 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
     }
   };
 
-
-  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-    const savedCart = localStorage.getItem("cart");
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
-
-  
-  const addCartItem = () => {
-    let cartItem = {}
-  
-    if (selectedSize !== undefined) {
-      cartItem = {
-        vendor_code: item.vendor_code,
-        size: item.size[selectedSize].size,
-        count: counter
-      }
-
-      const duplicateIndexes = cartItems
-        .map((currentItem, currentIndex) => (
-          currentItem.vendor_code === item.vendor_code ? currentIndex : -1
-        ))
-        .filter(index => index !== -1);
-
-      let isChanged = false;
-
-      duplicateIndexes.map(duplicateItem => {
-        if (cartItems[duplicateItem]?.size === item.size[selectedSize].size) {
-          if (counter !== '' && cartItems[duplicateItem].count !== undefined) {
-            const newItem = cartItems[duplicateItem];
-            if (newItem.count) {
-              newItem.count += counter
-            }
-            setCartItems((cartItems) => [...cartItems])
-            isChanged = true;
-            return;
-          }
-        } 
-      })
-
-      if (!isChanged) {
-        setCartItems((cartItems) => [...cartItems, cartItem])
-      }
-    } 
-  }
-
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [cartItems]);
+  const { addCartItem } = useCartItems();
 
   return (
     <div className="product">
@@ -278,9 +186,13 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
         <div className="product__info">
           <div className="product__article">Артикул {item.vendor_code}</div>
           <h1 className="product__title">{item.name}</h1>
-          <div className="product__price">{item.price} грн</div>
-          {item.price2 && (
-            <div className="product__price-old">{item.price2} грн</div>
+          {item.price2 ? (
+            <>
+              <div className="product__price">{item.price2} грн</div>
+              <div className="product__price-old">{item.price} грн</div>
+            </>
+          ) : (
+            <div className="product__price">{item.price} грн</div>
           )}
           <div className="product__price-detail">
             Без урахування ціни доставки
@@ -306,32 +218,10 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
 
           <div className="product__counter">
             <div className="product__counter-title">Кількість:</div>
-            <div className="product__counter-buttons">
-              <button
-                className="product__counter-button"
-                onClick={handleDecrement}
-                disabled={counter === 1}
-              >
-                <img src={minus} alt="Minus" />
-              </button>
-              <input
-                type="number"
-                className="product__counter-input"
-                min={1}
-                max={99}
-                value={counter}
-                onChange={handleChange}
-                onFocus={() => setIsFocused(true)}
-                onBlur={setOnBlur}
-              />
-              <button
-                className="product__counter-button"
-                onClick={handleIncrement}
-                disabled={counter === 99}
-              >
-                <img src={plus} alt="Plus" />
-              </button>
-            </div>
+            <CounterButton 
+              count={counter}
+              setCount={setCounter}
+            />
           </div>
 
           <div className="product__buttons-cart-fav">
@@ -339,7 +229,7 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
               className={`product__add-to-cart 
                 ${selectedSize === undefined ? `disabled` : ``}
               `}
-              onClick={addCartItem}
+              onClick={() => addCartItem( item, counter, selectedSize )}
             >
               Додати у кошик
             </button>

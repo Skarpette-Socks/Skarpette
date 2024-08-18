@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./Dropdown.scss";
 
@@ -13,73 +13,60 @@ interface Props {
 
 const Dropdown: React.FC<Props> = ({ toggleMenu }) => {
   const [isActive, setIsActive] = useState(false);
-  const menuRef = useRef(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      setIsActive(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setIsActive(false);
-      }
-    };
-
     if (isActive) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
     }
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isActive]);
+  }, [isActive, handleClickOutside]);
 
+  const handleToggle = () => {
+    setIsActive((prev) => !prev);
+  };
 
-  const toggleFunc = () => {
+  const handleItemClick = () => {
     setIsActive(false);
     toggleMenu();
     window.scrollTo(0, 0);
-  }
+  };
+
+  const renderedOptions = React.useMemo(() => {
+    return options.map((option) => (
+      <Link
+        key={option.name}
+        className="dropdown-item"
+        to={option.link}
+        onClick={handleItemClick}
+      >
+        <div className="dropdown-item-text">{option.name} шкарпетки</div>
+        <span className="dropdown-item-icon">
+          <img src={arrow_right} alt="arrow right" />
+        </span>
+      </Link>
+    ));
+  }, []);
 
   return (
     <div className="dropdown" ref={menuRef}>
-      <div
-        className="dropdown-btn"
-        onClick={() => {
-          setIsActive(!isActive);
-        }}
-      >
+      <div className="dropdown-btn" onClick={handleToggle}>
         Каталог
         <span className="dropdown-btn-icon">
-          {isActive ? (
-            <img src={arrow_up} alt="arrow up" />
-          ) : (
-            <img src={arrow_down} alt="arrow down" />
-          )}
+          <img src={isActive ? arrow_up : arrow_down} alt="toggle" />
         </span>
       </div>
-      {isActive && (
-        <div className="dropdown-content">
-          {options.map((option) => {
-            const {name, link} = option;
-
-            return (
-              <Link
-                key={name}
-                className="dropdown-item"
-                to={link}
-                onClick={toggleFunc}
-              >
-                <div className="dropdown-item-text">
-                  {name} шкарпетки
-                </div>
-                <span className="dropdown-item-icon">
-                  <img src={arrow_right} alt="arrow right" />
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-      )}
+      {isActive && <div className="dropdown-content">{renderedOptions}</div>}
     </div>
   );
 };
