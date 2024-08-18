@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useFavorites } from "../../Context/FavoritesContext"; // Импортируем контекст избранных товаров
 import "./NavBar.scss";
@@ -11,6 +11,7 @@ import close_icon from "../assets/img/icons/close.svg";
 import cart from "../assets/img/icons/cart.svg";
 import Menu from "../Menu/Menu";
 import Dropdown from "../Dropdown/Dropdown";
+import { useCartItems } from "../../Context/CartContext";
 
 const NavBar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -63,6 +64,12 @@ const NavBarMenu: React.FC = () => {
 
 const NavBarActions: React.FC = () => {
   const { favorites } = useFavorites(); // Получаем список избранных товаров
+  const { cartItems } = useCartItems();
+  const countItems = cartItems.reduce((sum, item) => {
+    const count = item.count ? item.count : 0;
+
+    return (sum + count);
+  }, 0);
 
   return (
     <div className="navBar__actions">
@@ -85,7 +92,7 @@ const NavBarActions: React.FC = () => {
             className="navBar__actions-cart-icon"
           />
           <p className="navBar__actions-cart-text">Кошик</p>
-          <div className="navBar__actions-cart-count">2</div>
+          <div className="navBar__actions-cart-count">{countItems}</div>
         </div>
       </Link>
     </div>
