@@ -138,6 +138,12 @@
       height: 20px;
       cursor: pointer;
 
+      font-size: 14px;
+
+      @include on-tablet {
+        font-size: 16px;
+      }
+
       display: none;
 
       @include on-tablet {
@@ -178,7 +184,17 @@
       margin-top: 0;
       grid-column: 9/-1;
     }
+  }
 
+  &__empty {
+    grid-column: 1/-1;
+    text-align: center;
+    font-weight: 600;
+    font-size: 24px;
+
+    @include on-tablet {
+      font-size: 32px;
+    }
   }
 
   &__info {
@@ -202,6 +218,10 @@
   &__greytext {
     font-weight: 600;
     font-size: 14px;
+
+    @include on-tablet {
+      font-size: 16px;
+    }
   }
 
   &__greytext {
@@ -218,5 +238,15 @@
     border: none;
     border-radius: 100px;
     margin-top: 24px;
+    line-height: 20px;
+    cursor: pointer;
+    
+    &-text {
+      font-size: 16px;
+      
+      @include on-tablet {
+        font-size: 18px;
+      }
+    }
   }
 }

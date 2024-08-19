@@ -8,7 +8,7 @@ interface DataItem {
   name: string;
   description?: string;
   vendor_code: number;
-  images_urls: string[] | undefined;
+  images_urls: string[];
   composition_and_care?: string;
   type: string;
   style: string;

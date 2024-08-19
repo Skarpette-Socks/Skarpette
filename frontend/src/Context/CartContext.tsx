@@ -53,8 +53,12 @@ export const CartProvider: React.FC<{ children: ReactNode}> = ({
     if (selectedSize !== undefined) {
       const cartItem: CartItem = {
         vendor_code: item.vendor_code,
-        id: item._id,
         size: item.size[selectedSize].size,
+        name: item.name,
+        type: item.type,
+        image: item.images_urls[0],
+        price: item.price,
+        price2: item.price2,
         count: counter
       }
 
