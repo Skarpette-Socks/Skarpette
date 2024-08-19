@@ -318,7 +318,13 @@
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
+    margin-bottom: 4px;
 
+  }
+
+  &__good-in-cart {
+    color: $grayscale-600;
+    font-size: 14px;
   }
 
   &__size-button {

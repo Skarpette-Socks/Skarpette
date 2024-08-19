@@ -17,7 +17,9 @@ import ProductZoom from "./ProductZoom";
 import DataItem from "../../types/DataItem";
 import { useFavorites } from "../../Context/FavoritesContext";
 import { useCartItems } from "../../Context/CartContext";
-import CounterButton from "../CounterButton/CounterButton";
+import CounterButtonProduct from "../CounterButton/CounterButtonProduct";
+import FavoriteItem from "../../types/FavoriteItem";
+import CartItem from "../../types/CartItem";
 
 interface Props {
   item: DataItem;
@@ -106,11 +108,38 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
     if (isFavorite) {
       removeFromFavorites(item.vendor_code);
     } else {
-      addToFavorites(item);
+      const newItem: FavoriteItem = {
+        vendor_code: item.vendor_code,
+        image: item.images_urls[0],
+        category: item.type,
+        name: item.name,
+        price: item.price,
+        discount_price: item.price2,
+      }
+      addToFavorites(newItem);
     }
-  };
+  }; 
 
-  const { addCartItem } = useCartItems();
+  const { cartItems, addCartItem } = useCartItems();
+  const [cartItem, setCartItem] = useState<CartItem | undefined>();
+  
+  useEffect(() => {
+    
+    if (selectedSize !== undefined) {
+      setCartItem(
+        cartItems.find((cartItem) => {
+        const cartItemKey = cartItem.vendor_code + cartItem.size;
+        const itemKey = item.vendor_code + item.size[selectedSize].size;
+        
+        if (cartItem.count !== '') {
+          return (cartItemKey === itemKey);
+        }
+      }))
+    } else {
+      setCartItem(undefined);
+    }
+  }, [selectedSize, cartItems])
+
 
   return (
     <div className="product">
@@ -214,26 +243,37 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
                 />
               ))}
             </div>
+
+            {cartItem && (
+              <div className="product__good-in-cart">
+                У кошику {cartItem.count}шт
+              </div>
+            )}
+            {cartItem?.count === 99 && (
+              <div className="product__good-in-cart">
+                Максимальна кількість
+              </div>
+            )}
           </div>
 
           <div className="product__counter">
             <div className="product__counter-title">Кількість:</div>
-            <CounterButton 
+            <CounterButtonProduct 
               count={counter}
               setCount={setCounter}
+              cartItemCount={cartItem?.count}
             />
           </div>
 
           <div className="product__buttons-cart-fav">
             <button
               className={`product__add-to-cart 
-                ${selectedSize === undefined ? `disabled` : ``}
+                ${selectedSize === undefined || counter === 0 ? `disabled` : ``}
               `}
               onClick={() => addCartItem( item, counter, selectedSize )}
             >
               Додати у кошик
             </button>
-
             <button
               className="product__add-to-fav"
               onClick={handleFavoriteClick}

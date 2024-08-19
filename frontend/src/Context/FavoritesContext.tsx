@@ -7,15 +7,7 @@ import React, {
   useEffect,
   useMemo,
 } from "react";
-
-interface FavoriteItem {
-  vendor_code: number;
-  image: string;
-  category: string;
-  name: string;
-  price: number;
-  discount_price?: number;
-}
+import FavoriteItem from "../types/FavoriteItem";
 
 interface FavoritesContextType {
   favorites: FavoriteItem[];
