@@ -81,6 +81,7 @@ const SocksPage: React.FC<SocksPageProps> = ({
             : [...prev, value]
         );
       }
+      setCurrentPage(1);
     },
     []
   );
