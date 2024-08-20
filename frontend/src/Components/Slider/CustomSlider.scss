@@ -173,22 +173,22 @@
     }
   }
 
-  &__actions-button {
-    position: absolute;
-    bottom: 217px;
-    left: 24px;
+  // &__actions-button {
+  //   // position: absolute;
+  //   bottom: 217px;
+  //   left: 24px;
 
-    @include on-tablet {
-      left: 75px;
-      bottom: 30px;
-    }
+  //   @include on-tablet {
+  //     left: 75px;
+  //     bottom: 30px;
+  //   }
 
-    @include on-desktop {
-      left: 76px;
-      bottom: 50px;
+  //   @include on-desktop {
+  //     left: 0px;
+  //     bottom: 0px;
 
-    }
-  }
+  //   }
+  // }
 }
 
 .slick-dots {
