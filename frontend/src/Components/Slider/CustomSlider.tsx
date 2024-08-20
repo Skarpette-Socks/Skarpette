@@ -98,16 +98,16 @@ const CustomSlider: React.FC = () => {
               <p className="custom-slider__description">{slide.description}</p>
             </div>
 
-            <div className="custom-slider__actions">
-              <a href="/catalog">
-                <button className="custom-slider__actions-button">
-                  {slide.button}
-                </button>
-              </a>
-            </div>
           </div>
         ))}
       </Slider>
+        <div className="custom-slider__actions">
+          <a href="/catalog/all-socks">
+            <button className="custom-slider__actions-button">
+              Перейти
+            </button>
+          </a>
+        </div>
     </div>
   );
 };

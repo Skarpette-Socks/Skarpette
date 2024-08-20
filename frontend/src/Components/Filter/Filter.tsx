@@ -212,10 +212,17 @@ useEffect(() => {
         ) : (
           <>
             <span className="filter__header-title">Фільтри:</span>
-            <div className="filter__buttons" ref={filterButtonsRef}>
-              {renderFilterButton("Стиль", "style")}
-              {renderFilterButton("Розмір (см)", "size")}
-            </div>
+            {sizes.length === 0 ? (
+              <div className="filter__buttons" ref={filterButtonsRef}>
+                {renderFilterButton("Стиль", "style")}
+              </div>
+            ) : (
+              <div className="filter__buttons" ref={filterButtonsRef}>
+                {renderFilterButton("Стиль", "style")}
+                {renderFilterButton("Розмір (см)", "size")}
+              </div>
+            )
+            }
           </>
         )}
       </div>
