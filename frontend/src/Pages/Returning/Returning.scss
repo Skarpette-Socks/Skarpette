@@ -1,0 +1,101 @@
+@import "../../Components/assets/styles/mixins";
+@import "../../Components/assets/styles/variables";
+
+.returning {
+  @include content-padding-inline;
+
+  margin-top: 40px;
+
+  @include on-tablet {
+    margin-top: 64px;
+  }
+
+  &__container {
+    @include container-grid;
+  }
+
+  &__questions {
+    grid-column: 1/-1;
+
+    @include on-desktop {
+      grid-column: 9/-1;
+    }
+  }
+
+  &__text {
+    grid-column: 1/-1;
+    
+
+    @include on-desktop {
+      grid-row: 1/2;
+      grid-column: 1/7;
+    }
+
+    & > h1 {
+      font-weight: 600;
+      font-size: 28px;
+      margin-bottom: 16px;
+      margin-top: 48px;
+      
+
+      @include on-tablet {
+        margin-bottom: 24px;
+        font-size: 48px;
+        margin-top: 64px;
+      }
+
+      @include on-desktop {
+        margin-top: 0;
+      }
+    }
+
+    & > h2 {
+      margin-top: 44px;
+      margin-bottom: 16px;
+      font-weight: 500;
+      font-size: 24px;
+
+      @include on-tablet {
+        font-size: 40px;
+        line-height: 44px;
+      }
+    }
+
+    & > h3 {
+      margin-top: 40px;
+      margin-bottom: 8px;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 20px;
+      color: $grayscale-1000;
+
+
+      @include on-tablet {
+        font-size: 28px;
+        margin-bottom: 16px;
+
+
+      }
+    }
+
+    & > ul {
+      margin-left: 20px;
+      color: $grayscale-600;
+      margin-top: 16px;
+      
+    }
+
+    & > p {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 20px;
+      color: $grayscale-600;
+
+      & > span {
+        color: $grayscale-1000;
+
+      }
+    }
+  }
+
+}

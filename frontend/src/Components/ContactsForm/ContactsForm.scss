@@ -1,0 +1,111 @@
+@import "../../Components/assets/styles/mixins";
+@import "../../Components/assets/styles/variables";
+
+.contacts-form {
+  background-color: $grayscale-50;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  margin-top: 32px;
+  font-weight: 500;
+
+
+  @include on-tablet {
+    height: 524px;
+    gap: 24px;
+  }
+
+  @include on-desktop {
+    margin-top: 64px;
+    margin-bottom: 64px;
+  }
+
+  &__title {
+    width: 100%;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: left;
+    color: $grayscale-1000;
+
+    @include on-tablet {
+      font-size: 28px;
+    }
+  }
+
+  &__name,
+  &__email,
+  &__message {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid $grayscale-200;
+    background-color: $grayscale-0;
+    padding: 14px 12px;
+    font-size: 14px;
+    font-weight: 500;
+
+    @include on-tablet {
+      height: 60px;
+      font-size: 16px;
+
+    }
+
+    @include on-desktop {
+    }
+  }
+
+  &__name,
+  &__email {
+    height: 44px;
+
+    @include on-tablet {
+      height: 60px;
+    }
+  }
+
+  &__message {
+    height: 120px;
+    resize: none;
+    padding: 14px 12px;
+
+    @include on-tablet {
+      height: 180px;
+    }
+  }
+
+  &__button {
+    height: 48px;
+    width: 100%;
+    background-color: $primary-800;
+    border-radius: 100px;
+    padding: 14px 20px;
+    font-weight: 600;
+    font-size: 16px;
+    color: $grayscale-0;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+
+    @include on-tablet {
+      height: 60px;
+      font-size: 18px;
+    }
+
+    &:hover {
+      background-color: darken($primary-800, 10%);
+    }
+  }
+}
+#contacts-form__title {
+  width: 100%;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: left;
+  color: $grayscale-1000;
+
+  @include on-tablet {
+    font-size: 28px;
+  }
+}

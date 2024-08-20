@@ -3,6 +3,13 @@
 @import "typography";
 @import "fonts";
 
+
+body {
+  width: 100%;
+  height: 100%;
+}
+
 * {
   font-family: MacPawFixel;
+  font-weight: 500;
 }

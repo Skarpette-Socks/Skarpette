@@ -1,0 +1,124 @@
+@import "../../Components/assets/styles/mixins";
+@import "../../Components/assets/styles/variables";
+
+.payment-delivery {
+  @include content-padding-inline;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  max-width: 1440px;
+  margin-inline: auto;
+  margin-top: 40px;
+
+  @include on-tablet {
+    gap: 64px;
+    margin-top: 64px;
+  }
+
+  @include on-desktop {
+    flex-direction: row;
+    align-items: start;
+
+    gap: 242px;
+
+    &__questions {
+      order: 2;
+    }
+
+    &__text {
+      order: 1;
+    }
+  }
+
+  &__questions {
+    display: flex;
+
+    @include on-desktop {
+      flex-direction: column;
+    }
+
+    img {
+      display: none;
+
+      @include on-tablet {
+        display: none;
+        width: 212px;
+        height: 252px;
+        object-fit: cover;
+      }
+
+      @include on-desktop {
+        display: block;
+        width: 408px;
+        height: 252px;
+      }
+    }
+  }
+
+  &__info {
+    &-title {
+      font-weight: 600;
+      font-size: 28px;
+      color: $grayscale-1000;
+
+      @include on-tablet {
+        font-size: 48px;
+      }
+    }
+
+    &-section {
+      margin-top: 32px;
+
+      @include on-tablet {
+        margin-top: 64px;
+      }
+
+      h6 {
+        font-weight: 500;
+        font-size: 24px;
+        color: $grayscale-1000;
+
+        @include on-tablet {
+          font-size: 40px;
+        }
+      }
+
+      p {
+        font-weight: 500;
+        font-size: 16px;
+        color: $grayscale-600;
+        margin-top: 16px;
+      }
+    }
+
+    &-post-office {
+      margin-top: 24px;
+
+      @include on-tablet {
+        margin-top: 40px;
+      }
+
+      h5 {
+        font-weight: 600;
+        font-size: 18px;
+        color: $grayscale-1000;
+
+        @include on-tablet {
+          font-size: 28px;
+        }
+      }
+
+      ul {
+        font-weight: 500;
+        font-size: 16px;
+        color: $grayscale-600;
+        margin-top: 8px;
+        list-style-position: outside;
+
+        li {
+          margin-left: 16px;
+        }
+      }
+    }
+  }
+}

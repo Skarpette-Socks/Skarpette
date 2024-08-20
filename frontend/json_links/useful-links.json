@@ -1,0 +1,8 @@
+[
+  { "name": "Про нас", "link": "/about-us" },
+  { "name": "Акції", "link": "/discounts" },
+  { "name": "Оплата та доставка", "link": "/payment-and-delivery" },
+  { "name": "Повернення", "link": "/return-of-goods" },
+  { "name": "Контакти", "link": "/contacts" },
+  { "name": "Написати відгук", "link": "/" }
+]

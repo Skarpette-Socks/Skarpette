@@ -6,19 +6,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 14px;
+  padding: 12px 16px 12px 16px;
+  max-width: 1440px;
+  margin-inline: auto;
 
   @include on-tablet {
-    margin-top: 16px;
-  }
-
-  @include on-desktop {
-    margin-top: 16px;
-  }
-
-  &__logo svg path {
-    fill: $grayscale-1000 !important;
-    color: aliceblue !important;
+    padding: 16px 78px;
   }
 
   &__logo {
@@ -26,9 +19,25 @@
     justify-content: center;
     align-items: center;
     gap: 8px;
+
+    a {
+      display: inline-block;
+      line-height: 0;
+    }
+
+    &-img {
+      width: 97px;
+      height: 32px;
+
+      @include on-desktop {
+        width: 114px;
+        height: 37px;
+      }
+    }
   }
 
   &__burger-menu {
+    cursor: pointer;
     @include on-desktop {
       display: none;
     }
@@ -41,6 +50,8 @@
       align-items: center;
       gap: 24px;
       list-style-type: none;
+      width: 899px;
+      margin-left: 40px;
 
       a {
         text-decoration: none;
@@ -56,8 +67,28 @@
     align-items: center;
     gap: 16px;
 
+    img {
+      width: 20px;
+      height: 20px;
+      @include on-tablet {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
     a {
       text-decoration: none;
+      display: inline-block;
+    }
+
+    a:not(:last-child) {
+      width: 20px;
+      height: 20px;
+
+      @include on-tablet {
+        width: 24px;
+        height: 24px;
+      }
     }
 
     &-cart {
@@ -67,12 +98,11 @@
       gap: 8px;
       border-radius: 100px;
       background-color: $grayscale-50;
-      width: 60px;
-      height: 36px;
+      padding: 8px;
 
       @include on-tablet {
-        width: 111px;
-        height: 48px;
+        padding: 12px;
+
       }
 
       &-text {
@@ -80,7 +110,7 @@
         @include on-tablet {
           display: block;
           font-size: 16px;
-          font-weight: 600;
+          font-weight: 500;
           color: $grayscale-1000;
         }
       }
@@ -90,17 +120,48 @@
         color: $grayscale-0;
         font-weight: 500;
         border-radius: 100px;
-        width: 24px;
-        height: 24px;
+        padding: 1px 6px 0px;
         display: flex;
         align-items: center;
         justify-content: center;
         text-align: center;
+        line-height: 20px;
+
+        @include on-tablet {
+          padding: 3px 8px 1px;
+        }
       }
 
       &-icon {
         @include on-tablet {
           display: none;
+        }
+      }
+    }
+
+    &-favorites {
+      position: relative;
+      display: inline-block;
+
+      &-count {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: -12px;
+        right: -12px;
+        background-color: $grayscale-200;
+        color: $grayscale-800;
+        font-size: 12px;
+        border-radius: 100px;
+        width: 20px;
+        height: 20px;
+
+        @include on-tablet {
+          width: 24px;
+          height: 24px;
+          top: -14px;
+          right: -14px;
         }
       }
     }

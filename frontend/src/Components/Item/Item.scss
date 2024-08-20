@@ -1,29 +1,48 @@
 @import "../assets/styles/mixins";
 @import "../assets/styles/variables";
 
+.items-list {
+  grid-column: 1/-1;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 152px);
+  gap: 32px 24px;
+  justify-content: space-between;
+  place-items: center;
+
+  @include on-tablet {
+    grid-template-columns: repeat(auto-fill, 294px);
+  }
+
+  @include on-desktop {
+    grid-template-columns: repeat(auto-fill, 303px);
+  }
+}
+
 .item {
-  @include content-padding-inline;
+  width: 100%;
+  max-width: 350px;
+  text-decoration: none;
+  position: relative;
   width: 152px;
-  height: 260px;
 
   @include on-tablet {
     width: 294px;
-    height: 428px;
   }
 
   @include on-desktop {
     width: 303px;
-    height: 428px;
   }
 
   &__image {
+    border-radius: 8px;
     width: 152px;
     height: 164px;
-    border-radius: 8px;
+    object-fit: cover;
 
     @include on-tablet {
       width: 294px;
-      height: 340px;
+      height: 330px;
     }
 
     @include on-desktop {
@@ -37,6 +56,7 @@
     font-size: 12px;
     font-weight: 500;
     color: $grayscale-400;
+    text-transform: uppercase;
 
     @include on-tablet {
       font-size: 14px;
@@ -47,9 +67,13 @@
     font-weight: 600;
     font-size: 16px;
     color: $grayscale-1000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     @include on-tablet {
       margin-top: 8px;
+      font-size: 18px;
     }
   }
 
@@ -82,6 +106,94 @@
 
     @include on-tablet {
       font-size: 16px;
+    }
+  }
+
+  &__new {
+    position: absolute;
+    border: 1px solid $grayscale-200;
+    background-color: $grayscale-50;
+    width: 43px;
+    height: 32px;
+    border-radius: 100px;
+    top: 4px;
+    left: 4px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 12px;
+    font-weight: 600; //??
+    color: $grayscale-800;
+
+    @include on-tablet {
+      top: 16px;
+      left: 16px;
+      width: 55px;
+      height: 40px;
+    }
+  }
+
+  &__discount {
+    position: absolute;
+    border: 1px solid $grayscale-800;
+    background-color: $grayscale-800;
+    width: 43px;
+    height: 32px;
+    border-radius: 100px;
+    top: 40px;
+    left: 4px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 12px;
+    font-weight: 600; //??
+    color: $grayscale-0;
+
+    @include on-tablet {
+      top: 64px;
+      left: 16px;
+      width: 55px;
+      height: 40px;
+      font-size: 14px;
+    }
+  }
+
+  &__favorite {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: $grayscale-0;
+    border: none;
+    border-radius: 100px;
+
+    cursor: pointer;
+
+    @include on-tablet {
+      width: 40px;
+      height: 40px;
+      top: 16px;
+      right: 16px;
+    }
+
+    &-icon {
+      width: 20px;
+      height: 20px;
+
+      @include on-tablet {
+        width: 24px;
+        height: 24px;
+      }
     }
   }
 }

@@ -1,0 +1,51 @@
+Base URL:
+http://localhost:5000
+
+Clear Database (pls don't):
+Request type: DELETE
+Example:
+http://localhost:5000/clear
+
+Search Skarpettes by Name or Vendor Code:
+Request type: GET
+Parameters: name or vendor_code
+Example:
+http://localhost:5000/search?vendor_code=112233
+http://localhost:5000/search?name=socks
+
+Filter Skarpettes:
+Request type: GET
+Parameters: type
+Example:
+http://localhost:5000/filter?type=Men
+
+Get Favorite Skarpettes
+Request type: GET
+Example:
+http://localhost:5000/favorites
+
+Get New Skarpettes
+Request type: GET
+Example:
+http://localhost:5000/new
+
+Create Skarpette
+Request type: POST
+Data:
+all fields from model in form_data
+
+Delete Skarpette by ID
+Request type: DELETE
+Example: 
+http://localhost:5000/669fa1d2df106cad2294c2ca
+
+Get All Skarpettes
+Request type: GET
+Example:
+http://localhost:5000/
+
+Update Skarpette
+Request type: PUT
+Data: JSON with fields to update
+Example:
+http://localhost:5000/669fa1d2df106cad2294c2ca

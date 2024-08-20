@@ -1,8 +1,33 @@
 import "./Footer.scss";
 
-import logo from "../assets/img/icons/logo.svg";
+import { useState } from "react";
 
-const Footer: React.FC = () => {
+import logo from "../assets/img/icons/logo-green.svg";
+import plus from "../assets/img/icons/plus.svg";
+import minus from "../assets/img/icons/minus.svg";
+import visa from "../assets/img/icons/visa.svg";
+import mastercard from "../assets/img/icons/mastercard.svg";
+import fondy from "../assets/img/icons/fondy.svg";
+
+
+import categories from "../../../json_links/categories.json";
+import usefulLinks from "../../../json_links/useful-links.json";
+
+import FooterLinks from "./FooterLinks";
+
+const Footer = () => {
+  const [categoriesOpened, setCategoriesOpened] = useState(false);
+  const [aboutUsOpened, setAboutUsOpened] = useState(false);
+  const newCategories = []
+
+  for (const category of categories) {
+    newCategories.push({
+      name: category.footer_name,
+      link: category.link
+    })
+    
+  }
+
   return (
     <div className="footer">
       <div className="footer__main">
@@ -19,86 +44,63 @@ const Footer: React.FC = () => {
         <div className="footer__categories">
           <div className="footer__subtitle">Категорії</div>
 
-          <ul className="footer__categories-list">
-            <li className="footer__categories-item">
-              <a href="#" className="footer__categories-link">
-                Жіночі
-              </a>
-            </li>
-
-            <li className="footer__categories-item">
-              <a href="#" className="footer__categories-link">
-                Дитячі
-              </a>
-            </li>
-
-            <li className="footer__categories-item">
-              <a href="#" className="footer__categories-link">
-                Веселі
-              </a>
-            </li>
-
-            <li className="footer__categories-item">
-              <a href="#" className="footer__categories-link">
-                Класичні
-              </a>
-            </li>
-
-            <li className="footer__categories-item">
-              <a href="#" className="footer__categories-link">
-                Спорт
-              </a>
-            </li>
-
-            <li className="footer__categories-item">
-              <a href="#" className="footer__categories-link">
-                Моно
-              </a>
-            </li>
-
-            <li className="footer__categories-item">
-              <a href="#" className="footer__categories-link">
-                Короткі
-              </a>
-            </li>
-          </ul>
+          <FooterLinks items={newCategories}/>
         </div>
 
         <div className="footer__about-us">
           <div className="footer__subtitle">Про компанію</div>
 
-          <ul className="footer__about-us-list">
-            <li className="footer__about-us-item">
-              <a href="#about-us" className="footer__about-us-link">
-                Про нас
-              </a>
-            </li>
-            <li className="footer__about-us-item">
-              <a href="#about-us" className="footer__about-us-link">
-                Акції
-              </a>
-            </li>
-            <li className="footer__about-us-item">
-              <a href="#about-us" className="footer__about-us-link">
-                Оплата та доставка
-              </a>
-            </li>
-            <li className="footer__about-us-item">
-              <a href="#about-us" className="footer__about-us-link">
-                Повернення
-              </a>
-            </li>
-            <li className="footer__about-us-item">
-              <a href="#about-us" className="footer__about-us-link">
-                Контакти
-              </a>
-            </li>
-            <li className="footer__about-us-item">
-              <a href="#about-us" className="footer__about-us-link">
-                Написати відгук
-              </a>
-            </li>
-          </ul>
+          <FooterLinks items={usefulLinks}/>
+        </div>
+
+        <div className="footer__dropdowns">
+          <div className="footer__greyline"></div>
+
+          <div 
+            className="footer__dropdown-catalog"
+            onClick={() => setCategoriesOpened(!categoriesOpened)}
+          >
+            <div className="footer__dropdown-container">
+              <div className="footer__dropdown-catalog-title">Категорії</div>
+
+              <span className="footer__dropdown-button">
+                {categoriesOpened ? (
+                  <img src={minus} alt="Minus" />
+                ) : (
+                  <img src={plus} alt="Plus" />
+                )}
+              </span>
+
+            </div>
+
+            {categoriesOpened && <FooterLinks items={categories}/>}
+          </div>
+
+          <div className="footer__greyline"></div>
+
+          <div 
+            className="footer__dropdown-about-us" 
+            onClick={() => setAboutUsOpened(!aboutUsOpened)}
+          >
+            <div className="footer__dropdown-container">
+              <div className="footer__dropdown-about-us-title">
+                Про компанію
+              </div>
+
+              <span className="footer__dropdown-button">
+                {aboutUsOpened ? (
+                  <img src={minus} alt="Minus" />
+                ) : (
+                  <img src={plus} alt="Plus" />
+                )}
+              </span>
+            </div>
+
+            {aboutUsOpened && <FooterLinks items={usefulLinks}/>}
+
+          </div>
+
+          <div className="footer__greyline"></div>
         </div>
 
         <div className="footer__info">
@@ -126,11 +128,46 @@ const Footer: React.FC = () => {
 
               <a href="mail:scarpettehelp@gmail.com">scarpettehelp@gmail.com</a>
             </div>
+
+            <div className="footer__address">
+              <div className="footer__address-title footer__graytitle">
+                Фізична адреса
+              </div>
+
+              <div className="footer__address-info">
+                Київ, вул. Антоновича 24/10
+              </div>
+              <div className="footer__address-fop">
+                ФОП Ковальчук Марина Андріївна
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="footer__minor-info"></div>
+      <div className="footer__minor-info">
+        <div className="footer__greyline"></div>
+
+        <div className="footer__company-name">
+          ©2024 Scarpette Socks
+        </div>
+
+        <div className="footer__terms-privacy-container">
+          <a href="/privacy-policy" className="footer__privacy-link">
+            Політика&nbsp;конфіденційності
+          </a>
+
+          <a href="/privacy-policy" className="footer__terms-link">
+            Умови&nbsp;використання
+          </a>
+        </div>
+
+        <div className="footer__payment-logos">
+          <img src={visa} alt="visa logo" className="footer__visa-logo" />
+          <img src={mastercard} alt="mastercard logo" className="footer__mastercard-logo" />
+          <img src={fondy} alt="fondy logo" className="footer__fondy-logo" />
+        </div>
+      </div>
     </div>
   );
 };

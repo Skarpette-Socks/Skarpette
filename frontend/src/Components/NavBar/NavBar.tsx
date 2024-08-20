@@ -1,13 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useFavorites } from "../../Context/FavoritesContext"; // Импортируем контекст избранных товаров
 import "./NavBar.scss";
-import Dropdown from "../Dropdown/Dropdown";
 
 import search_icon from "../assets/img/icons/search.svg";
 import heart_icon from "../assets/img/icons/heart.svg";
-import logo from "../assets/img/icons/logo.svg";
+import logo from "../assets/img/icons/logo-black.svg";
 import menu from "../assets/img/icons/menu.svg";
+import close_icon from "../assets/img/icons/close.svg";
 import cart from "../assets/img/icons/cart.svg";
+import Menu from "../Menu/Menu";
+import Dropdown from "../Dropdown/Dropdown";
+import { useCartItems } from "../../Context/CartContext";
+
+const NavBar: React.FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  return (
+    <nav className="navBar">
+      <div className="navBar__logo">
+        <img
+          src={isMenuOpen ? close_icon : menu}
+          alt="burger menu"
+          className="navBar__burger-menu"
+          onClick={toggleMenu}
+        />
+        <Link to="/">
+          <img src={logo} alt="site logo" className="navBar__logo-img" />
+        </Link>
+      </div>
+      <NavBarMenu />
+      <Menu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+      <NavBarActions />
+    </nav>
+  );
+};
 
 const NavBarMenu: React.FC = () => {
   return (
@@ -15,7 +46,7 @@ const NavBarMenu: React.FC = () => {
       <li>
         <Dropdown />
       </li>
-      <li className="navBar__item">
+      <li>
         <Link to="/offers">Акції</Link>
       </li>
       <li className="navBar__item">
@@ -31,33 +62,41 @@ const NavBarMenu: React.FC = () => {
   );
 };
 
-const NavBarActions: React.FC = () => (
-  <div className="navBar__actions">
-    <a href="#">
-      <img src={search_icon} alt="Search" />
-    </a>
-    <Link to="/favorites">
-      <img src={heart_icon} alt="Favorites" />
-    </Link>
-    <Link to="/cart">
-      <div className="navBar__actions-cart">
-        <img src={cart} alt="cart icon" className="navBar__actions-cart-icon" />
-        <p className="navBar__actions-cart-text">Кошик</p>
-        <div className="navBar__actions-cart-count">2</div>
-      </div>
-    </Link>
-  </div>
-);
+const NavBarActions: React.FC = () => {
+  const { favorites } = useFavorites(); // Получаем список избранных товаров
+  const { cartItems } = useCartItems();
+  const countItems = cartItems.reduce((sum, item) => {
+    const count = item.count ? item.count : 0;
 
-const NavBar: React.FC = () => (
-  <nav className="navBar">
-    <Link to="/" className="navBar__logo">
-      <img src={menu} alt="burger menu" className="navBar__burger-menu" />
-      <img src={logo} alt="site logo" />
-    </Link>
-    <NavBarMenu />
-    <NavBarActions />
-  </nav>
-);
+    return (sum + count);
+  }, 0);
+
+  return (
+    <div className="navBar__actions">
+      <Link to="#">
+        <img src={search_icon} alt="Search" />
+      </Link>
+      <Link to="/favorites" className="navBar__actions-favorites">
+        <img src={heart_icon} alt="Favorites" />
+        {favorites.length > 0 && (
+          <div className="navBar__actions-favorites-count">
+            {favorites.length}
+          </div>
+        )}
+      </Link>
+      <Link to="/cart">
+        <div className="navBar__actions-cart">
+          <img
+            src={cart}
+            alt="cart icon"
+            className="navBar__actions-cart-icon"
+          />
+          <p className="navBar__actions-cart-text">Кошик</p>
+          <div className="navBar__actions-cart-count">{countItems}</div>
+        </div>
+      </Link>
+    </div>
+  );
+};
 
 export default NavBar;

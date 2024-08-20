@@ -1,0 +1,72 @@
+@import "../assets/styles/mixins";
+@import "../assets/styles/variables";
+
+.page-navigation {
+  @include content-padding-inline;
+  max-width: 1440px;
+  margin-inline: auto;
+
+  margin-top: 8px;
+
+  @include on-tablet {
+    margin-top: 32px;
+  }
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+
+    img {
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
+      display: block;
+      position: relative;
+      top: -0.7px; // Тонкая настройка, при необходимости измените значение
+    }
+
+    span {
+      font-weight: 500;
+      font-size: 14px;
+      color: $grayscale-1000;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__links {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 16px;
+
+    @include on-tablet {
+      margin-top: 24px;
+    }
+  }
+
+  &__home-link {
+    font-weight: 500;
+    font-size: 14px;
+    color: $grayscale-1000;
+    text-decoration: none;
+  }
+
+  &__separator {
+    font-weight: 500;
+    font-size: 14px;
+    color: $grayscale-1000;
+  }
+
+  &__current-link {
+    font-weight: 500;
+    font-size: 14px;
+    color: $grayscale-400;
+    text-decoration: none;
+  }
+}
