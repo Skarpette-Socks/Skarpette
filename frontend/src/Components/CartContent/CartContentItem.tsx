@@ -1,12 +1,8 @@
-import { useEffect, useState } from "react";
 import CartItem from "../../types/CartItem";
 import "./CartContent.scss"
-import { fetchDataItem } from "../../api/fetchDataItem";
-import DataItem from "../../types/DataItem";
 import close from "../assets/img/icons/close.svg";
 import { useCartItems } from "../../Context/CartContext";
 import CounterButtonCart from "../CounterButton/CounterButtonCart";
-
 
 interface Props {
   cartItem: CartItem,
@@ -19,45 +15,7 @@ const CartContentItem: React.FC<Props> = ({
     index,
     priceLoading 
   }) => {
-  // const [item, setItem] = useState<DataItem>();
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState(false);
   const { deleteCartItem } = useCartItems();
-
-
-  // useEffect(() => {
-  //   if (cartItem.vendor_code) {
-  //     const loadData = async () => {
-  //       setLoading(true);
-  //       try {
-  //         const result = await fetchDataItem(cartItem.vendor_code);
-  //         console.log('result', result);
-
-  //         setItem(result[0]);
-  //       } catch (error: any) {
-  //         setError(error.message);
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     };
-  
-  //     loadData();
-  //   }
-  // }, [cartItem.vendor_code]);
-
-  // if (!item) {
-  //   return;
-  // }
-
-  // if (loading) {
-  //   return (
-  //     <div>Заванатаження...</div>
-  //   )
-  // }
-
-  // if (error) {
-  //   <div>Помилка ;( <br /> {error}</div>
-  // }
 
   return (
     <div>
@@ -106,6 +64,7 @@ const CartContentItem: React.FC<Props> = ({
           <button 
             className="cart__item-close"
             onClick={() => deleteCartItem(index)}
+            disabled={priceLoading}
           >
             <img src={close} alt="Minus" />
           </button>

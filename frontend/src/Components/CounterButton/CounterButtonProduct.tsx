@@ -24,8 +24,10 @@ const CounterButtonProduct: React.FC<CounterButtonProduct> = ({
   }
 
   useEffect(() => {
-    if (!isFocused) {
+    if (counter !== '') {
       setCount(counter);
+    } else {
+      setCount(1);
     }
 
     if (counter !== '' && maxVal <= counter) {
@@ -35,7 +37,7 @@ const CounterButtonProduct: React.FC<CounterButtonProduct> = ({
     if (counter === 0 && maxVal >= 1) {
       setCounter(1);
     }
-  }, [counter, isFocused, cartItemCount])
+  }, [counter, cartItemCount])
 
   const setOnBlur = () => {
     if (counter === "" || counter === 0) {
@@ -77,7 +79,7 @@ const CounterButtonProduct: React.FC<CounterButtonProduct> = ({
       <button
         className="counter__button"
         onClick={handleDecrement}
-        disabled={counter <= 1}
+        disabled={counter !== '' && counter  <= 1}
       >
         <img src={minus} alt="Minus" />
       </button>
@@ -97,7 +99,7 @@ const CounterButtonProduct: React.FC<CounterButtonProduct> = ({
       <button
         className="counter__button"
         onClick={handleIncrement}
-        disabled={counter >= maxVal}
+        disabled={counter !== '' && counter >= maxVal}
       >
         <img src={plus} alt="Plus" />
       </button>
