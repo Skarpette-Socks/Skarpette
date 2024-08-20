@@ -250,7 +250,9 @@ useEffect(() => {
               {renderCheckboxes(styles, selectedStyles, onStyleChange)}
               <div className="filter__mobile-break-line"></div>
 
-              <h3 className="filter__mobile-body-text">Розмір (см)</h3>
+              {sizes.length === 0 || (
+                <h3 className="filter__mobile-body-text">Розмір (см)</h3>
+              )}
               {renderCheckboxes(sizes, selectedSizes, onSizeChange)}
             </div>
 
