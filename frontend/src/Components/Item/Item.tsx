@@ -52,7 +52,7 @@ const Item: React.FC<ItemProps> = ({
   return (
     <a href={`/product/${vendor_code}`} className="item">
       <div className="item__image-container">
-        <img src={image} alt={name} className="item__image" />
+        <img src={image} alt={name} className="item__image" loading="lazy"/>
         {isNew && <span className="item__new">NEW</span>}
 
         {discountPercentage !== undefined && discountPercentage > 0 && (
