@@ -9,22 +9,13 @@ import MobilePagination from "../../Components/MobilePagination/MobilePagination
 import Pagination from "../../Components/Pagination/Pagination";
 import Filter from "../Filter/Filter";
 import Sort from "../Sort/Sort";
+import { useParams } from "react-router-dom";
+import categories from "../../../json_links/categories.json";
+import { getSocksByCategory } from "../../api/fetchDataByCategory";
+import { fetchAllData } from "../../api/fetchAllData";
 
-interface SocksPageProps {
-  fetchSocks: () => Promise<DataItem[]>;
-  title: string;
-  linkText: string;
-  linkHref: string;
-  sizes: string[];
-}
 
-const SocksPage: React.FC<SocksPageProps> = ({
-  fetchSocks,
-  title,
-  linkText,
-  linkHref,
-  sizes,
-}) => {
+const SocksPage: React.FC = () => {
   const [socks, setSocks] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,26 +24,59 @@ const SocksPage: React.FC<SocksPageProps> = ({
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [sortedItems, setSortedItems] = useState<DataItem[]>([]);
+  const { TYPE_LINK } = useParams<string>();
+
+  console.log(TYPE_LINK);
+
+
+  const category = 
+    categories.find(category => category.link === `/catalog/${TYPE_LINK}`);
+
+  console.log(category);
+
 
   const updateItemsPerPage = useCallback(() => {
     setItemsPerPage(window.innerWidth >= 768 ? 16 : 12);
   }, []);
 
   useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      try {
-        const result = await fetchSocks();
-        setSocks(result);
-      } catch (error: any) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
+    if (category) {
+      if (category.type === 'All') {
+        const loadData = async () => {
+          setLoading(true);
+          try {
+            const result = await fetchAllData();
+            console.log('result', result);
+  
+            setSocks(result);
+          } catch (error: any) {
+            setError(error.message);
+          } finally {
+            setLoading(false);
+          }
+        };
+    
+        loadData();
+  
+      } else {
+        const loadData = async () => {
+          setLoading(true);
+          try {
+            const result = await getSocksByCategory(category.type);
+            console.log('result', result);
+  
+            setSocks(result);
+          } catch (error: any) {
+            setError(error.message);
+          } finally {
+            setLoading(false);
+          }
+        };
+        loadData();
+  
       }
-    };
-
-    loadData();
-  }, [fetchSocks]);
+    }
+  }, [TYPE_LINK]);
 
   useEffect(() => {
     updateItemsPerPage();
@@ -103,6 +127,8 @@ const SocksPage: React.FC<SocksPageProps> = ({
     });
   }, [socks, selectedStyles, selectedSizes]);
 
+
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = sortedItems.slice(indexOfFirstItem, indexOfLastItem);
@@ -112,13 +138,14 @@ const SocksPage: React.FC<SocksPageProps> = ({
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+  if (!category) return <div>Такої категорії не знайдено</div>;
 
   return (
     <>
-      <PageNavigation linkText={linkText} homeLink="/" linkHref={linkHref} />
+      <PageNavigation linkText={category.dropdown_name} homeLink="/" linkHref={category.link} />
 
       <div className="socks">
-        <h1 className="socks__title">{title}</h1>
+        <h1 className="socks__title">{category?.dropdown_name}</h1>
 
         <div className="socks__filter-sort">
           <Filter
@@ -128,7 +155,7 @@ const SocksPage: React.FC<SocksPageProps> = ({
             onSizeChange={(size) => handleFilterChange("size", size)}
             onClearSizes={() => setSelectedSizes([])}
             onClearStyles={() => setSelectedStyles([])}
-            sizes={sizes}
+            sizes={category.sizes}
           />
 
           <Sort

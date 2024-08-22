@@ -23,6 +23,7 @@ import Returning from "./Pages/Returning/Returning";
 import Shop from "./Pages/Shop";
 import WomanSocks from "./Pages/WomanSocks/WomanSocks";
 import { CartProvider } from "./Context/CartContext";
+import SocksPage from "./Components/SocksPage/SocksPage";
 
 const routes = [
   { path: "/", element: <Shop /> },
@@ -35,9 +36,7 @@ const routes = [
   { path: "/product/:VENDOR_CODE", element: <Product /> },
   { path: "/privacy-policy", element: <PrivacyPolicy /> },
   { path: "/return-of-goods", element: <Returning /> },
-  { path: "/womens-socks", element: <WomanSocks /> },
-  { path: "/mens-socks", element: <MenSocks /> },
-  { path: "/kids-socks", element: <KidsSocks /> },
+  { path: "/catalog/:TYPE_LINK", element: <SocksPage /> },
 ];
 
 const App: React.FC = () => {

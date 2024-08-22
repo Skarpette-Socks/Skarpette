@@ -10,14 +10,23 @@ import mastercard from "../assets/img/icons/mastercard.svg";
 import fondy from "../assets/img/icons/fondy.svg";
 
 
-import categories from "../../../../backend/bd/categories.json";
-import usefulLinks from "../../../../backend/bd/useful-links.json";
+import categories from "../../../json_links/categories.json";
+import usefulLinks from "../../../json_links/useful-links.json";
 
 import FooterLinks from "./FooterLinks";
 
 const Footer = () => {
   const [categoriesOpened, setCategoriesOpened] = useState(false);
   const [aboutUsOpened, setAboutUsOpened] = useState(false);
+  const newCategories = []
+
+  for (const category of categories) {
+    newCategories.push({
+      name: category.footer_name,
+      link: category.link
+    })
+    
+  }
 
   return (
     <div className="footer">
@@ -35,7 +44,7 @@ const Footer = () => {
         <div className="footer__categories">
           <div className="footer__subtitle">Категорії</div>
 
-          <FooterLinks items={categories}/>
+          <FooterLinks items={newCategories}/>
         </div>
 
         <div className="footer__about-us">

@@ -99,9 +99,9 @@ const CustomSlider: React.FC = () => {
             </div>
 
             <div className="custom-slider__actions">
-              <a href="/catalog">
+              <a href="/catalog/all-socks">
                 <button className="custom-slider__actions-button">
-                  {slide.button}
+                  Перейти
                 </button>
               </a>
             </div>

@@ -5,7 +5,7 @@ import "./Dropdown.scss";
 import arrow_right from "../assets/img/icons/chevron-right.svg";
 import arrow_up from "../assets/img/icons/caret-up-filled.svg";
 import arrow_down from "../assets/img/icons/caret-down-filled.svg";
-import options from "../../../../backend/bd/categories.json";
+import options from "../../../json_links/categories.json";
 
 interface Props {
   toggleMenu: () => void;
@@ -45,12 +45,12 @@ const Dropdown: React.FC<Props> = ({ toggleMenu }) => {
   const renderedOptions = React.useMemo(() => {
     return options.map((option) => (
       <Link
-        key={option.name}
+        key={option.dropdown_name}
         className="dropdown-item"
         to={option.link}
         onClick={handleItemClick}
       >
-        <div className="dropdown-item-text">{option.name} шкарпетки</div>
+        <div className="dropdown-item-text">{option.dropdown_name}</div>
         <span className="dropdown-item-icon">
           <img src={arrow_right} alt="arrow right" />
         </span>

@@ -212,10 +212,17 @@ useEffect(() => {
         ) : (
           <>
             <span className="filter__header-title">Фільтри:</span>
-            <div className="filter__buttons" ref={filterButtonsRef}>
-              {renderFilterButton("Стиль", "style")}
-              {renderFilterButton("Розмір (см)", "size")}
-            </div>
+            {sizes.length === 0 ? (
+              <div className="filter__buttons" ref={filterButtonsRef}>
+                {renderFilterButton("Стиль", "style")}
+              </div>
+            ) : (
+              <div className="filter__buttons" ref={filterButtonsRef}>
+                {renderFilterButton("Стиль", "style")}
+                {renderFilterButton("Розмір (см)", "size")}
+              </div>
+            )
+            }
           </>
         )}
       </div>
@@ -243,7 +250,9 @@ useEffect(() => {
               {renderCheckboxes(styles, selectedStyles, onStyleChange)}
               <div className="filter__mobile-break-line"></div>
 
-              <h3 className="filter__mobile-body-text">Розмір (см)</h3>
+              {sizes.length === 0 || (
+                <h3 className="filter__mobile-body-text">Розмір (см)</h3>
+              )}
               {renderCheckboxes(sizes, selectedSizes, onSizeChange)}
             </div>
 
