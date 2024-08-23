@@ -3,13 +3,11 @@ import { useFavorites } from "../../Context/FavoritesContext";
 import Item from "../../Components/Item/Item"; // импортируйте ваш компонент Item
 import "./Favorites.scss";
 import PageNavigation from "../../Components/PageNavigation/PageNavigation";
+import MainPageListGoods from "../../Components/MainPageListGoods/MainPageListGoods";
 
 const Favorites: React.FC = () => {
   const { favorites } = useFavorites();
 
-  if (favorites.length === 0) {
-    return <p className="favorites__text favorites__text--error">No items</p>;
-  }
 
   return (
     <>
@@ -26,6 +24,7 @@ const Favorites: React.FC = () => {
           ))}
         </div>
       </div>
+      <MainPageListGoods title="Вам може сподобатись" catalogButton={false} />
     </>
   );
 };
