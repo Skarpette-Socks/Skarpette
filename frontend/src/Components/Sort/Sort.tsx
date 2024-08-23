@@ -47,13 +47,35 @@ const Sort: React.FC<SortProps> = ({ items, selectedStyles, selectedSizes, setSo
   const sortByPriceAscending = (items: DataItem[]): DataItem[] => {
     setSortText('Спочатку дешеві');
 
-    return items.sort((a, b) => a.price - b.price);
+    // return items.sort((a, b) => a.price - b.price);
+
+    return items.sort((a, b) => {
+      if (b.price2 && a.price2) {
+        return a.price2 - b.price2
+      } else if (b.price2) {
+        return a.price - b.price2
+      } else if (a.price2) {
+        return a.price2 - b.price
+      } else {
+        return a.price - b.price
+      }
+    });
   };
   
   const sortByPriceDescending = (items: DataItem[]): DataItem[] => {
     setSortText('Спочатку дорогі');
 
-    return items.sort((a, b) => b.price - a.price);
+    return items.sort((a, b) => {
+      if (a.price2 && b.price2) {
+        return b.price2 - a.price2
+      } else if (a.price2) {
+        return b.price - a.price2
+      } else if (b.price2) {
+        return b.price2 - a.price
+      } else {
+        return b.price - a.price
+      }
+    });
   };
   
   const sortByBestDiscount = (items: DataItem[]): DataItem[] => {
