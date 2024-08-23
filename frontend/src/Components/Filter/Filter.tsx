@@ -35,24 +35,8 @@ const Filter: React.FC<FilterProps> = ({
   const filterButtonsRef = useRef<HTMLDivElement>(null);
   const styles = ["Короткі", "Класичні", "Спортивні", "Медичні"];
 
-  // Блокировка прокрутки
-  const lockScroll = () => {
-    document.body.style.overflow = "hidden";
-    document.body.style.paddingRight = `${window.innerWidth - document.body.offsetWidth}px`;
-  };
-
-  // Разблокировка прокрутки
-  const unlockScroll = () => {
-    document.body.style.overflow = "";
-    document.body.style.paddingRight = "";
-  };
 
 const toggleMobileModal = () => {
-  if (showMobileModal) {
-    unlockScroll();
-  } else {
-    lockScroll();
-  }
   setShowMobileModal(!showMobileModal);
 };
 
@@ -171,7 +155,6 @@ useEffect(() => {
     const newIsMobile = window.innerWidth < 768;
     setIsMobile(newIsMobile);
     if (!newIsMobile && showMobileModal) {
-      unlockScroll();
       setShowMobileModal(false);
     }
   };
@@ -179,7 +162,6 @@ useEffect(() => {
   window.addEventListener("resize", handleResize);
   return () => {
     window.removeEventListener("resize", handleResize);
-    unlockScroll(); // Разблокировка прокрутки при размонтировании
   };
 }, [showMobileModal]);
 
