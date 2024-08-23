@@ -93,7 +93,15 @@ const CartContent: React.FC = () => {
             </div>
           </>
         ) : (
-          <div className="cart__empty">Ваш кошик порожній :(</div>
+          <div className="cart__empty">
+            <div className="cart__empty-text">Ваш кошик порожній :(</div> 
+            <a 
+              href="/catalog/all-socks" 
+              className="cart__empty-link"
+            >
+              Перейти до каталогу
+            </a>
+          </div>
         )}
       </div>
     </div>

@@ -8,7 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 import scroll from "../assets/img/icons/scroll.svg";
 
 
-import items from "../../../../backend/bd/categories.json";
+import items from "../../../json_links/categories.json";
 
 const CategoriesCarousel: React.FC = () => {
   const categoriesToShow = 6;
@@ -30,7 +30,7 @@ const CategoriesCarousel: React.FC = () => {
 
         <ul className="categories-carousel__list">
           {items.map((item, index) => {
-            const { name, link } = item;
+            const { carousel_name, link } = item;
 
             if (categoriesToShow > index) {
               return (
@@ -45,7 +45,7 @@ const CategoriesCarousel: React.FC = () => {
                     className="categories-carousel__image"
                   />
                   <div className="categories-carousel__item-text">
-                    {name}
+                    {carousel_name}
                   </div>
                 </Link>
               );
