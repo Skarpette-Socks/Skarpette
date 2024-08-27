@@ -13,17 +13,16 @@ import AboutUs from "./Pages/AboutUs/AboutUs";
 import Cart from "./Pages/Cart";
 import Contacts from "./Pages/Contacts/Contacts";
 import Favorites from "./Pages/Favourites/Favorites";
-import KidsSocks from "./Pages/KidsSocks/KidsSocks";
-import MenSocks from "./Pages/MenSocks/MenSocks";
 import PaymentDelivery from "./Pages/PaymentDelivery/PaymentDelivery";
 import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
 import Product from "./Pages/Product";
 import Promotions from "./Pages/Promotions";
 import Returning from "./Pages/Returning/Returning";
 import Shop from "./Pages/Shop";
-import WomanSocks from "./Pages/WomanSocks/WomanSocks";
 import { CartProvider } from "./Context/CartContext";
 import SocksPage from "./Components/SocksPage/SocksPage";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const routes = [
   { path: "/", element: <Shop /> },
@@ -45,6 +44,7 @@ const App: React.FC = () => {
       <CartProvider>
         <Router>
           <div className="App">
+            <ToastContainer />
             <SubHeader />
             <NavBar />
             <Routes>

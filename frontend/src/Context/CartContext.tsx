@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import CartItem from "../types/CartItem";
 import DataItem from "../types/DataItem";
+import Toaster from "../Components/Toater/Toaster";
 
 interface AddCartItem {(
     item: DataItem,
@@ -87,13 +88,21 @@ export const CartProvider: React.FC<{ children: ReactNode}> = ({
       if (!isChanged) {
         setCartItems([...cartItems, cartItem])
       }
+
+      Toaster({ 
+        text: 'Товар додано до кошику', 
+        image: cartItem.image,
+        name: cartItem.name,
+        category: cartItem.type,
+        price: cartItem.price,
+        price2: cartItem.price2,
+        size: cartItem.size,
+      });
     } 
   }
 
   const counterCartItem: CounterCartItem = (cartItem, count) => {
     setCartItems((prevCartItems) => {
-      console.log('counter2');
-
       return prevCartItems.map((item) => {
         if (item.vendor_code === cartItem.vendor_code && typeof count === 'number') {
           if (item.size === cartItem.size) {
