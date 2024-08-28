@@ -17,7 +17,11 @@ const NavBar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen((prev) => !prev);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
 
   return (
@@ -35,7 +39,7 @@ const NavBar: React.FC = () => {
       </div>
       <NavBarMenu toggleMenu={toggleMenu} />
       <Menu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
-      <NavBarActions toggleMenu={toggleMenu} /> {/* Передаем toggleMenu */}
+      <NavBarActions toggleMenu={closeMenu} />{" "}
     </nav>
   );
 };
