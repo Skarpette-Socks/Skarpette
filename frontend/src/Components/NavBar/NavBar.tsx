@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useFavorites } from "../../Context/FavoritesContext"; // Импортируем контекст избранных товаров
+import { useFavorites } from "../../Context/FavoritesContext";
 import "./NavBar.scss";
 
 import search_icon from "../assets/img/icons/search.svg";
@@ -33,18 +33,18 @@ const NavBar: React.FC = () => {
           <img src={logo} alt="site logo" className="navBar__logo-img" />
         </Link>
       </div>
-      <NavBarMenu />
+      <NavBarMenu toggleMenu={toggleMenu} />
       <Menu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
       <NavBarActions />
     </nav>
   );
 };
 
-const NavBarMenu: React.FC = () => {
+const NavBarMenu: React.FC<{ toggleMenu: () => void }> = ({ toggleMenu }) => {
   return (
     <ul className="navBar__menu">
       <li>
-        <Dropdown />
+        <Dropdown toggleMenu={toggleMenu} />
       </li>
       <li>
         <Link to="/offers">Акції</Link>
@@ -63,12 +63,11 @@ const NavBarMenu: React.FC = () => {
 };
 
 const NavBarActions: React.FC = () => {
-  const { favorites } = useFavorites(); // Получаем список избранных товаров
+  const { favorites } = useFavorites();
   const { cartItems } = useCartItems();
   const countItems = cartItems.reduce((sum, item) => {
     const count = item.count ? item.count : 0;
-
-    return (sum + count);
+    return sum + count;
   }, 0);
 
   return (
