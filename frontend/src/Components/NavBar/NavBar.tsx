@@ -35,7 +35,7 @@ const NavBar: React.FC = () => {
       </div>
       <NavBarMenu toggleMenu={toggleMenu} />
       <Menu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
-      <NavBarActions />
+      <NavBarActions toggleMenu={toggleMenu} /> {/* Передаем toggleMenu */}
     </nav>
   );
 };
@@ -62,20 +62,31 @@ const NavBarMenu: React.FC<{ toggleMenu: () => void }> = ({ toggleMenu }) => {
   );
 };
 
-const NavBarActions: React.FC = () => {
+const NavBarActions: React.FC<{ toggleMenu: () => void }> = ({
+  toggleMenu,
+}) => {
   const { favorites } = useFavorites();
   const { cartItems } = useCartItems();
+
   const countItems = cartItems.reduce((sum, item) => {
     const count = item.count ? item.count : 0;
     return sum + count;
   }, 0);
 
+  const handleLinkClick = () => {
+    toggleMenu();
+  };
+
   return (
     <div className="navBar__actions">
-      <Link to="#">
+      <Link to="#" onClick={handleLinkClick}>
         <img src={search_icon} alt="Search" />
       </Link>
-      <Link to="/favorites" className="navBar__actions-favorites">
+      <Link
+        to="/favorites"
+        className="navBar__actions-favorites"
+        onClick={handleLinkClick}
+      >
         <img src={heart_icon} alt="Favorites" />
         {favorites.length > 0 && (
           <div className="navBar__actions-favorites-count">
@@ -83,7 +94,7 @@ const NavBarActions: React.FC = () => {
           </div>
         )}
       </Link>
-      <Link to="/cart">
+      <Link to="/cart" onClick={handleLinkClick}>
         <div className="navBar__actions-cart">
           <img
             src={cart}
