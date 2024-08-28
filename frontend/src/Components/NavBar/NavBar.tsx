@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useFavorites } from "../../Context/FavoritesContext";
 import "./NavBar.scss";
@@ -15,9 +15,27 @@ import { useCartItems } from "../../Context/CartContext";
 
 const NavBar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1279);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 1279);
+      if (window.innerWidth > 1279 && isMenuOpen) {
+        setIsMenuOpen(false); // Закрываем меню, если оно открыто на большом экране
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isMenuOpen]);
 
   const toggleMenu = () => {
-    setIsMenuOpen((prev) => !prev);
+    if (isMobile) {
+      setIsMenuOpen((prev) => !prev);
+    }
   };
 
   const closeMenu = () => {
@@ -27,19 +45,21 @@ const NavBar: React.FC = () => {
   return (
     <nav className="navBar">
       <div className="navBar__logo">
-        <img
-          src={isMenuOpen ? close_icon : menu}
-          alt="burger menu"
-          className="navBar__burger-menu"
-          onClick={toggleMenu}
-        />
+        {isMobile && ( // Бургер-меню отображается только на мобильных устройствах
+          <img
+            src={isMenuOpen ? close_icon : menu}
+            alt="burger menu"
+            className="navBar__burger-menu"
+            onClick={toggleMenu}
+          />
+        )}
         <Link to="/">
           <img src={logo} alt="site logo" className="navBar__logo-img" />
         </Link>
       </div>
       <NavBarMenu toggleMenu={toggleMenu} />
       <Menu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
-      <NavBarActions toggleMenu={closeMenu} />{" "}
+      <NavBarActions toggleMenu={closeMenu} />
     </nav>
   );
 };
