@@ -56,7 +56,7 @@ const Dropdown: React.FC<Props> = ({ toggleMenu }) => {
         </span>
       </Link>
     ));
-  }, []);
+  }, [handleItemClick]); // Обязательно добавляем handleItemClick в зависимости
 
   return (
     <div className="dropdown" ref={menuRef}>
