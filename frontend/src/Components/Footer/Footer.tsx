@@ -73,7 +73,7 @@ const Footer = () => {
 
             </div>
 
-            {categoriesOpened && <FooterLinks items={categories}/>}
+            {categoriesOpened && <FooterLinks items={newCategories}/>}
           </div>
 
           <div className="footer__greyline"></div>
