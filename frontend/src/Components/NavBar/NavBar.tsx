@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFavorites } from "../../Context/FavoritesContext";
 import "./NavBar.scss";
 
@@ -16,6 +16,7 @@ import { useCartItems } from "../../Context/CartContext";
 const NavBar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 1279);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => {
@@ -42,6 +43,13 @@ const NavBar: React.FC = () => {
     setIsMenuOpen(false);
   };
 
+  const handleLogoClick = () => {
+    if (isMenuOpen) {
+      closeMenu(); // Закрываем меню, если оно открыто
+    }
+    navigate("/"); // Переход на главную страницу
+  };
+
   return (
     <nav className="navBar">
       <div className="navBar__logo">
@@ -53,9 +61,13 @@ const NavBar: React.FC = () => {
             onClick={toggleMenu}
           />
         )}
-        <Link to="/">
-          <img src={logo} alt="site logo" className="navBar__logo-img" />
-        </Link>
+        <img
+          src={logo}
+          alt="site logo"
+          className="navBar__logo-img"
+          onClick={handleLogoClick}
+          style={{ cursor: "pointer" }}
+        />
       </div>
       <NavBarMenu toggleMenu={toggleMenu} />
       <Menu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
