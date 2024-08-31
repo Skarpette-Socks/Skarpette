@@ -18,6 +18,7 @@ import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
 import Product from "./Pages/Product";
 import Promotions from "./Pages/Promotions";
 import Returning from "./Pages/Returning/Returning";
+import Checkout from "./Pages/Checkout/Checkout";
 import Shop from "./Pages/Shop";
 import { CartProvider } from "./Context/CartContext";
 import SocksPage from "./Components/SocksPage/SocksPage";
@@ -36,6 +37,7 @@ const routes = [
   { path: "/privacy-policy", element: <PrivacyPolicy /> },
   { path: "/return-of-goods", element: <Returning /> },
   { path: "/catalog/:TYPE_LINK", element: <SocksPage /> },
+  { path: "/checkout", element: <Checkout /> },
 ];
 
 const App: React.FC = () => {

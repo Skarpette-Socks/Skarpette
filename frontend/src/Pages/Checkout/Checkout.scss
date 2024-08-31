@@ -1,0 +1,6 @@
+@import "../../Components/assets/styles/mixins";
+@import "../../Components/assets/styles/variables";
+
+.checkout {
+  @include content-padding-inline;
+}
