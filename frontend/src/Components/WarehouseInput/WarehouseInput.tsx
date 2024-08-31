@@ -3,8 +3,7 @@ import {
   fetchWarehouses,
   FetchWarehousesParams,
 } from "../../api/FetchWarehouse";
-import arrow_up from "../assets/img/icons/caret-up-filled.svg";
-import arrow_down from "../assets/img/icons/caret-down-filled.svg";
+
 import "./WarehouseInput.scss";
 
 interface WarehouseInputProps {
@@ -163,12 +162,6 @@ const WarehouseInput: React.FC<WarehouseInputProps> = ({
           disabled={!selectedCity}
         />
         <div>
-          <img
-            src={isOpen ? arrow_up : arrow_down}
-            alt=""
-            className="warehouse-input__icon"
-            onClick={() => setIsOpen(!isOpen)}
-          />
         </div>
         {loading && (
           <div className="warehouse-input__loading">Завантаження...</div>

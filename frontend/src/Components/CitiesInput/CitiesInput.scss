@@ -3,17 +3,17 @@
 
 .cities-input {
   position: relative;
-  width: 294px !important; /* Принудительно установите фиксированную ширину */
+  width: 248.5px !important; /* Принудительно установите фиксированную ширину */
 
   &__container {
     position: relative;
-    width: 294px !important; /* Принудительно установите фиксированную ширину */
+    width: 248.5px !important; /* Принудительно установите фиксированную ширину */
   }
 
   &__field {
     padding: 10px 16px;
     height: 60px;
-    width: 294px !important; /* Принудительно установите фиксированную ширину */
+    width: 248.5px !important; /* Принудительно установите фиксированную ширину */
     font-size: 16px;
     border: 1px solid $grayscale-200;
     border-radius: 8px;
@@ -26,7 +26,7 @@
 
   &__icon {
     position: absolute;
-    left: 258px;
+    left: 215.5px;
     top: 50%;
     transform: translateY(-50%);
     width: 20px;
@@ -44,7 +44,7 @@
 
   &__list {
     position: absolute;
-    width: 294px;
+    width: 248.5px;
     max-height: 200px;
     overflow-y: auto;
     list-style: none;

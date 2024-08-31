@@ -2,5 +2,9 @@
 @import "../../Components/assets/styles/variables";
 
 .checkout {
-  @include content-padding-inline;
+  @include container-grid;
+
+  &__delivery {
+    grid-column: 2 / 7;
+  }
 }

@@ -2,10 +2,116 @@
 @import "../assets/styles/variables";
 
 .delivery {
+  &__title {
+    @include on-tablet {
+      font-size: 28px;
+      font-weight: 600;
+      color: $grayscale-1000;
+    }
+  }
   &__inputs {
     display: flex;
-    align-items: center;
-    justify-content: center;
     gap: 24px;
+    align-items: center;
+    margin-top: 32px;
+  }
+
+  &__options {
+    @include on-tablet {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-top: 32px;
+    }
+  }
+
+  &__option {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+  }
+
+  &__option-checkbox {
+    position: relative;
+    margin-right: 16px;
+    width: 20px;
+    height: 20px;
+
+    input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+
+    .delivery__option-checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 24px;
+      width: 24px;
+      background-color: transparent;
+      border: 2px solid $grayscale-200;
+      border-radius: 50%;
+    }
+
+    input[type="radio"]:checked ~ .delivery__option-checkmark {
+      background-color: $primary-800;
+      border-color: $primary-800;
+    }
+
+    .delivery__option-checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+
+    input[type="radio"]:checked ~ .delivery__option-checkmark:after {
+      display: block;
+      top: 50%;
+      left: 50%;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: white;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &__option-content {
+    flex-grow: 1;
+  }
+
+  &__option-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  &__option-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__option-name {
+    font-weight: 500;
+    font-size: 16px;
+    color: $grayscale-1000;
+  }
+
+  &__option-duration {
+    @include on-tablet {
+      color: $grayscale-600;
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+  }
+
+  &__option-tariff {
+    font-weight: 400;
+    font-size: 16px;
+    color: $grayscale-400;
   }
 }
