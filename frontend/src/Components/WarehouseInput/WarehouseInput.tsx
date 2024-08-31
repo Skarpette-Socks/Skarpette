@@ -10,12 +10,14 @@ interface WarehouseInputProps {
   selectedCity: string;
   resetWarehouse: boolean;
   onWarehouseReset: () => void;
+  deliveryType: string;
 }
 
 const WarehouseInput: React.FC<WarehouseInputProps> = ({
   selectedCity,
   resetWarehouse,
   onWarehouseReset,
+  deliveryType,
 }) => {
   const [warehouses, setWarehouses] = useState<string[]>([]);
   const [filteredWarehouses, setFilteredWarehouses] = useState<string[]>([]);
@@ -43,6 +45,14 @@ const WarehouseInput: React.FC<WarehouseInputProps> = ({
         CityName: selectedCity,
         Limit: "150",
       };
+
+      // Add TypeOfWarehouseRef based on deliveryType
+      if (deliveryType === "nova-poshta-poshtamat") {
+        params.TypeOfWarehouseRef = "f9316480-5f2d-425d-bc2c-ac7cd29decf0"; // Poshtamat Ref
+      } else if (deliveryType === "nova-poshta-office") {
+        params.TypeOfWarehouseRef = "841339c7-591a-42e2-8233-7a0a00f0ed6f"; // Department Ref
+      }
+
       const warehousesData = await fetchWarehouses(params);
       setWarehouses(warehousesData);
       setFilteredWarehouses(warehousesData);
@@ -56,7 +66,7 @@ const WarehouseInput: React.FC<WarehouseInputProps> = ({
     } finally {
       setLoading(false);
     }
-  }, [selectedCity]);
+  }, [selectedCity, deliveryType]);
 
   useEffect(() => {
     fetchWarehousesData();
@@ -114,7 +124,6 @@ const WarehouseInput: React.FC<WarehouseInputProps> = ({
   };
 
   const handleInputBlur = () => {
-    // Задержка, чтобы успеть обработать клик по опции
     setTimeout(() => {
       setIsOpen(false);
     }, 200);
@@ -157,12 +166,12 @@ const WarehouseInput: React.FC<WarehouseInputProps> = ({
           onKeyDown={handleKeyDown}
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
-          placeholder="Відділення"
+          placeholder={
+            deliveryType === "nova-poshta-poshtamat" ? "Поштомат" : "Відділення"
+          }
           className={`warehouse-input__field ${error ? "warehouse-input__field--error" : ""}`}
           disabled={!selectedCity}
         />
-        <div>
-        </div>
         {loading && (
           <div className="warehouse-input__loading">Завантаження...</div>
         )}

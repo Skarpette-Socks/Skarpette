@@ -6,37 +6,52 @@ import "./Delivery.scss";
 const Delivery = () => {
   const [selectedCity, setSelectedCity] = useState<string>("");
   const [resetWarehouse, setResetWarehouse] = useState<boolean>(false);
+  const [selectedDeliveryType, setSelectedDeliveryType] =
+    useState<string>("nova-poshta-office");
 
   const handleCitySelect = (city: string) => {
     setSelectedCity(city);
-    setResetWarehouse(true); // Устанавливаем флаг для сброса отделения
+    setResetWarehouse(true);
   };
 
   const handleWarehouseReset = () => {
-    setResetWarehouse(false); // Сбрасываем флаг после обработки
+    setResetWarehouse(false);
+  };
+
+  const handleDeliveryOptionChange = (id: string) => {
+    setSelectedDeliveryType(id);
+    setResetWarehouse(true);
   };
 
   return (
     <div className="delivery">
       <div className="delivery__title">Доставка</div>
-      <DeliveryOptions />
+      <DeliveryOptions
+        selectedOption={selectedDeliveryType}
+        onOptionChange={handleDeliveryOptionChange}
+      />
       <div className="delivery__inputs">
         <CitiesInput onCitySelect={handleCitySelect} />
         <WarehouseInput
           selectedCity={selectedCity}
           resetWarehouse={resetWarehouse}
           onWarehouseReset={handleWarehouseReset}
+          deliveryType={selectedDeliveryType}
         />
       </div>
     </div>
   );
 };
 
-export default Delivery;
+interface DeliveryOptionsProps {
+  selectedOption: string;
+  onOptionChange: (id: string) => void;
+}
 
-const DeliveryOptions = () => {
-  const [selectedOption, setSelectedOption] = useState("nova-poshta-office");
-
+const DeliveryOptions: React.FC<DeliveryOptionsProps> = ({
+  selectedOption,
+  onOptionChange,
+}) => {
   const deliveryOptions = [
     {
       id: "nova-poshta-office",
@@ -60,10 +75,6 @@ const DeliveryOptions = () => {
     },
   ];
 
-  const handleOptionChange = (id:string) => {
-    setSelectedOption(id);
-  };
-
   return (
     <div className="delivery__options">
       {deliveryOptions.map((option) => (
@@ -78,7 +89,7 @@ const DeliveryOptions = () => {
               type="radio"
               name="delivery"
               checked={selectedOption === option.id}
-              onChange={() => handleOptionChange(option.id)}
+              onChange={() => onOptionChange(option.id)}
             />
             <span className="delivery__option-checkmark"></span>
           </div>
@@ -98,3 +109,5 @@ const DeliveryOptions = () => {
     </div>
   );
 };
+
+export default Delivery;
