@@ -1,0 +1,19 @@
+@import "../../Components/assets/styles/mixins";
+@import "../../Components/assets/styles/variables";
+
+.checkout {
+  @include container-grid;
+
+  &__delivery {
+    grid-column: 1 / -1;
+
+    
+    @include on-tablet {
+      grid-column: 1 / -1;
+    }
+
+    @include on-desktop {
+      grid-column: 2 / 7;
+    }
+  }
+}

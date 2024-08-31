@@ -12,8 +12,8 @@ const Shop: React.FC = () => {
     <div>
       <CustomSlider />
       <CategoriesCarousel />
-      <MainPageListGoods title={newGoods}/>
-      <MainPageListGoods title={yourFavorite}/>
+      <MainPageListGoods title={newGoods} />
+      <MainPageListGoods title={yourFavorite} />
       <PromoCards />
       <Reviews />
     </div>
