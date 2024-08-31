@@ -1,26 +1,34 @@
 import { useState } from "react";
 import CitiesInput from "../CitiesInput/CitiesInput";
 import WarehouseInput from "../WarehouseInput/WarehouseInput";
+import StreetInput from "../StreetInput/StreetInput";
 import "./Delivery.scss";
 
 const Delivery = () => {
   const [selectedCity, setSelectedCity] = useState<string>("");
   const [resetWarehouse, setResetWarehouse] = useState<boolean>(false);
+  const [resetStreet, setResetStreet] = useState<boolean>(false);
   const [selectedDeliveryType, setSelectedDeliveryType] =
     useState<string>("nova-poshta-office");
 
   const handleCitySelect = (city: string) => {
     setSelectedCity(city);
     setResetWarehouse(true);
+    setResetStreet(true);
   };
 
   const handleWarehouseReset = () => {
     setResetWarehouse(false);
   };
 
+  const handleStreetReset = () => {
+    setResetStreet(false);
+  };
+
   const handleDeliveryOptionChange = (id: string) => {
     setSelectedDeliveryType(id);
     setResetWarehouse(true);
+    setResetStreet(true);
   };
 
   return (
@@ -32,12 +40,20 @@ const Delivery = () => {
       />
       <div className="delivery__inputs">
         <CitiesInput onCitySelect={handleCitySelect} />
-        <WarehouseInput
-          selectedCity={selectedCity}
-          resetWarehouse={resetWarehouse}
-          onWarehouseReset={handleWarehouseReset}
-          deliveryType={selectedDeliveryType}
-        />
+        {selectedDeliveryType === "nova-poshta-courier" ? (
+          <StreetInput
+            selectedCity={selectedCity}
+            resetStreet={resetStreet}
+            onStreetReset={handleStreetReset}
+          />
+        ) : (
+          <WarehouseInput
+            selectedCity={selectedCity}
+            resetWarehouse={resetWarehouse}
+            onWarehouseReset={handleWarehouseReset}
+            deliveryType={selectedDeliveryType}
+          />
+        )}
       </div>
     </div>
   );

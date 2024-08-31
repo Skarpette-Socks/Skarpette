@@ -87,3 +87,76 @@ export const fetchWarehouseTypes = async (): Promise<
     throw new Error("Ошибка выполнения запроса: " + (error as Error).message);
   }
 };
+
+export interface SearchSettlementStreetsParams {
+  StreetName: string;
+  SettlementRef: string;
+  Limit?: string;
+}
+
+export interface StreetAddress {
+  SettlementRef: string;
+  SettlementStreetRef: string;
+  SettlementStreetDescription: string;
+  Present: string;
+  StreetsType: string;
+  StreetsTypeDescription: string;
+  Location: {
+    lat: number;
+    lon: number;
+  };
+  SettlementStreetDescriptionRu: string;
+}
+
+export interface SearchSettlementStreetsResponse {
+  TotalCount: string;
+  Addresses: StreetAddress[];
+}
+
+export const searchSettlementStreets = async (
+  params: SearchSettlementStreetsParams
+): Promise<SearchSettlementStreetsResponse> => {
+  const apiKey = "4ef7f616562477f2bf4173d436b118b3";
+  const apiUrl = "https://api.novaposhta.ua/v2.0/json/";
+
+  const requestData = {
+    apiKey: apiKey,
+    modelName: "AddressGeneral",
+    calledMethod: "searchSettlementStreets",
+    methodProperties: params,
+  };
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    const data = await response.json();
+
+    // Логирование полного ответа
+    console.log("Full API response:", JSON.stringify(data, null, 2));
+
+    // Проверяем структуру ответа и наличие данных
+    if (data && data.data && Array.isArray(data.data) && data.data.length > 0) {
+      const firstEntry = data.data[0];
+      if (firstEntry.Addresses && Array.isArray(firstEntry.Addresses)) {
+        return {
+          TotalCount: firstEntry.TotalCount,
+          Addresses: firstEntry.Addresses,
+        };
+      } else {
+        throw new Error("Ошибка API: Отсутствует поле Addresses в данных");
+      }
+    } else {
+      throw new Error("Ошибка API: Неверный формат ответа");
+    }
+  } catch (error) {
+    console.error("Error fetching streets:", error);
+    throw new Error("Ошибка выполнения запроса: " + (error as Error).message);
+  }
+};
+
