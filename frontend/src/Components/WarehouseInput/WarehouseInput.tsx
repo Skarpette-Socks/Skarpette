@@ -4,7 +4,7 @@ import {
   FetchWarehousesParams,
 } from "../../api/FetchWarehouse";
 
-import "./WarehouseInput.scss";
+import "../assets/styles/commonCheckoutInputesStyles.scss";
 
 interface WarehouseInputProps {
   selectedCity: string;
@@ -46,11 +46,10 @@ const WarehouseInput: React.FC<WarehouseInputProps> = ({
         Limit: "150",
       };
 
-      // Add TypeOfWarehouseRef based on deliveryType
       if (deliveryType === "nova-poshta-poshtamat") {
-        params.TypeOfWarehouseRef = "f9316480-5f2d-425d-bc2c-ac7cd29decf0"; // Poshtamat Ref
+        params.TypeOfWarehouseRef = "f9316480-5f2d-425d-bc2c-ac7cd29decf0";
       } else if (deliveryType === "nova-poshta-office") {
-        params.TypeOfWarehouseRef = "841339c7-591a-42e2-8233-7a0a00f0ed6f"; // Department Ref
+        params.TypeOfWarehouseRef = "841339c7-591a-42e2-8233-7a0a00f0ed6f";
       }
 
       const warehousesData = await fetchWarehouses(params);
@@ -97,7 +96,13 @@ const WarehouseInput: React.FC<WarehouseInputProps> = ({
     const filtered = filterWarehouses(inputValue);
     setFilteredWarehouses(filtered);
     setHighlightedIndex(-1);
-    setIsOpen(filtered.length > 0);
+
+    if (inputValue !== "" && filtered.length > 0) {
+      setIsOpen(true);
+    } else if (inputValue === "") {
+      setIsOpen(false);
+    }
+
     if (filtered.length === 0 && inputValue !== "") {
       setError("Відділення не знайдено");
     } else {
@@ -156,8 +161,8 @@ const WarehouseInput: React.FC<WarehouseInputProps> = ({
   }, [highlightedIndex]);
 
   return (
-    <div className="warehouse-input">
-      <div className="warehouse-input__container">
+    <div className="input">
+      <div className="input__container">
         <input
           ref={inputRef}
           type="text"
@@ -169,24 +174,20 @@ const WarehouseInput: React.FC<WarehouseInputProps> = ({
           placeholder={
             deliveryType === "nova-poshta-poshtamat" ? "Поштомат" : "Відділення"
           }
-          className={`warehouse-input__field ${error ? "warehouse-input__field--error" : ""}`}
+          className={`input__field ${error ? "input__field--error" : ""}`}
           disabled={!selectedCity}
         />
-        {loading && (
-          <div className="warehouse-input__loading">Завантаження...</div>
-        )}
+        {loading && <div className="input__loading">Завантаження...</div>}
       </div>
       {isOpen && filteredWarehouses.length > 0 && (
-        <ul ref={listRef} className="warehouse-input__list">
+        <ul ref={listRef} className="input__list">
           {filteredWarehouses.map((warehouse, index) => (
             <li
               key={index}
               onMouseDown={() => handleWarehouseSelect(warehouse)}
               onMouseEnter={() => setHighlightedIndex(index)}
-              className={`warehouse-input__item ${
-                index === highlightedIndex
-                  ? "warehouse-input__item--highlighted"
-                  : ""
+              className={`input__item ${
+                index === highlightedIndex ? "input__item--highlighted" : ""
               }`}
             >
               {warehouse}
@@ -194,7 +195,7 @@ const WarehouseInput: React.FC<WarehouseInputProps> = ({
           ))}
         </ul>
       )}
-      {error && <div className="warehouse-input__error">{error}</div>}
+      {error && <div className="input__error">{error}</div>}
     </div>
   );
 };

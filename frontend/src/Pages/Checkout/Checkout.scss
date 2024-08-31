@@ -5,6 +5,15 @@
   @include container-grid;
 
   &__delivery {
-    grid-column: 2 / 7;
+    grid-column: 1 / -1;
+
+    
+    @include on-tablet {
+      grid-column: 1 / -1;
+    }
+
+    @include on-desktop {
+      grid-column: 2 / 7;
+    }
   }
 }

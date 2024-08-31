@@ -17,9 +17,9 @@ const Delivery = () => {
     setResetStreet(true);
   };
 
-  const handleWarehouseReset = () => {
-    setResetWarehouse(false);
-  };
+const handleWarehouseReset = () => {
+  setTimeout(() => setResetWarehouse(false), 100);
+};
 
   const handleStreetReset = () => {
     setResetStreet(false);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { fetchStreets } from "../../api/FetchStreets";
 
-import "./StreetInput.scss";
+import "../assets/styles/commonCheckoutInputesStyles.scss";
 
 interface StreetInputProps {
   selectedCity: string;
@@ -125,8 +125,8 @@ const StreetInput: React.FC<StreetInputProps> = ({
   }, [highlightedIndex]);
 
   return (
-    <div className="street">
-      <div className="street__container">
+    <div className="input">
+      <div className="input__container">
         <input
           ref={inputRef}
           type="text"
@@ -136,20 +136,20 @@ const StreetInput: React.FC<StreetInputProps> = ({
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
           placeholder="Вулиця"
-          className={`street__field ${error ? "street__field--error" : ""}`}
+          className={`input__field ${error ? "input__field--error" : ""}`}
           disabled={!selectedCity}
         />
-        {loading && <div className="street__loading">Завантаження...</div>}
+        {loading && <div className="input__loading">Завантаження...</div>}
       </div>
       {isOpen && filteredStreets.length > 0 && (
-        <ul ref={listRef} className="street__list">
+        <ul ref={listRef} className="input__list">
           {filteredStreets.map((street, index) => (
             <li
               key={index}
               onMouseDown={() => handleStreetSelect(street)}
               onMouseEnter={() => setHighlightedIndex(index)}
-              className={`street__item ${
-                index === highlightedIndex ? "street__item--highlighted" : ""
+              className={`input__item ${
+                index === highlightedIndex ? "input__item--highlighted" : ""
               }`}
             >
               {street}
@@ -157,7 +157,7 @@ const StreetInput: React.FC<StreetInputProps> = ({
           ))}
         </ul>
       )}
-      {error && <div className="street__error">{error}</div>}
+      {error && <div className="input__error">{error}</div>}
     </div>
   );
 };

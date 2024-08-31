@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { fetchCities } from "../../api/FetchCities";
 import arrow_up from "../assets/img/icons/caret-up-filled.svg";
 import arrow_down from "../assets/img/icons/caret-down-filled.svg";
-import "./CitiesInput.scss";
+import "../assets/styles/commonCheckoutInputesStyles.scss";
 
 interface CitiesInputProps {
   onCitySelect: (city: string) => void;
@@ -108,8 +108,8 @@ const CitiesInput: React.FC<CitiesInputProps> = ({ onCitySelect }) => {
   }, [highlightedIndex]);
 
   return (
-    <div className="cities-input">
-      <div className="cities-input__container">
+    <div className="input">
+      <div className="input__container">
         <input
           ref={inputRef}
           type="text"
@@ -119,30 +119,30 @@ const CitiesInput: React.FC<CitiesInputProps> = ({ onCitySelect }) => {
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
           placeholder="Місто"
-          className={`cities-input__field ${error ? "cities-input__field--error" : ""}`}
+          className={`input__field ${error ? "input__field--error" : ""}`}
         />
         <div>
           <img
             src={isOpen ? arrow_up : arrow_down}
             alt=""
-            className="cities-input__icon"
+            className="input__icon"
             onClick={() => setIsOpen(!isOpen)}
           />
         </div>
         {loading && (
-          <div className="cities-input__loading">Завантаження...</div>
+          <div className="input__loading">Завантаження...</div>
         )}
       </div>
       {isOpen && cities.length > 0 && (
-        <ul ref={listRef} className="cities-input__list">
+        <ul ref={listRef} className="input__list">
           {cities.map((city, index) => (
             <li
               key={index}
               onMouseDown={() => handleCitySelect(city)}
               onMouseEnter={() => setHighlightedIndex(index)}
-              className={`cities-input__item ${
+              className={`input__item ${
                 index === highlightedIndex
-                  ? "cities-input__item--highlighted"
+                  ? "input__item--highlighted"
                   : ""
               }`}
             >
@@ -151,7 +151,7 @@ const CitiesInput: React.FC<CitiesInputProps> = ({ onCitySelect }) => {
           ))}
         </ul>
       )}
-      {error && <div className="cities-input__error">{error}</div>}
+      {error && <div className="input__error">{error}</div>}
     </div>
   );
 };
