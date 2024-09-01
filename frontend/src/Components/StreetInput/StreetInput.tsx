@@ -138,6 +138,7 @@ const StreetInput: React.FC<StreetInputProps> = ({
           placeholder="Вулиця"
           className={`input__field ${error ? "input__field--error" : ""}`}
           disabled={!selectedCity}
+          maxLength={200}
         />
         {loading && <div className="input__loading">Завантаження...</div>}
       </div>
