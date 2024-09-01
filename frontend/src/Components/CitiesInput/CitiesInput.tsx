@@ -120,6 +120,7 @@ const CitiesInput: React.FC<CitiesInputProps> = ({ onCitySelect }) => {
           onBlur={handleInputBlur}
           placeholder="Місто"
           className={`input__field ${error ? "input__field--error" : ""}`}
+          maxLength={200}
         />
         <div>
           <img

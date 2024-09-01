@@ -43,7 +43,7 @@ const WarehouseInput: React.FC<WarehouseInputProps> = ({
     try {
       const params: FetchWarehousesParams = {
         CityName: selectedCity,
-        Limit: "150",
+        Limit: "5000",
       };
 
       if (deliveryType === "nova-poshta-poshtamat") {
@@ -176,6 +176,7 @@ const WarehouseInput: React.FC<WarehouseInputProps> = ({
           }
           className={`input__field ${error ? "input__field--error" : ""}`}
           disabled={!selectedCity}
+          maxLength={200}
         />
         {loading && <div className="input__loading">Завантаження...</div>}
       </div>
