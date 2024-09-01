@@ -57,6 +57,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
               onChange={(e) => setFirstName(e.target.value)}
               required
               className="review-modal__input-group-name"
+              maxLength={50}
             />
             <input
               type="text"
@@ -64,6 +65,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               className="review-modal__input-group-surname"
+              maxLength={50}
             />
           </div>
           <input
@@ -72,12 +74,14 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            maxLength={100}
           />
           <textarea
             placeholder="Текст відгуку"
             value={text}
             onChange={(e) => setText(e.target.value)}
             required
+            maxLength={300}
           />
           <button
             type="submit"

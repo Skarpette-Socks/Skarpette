@@ -11,6 +11,7 @@ const ContactsForm = () => {
         required
         placeholder="Ім’я"
         className="contacts-form__name"
+        maxLength={100}
       />
 
       <input
@@ -18,12 +19,14 @@ const ContactsForm = () => {
         required
         placeholder="Електронна пошта"
         className="contacts-form__email"
+        maxLength={100}
       />
 
       <textarea
         required
         placeholder="Повідомлення"
         className="contacts-form__message"
+        maxLength={300}
       ></textarea>
 
       <input
