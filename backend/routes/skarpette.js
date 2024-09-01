@@ -24,6 +24,6 @@ router.post('/', upload.array('images'), skarpetteController.createSkarpette);
 router.delete('/:id', skarpetteController.deleteSkarpette);
 router.get('/:id', skarpetteController.getSkarpetteById);
 router.get('/', skarpetteController.getAllSkarpettes);
-router.put('/:id', skarpetteController.updateSkarpette);
+router.put('/:id', upload.array('images'), skarpetteController.updateSkarpette);
 
 module.exports = router;
