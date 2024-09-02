@@ -176,11 +176,11 @@ const updateSkarpette = async (req, res) => {
             return res.status(404).json({ error: 'Skarpette not found' });
         }
 
-        await handleImageDeletion(skarpette, id);
-
         let newImagesUrls = [];
 
         if (req.files && req.files.length > 0) {
+            await handleImageDeletion(skarpette, id);
+
             const images = req.files;
             const imagesUrls = await Promise.all(
                 images.map(async (file) => {
@@ -193,7 +193,7 @@ const updateSkarpette = async (req, res) => {
             );
             newImagesUrls = imagesUrls;
         } else {
-            throw new Error('At least one new image is required');
+            newImagesUrls = skarpette.images_urls;
         }
 
         skarpette.images_urls = newImagesUrls;
