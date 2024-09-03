@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import CartItem from "../types/CartItem";
 import DataItem from "../types/DataItem";
-import Toaster from "../Components/Toater/Toaster";
+import Toaster from "../Components/Toaster/Toaster";
 
 interface AddCartItem {(
     item: DataItem,
