@@ -10,7 +10,6 @@ interface ToasterProps {
   price: number;
   price2?: number;
   size?: string;
-  favorites?: boolean
 }
 
 const Toaster: React.FC<ToasterProps> = ({
@@ -20,12 +19,8 @@ const Toaster: React.FC<ToasterProps> = ({
   category,
   price,
   price2,
-  size,
-  favorites
+  size
 }) => {
-
-  const buttonLink = favorites ? '/favorites' : '/cart';
-  const buttonText = favorites ? 'обране' : 'кошик';
 
   const position = window.innerWidth <= 767 ? "bottom-center" : "top-right";
 
@@ -59,10 +54,10 @@ const Toaster: React.FC<ToasterProps> = ({
             )}
           </div>
         </div>
-        <a href={buttonLink}>
+        <a href='/cart'>
           <button className="toaster__button">
             <div className="toaster__button-text">
-              Перейти в {buttonText}
+              Перейти в кошик
             </div>
           </button>
         </a>

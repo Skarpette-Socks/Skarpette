@@ -87,9 +87,11 @@ const CartContent: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <button className="cart__button">
-                <div className="cart__button-text">Оформити замовлення</div>
-              </button>
+              <a href="/checkout">
+                <button className="cart__button">
+                  <div className="cart__button-text">Оформити замовлення</div>
+                </button>
+              </a>
             </div>
           </>
         ) : (

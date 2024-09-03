@@ -8,7 +8,6 @@ import React, {
   useMemo,
 } from "react";
 import FavoriteItem from "../types/FavoriteItem";
-import Toaster from "../Components/Toater/Toaster";
 
 interface FavoritesContextType {
   favorites: FavoriteItem[];
@@ -50,35 +49,11 @@ export const FavoritesProvider: React.FC<{ children: ReactNode }> = ({
       }
       return [...prevFavorites, item];
     });
-
-    // Toaster({ 
-    //   text: 'Товар додано до обраних', 
-    //   image: item.image,
-    //   name: item.name,
-    //   category: item.category,
-    //   price: item.price,
-    //   price2: item.discount_price,
-    //   favorites: true
-    // });
   };
 
   const removeFromFavorites = (vendor_code: number) => {
     setFavorites((prevFavorites) => {
-      // const item = prevFavorites.find((itm) => itm.vendor_code === vendor_code)
-
-      // if (item) {
-      //   Toaster({ 
-      //     text: 'Товар видалено з обраних', 
-      //     image: item.image,
-      //     name: item.name,
-      //     category: item.category,
-      //     price: item.price,
-      //     price2: item.discount_price,
-      //     favorites: true
-      //   });
-      // }
-
-      return prevFavorites.filter((itm) => itm.vendor_code !== vendor_code);
+      return prevFavorites.filter((item) => item.vendor_code !== vendor_code);
     });
 
   };
