@@ -2,6 +2,7 @@ import {  useState } from "react";
 import cn from 'classnames';
 import "./ContactInfo.scss";
 import InputMask from 'react-input-mask';
+import tooltip from '../../Components/assets/img/icons/tooltip.svg'
 
 const ContactInfo: React.FC = () => {
   const [name, setName] = useState('');
@@ -118,7 +119,6 @@ const ContactInfo: React.FC = () => {
             maxLength={30}
             onChange={setNameFunc}
             onBlur={() => setNameTouched(true)}
-            // onFocus={() => setNameTouched(true)}
             required
           />
           {(nameError && nameTouched) && 
@@ -138,7 +138,6 @@ const ContactInfo: React.FC = () => {
             value={surname}
             onChange={setSurnameFunc}
             onBlur={() => setSurnameTouched(true)}
-            // onFocus={() => setSurnameTouched(true)}
             required
           />
           {(surnameError && surnameTouched) && 
@@ -154,7 +153,6 @@ const ContactInfo: React.FC = () => {
             value={phone}
             onChange={setPhoneFunc}
             onBlur={() => setPhoneTouched(true)}
-            // onFocus={() => setPhoneTouched(true)}
             placeholder="+380 (__) __-__-___"
             className={cn(`
               contact-info__field
@@ -165,6 +163,17 @@ const ContactInfo: React.FC = () => {
           {(phoneError && phoneTouched) && 
             <div className="contact-info__error">{phoneError}</div>
           }
+
+          <div className="contact-info__input-phone--tooltip">
+            Для зв’язку з Вами
+          </div>
+          
+          <div className="contact-info__input-phone--tooltip-icon"></div>
+
+          <img 
+            src={tooltip} alt="tooltip icon" 
+            className="contact-info__input-phone--icon"
+          />
         </div>
 
         <div className="contact-info__input contact-info__input-mail">
@@ -179,7 +188,6 @@ const ContactInfo: React.FC = () => {
             value={mail}
             onChange={setMailFunc}
             onBlur={() => setMailTouched(true)}
-            // onFocus={() => setMailTouched(true)}
             required
           />
           {(mailError && mailTouched) && 

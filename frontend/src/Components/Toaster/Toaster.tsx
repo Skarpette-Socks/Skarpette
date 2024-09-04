@@ -10,6 +10,7 @@ interface ToasterProps {
   price: number;
   price2?: number;
   size?: string;
+  count: number | ''
 }
 
 const Toaster: React.FC<ToasterProps> = ({
@@ -19,7 +20,8 @@ const Toaster: React.FC<ToasterProps> = ({
   category,
   price,
   price2,
-  size
+  size,
+  count
 }) => {
 
   const position = window.innerWidth <= 767 ? "bottom-center" : "top-right";
@@ -33,14 +35,17 @@ const Toaster: React.FC<ToasterProps> = ({
             <img src={image} alt={name} className="toaster__image"/>
             <div className="toaster__item-info">
               <h3 className="toaster__name">{name}</h3>
-              <div>
-                <div className="toaster__category">
-                  {category}
+                <div className="toaster__minor-info">
+                  <div className="toaster__category">
+                    {category}
+                  </div>
+                  <div className="toaster__size">
+                    {size}
+                  </div>
+                  <div className="toaster__count">
+                    {count} ШТ.
+                  </div>
                 </div>
-                <div className="toaster__size">
-                  {size}
-                </div>
-              </div>
             </div>
           </div>
           <div className="toaster__item-prices">

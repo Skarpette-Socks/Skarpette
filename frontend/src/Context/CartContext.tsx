@@ -97,6 +97,7 @@ export const CartProvider: React.FC<{ children: ReactNode}> = ({
         price: cartItem.price,
         price2: cartItem.price2,
         size: cartItem.size,
+        count: cartItem.count
       });
     } 
   }

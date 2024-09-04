@@ -71,11 +71,6 @@
 
   &__category, &__size {
     color: $grayscale-400;
-    font-size: 14px;
-    font-weight: 500;
-    text-transform: uppercase;
-    margin-right: 8px;
-    display: inline-block;
   }
 
   &__item {
@@ -129,6 +124,21 @@
 
       }
     }
+  }
+
+  &__minor-info {
+    display: flex;
+    gap: 4px;
+
+    & > * {
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+  }
+
+  &__count {
+    color: $grayscale-600;
   }
 
   &__image {
