@@ -43,7 +43,7 @@ const WarehouseInput: React.FC<WarehouseInputProps> = ({
     try {
       const params: FetchWarehousesParams = {
         CityName: selectedCity,
-        Limit: "5000",
+        Limit: "100000",
       };
 
       if (deliveryType === "nova-poshta-poshtamat") {

@@ -6,14 +6,16 @@
 
   &__delivery {
     grid-column: 1 / -1;
-
+    padding-inline: 16px;
     
     @include on-tablet {
       grid-column: 1 / -1;
+      padding-inline: 78px;
     }
 
     @include on-desktop {
       grid-column: 2 / 7;
+      padding-inline: 0;
     }
   }
 }
