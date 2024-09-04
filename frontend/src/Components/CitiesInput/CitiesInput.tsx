@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { fetchCities } from "../../api/FetchCities";
-import arrow_up from "../assets/img/icons/caret-up-filled.svg";
-import arrow_down from "../assets/img/icons/caret-down-filled.svg";
 import "../assets/styles/commonCheckoutInputesStyles.scss";
 
 interface CitiesInputProps {
@@ -123,12 +121,6 @@ const CitiesInput: React.FC<CitiesInputProps> = ({ onCitySelect }) => {
           maxLength={200}
         />
         <div>
-          <img
-            src={isOpen ? arrow_up : arrow_down}
-            alt=""
-            className="input__icon"
-            onClick={() => setIsOpen(!isOpen)}
-          />
         </div>
         {loading && (
           <div className="input__loading">Завантаження...</div>
