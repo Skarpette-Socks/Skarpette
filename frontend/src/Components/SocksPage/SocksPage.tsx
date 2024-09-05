@@ -163,6 +163,7 @@ const SocksPage: React.FC = () => {
             selectedStyles={selectedStyles}
             selectedSizes={selectedSizes}
             setSortedItems={setSortedItems}
+            setCurrentPage={setCurrentPage}
           />
         </div>
 

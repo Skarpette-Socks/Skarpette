@@ -12,10 +12,11 @@ interface SortProps {
   selectedStyles: string[],
   selectedSizes: string[],
   setSortedItems: (items:DataItem[]) => void;
+  setCurrentPage: (page: number) => void;
 }
 
 
-const Sort: React.FC<SortProps> = ({ items, selectedStyles, selectedSizes, setSortedItems }) => {
+const Sort: React.FC<SortProps> = ({ items, selectedStyles, selectedSizes, setSortedItems, setCurrentPage }) => {
   const [sortText, setSortText] = useState<string>('За замовчуванням');
   const [sortCase, setSortCase] = useState<string>('default');
   const [sortIsOpen, setSortIsOpen] = useState(false);
@@ -113,7 +114,7 @@ const Sort: React.FC<SortProps> = ({ items, selectedStyles, selectedSizes, setSo
     }
 
     console.log('sort updated', sortedArray.length);
-
+    setCurrentPage(1);
 
     setSortedItems(sortedArray);
   }, [sortCase, selectedStyles, selectedSizes, setSortedItems]);
