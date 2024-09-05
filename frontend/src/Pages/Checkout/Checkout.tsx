@@ -1,5 +1,7 @@
 import CheckoutOrderMain from "../../Components/CheckoutOrder/CheckoutOrderMain";
 import CheckoutOrderPhone from "../../Components/CheckoutOrder/CheckoutOrderPhone";
+import CheckoutPayment from "../../Components/CheckoutPayment/CheckoutPayment";
+import CheckoutReceiver from "../../Components/CheckoutReceiver/CheckoutReceiver";
 import ContactInfo from "../../Components/ContactInfo/ContactInfo";
 import Delivery from "../../Components/Delivery/Delivery";
 import { useCartItems } from "../../Context/CartContext";
@@ -42,6 +44,8 @@ const Checkout = () => {
         />
         <ContactInfo />
         <Delivery />
+        <CheckoutPayment />
+        <CheckoutReceiver />
         <CheckoutOrderPhone 
           totalPrice={totalPrice}
           totalDiscount={totalDiscount}
