@@ -3,11 +3,6 @@
 
 
 .contact-info {
-  margin-bottom: 32px;
-
-  @include on-tablet {
-    margin-bottom: 48px;
-  }
   &__title {
     font-weight: 600;
     font-size: 18px;
@@ -87,6 +82,12 @@
           display: block;
           
         }
+        
+        &:hover ~ .contact-info__input-phone--tooltip,
+        &:hover ~ .contact-info__input-phone--tooltip-icon {
+          display: block;
+
+        }
       }
 
 
@@ -97,13 +98,7 @@
     }
   }
 
-  .contact-info__input-phone--icon:hover {
-    .contact-info__input-phone--tooltip,
-    .contact-info__input-phone--tooltip-icon {
-      display: block;
-      background-color: #D20202;
-    }
-  }
+
 
   &__field {
     width: 100%;
@@ -140,5 +135,13 @@
     margin-top: 4px;
     font-size: 14px;
 
+  }
+}
+
+.contact-info__input-phone--icon:hover {
+  .contact-info__input-phone--tooltip,
+  .contact-info__input-phone--tooltip-icon {
+    display: block;
+    background-color: #D20202;
   }
 }

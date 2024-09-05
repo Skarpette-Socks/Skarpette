@@ -2,11 +2,6 @@
 @import "../assets/styles/variables";
 
 .delivery {
-  padding-inline: 16px;
-  @include on-tablet {
-    margin-top: 48px;
-  }
-
   @include on-desktop {
     padding-inline: 0;
   }

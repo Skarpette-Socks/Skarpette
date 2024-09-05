@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./CheckoutOrder.scss";
 import CartItem from "../../types/CartItem";
 
@@ -15,7 +15,7 @@ const CheckoutOrderMain: React.FC<CheckoutOrderMainProps> = ({ cartItems, totalP
   }, 0);
 
   return (
-    <div className="checkout-order checkout-order-main">
+    <div className="checkout-order checkout__order-main">
       <div className="checkout-order__goods-text">
         <div className="checkout-order__text">Товари</div>
         <div className="checkout-order__greytext">{countItems} шт.</div>
@@ -86,7 +86,7 @@ const CheckoutOrderMain: React.FC<CheckoutOrderMainProps> = ({ cartItems, totalP
           <div className="checkout-order__delivery">
             <div className="checkout-order__text">Доставка</div>
             <div className="checkout-order__greytext">
-              Розраховується під час оформлення товарів
+              За тарифами пошти
             </div>
           </div>
         </div>

@@ -23,6 +23,9 @@
   }
 
   &__goods {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 
     @include on-desktop {
       margin-bottom: 32px;
@@ -30,7 +33,7 @@
   }
 
   &__item {
-    margin-bottom: 24px;
+    // margin-bottom: 24px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -142,21 +145,6 @@
 
   &__greytext {
     color: $grayscale-600;
-  }
-
-  &-main > &__summary {
-    display: none;
-    @include on-desktop {
-      display: flex;
-
-    }
-  }
-
-  &-phone {
-    @include on-desktop {
-      display: none;
-
-    }
   }
 }
 

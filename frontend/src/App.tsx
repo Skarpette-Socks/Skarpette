@@ -1,11 +1,6 @@
 import React, { ReactNode } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-} from "react-router-dom";
-import { FavoritesProvider } from "./Context/FavoritesContext";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { FavoritesProvider } from "./Context/FavoritesContext"; 
 import "./App.css";
 import "./Components/assets/styles/main.scss";
 
@@ -51,7 +46,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
-  const isCheckoutPage = location.pathname === "/checkout";
+  const isCheckoutPage = location.pathname === '/checkout';
 
   return (
     <>
