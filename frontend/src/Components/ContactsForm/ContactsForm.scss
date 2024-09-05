@@ -12,7 +12,6 @@
   margin-top: 32px;
   font-weight: 500;
 
-
   @include on-tablet {
     height: 524px;
     gap: 24px;
@@ -49,10 +48,6 @@
     @include on-tablet {
       height: 60px;
       font-size: 16px;
-
-    }
-
-    @include on-desktop {
     }
   }
 
@@ -96,6 +91,24 @@
     &:hover {
       background-color: darken($primary-800, 10%);
     }
+  }
+
+  &__error-message {
+    color: $color-error !important;
+    font-size: 14px  !important;
+    text-align: center;
+    width: 100%;
+    margin-top: -8px;
+    margin-bottom: 8px;
+
+    @include on-tablet {
+      font-size: 18px !important;
+    }
+  }
+
+  &__message-error {
+    border: 1px solid $color-error;
+
   }
 }
 #contacts-form__title {
