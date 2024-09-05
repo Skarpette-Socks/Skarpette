@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./CheckoutOrder.scss";
 import CartItem from "../../types/CartItem";
 
@@ -86,7 +86,7 @@ const CheckoutOrderMain: React.FC<CheckoutOrderMainProps> = ({ cartItems, totalP
           <div className="checkout-order__delivery">
             <div className="checkout-order__text">Доставка</div>
             <div className="checkout-order__greytext">
-              Розраховується під час оформлення товарів
+              За тарифами пошти
             </div>
           </div>
         </div>

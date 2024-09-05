@@ -34,7 +34,7 @@ const CheckoutOrderPhone: React.FC<CheckoutOrderPhoneProps> = ({ totalPrice, tot
           <div className="checkout-order__delivery">
             <div className="checkout-order__text">Доставка</div>
             <div className="checkout-order__greytext">
-              Розраховується під час оформлення товарів
+              За тарифами пошти
             </div>
           </div>
         </div>

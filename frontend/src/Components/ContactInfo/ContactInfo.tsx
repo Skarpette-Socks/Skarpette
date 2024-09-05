@@ -136,6 +136,7 @@ const ContactInfo: React.FC = () => {
               `)} 
             placeholder="Прізвище"
             value={surname}
+            maxLength={40}
             onChange={setSurnameFunc}
             onBlur={() => setSurnameTouched(true)}
             required
@@ -163,6 +164,10 @@ const ContactInfo: React.FC = () => {
           {(phoneError && phoneTouched) && 
             <div className="contact-info__error">{phoneError}</div>
           }
+          <img 
+            src={tooltip} alt="tooltip icon" 
+            className="contact-info__input-phone--icon"
+          />
 
           <div className="contact-info__input-phone--tooltip">
             Для зв’язку з Вами
@@ -170,10 +175,6 @@ const ContactInfo: React.FC = () => {
           
           <div className="contact-info__input-phone--tooltip-icon"></div>
 
-          <img 
-            src={tooltip} alt="tooltip icon" 
-            className="contact-info__input-phone--icon"
-          />
         </div>
 
         <div className="contact-info__input contact-info__input-mail">
