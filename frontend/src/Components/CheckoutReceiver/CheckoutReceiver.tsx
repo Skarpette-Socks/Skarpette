@@ -1,8 +1,8 @@
 import react, { useState } from "react";
 
 import "./CheckoutReceiver.scss";
-import classNames from "classnames";
-import { InputMask } from "@react-input/mask";
+import cn from "classnames";
+import InputMask from "react-input-mask";
 import tooltip from '../../Components/assets/img/icons/tooltip.svg'
 
 
@@ -112,7 +112,7 @@ const CheckoutReceiver: React.FC = () => {
               <input
                 type="name"
                 name="name"
-                className={classNames(`
+                className={cn(`
               contact-info__field
               ${nameError && nameTouched ? "error" : ""}
               `)}
@@ -132,7 +132,7 @@ const CheckoutReceiver: React.FC = () => {
               <input
                 type="surname"
                 name="surname"
-                className={classNames(`
+                className={cn(`
               contact-info__field
               ${surnameError && surnameTouched ? "error" : ""}
               `)}
@@ -157,7 +157,7 @@ const CheckoutReceiver: React.FC = () => {
                 onChange={setPhoneFunc}
                 onBlur={() => setPhoneTouched(true)}
                 placeholder="+380 (__) __-__-___"
-                className={classNames(`
+                className={cn(`
               contact-info__field
               ${phoneError && phoneTouched ? "error" : ""}
               `)}
