@@ -15,7 +15,7 @@ const CheckoutOrderMain: React.FC<CheckoutOrderMainProps> = ({ cartItems, totalP
   }, 0);
 
   return (
-    <div className="checkout-order checkout-order-main">
+    <div className="checkout-order checkout__order-main">
       <div className="checkout-order__goods-text">
         <div className="checkout-order__text">Товари</div>
         <div className="checkout-order__greytext">{countItems} шт.</div>
