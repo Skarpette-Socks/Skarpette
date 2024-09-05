@@ -21,8 +21,8 @@ import Checkout from "./Pages/Checkout/Checkout";
 import Shop from "./Pages/Shop";
 import { CartProvider } from "./Context/CartContext";
 import SocksPage from "./Components/SocksPage/SocksPage";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Список маршрутів
 const routes = [
