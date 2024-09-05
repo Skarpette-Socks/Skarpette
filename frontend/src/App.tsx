@@ -50,7 +50,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer 
+        pauseOnFocusLoss={false}
+      />
       {!isCheckoutPage && <SubHeader />}
       {!isCheckoutPage && <NavBar />}
       {children}
