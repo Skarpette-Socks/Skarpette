@@ -2,12 +2,6 @@
 @import "../assets/styles/variables";
 
 .checkout-payment {
-  margin-top: 32px;
-
-  @include on-tablet {
-    margin-bottom: 48px;
-  }
-
   &__title {
     font-weight: 600;
     font-size: 18px;

@@ -1,7 +1,6 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { FavoritesProvider } from "./Context/FavoritesContext"; // Импортируйте ваш провайдер
-
+import React, { ReactNode } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { FavoritesProvider } from "./Context/FavoritesContext"; 
 import "./App.css";
 import "./Components/assets/styles/main.scss";
 
@@ -25,6 +24,7 @@ import SocksPage from "./Components/SocksPage/SocksPage";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+// Список маршрутів
 const routes = [
   { path: "/", element: <Shop /> },
   { path: "/offers", element: <Promotions /> },
@@ -40,22 +40,37 @@ const routes = [
   { path: "/checkout", element: <Checkout /> },
 ];
 
+interface LayoutProps {
+  children: ReactNode;
+}
+
+const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const location = useLocation();
+  const isCheckoutPage = location.pathname === '/checkout';
+
+  return (
+    <>
+      <ToastContainer />
+      {!isCheckoutPage && <SubHeader />}
+      {!isCheckoutPage && <NavBar />}
+      {children}
+      {!isCheckoutPage && <Footer />}
+    </>
+  );
+};
+
 const App: React.FC = () => {
   return (
     <FavoritesProvider>
       <CartProvider>
         <Router>
-          <div className="App">
-            <ToastContainer />
-            <SubHeader />
-            <NavBar />
+          <Layout>
             <Routes>
               {routes.map((route, index) => (
                 <Route key={index} path={route.path} element={route.element} />
               ))}
             </Routes>
-            <Footer />
-          </div>
+          </Layout>
         </Router>
       </CartProvider>
     </FavoritesProvider>
