@@ -10,7 +10,7 @@ const CheckoutReceiver: React.FC = () => {
   //#region inputs
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
-  const [phone, setPhone] = useState('+380 (__) __-__-___');
+  const [phone, setPhone] = useState('+38 (0__) ___-__-__');
 
   const [nameTouched, setNameTouched] = useState(false);
   const [surnameTouched, setSurnameTouched] = useState(false);
@@ -152,11 +152,11 @@ const CheckoutReceiver: React.FC = () => {
               <InputMask
                 type="tel"
                 name="tel"
-                mask="+380 (99) 99-99-999"
+                mask="+38 (099) 999-99-99"
                 value={phone}
                 onChange={setPhoneFunc}
                 onBlur={() => setPhoneTouched(true)}
-                placeholder="+380 (__) __-__-___"
+                placeholder="+38 (0__) ___-__-__"
                 className={cn(`
               contact-info__field
               ${phoneError && phoneTouched ? "error" : ""}
