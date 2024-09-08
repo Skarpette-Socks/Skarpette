@@ -1,0 +1,60 @@
+@import "../assets/styles/mixins";
+@import "../assets/styles/variables";
+
+.tooltip {
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  
+  &:hover {
+    .tooltip__container {
+      display: block;
+    background-color: #D20202;
+    }
+  }
+
+  &__container {
+    display: none;
+    position: absolute; 
+    top: -45px;
+    right: 18px;
+  }
+
+
+  &__item {
+    position: relative;
+
+    &-shape {
+      position: absolute; 
+      top: 29px;
+      left: 0;
+  
+      &-icon {
+  
+      }
+    }
+  
+    &-main {
+      position: absolute; 
+      text-wrap: nowrap;
+      padding: 8px 12px;
+      background-color: $grayscale-1000;
+      border-radius: 8px;
+      right: -30px;
+      
+      @include on-tablet {
+        right: -95px;
+        
+      }
+    }
+    
+    &-text {
+      color: $grayscale-0;
+
+    }
+  }
+}

@@ -2,7 +2,9 @@ import {  useState } from "react";
 import cn from 'classnames';
 import "./ContactInfo.scss";
 import InputMask from 'react-input-mask';
-import tooltip from '../../Components/assets/img/icons/tooltip.svg'
+import Tooltip from "../Tooltip/Tooltip";
+
+
 
 const ContactInfo: React.FC = () => {
   const [name, setName] = useState('');
@@ -164,17 +166,9 @@ const ContactInfo: React.FC = () => {
           {(phoneError && phoneTouched) && 
             <div className="contact-info__error">{phoneError}</div>
           }
-          <img 
-            src={tooltip} alt="tooltip icon" 
-            className="contact-info__input-phone--icon"
-          />
-
-          <div className="contact-info__input-phone--tooltip">
-            Для зв’язку з Вами
+          <div className="contact-info__tooltip">
+            <Tooltip text='Для зв’язку з Вами' />     
           </div>
-          
-          <div className="contact-info__input-phone--tooltip-icon"></div>
-
         </div>
 
         <div className="contact-info__input contact-info__input-mail">

@@ -74,6 +74,10 @@
     &-price {
       display: inline-block;
       font-size: 14px;
+
+      @include on-tablet {
+        font-size: 16px;
+      }
   
       &-old {
         display: inline-block;
@@ -81,7 +85,19 @@
         color: $grayscale-400;
         font-size: 12px;
 
+        @include on-tablet {
+          font-size: 14px;
+
+        }
       }
+    }
+  }
+
+  &__name {
+    font-size: 14px;
+
+    @include on-tablet {
+      font-size: 16px;
     }
   }
 
@@ -98,16 +114,29 @@
 
   &__category, &__size {
     color: $grayscale-400;
+    font-size: 12px;
+
+    @include on-tablet {
+      font-size: 14px;
+    }
   }
 
   &__count {
     color: $grayscale-600;
+    font-size: 12px;
+
+    @include on-tablet {
+      font-size: 14px;
+    }
+
   }
 
   &__image {
     width: 52px;
     height: 52px;
     border-radius: 4px;
+    object-fit: cover;
+    
   }
 
   &__summary {

@@ -68,7 +68,7 @@
 
       &-text {
         color: $grayscale-1000;
-      
+        font-size: 14px;
       }
 
       &-arrow {
@@ -76,7 +76,7 @@
       }
     }
 
-    &__header-logo {
+    &-logo {
       width: 97px;
       height: 24px;
 

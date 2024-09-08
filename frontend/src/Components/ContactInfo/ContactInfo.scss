@@ -42,54 +42,6 @@
       grid-column: 1/-1;
       position: relative;
 
-      &--tooltip {
-        display: none;
-        position: absolute;
-        top: 0%;
-        transform: translateY(-70%);
-        z-index: 2;
-        padding: 8px 12px;
-        background-color: $grayscale-1000;
-        color: $grayscale-0;
-        border-radius: 8px;
-        right: -63px;
-
-        &-icon {
-          top: 0%;
-          display: none;
-          position: absolute;
-          background-color: $grayscale-1000;
-          width: 11px;
-          height: 11px;
-          border-radius: 2px;
-          right: 15px;
-          transform: rotate(45deg) translateY(65%);
-
-        }
-      }
-
-      &--icon {
-        display: none;
-        cursor: pointer;
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        right: 16px;
-        top: 50%;
-        transform: translateY(-50%);
-
-        @include on-desktop {
-          display: block;
-          
-        }
-        
-        &:hover ~ .contact-info__input-phone--tooltip,
-        &:hover ~ .contact-info__input-phone--tooltip-icon {
-          display: block;
-
-        }
-      }
-
 
     }
 
@@ -136,12 +88,11 @@
     font-size: 14px;
 
   }
-}
 
-.contact-info__input-phone--icon:hover {
-  .contact-info__input-phone--tooltip,
-  .contact-info__input-phone--tooltip-icon {
-    display: block;
-    background-color: #D20202;
+  &__tooltip {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
