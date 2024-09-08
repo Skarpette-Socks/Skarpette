@@ -4,6 +4,7 @@ import "./CheckoutReceiver.scss";
 import cn from "classnames";
 import InputMask from "react-input-mask";
 import tooltip from '../../Components/assets/img/icons/tooltip.svg'
+import Tooltip from "../Tooltip/Tooltip";
 
 
 const CheckoutReceiver: React.FC = () => {
@@ -166,17 +167,10 @@ const CheckoutReceiver: React.FC = () => {
               {phoneError && phoneTouched && (
                 <div className="contact-info__error">{phoneError}</div>
               )}
-              <img
-                src={tooltip}
-                alt="tooltip icon"
-                className="contact-info__input-phone--icon"
-              />
-
-              <div className="contact-info__input-phone--tooltip">
-                Для зв’язку з Вами
+              
+              <div className="contact-info__tooltip">
+                <Tooltip text='Для зв’язку з Вами' />     
               </div>
-
-              <div className="contact-info__input-phone--tooltip-icon"></div>
             </div>
           </div>
         </div>
