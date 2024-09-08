@@ -67,6 +67,8 @@
       height: 70px;
       border-radius: 16px;
       cursor: pointer;
+      object-fit: cover;
+
 
       @include on-tablet {
         width: 84px;
@@ -91,19 +93,32 @@
 
     &-name {
       font-weight: 600;
-      font-size: 18px;
+      font-size: 14px;
+
+      @include on-tablet {
+        font-size: 16px;
+
+      }
     }
 
     &-price {
-      font-size: 16px;
+      font-size: 14px;
       margin-right: 8px;
       display: inline-block;
+
+      @include on-tablet {
+        font-size: 16px;
+      }
   
       &-old {
-        font-size: 16px;
+        font-size: 14px;
         display: inline-block;
         text-decoration: line-through;
         color: $grayscale-400;
+
+        @include on-tablet {
+          font-size: 16px;
+        }
       }
     }
 
