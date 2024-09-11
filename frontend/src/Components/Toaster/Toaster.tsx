@@ -24,6 +24,24 @@ const Toaster: React.FC<ToasterProps> = ({
   count
 }) => {
 
+  let categoryName = '';
+
+  switch (category) {
+    case 'Women':
+      categoryName = 'Жіночі';
+      break;
+    case 'Men':
+      categoryName = 'Чоловічі';
+      break;
+    case 'Child':
+      categoryName = 'Дитячі';
+      break;
+
+    default:
+      categoryName = '';
+      break;
+  }
+
   const position = window.innerWidth <= 767 ? "bottom-center" : "top-right";
 
   const showToast = () => {
@@ -37,7 +55,7 @@ const Toaster: React.FC<ToasterProps> = ({
               <h3 className="toaster__name">{name}</h3>
                 <div className="toaster__minor-info">
                   <div className="toaster__category">
-                    {category}
+                    {categoryName}
                   </div>
                   <div className="toaster__size">
                     {size}

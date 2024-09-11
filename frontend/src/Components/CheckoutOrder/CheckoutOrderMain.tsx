@@ -31,6 +31,23 @@ const CheckoutOrderMain: React.FC<CheckoutOrderMainProps> = ({ cartItems, totalP
             size,
             count
           } = cartItem;
+
+          let categoryName = '';
+
+          switch (type) {
+            case 'Women':
+              categoryName = 'Жіночі';
+              break;
+            case 'Men':
+              categoryName = 'Чоловічі';
+              break;
+            case 'Child':
+              categoryName = 'Дитячі';
+              break;
+            default:
+              categoryName = '';
+              break;
+          } 
           return (
             <div className="checkout-order__item">
               <div className="checkout-order__item-img-inf">
@@ -39,7 +56,7 @@ const CheckoutOrderMain: React.FC<CheckoutOrderMainProps> = ({ cartItems, totalP
                   <h3 className="checkout-order__name">{name}</h3>
                   <div className="checkout-order__minor-info">
                     <div className="checkout-order__category">
-                      {type}
+                      {categoryName}
                     </div>
                     <div className="checkout-order__size">
                       {size}
@@ -66,7 +83,7 @@ const CheckoutOrderMain: React.FC<CheckoutOrderMainProps> = ({ cartItems, totalP
       </div>
       <div className="checkout-order__summary">
         <div className="checkout-order__to-pay">
-          <div className="checkout-order__order-title">Всього:</div>
+          <div className="checkout-order__order-title">Разом:</div>
           <div className="checkout-order__price">{totalPrice} грн</div>
         </div>
 

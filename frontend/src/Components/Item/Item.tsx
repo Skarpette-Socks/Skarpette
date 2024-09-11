@@ -28,6 +28,24 @@ const Item: React.FC<ItemProps> = ({
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   const [isFavorite, setIsFavorite] = useState(false);
 
+  let categoryName = '';
+
+  switch (category) {
+    case 'Women':
+      categoryName = 'Жіночі';
+      break;
+    case 'Men':
+      categoryName = 'Чоловічі';
+      break;
+    case 'Child':
+      categoryName = 'Дитячі';
+      break;
+
+    default:
+      categoryName = '';
+      break;
+  } 
+
   useEffect(() => {
     setIsFavorite(favorites.some((item) => item.vendor_code === vendor_code));
   }, [favorites, vendor_code]);
@@ -69,7 +87,7 @@ const Item: React.FC<ItemProps> = ({
       </div>
 
       <div className="item__info">
-        <p className="item__category">{category}</p>
+        <p className="item__category">{categoryName}</p>
         <p className="item__name" title={name}>
           {name}
         </p>

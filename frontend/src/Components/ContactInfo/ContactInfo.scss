@@ -29,6 +29,9 @@
   &__input {
     position: relative;
 
+    &.error {
+      margin-bottom: 5px;
+    }
     &-name {
       grid-column: 1/2;
     }

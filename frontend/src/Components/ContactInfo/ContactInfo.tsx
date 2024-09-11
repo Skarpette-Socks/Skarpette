@@ -22,31 +22,13 @@ const ContactInfo: React.FC = () => {
   const [phoneError, setPhoneError] = useState('');
   const [mailError, setMailError] = useState('');
 
-  // const setValue = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   switch (event.target.name) {
-  //     case 'name':
-  //       setName(event.target.value)
-  //       break
-  //     case 'surname':
-  //       setSurname(event.target.value)
-  //       break
-  //     case 'phone':
-  //       setPhone(+event.target.value)
-  //       break
-  //     case 'email':
-  //       setMail(event.target.value)
-  //       break
-  //   }
-  // }
-
-
   const setNameFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
 
     const engRegex = /^[\u0400-\u04FF]+$/;
   
     if (e.target.value === '') {
-      setNameError('Поле не може бути пустим');
+      setNameError('Заповніть поле');
     } else if (!engRegex.test(e.target.value)) {
       setNameError('Лише кирилиця');
     } else {
@@ -61,7 +43,7 @@ const ContactInfo: React.FC = () => {
     const engRegex = /^[\u0400-\u04FF]+$/;
     
     if (e.target.value === '') {
-      setSurnameError('Поле не може бути пустим');
+      setSurnameError('Заповніть поле');
     } else if (!engRegex.test(e.target.value)) {
       setSurnameError('Лише кирилиця');
     } else {
@@ -91,7 +73,7 @@ const ContactInfo: React.FC = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     if (e.target.value === '') {
-      setMailError('Поле не може бути пустим');
+      setMailError('Заповніть поле');
     } else if (!emailRegex.test(e.target.value)) {
       setMailError('Неправильний мейл');
     } else {
