@@ -9,7 +9,6 @@
     @include container-grid;
   }
 
-
   @include on-tablet {
     margin-top: 64px;
 
@@ -88,7 +87,11 @@
       color: $grayscale-400;
       display: flex;
       gap: 8px;
-      font-size: 14px;
+      font-size: 12px;
+
+      @include on-tablet {
+        font-size: 14px;
+      }
     }
 
     &-name {
@@ -183,6 +186,10 @@
       @include on-tablet {
         display: none;
       }
+    }
+
+    &-category {
+      text-transform: uppercase;
     }
   }
 

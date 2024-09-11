@@ -3,7 +3,6 @@ import react, { useState } from "react";
 import "./CheckoutReceiver.scss";
 import cn from "classnames";
 import InputMask from "react-input-mask";
-import tooltip from '../../Components/assets/img/icons/tooltip.svg'
 import Tooltip from "../Tooltip/Tooltip";
 
 
@@ -27,7 +26,7 @@ const CheckoutReceiver: React.FC = () => {
     const engRegex = /^[\u0400-\u04FF]+$/;
   
     if (e.target.value === '') {
-      setNameError('Поле не може бути пустим');
+      setNameError('Заповніть поле');
     } else if (!engRegex.test(e.target.value)) {
       setNameError('Лише кирилиця');
     } else {
@@ -42,7 +41,7 @@ const CheckoutReceiver: React.FC = () => {
     const engRegex = /^[\u0400-\u04FF]+$/;
     
     if (e.target.value === '') {
-      setSurnameError('Поле не може бути пустим');
+      setSurnameError('Заповніть поле');
     } else if (!engRegex.test(e.target.value)) {
       setSurnameError('Лише кирилиця');
     } else {
@@ -109,7 +108,13 @@ const CheckoutReceiver: React.FC = () => {
       {(selectedOption === "another-receiver") && (
         <div className="checkout-receiver__option-another-customer">
           <div className="contact-info__inputs-cont">
-            <div className="contact-info__input contact-info__input-name">
+            <div 
+              className={cn(`
+                contact-info__input 
+                contact-info__input-name 
+                ${nameError && nameTouched ? "error" : ""}`
+              )}
+            >
               <input
                 type="name"
                 name="name"

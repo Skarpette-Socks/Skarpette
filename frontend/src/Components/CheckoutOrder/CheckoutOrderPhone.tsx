@@ -14,7 +14,7 @@ const CheckoutOrderPhone: React.FC<CheckoutOrderPhoneProps> = ({ totalPrice, tot
       <div className="checkout-order checkout__order-phone">
       <div className="checkout-order__summary">
         <div className="checkout-order__to-pay">
-          <div className="checkout-order__order-title">Всього:</div>
+          <div className="checkout-order__order-title">Разом:</div>
           <div className="checkout-order__price">{totalPrice} грн</div>
         </div>
 

@@ -17,6 +17,24 @@ const CartContentItem: React.FC<Props> = ({
   }) => {
   const { deleteCartItem } = useCartItems();
 
+  let categoryName = '';
+
+  switch (cartItem.type) {
+    case 'Women':
+      categoryName = 'Жіночі';
+      break;
+    case 'Men':
+      categoryName = 'Чоловічі';
+      break;
+    case 'Child':
+      categoryName = 'Дитячі';
+      break;
+
+    default:
+      categoryName = '';
+      break;
+  } 
+
   return (
     <div>
       <div className="cart__item">
@@ -30,7 +48,7 @@ const CartContentItem: React.FC<Props> = ({
           </a>
           <div className="cart__item-info">
             <div className="cart__item-minorinfo">
-              <div className="cart__item-category">{cartItem.type}</div>
+              <div className="cart__item-category">{categoryName}</div>
               <div className="cart__item-size">{cartItem.size}</div>
             </div>
             <div className="cart__item-name">{cartItem.name}</div>
