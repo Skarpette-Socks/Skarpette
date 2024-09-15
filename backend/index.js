@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const skarpetteRouter = require('./routes/skarpette');
+const orderRouter = require('./routes/order');
 const cors = require('cors');
 
 dotenv.config();
@@ -20,7 +21,8 @@ mongoose
         console.log('Error connecting to MongoDB: ', error);
     });
 
-app.use('/', skarpetteRouter);
+app.use('/skarpette', skarpetteRouter);
+app.use('/order', orderRouter);
 
 app.listen(process.env.PORT, () => {
     console.log('Backend is running');

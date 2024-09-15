@@ -1,33 +1,33 @@
 Base URL:
 http://localhost:5000
 
-Clear Database (pls don't):
-Request type: DELETE
+Add /skarpette to Base URL for socks APIs and /order for orders
 Example:
-http://localhost:5000/clear
+http://localhost:5000/skarpette
+http://localhost:5000/order
 
 Search Skarpettes by Name or Vendor Code:
 Request type: GET
 Parameters: name or vendor_code
 Example:
-http://localhost:5000/search?vendor_code=112233
-http://localhost:5000/search?name=socks
+http://localhost:5000/skarpette/search?vendor_code=112233
+http://localhost:5000/skarpette/search?name=socks
 
 Filter Skarpettes:
 Request type: GET
 Parameters: type
 Example:
-http://localhost:5000/filter?type=Men
+http://localhost:5000/skarpette/filter?type=Men
 
 Get Favorite Skarpettes
 Request type: GET
 Example:
-http://localhost:5000/favorites
+http://localhost:5000/skarpette/favorites
 
 Get New Skarpettes
 Request type: GET
 Example:
-http://localhost:5000/new
+http://localhost:5000/skarpette/new
 
 Create Skarpette
 Request type: POST
@@ -37,15 +37,41 @@ all fields from model in form_data
 Delete Skarpette by ID
 Request type: DELETE
 Example: 
-http://localhost:5000/669fa1d2df106cad2294c2ca
+http://localhost:5000/skarpette/669fa1d2df106cad2294c2ca
 
 Get All Skarpettes
 Request type: GET
 Example:
-http://localhost:5000/
+http://localhost:5000/skarpette
 
 Update Skarpette
 Request type: PUT
 Data: JSON with fields to update
 Example:
-http://localhost:5000/669fa1d2df106cad2294c2ca
+http://localhost:5000/skarpette/669fa1d2df106cad2294c2ca
+
+Create order
+Request type: POST
+Data:
+All fields from model in body
+
+Get order by ID
+Request type: GET
+Example:
+http://localhost:5000/order/669fa1d2df106cad2294c2ca
+
+Delete order by ID
+Request type: DELETE
+Example: 
+http://localhost:5000/order/669fa1d2df106cad2294c2ca
+
+Get All Skarpettes
+Request type: GET
+Example:
+http://localhost:5000/order
+
+Update Skarpette
+Request type: PUT
+Data: JSON with fields to update
+Example:
+http://localhost:5000/order/669fa1d2df106cad2294c2ca
