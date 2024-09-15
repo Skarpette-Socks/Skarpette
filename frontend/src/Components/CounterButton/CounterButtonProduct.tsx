@@ -95,6 +95,7 @@ const CounterButtonProduct: React.FC<CounterButtonProduct> = ({
           setIsFocused(false);
           setOnBlur();
         }}
+        disabled={counter === 0}
       />
       <button
         className="counter__button"

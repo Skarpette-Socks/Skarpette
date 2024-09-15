@@ -4,14 +4,28 @@ import CheckoutPayment from "../../Components/CheckoutPayment/CheckoutPayment";
 import CheckoutReceiver from "../../Components/CheckoutReceiver/CheckoutReceiver";
 import ContactInfo from "../../Components/ContactInfo/ContactInfo";
 import Delivery from "../../Components/Delivery/Delivery";
-import visa from "../../Components/assets/img/icons/visa.svg";
-import mastercard from "../../Components/assets/img/icons/mastercard.svg";
-import fondy from "../../Components/assets/img/icons/fondy.svg";
 import arrowLeft from '../../Components/assets/img/icons/arrow-left.svg';
 import logo from '../../Components/assets/img/icons/logo-green.svg';
 
 import { useCartItems } from "../../Context/CartContext";
 import "./Checkout.scss";
+import { useRef, useState } from "react";
+import FooterMinorInfo from "../../Components/Footer/FooterMinorInfo";
+
+interface ContactInfoRef {
+  isValid: () => boolean;
+  getName: () => string;
+  getSurname: () => string;
+  getPhone: () => string;
+  getMail: () => string;
+}
+
+interface ReceiverInfoRef {
+  isValid: () => boolean;
+  getName: () => string;
+  getSurname: () => string;
+  getPhone: () => string;
+}
 
 const Checkout = () => {
   // #region CheckoutOrderRegion
@@ -39,8 +53,62 @@ const Checkout = () => {
   const totalPrice = parseFloat(newTotalPrice.toFixed(2));
   const totalDiscount = parseFloat(newTotalDiscount.toFixed(2));
   // #endregion
- 
-  const handleCheckout = async () => {
+
+  const [selectedOption, setSelectedOption] = useState("self-receiver");
+  let userData = {};
+
+  const contactInfoRef = useRef<ContactInfoRef>(null);
+  const receiverInfoRef = useRef<ReceiverInfoRef>(null);
+
+  const handleCheckout = () => {
+    let isValidContactInfo = false;
+    let isValidReceiverInfo = false;
+  
+    if (contactInfoRef.current) {
+      isValidContactInfo = contactInfoRef.current.isValid();
+    }
+  
+    if (selectedOption === 'another-receiver' && receiverInfoRef.current) {
+      isValidReceiverInfo = receiverInfoRef.current.isValid();
+    } else {
+      isValidReceiverInfo = true;
+    }
+  
+    if (isValidContactInfo && isValidReceiverInfo) {
+      if (selectedOption === 'self-receiver') {
+        userData = {
+          name: contactInfoRef.current?.getName(),
+          surname: contactInfoRef.current?.getSurname(),
+          mail: contactInfoRef.current?.getMail(),
+          phone: contactInfoRef.current?.getPhone(),
+        };
+      } else {
+        userData = {
+          name: receiverInfoRef.current?.getName(),
+          surname: receiverInfoRef.current?.getSurname(),
+          mail: contactInfoRef.current?.getMail(),
+          phone: receiverInfoRef.current?.getPhone(),
+          payerName: contactInfoRef.current?.getName(),
+          payerSurname: contactInfoRef.current?.getSurname(),
+          payerPhone: contactInfoRef.current?.getPhone(),
+        };
+      }
+  
+      if (!Object.values(userData).includes('')) {
+        postData();
+      } else {
+        console.log('Заповніть усі поля');
+      }
+    } else {
+      console.log('Форма не пройшла валідацію');
+    }
+  
+    console.log('userData', userData);
+  };
+  
+  
+
+  const postData = async () => {
     try {
       const response = await fetch('http://localhost:5000/', {
         method: 'POST',
@@ -49,6 +117,7 @@ const Checkout = () => {
         },
         body: JSON.stringify({
           cartItems: cartItems,
+          userData: userData
         }),
       });
 
@@ -60,7 +129,7 @@ const Checkout = () => {
     } catch (error) {
       console.error('Сталася помилка:', error);
     }
-  };
+  }
 
   return (
     <div className="checkout">
@@ -83,40 +152,29 @@ const Checkout = () => {
         />
       </div>
       <div className="checkout__delivery">
-        <ContactInfo />
+        <ContactInfo 
+          ref={contactInfoRef}
+        />
         <Delivery />
         <CheckoutPayment />
-        <CheckoutReceiver />
+        <CheckoutReceiver 
+          selectedOption={selectedOption}
+          setSelectedOption={setSelectedOption}
+          ref={receiverInfoRef}
+        />
         <CheckoutOrderPhone 
           totalPrice={totalPrice}
           totalDiscount={totalDiscount}
         />
       </div>
+
       <button className="checkout__button" onClick={handleCheckout}>
         Оплатити замовлення
       </button>
-      <div className="checkout__footer footer__minor-info">
-        <div className="footer__greyline"></div>
 
-        <div className="footer__company-name">
-          ©2024 Scarpette Socks
-        </div>
+      <div className="checkout__footer">
+        <FooterMinorInfo />
 
-        <div className="footer__terms-privacy-container">
-          <a href="/privacy-policy" className="footer__privacy-link">
-            Політика&nbsp;конфіденційності
-          </a>
-
-          <a href="/privacy-policy" className="footer__terms-link">
-            Умови&nbsp;використання
-          </a>
-        </div>
-
-        <div className="footer__payment-logos">
-          <img src={visa} alt="visa logo" className="footer__visa-logo" />
-          <img src={mastercard} alt="mastercard logo" className="footer__mastercard-logo" />
-          <img src={fondy} alt="fondy logo" className="footer__fondy-logo" />
-        </div>
       </div>
     </div>
   );

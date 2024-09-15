@@ -1,12 +1,24 @@
-import react, { useState } from "react";
+import react, { forwardRef, useImperativeHandle, useState } from "react";
 
 import "./CheckoutReceiver.scss";
 import cn from "classnames";
 import InputMask from "react-input-mask";
 import Tooltip from "../Tooltip/Tooltip";
 
+interface ContactInfoProps {
+  selectedOption: string,
+  setSelectedOption: (e: string) => void;
 
-const CheckoutReceiver: React.FC = () => {
+}
+
+const CheckoutReceiver: React.FC<ContactInfoProps> = forwardRef((
+  { 
+    selectedOption,
+    setSelectedOption
+  }, 
+  ref
+) => {
+  
   //#region inputs
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
@@ -20,54 +32,109 @@ const CheckoutReceiver: React.FC = () => {
   const [surnameError, setSurnameError] = useState('');
   const [phoneError, setPhoneError] = useState('');
 
-  const setNameFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+  const engRegex = /^[\u0400-\u04FF]+$/;
 
-    const engRegex = /^[\u0400-\u04FF]+$/;
+  useImperativeHandle(ref, () => ({
+    isValid() {
+      if (selectedOption === 'another-receiver') {
+       return isValidForm();
+      }
+
+      return true;
+    },
+    getName() {
+      return name;
+    },
+    getSurname() {
+      return surname;
+    },
+    getPhone() {
+      return phone;
+    },
+  }));
+
+  const isValidForm = () => {
+    let error = false;
   
-    if (e.target.value === '') {
-      setNameError('Заповніть поле');
-    } else if (!engRegex.test(e.target.value)) {
-      setNameError('Лише кирилиця');
-    } else {
-      setNameError('');
-      setNameTouched(false);
+    if (!name || !engRegex.test(name)) {
+      setNameTouched(true);
+      setNameError(name === '' ? 'Заповніть поле' : 'Лише кирилиця');
+      error = true;
     }
-  }
-
-  const setSurnameFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSurname(e.target.value);
-
-    const engRegex = /^[\u0400-\u04FF]+$/;
-    
-    if (e.target.value === '') {
-      setSurnameError('Заповніть поле');
-    } else if (!engRegex.test(e.target.value)) {
-      setSurnameError('Лише кирилиця');
-    } else {
-      setSurnameError('');
-      setSurnameTouched(false);
+  
+    if (!surname || !engRegex.test(surname)) {
+      setSurnameTouched(true);
+      setSurnameError(surname === '' ? 'Заповніть поле' : 'Лише кирилиця');
+      error = true;
     }
-  }
-
-  const setPhoneFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.length >= 4) {
-      setPhone(e.target.value);
+  
+    if (phone.includes('_')) {
+      setPhoneTouched(true);
+      setPhoneError('Неправильний номер телефону');
+      error = true;
     }
-    
-    for (const char of e.target.value) {
-      if (char === '_') {
-        setPhoneError('Неправильний номер телефону');
-      } else {
-        setPhoneError('');
-        setPhoneTouched(false);
+  
+    if (error) {
+      const el = document.querySelector('.checkout-receiver__title');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
       }
     }
+  
+    return !error;
   }
 
-  //#endregion
+  const setNameFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+  
+    setName(() => {
+      if (value === '') {
+        setNameError('Заповніть поле');
+      } else if (!engRegex.test(value)) {
+        setNameError('Лише кирилиця');
+      } else {
+        setNameError('');
+        setNameTouched(false);
+      }
+      return value;
+    });
+  };
+  
+  const setSurnameFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+  
+    setSurname(() => {
+      if (value === '') {
+        setSurnameError('Заповніть поле');
+      } else if (!engRegex.test(value)) {
+        setSurnameError('Лише кирилиця');
+      } else {
+        setSurnameError('');
+        setSurnameTouched(false);
+      }
+      return value;
+    });
+  };
+  
+  const setPhoneFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+  
+    setPhone(() => {
+      if (value.length >= 4) {
+        for (const char of value) {
+          if (char === '_') {
+            setPhoneError('Неправильний номер телефону');
+          } else {
+            setPhoneError('');
+            setPhoneTouched(false);
+          }
+        }
+      }
+      return value;
+    });
+  };
 
-  const [selectedOption, setSelectedOption] = useState("self-receiver");
+  //#endregion
 
   const options = [
     {
@@ -182,6 +249,6 @@ const CheckoutReceiver: React.FC = () => {
       )}
     </div>
   );
-};
+});
 
 export default CheckoutReceiver;

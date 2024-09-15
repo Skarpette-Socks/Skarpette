@@ -51,7 +51,10 @@ const CartContentItem: React.FC<Props> = ({
               <div className="cart__item-category">{categoryName}</div>
               <div className="cart__item-size">{cartItem.size}</div>
             </div>
-            <div className="cart__item-name">{cartItem.name}</div>
+            <a 
+              href={`/product/${cartItem.vendor_code}`} 
+              className="cart__item-name">{cartItem.name}              
+            </a>
             <div>
               {cartItem.price2 ? (
                 <>  

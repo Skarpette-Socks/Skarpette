@@ -271,6 +271,7 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
                 ${selectedSize === undefined || counter === 0 ? `disabled` : ``}
               `}
               onClick={() => addCartItem( item, counter, selectedSize )}
+              disabled={selectedSize === undefined || counter === 0}
             >
               Додати у кошик
             </button>

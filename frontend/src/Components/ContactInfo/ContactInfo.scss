@@ -30,8 +30,13 @@
     position: relative;
 
     &.error {
-      margin-bottom: 5px;
+      margin-bottom: 8px;
+      
+      @include on-tablet {
+        margin-bottom: 0;
+      }
     }
+
     &-name {
       grid-column: 1/2;
     }

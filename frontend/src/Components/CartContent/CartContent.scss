@@ -97,6 +97,9 @@
     &-name {
       font-weight: 600;
       font-size: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      color: $grayscale-1000;
 
       @include on-tablet {
         font-size: 16px;
