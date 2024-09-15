@@ -153,7 +153,12 @@ const ContactInfo: React.FC = forwardRef((_, ref) => {
       </div>
 
       <div className="contact-info__inputs-cont"> 
-        <div className="contact-info__input contact-info__input-name">
+        <div 
+          className={cn(`
+            contact-info__input contact-info__input-name
+            ${(nameError && nameTouched) ? 'error' : ''}
+          `)} 
+        >
           <input 
             type="name" 
             name="name"
@@ -173,7 +178,12 @@ const ContactInfo: React.FC = forwardRef((_, ref) => {
           }
         </div>
 
-        <div className="contact-info__input contact-info__input-surname">
+        <div 
+          className={cn(`
+            contact-info__input contact-info__input-surname
+            ${(surnameError && surnameTouched) ? 'error' : ''}
+          `)}
+        >
           <input 
             type="surname" 
             name="surname"
@@ -193,7 +203,12 @@ const ContactInfo: React.FC = forwardRef((_, ref) => {
           }
         </div>
 
-        <div className="contact-info__input contact-info__input-phone">
+        <div             
+          className={cn(`
+            contact-info__input contact-info__input-phone
+            ${(phoneError && phoneTouched) ? 'error' : ''}
+          `)} 
+        >
           <InputMask
             type="tel"
             name="tel" 
@@ -216,7 +231,12 @@ const ContactInfo: React.FC = forwardRef((_, ref) => {
           </div>
         </div>
 
-        <div className="contact-info__input contact-info__input-mail">
+        <div             
+          className={cn(`
+            contact-info__input contact-info__input-mail
+            ${(mailError && mailTouched) ? 'error' : ''}
+          `)} 
+        >
           <input 
             type="email" 
             name="email"
