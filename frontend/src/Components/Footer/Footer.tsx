@@ -5,15 +5,14 @@ import { useState } from "react";
 import logo from "../assets/img/icons/logo-green.svg";
 import plus from "../assets/img/icons/plus.svg";
 import minus from "../assets/img/icons/minus.svg";
-import visa from "../assets/img/icons/visa.svg";
-import mastercard from "../assets/img/icons/mastercard.svg";
-import fondy from "../assets/img/icons/fondy.svg";
+
 
 
 import categories from "../../../json_links/categories.json";
 import usefulLinks from "../../../json_links/useful-links.json";
 
 import FooterLinks from "./FooterLinks";
+import FooterMinorInfo from "./FooterMinorInfo";
 
 const Footer = () => {
   const [categoriesOpened, setCategoriesOpened] = useState(false);
@@ -145,29 +144,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="footer__minor-info">
-        <div className="footer__greyline"></div>
-
-        <div className="footer__company-name">
-          ©2024 Scarpette Socks
-        </div>
-
-        <div className="footer__terms-privacy-container">
-          <a href="/privacy-policy" className="footer__privacy-link">
-            Політика&nbsp;конфіденційності
-          </a>
-
-          <a href="/privacy-policy" className="footer__terms-link">
-            Умови&nbsp;використання
-          </a>
-        </div>
-
-        <div className="footer__payment-logos">
-          <img src={visa} alt="visa logo" className="footer__visa-logo" />
-          <img src={mastercard} alt="mastercard logo" className="footer__mastercard-logo" />
-          <img src={fondy} alt="fondy logo" className="footer__fondy-logo" />
-        </div>
-      </div>
+      <FooterMinorInfo />
     </div>
   );
 };

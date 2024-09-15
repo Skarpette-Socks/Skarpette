@@ -8,7 +8,11 @@ interface CheckoutOrderMainProps {
   totalDiscount: number
 }
 
-const CheckoutOrderMain: React.FC<CheckoutOrderMainProps> = ({ cartItems, totalPrice, totalDiscount }) => {
+const CheckoutOrderMain: React.FC<CheckoutOrderMainProps> = ({ 
+  cartItems, 
+  totalPrice, 
+  totalDiscount  
+}) => {
   const countItems = cartItems.reduce((sum, item) => {
     const count = item.count ? item.count : 0;
     return sum + count;
@@ -48,6 +52,7 @@ const CheckoutOrderMain: React.FC<CheckoutOrderMainProps> = ({ cartItems, totalP
               categoryName = '';
               break;
           } 
+
           return (
             <div className="checkout-order__item">
               <div className="checkout-order__item-img-inf">
