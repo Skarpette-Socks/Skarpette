@@ -54,6 +54,7 @@ const skarpetteSchema = new mongoose.Schema({
     },
     type: {
         type: String,
+        enum: ['Men', 'Women', 'Child'],
         required: true,
     },
     style: {
