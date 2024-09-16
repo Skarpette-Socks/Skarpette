@@ -5,13 +5,20 @@ import cn from "classnames";
 import InputMask from "react-input-mask";
 import Tooltip from "../Tooltip/Tooltip";
 
+interface ReceiverInfoRef {
+  isValid: () => boolean;
+  getName: () => string;
+  getSurname: () => string;
+  getPhone: () => string;
+}
+
 interface ContactInfoProps {
   selectedOption: string,
   setSelectedOption: (e: string) => void;
 
 }
 
-const CheckoutReceiver: React.FC<ContactInfoProps> = forwardRef((
+const CheckoutReceiver = forwardRef<ReceiverInfoRef, ContactInfoProps>((
   { 
     selectedOption,
     setSelectedOption

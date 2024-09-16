@@ -1,6 +1,6 @@
 export const fetchDataItem = async ( vendor_code: number ) => {
   try {
-    const response = await fetch(`http://localhost:5000/search?vendor_code=${vendor_code}`, {
+    const response = await fetch(`http://localhost:5000/skarpette/search?vendor_code=${vendor_code}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

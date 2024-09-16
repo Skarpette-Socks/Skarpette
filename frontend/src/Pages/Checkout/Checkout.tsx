@@ -45,8 +45,12 @@ const Checkout = () => {
           newTotalDiscount += discountForItem;
         }
       }
-    } catch (error: any) {
-      console.error("Error fetching item:", error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error fetching item:", error.message);
+      } else {
+        console.error("Unknown error:", error);
+      }
     }
   }
   
@@ -105,7 +109,6 @@ const Checkout = () => {
   
     console.log('userData', userData);
   };
-  
   
 
   const postData = async () => {

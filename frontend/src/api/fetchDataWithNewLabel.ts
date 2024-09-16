@@ -1,6 +1,6 @@
 export const fetchDataWithNewLabel = async () => {
   try {
-    const response = await fetch("http://localhost:5000/new", {
+    const response = await fetch("http://localhost:5000/skarpette/new", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

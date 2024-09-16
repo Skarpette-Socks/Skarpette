@@ -4,7 +4,14 @@ import "./ContactInfo.scss";
 import InputMask from 'react-input-mask';
 import Tooltip from "../Tooltip/Tooltip";
 
-const ContactInfo: React.FC = forwardRef((_, ref) => {
+interface ReceiverInfoRef {
+  isValid: () => boolean;
+  getName: () => string;
+  getSurname: () => string;
+  getPhone: () => string;
+}
+
+const ContactInfo = forwardRef<ReceiverInfoRef>((_, ref) => {
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [phone, setPhone] = useState('+38 (0__) ___-__-__');
