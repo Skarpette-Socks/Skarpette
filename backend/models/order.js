@@ -131,6 +131,10 @@ const orderSchema = new mongoose.Schema({
         default: false,
         required: true,
     },
+    total: {
+        type: Number,
+        required: true,
+    },
 });
 
 const Order = mongoose.model('Order', orderSchema);
