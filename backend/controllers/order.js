@@ -80,19 +80,25 @@ const updateOrder = async (req, res) => {
         const { id } = req.params;
         const updateData = req.body;
 
-        const updatedOrder = await Order.findOneAndUpdate(id);
+        const updatedOrder = await Order.findOneAndUpdate(
+            { _id: id },
+            updateData,
+            { new: true }
+        );
 
         if (!updatedOrder) {
             return res.status(404).json('Order not found');
         }
-        res.status(200).json(updateOrder);
+        res.status(200).json(updatedOrder);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
 module.exports = {
     createOrder,
     getAllOrders,
     getOrderById,
     deleteOrder,
+    updateOrder,
 };
