@@ -1,6 +1,11 @@
-import React, { ReactNode } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import { FavoritesProvider } from "./Context/FavoritesContext"; 
+import React, { ReactNode, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import { FavoritesProvider } from "./Context/FavoritesContext";
 import "./App.css";
 import "./Components/assets/styles/main.scss";
 
@@ -23,6 +28,7 @@ import { CartProvider } from "./Context/CartContext";
 import SocksPage from "./Components/SocksPage/SocksPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Search from "./Components/Search/Search";
 
 // Список маршрутів
 const routes = [
@@ -46,15 +52,26 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
-  const isCheckoutPage = location.pathname === '/checkout';
+  const isCheckoutPage = location.pathname === "/checkout";
+  const [isSearchOpen, setIsSearchOpen] = useState(false); // Состояние для показа поиска
+
+  const toggleSearch = () => {
+    setIsSearchOpen((prev) => !prev); // Переключаем показ поиска
+  };
 
   return (
     <>
-      <ToastContainer 
-        pauseOnFocusLoss={false}
-      />
+      <ToastContainer pauseOnFocusLoss={false} />
       {!isCheckoutPage && <SubHeader />}
-      {!isCheckoutPage && <NavBar />}
+      {!isCheckoutPage && (
+        <div style={{ position: "relative", height: "auto" }}>
+          {isSearchOpen ? (
+            <Search toggleSearch={toggleSearch} />
+          ) : (
+            <NavBar toggleSearch={toggleSearch} />
+          )}
+        </div>
+      )}
       {children}
       {!isCheckoutPage && <Footer />}
     </>

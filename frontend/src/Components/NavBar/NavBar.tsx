@@ -13,7 +13,11 @@ import Menu from "../Menu/Menu";
 import Dropdown from "../Dropdown/Dropdown";
 import { useCartItems } from "../../Context/CartContext";
 
-const NavBar: React.FC = () => {
+interface NavBarProps {
+  toggleSearch: () => void;
+}
+
+const NavBar: React.FC<NavBarProps> = ({ toggleSearch }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 1279);
   const navigate = useNavigate();
@@ -71,7 +75,7 @@ const NavBar: React.FC = () => {
       </div>
       <NavBarMenu toggleMenu={toggleMenu} />
       <Menu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
-      <NavBarActions toggleMenu={closeMenu} />
+      <NavBarActions toggleMenu={closeMenu} toggleSearch={toggleSearch} />
     </nav>
   );
 };
@@ -98,9 +102,10 @@ const NavBarMenu: React.FC<{ toggleMenu: () => void }> = ({ toggleMenu }) => {
   );
 };
 
-const NavBarActions: React.FC<{ toggleMenu: () => void }> = ({
-  toggleMenu,
-}) => {
+const NavBarActions: React.FC<{
+  toggleMenu: () => void;
+  toggleSearch: () => void;
+}> = ({ toggleMenu, toggleSearch }) => {
   const { favorites } = useFavorites();
   const { cartItems } = useCartItems();
 
@@ -115,7 +120,13 @@ const NavBarActions: React.FC<{ toggleMenu: () => void }> = ({
 
   return (
     <div className="navBar__actions">
-      <Link to="#" onClick={handleLinkClick}>
+      <Link
+        to="#"
+        onClick={(e) => {
+          e.preventDefault();
+          toggleSearch();
+        }}
+      >
         <img src={search_icon} alt="Search" />
       </Link>
       <Link
