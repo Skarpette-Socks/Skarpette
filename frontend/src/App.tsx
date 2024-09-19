@@ -1,6 +1,11 @@
-import React, { ReactNode } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import { FavoritesProvider } from "./Context/FavoritesContext"; 
+import React, { ReactNode, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import { FavoritesProvider } from "./Context/FavoritesContext";
 import "./App.css";
 import "./Components/assets/styles/main.scss";
 
@@ -23,6 +28,8 @@ import { CartProvider } from "./Context/CartContext";
 import SocksPage from "./Components/SocksPage/SocksPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Search from "./Components/Search/Search";
+import SearchResults from "./Pages/SearchResults/SearchResults";
 
 // Список маршрутів
 const routes = [
@@ -38,6 +45,7 @@ const routes = [
   { path: "/return-of-goods", element: <Returning /> },
   { path: "/catalog/:TYPE_LINK", element: <SocksPage /> },
   { path: "/checkout", element: <Checkout /> },
+  {path:"/search-results", element:<SearchResults />},
 ];
 
 interface LayoutProps {
@@ -46,15 +54,26 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
-  const isCheckoutPage = location.pathname === '/checkout';
+  const isCheckoutPage = location.pathname === "/checkout";
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  const toggleSearch = () => {
+    setIsSearchOpen((prev) => !prev);
+  };
 
   return (
     <>
-      <ToastContainer 
-        pauseOnFocusLoss={false}
-      />
+      <ToastContainer pauseOnFocusLoss={false} />
       {!isCheckoutPage && <SubHeader />}
-      {!isCheckoutPage && <NavBar />}
+      {!isCheckoutPage && (
+        <div>
+          {isSearchOpen ? (
+            <Search toggleSearch={toggleSearch} isOpen={isSearchOpen} />
+          ) : (
+            <NavBar toggleSearch={toggleSearch} />
+          )}
+        </div>
+      )}
       {children}
       {!isCheckoutPage && <Footer />}
     </>
