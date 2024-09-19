@@ -29,6 +29,7 @@ import SocksPage from "./Components/SocksPage/SocksPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Search from "./Components/Search/Search";
+import SearchResults from "./Pages/SearchResults/SearchResults";
 
 // Список маршрутів
 const routes = [
@@ -44,6 +45,7 @@ const routes = [
   { path: "/return-of-goods", element: <Returning /> },
   { path: "/catalog/:TYPE_LINK", element: <SocksPage /> },
   { path: "/checkout", element: <Checkout /> },
+  {path:"/search-results", element:<SearchResults />},
 ];
 
 interface LayoutProps {
@@ -53,10 +55,10 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
   const isCheckoutPage = location.pathname === "/checkout";
-  const [isSearchOpen, setIsSearchOpen] = useState(false); // Состояние для показа поиска
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const toggleSearch = () => {
-    setIsSearchOpen((prev) => !prev); // Переключаем показ поиска
+    setIsSearchOpen((prev) => !prev);
   };
 
   return (
@@ -64,9 +66,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <ToastContainer pauseOnFocusLoss={false} />
       {!isCheckoutPage && <SubHeader />}
       {!isCheckoutPage && (
-        <div style={{ position: "relative", height: "auto" }}>
+        <div>
           {isSearchOpen ? (
-            <Search toggleSearch={toggleSearch} />
+            <Search toggleSearch={toggleSearch} isOpen={isSearchOpen} />
           ) : (
             <NavBar toggleSearch={toggleSearch} />
           )}

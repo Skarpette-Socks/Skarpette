@@ -1,4 +1,3 @@
-import react from "react";
 import "./Tooltip.scss";
 import tooltip from '../../Components/assets/img/icons/tooltip.svg'
 import tooltipShape from '../../Components/assets/img/icons/tooltip-shape.svg'

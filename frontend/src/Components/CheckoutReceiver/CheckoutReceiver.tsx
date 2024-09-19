@@ -1,4 +1,4 @@
-import react, { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 
 import "./CheckoutReceiver.scss";
 import cn from "classnames";

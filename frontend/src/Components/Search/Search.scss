@@ -14,6 +14,10 @@
     padding: 16px 78px;
   }
 
+  @include on-desktop {
+    height: 81.6px;
+  }
+
   &__logo {
     display: none;
     @include on-tablet {
@@ -21,13 +25,9 @@
       justify-content: center;
       align-items: center;
       gap: 8px;
+      cursor: pointer;
 
       &-img {
-        width: 97px;
-        height: 32px;
-      }
-
-      @include on-desktop {
         width: 114px;
         height: 37px;
       }
@@ -57,6 +57,7 @@
   &__input-icon {
     width: 20px;
     height: 20px;
+    cursor: pointer;
 
     @include on-tablet {
       width: 24px;
@@ -82,7 +83,7 @@
     padding-inline: 0;
     border: none;
     font-size: 16px;
-      outline: none;
+    outline: none;
     @include on-tablet {
       height: 20px;
     }

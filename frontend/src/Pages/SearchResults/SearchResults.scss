@@ -1,0 +1,44 @@
+@import "../../Components/assets/styles/mixins";
+@import "../../Components/assets/styles/variables";
+.search-results {
+  @include content-padding-inline;
+  max-width: 1440px;
+  margin-inline: auto;
+  margin-top: 40px;
+
+  @include on-tablet {
+    margin-top: 64px;
+  }
+
+  h1 {
+    font-size: 24px;
+    font-weight: 500;
+    color: $grayscale-1000;
+  }
+
+  .search-results-grid {
+    display: grid;
+    gap: 24px; /* Отступы между элементами*/
+    grid-template-columns: repeat(2, 1fr); /* По умолчанию 2 колонки */
+    grid-template-rows: auto; /* Высота строк автоматическая */
+    margin-top: 56px;
+    grid-row-gap: 32px; /* Отступ между строками */
+    justify-items: center;
+
+    @include on-desktop {
+      grid-template-columns: repeat(4, 1fr); /* 4 колонки на широких экранах */
+      margin-top: 80px;
+      grid-row-gap: 64px; /* Отступ между строками */
+    }
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 40px 0;
+
+    p {
+      font-size: 18px;
+      color: #666;
+    }
+  }
+}

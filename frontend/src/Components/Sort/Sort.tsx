@@ -20,11 +20,11 @@ const Sort: React.FC<SortProps> = ({ items, selectedStyles, selectedSizes, setSo
   const [sortText, setSortText] = useState<string>('За замовчуванням');
   const [sortCase, setSortCase] = useState<string>('default');
   const [sortIsOpen, setSortIsOpen] = useState(false);
-  const menuRef = useRef(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setSortIsOpen(false);
       }
     };
