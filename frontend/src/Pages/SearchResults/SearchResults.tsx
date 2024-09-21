@@ -6,7 +6,6 @@ import "./SearchResults.scss";
 import PageNavigation from "../../Components/PageNavigation/PageNavigation";
 import ErrorNoResult from "../../Components/ErrorNoResult/ErrorNoResult";
 
-
 const SearchResultsPage: React.FC = () => {
   const [results, setResults] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -80,29 +79,23 @@ const SearchResultsPage: React.FC = () => {
       />
       <div className="search-results">
         <h1>Результати пошуку для: "{query}"</h1>
-        {results.length > 0 ? (
-          <>
-            <div className="search-results-grid">
-              {results.map((item) => (
-                <Item
-                  key={item._id}
-                  vendor_code={item.vendor_code}
-                  image={item.images_urls?.[0] || ""}
-                  category={item.type}
-                  name={item.name}
-                  price={item.price}
-                  discount_price={item.price2}
-                  isNew={item.is_new}
-                  discountPercentage={item.discountPercentage}
-                />
-              ))}
-            </div>
-          </>
-        ) : (
-          <div className="no-results">
-            <p>На Ваш запит "{query}" нічого не знайдено</p>
+        <>
+          <div className="search-results-grid">
+            {results.map((item) => (
+              <Item
+                key={item._id}
+                vendor_code={item.vendor_code}
+                image={item.images_urls?.[0] || ""}
+                category={item.type}
+                name={item.name}
+                price={item.price}
+                discount_price={item.price2}
+                isNew={item.is_new}
+                discountPercentage={item.discountPercentage}
+              />
+            ))}
           </div>
-        )}
+        </>
       </div>
     </>
   );
