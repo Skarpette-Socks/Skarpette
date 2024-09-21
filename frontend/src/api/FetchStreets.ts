@@ -29,7 +29,7 @@ export const fetchStreets = async (
 
     const cityData = await cityResponse.json();
 
-    console.log("Full city data response:", JSON.stringify(cityData, null, 2));
+    // console.log("Full city data response:", JSON.stringify(cityData, null, 2));
 
     // Проверка данных, чтобы убедиться, что мы получили город
     if (!cityData.success || !cityData.data || cityData.data.length === 0) {

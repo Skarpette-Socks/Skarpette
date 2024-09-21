@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, forwardRef, useImperativeHandle } from "react";
 import { fetchStreets } from "../../api/FetchStreets";
 
 import "../assets/styles/commonCheckoutInputesStyles.scss";
@@ -9,11 +9,20 @@ interface StreetInputProps {
   onStreetReset: () => void;
 }
 
-const StreetInput: React.FC<StreetInputProps> = ({
-  selectedCity,
-  resetStreet,
-  onStreetReset,
-}) => {
+interface StreetInputRef {
+  isValid: () => boolean;
+  getStreet: () => string | undefined;
+
+}
+
+const StreetInput = forwardRef<StreetInputRef, StreetInputProps>((
+  {
+    selectedCity,
+    resetStreet,
+    onStreetReset
+  },
+  ref
+) => {
   const [filteredStreets, setFilteredStreets] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -22,6 +31,15 @@ const StreetInput: React.FC<StreetInputProps> = ({
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
+
+  useImperativeHandle(ref, () => ({
+    isValid() {
+      return !error;
+    },
+    getStreet() {
+      return inputValue;
+    }
+  }))
 
   const fetchStreetsData = useCallback(
     async (query: string) => {
@@ -161,6 +179,6 @@ const StreetInput: React.FC<StreetInputProps> = ({
       {error && <div className="input__error">{error}</div>}
     </div>
   );
-};
+});
 
 export default StreetInput;

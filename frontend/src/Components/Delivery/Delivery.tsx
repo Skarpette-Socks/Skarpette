@@ -1,21 +1,125 @@
-import { useState } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import CitiesInput from "../CitiesInput/CitiesInput";
 import WarehouseInput from "../WarehouseInput/WarehouseInput";
 import StreetInput from "../StreetInput/StreetInput";
 import "./Delivery.scss";
 
-const Delivery = () => {
-  const [selectedCity, setSelectedCity] = useState<string>("");
+
+interface DeliveryProps {
+  selectedDeliveryType: string;
+  setSelectedDeliveryType: (s: string) => void;
+}
+
+interface DeliveryRef {
+  isValid: () => boolean;
+  getCity: () => string;
+  getBuilding: () => string;
+  getFlat: () => string;
+  getWarehouseUkrPost: () => string;
+  getWarehouseNovaPost: () => string | undefined;
+  getStreet: () => string | undefined;
+
+}
+
+interface StreetInputRef {
+  isValid: () => boolean;
+  getStreet: () => string | undefined;
+
+}
+
+interface WarehouseInputRef {
+  isValid: () => boolean;
+  getWarehouse: () => string | undefined;
+
+}
+
+const Delivery = forwardRef<DeliveryRef, DeliveryProps>((
+  {
+    selectedDeliveryType,
+    setSelectedDeliveryType
+  }, 
+  ref
+) => {
+  const [selectedCity, setSelectedCity] = useState<string>(""); //місто
+  const [building, setBuilding] = useState<string>(""); //будинок
+  const [flat, setFlat] = useState<string>(""); //квартира
+  const [ukrPostWarehouse, setUkrPostWarehouse] = useState<string>(""); //Відділення
+  
+  const [ukrPostError, setUkrPostError] = useState<string | null>(null);
+  
   const [resetWarehouse, setResetWarehouse] = useState<boolean>(false);
   const [resetStreet, setResetStreet] = useState<boolean>(false);
-  const [building, setBuilding] = useState<string>("");
-  const [flat, setFlat] = useState<string>("");
 
-  const [ukrPostWarehouse, setUkrPostWarehouse] = useState<string>("");
-  const [ukrPostError, setUkrPostError] = useState<string | null>(null);
+  const streetInputRef = useRef<StreetInputRef>(null);
+  const warehouseInputRef = useRef<WarehouseInputRef>(null);
 
-  const [selectedDeliveryType, setSelectedDeliveryType] =
-    useState<string>("nova-poshta-office");
+  useImperativeHandle(ref, () => ({
+    isValid() {
+      return isValidForm();
+    },
+    getCity() {
+      return selectedCity;
+    },
+    getBuilding() {
+      return building;
+    },
+    getFlat() {
+      return flat;
+    },
+    getWarehouseUkrPost() {
+      return ukrPostWarehouse;
+    },
+    getWarehouseNovaPost() {
+      return warehouseInputRef.current?.getWarehouse();
+    },
+    getStreet() {
+      return streetInputRef.current?.getStreet();
+    }
+  }))
+
+  const isValidForm = () => {
+    let error = false;
+
+    switch (selectedDeliveryType) {
+      case 'nova-poshta-office' :
+        error = 
+          !selectedCity || 
+          !warehouseInputRef.current?.getWarehouse();
+
+        break;      
+      case 'nova-poshta-courier':
+        error =         
+          !selectedCity ||
+          !streetInputRef.current?.getStreet() ||
+          !building ||
+          !flat;
+
+        break;
+      case 'nova-poshta-poshtamat':        
+        error = 
+          !selectedCity || 
+          !warehouseInputRef.current?.getWarehouse();
+
+        break;
+      case 'ukrposhta-office':
+        error = 
+          !selectedCity || 
+          !ukrPostWarehouse;
+
+        break;
+      default:
+        break;
+    }
+
+    if (error) {
+      const el = document.querySelector('.delivery');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    return !error;
+  }
 
   const handleCitySelect = (city: string) => {
     setSelectedCity(city);
@@ -68,6 +172,7 @@ const Delivery = () => {
             resetWarehouse={resetWarehouse}
             onWarehouseReset={handleWarehouseReset}
             deliveryType={selectedDeliveryType}
+            ref={warehouseInputRef}
           />
         </div>
       )}
@@ -81,6 +186,7 @@ const Delivery = () => {
               selectedCity={selectedCity}
               resetStreet={resetStreet}
               onStreetReset={handleStreetReset}
+              ref={streetInputRef}
             />
           </div>
           <div className="delivery__inputs">
@@ -120,6 +226,7 @@ const Delivery = () => {
             resetWarehouse={resetWarehouse}
             onWarehouseReset={handleWarehouseReset}
             deliveryType={selectedDeliveryType}
+            ref={warehouseInputRef}
           />
         </div>
       )}
@@ -143,7 +250,7 @@ const Delivery = () => {
       )}
     </div>
   );
-};
+});
 
 interface DeliveryOptionsProps {
   selectedOption: string;
