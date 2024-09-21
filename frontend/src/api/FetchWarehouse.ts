@@ -138,7 +138,7 @@ export const searchSettlementStreets = async (
     const data = await response.json();
 
     // Логирование полного ответа
-    console.log("Full API response:", JSON.stringify(data, null, 2));
+    // console.log("Full API response:", JSON.stringify(data, null, 2));
 
     // Проверяем структуру ответа и наличие данных
     if (data && data.data && Array.isArray(data.data) && data.data.length > 0) {

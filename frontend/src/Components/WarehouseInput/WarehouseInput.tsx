@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, forwardRef, useImperativeHandle } from "react";
 import {
   fetchWarehouses,
   FetchWarehousesParams,
@@ -13,12 +13,21 @@ interface WarehouseInputProps {
   deliveryType: string;
 }
 
-const WarehouseInput: React.FC<WarehouseInputProps> = ({
-  selectedCity,
-  resetWarehouse,
-  onWarehouseReset,
-  deliveryType,
-}) => {
+interface WarehouseInputRef {
+  isValid: () => boolean;
+  getWarehouse: () => string | undefined;
+
+}
+
+const WarehouseInput = forwardRef<WarehouseInputRef, WarehouseInputProps>((
+  {
+    selectedCity,
+    resetWarehouse,
+    onWarehouseReset,
+    deliveryType,
+  },
+  ref
+) => {
   const [warehouses, setWarehouses] = useState<string[]>([]);
   const [filteredWarehouses, setFilteredWarehouses] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -28,6 +37,24 @@ const WarehouseInput: React.FC<WarehouseInputProps> = ({
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
+
+  useImperativeHandle(ref, () => ({
+    isValid() {
+      return isValidForm();      
+    },
+    getWarehouse() {
+      return inputValue;
+    },
+  }))
+
+  const isValidForm = () => {
+    if (!inputValue) {
+      setError("Заповніть поле");
+      return false;
+    }
+
+    return true;
+  }
 
   const fetchWarehousesData = useCallback(async () => {
     if (!selectedCity) {
@@ -199,6 +226,6 @@ const WarehouseInput: React.FC<WarehouseInputProps> = ({
       {error && <div className="input__error">{error}</div>}
     </div>
   );
-};
+});
 
 export default WarehouseInput;
