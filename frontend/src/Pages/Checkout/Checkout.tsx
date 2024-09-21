@@ -27,6 +27,17 @@ interface ReceiverInfoRef {
   getPhone: () => string;
 }
 
+interface DeliveryRef {
+  isValid: () => boolean;
+  getCity: () => string;
+  getBuilding: () => string;
+  getFlat: () => string;
+  getWarehouseUkrPost: () => string;
+  getWarehouseNovaPost: () => string;
+  getStreet: () => string;
+
+}
+
 const Checkout = () => {
   // #region CheckoutOrderRegion
   const { cartItems } = useCartItems();
@@ -59,17 +70,26 @@ const Checkout = () => {
   // #endregion
 
   const [selectedOption, setSelectedOption] = useState("self-receiver");
+  const [selectedDeliveryType, setSelectedDeliveryType] =
+    useState<string>("nova-poshta-office");
   let userData = {};
+  let deliveryData = {};
 
   const contactInfoRef = useRef<ContactInfoRef>(null);
   const receiverInfoRef = useRef<ReceiverInfoRef>(null);
+  const deliveryRef = useRef<DeliveryRef>(null);
 
   const handleCheckout = () => {
     let isValidContactInfo = false;
     let isValidReceiverInfo = false;
+    let isValidDeliveryRef = false;
   
     if (contactInfoRef.current) {
       isValidContactInfo = contactInfoRef.current.isValid();
+    }
+
+    if (deliveryRef.current) {
+      isValidDeliveryRef = deliveryRef.current.isValid();
     }
   
     if (selectedOption === 'another-receiver' && receiverInfoRef.current) {
@@ -77,8 +97,10 @@ const Checkout = () => {
     } else {
       isValidReceiverInfo = true;
     }
+
+
   
-    if (isValidContactInfo && isValidReceiverInfo) {
+    if (isValidContactInfo && isValidReceiverInfo && isValidDeliveryRef) {
       if (selectedOption === 'self-receiver') {
         userData = {
           name: contactInfoRef.current?.getName(),
@@ -97,9 +119,52 @@ const Checkout = () => {
           payerPhone: contactInfoRef.current?.getPhone(),
         };
       }
-  
-      if (!Object.values(userData).includes('')) {
+
+      switch (selectedDeliveryType) {
+        case 'nova-poshta-office':
+          deliveryData = {
+            deliveryType: "Відділення Нової Пошти",
+            city: deliveryRef.current?.getCity(),
+            warehouse: deliveryRef.current?.getWarehouseNovaPost(),
+          }
+
+          break;      
+        case 'nova-poshta-courier':
+          deliveryData = {
+            deliveryType: "Кур'єр Нової Пошти",
+            city: deliveryRef.current?.getCity(),
+            street: deliveryRef.current?.getStreet(),
+            building: deliveryRef.current?.getBuilding(),
+            flat: deliveryRef.current?.getFlat(),
+          }
+
+          break;
+        case 'nova-poshta-poshtamat':
+          deliveryData = {
+            deliveryType: "Поштомат Нової Пошти",
+            city: deliveryRef.current?.getCity(),
+            warehouse: deliveryRef.current?.getWarehouseNovaPost(),
+          }
+
+          break;
+        case 'ukrposhta-office':
+          deliveryData = {
+            deliveryType: "Відділення Укрпошти",
+            city: deliveryRef.current?.getCity(),
+            warehouse: deliveryRef.current?.getWarehouseUkrPost(),
+          }
+
+          break;
+        default:
+          break;
+      }
+
+      if (
+        !Object.values(userData).includes('') && 
+        !Object.values(deliveryData).includes('')
+      ) {
         postData();
+        console.log('posted');
       } else {
         console.log('Заповніть усі поля');
       }
@@ -108,6 +173,8 @@ const Checkout = () => {
     }
   
     console.log('userData', userData);
+    console.log('deliveryData', deliveryData);
+
   };
   
 
@@ -120,7 +187,8 @@ const Checkout = () => {
         },
         body: JSON.stringify({
           cartItems: cartItems,
-          userData: userData
+          userData: userData,
+          deliveryData: deliveryData
         }),
       });
 
@@ -158,7 +226,11 @@ const Checkout = () => {
         <ContactInfo 
           ref={contactInfoRef}
         />
-        <Delivery />
+        <Delivery 
+          ref={deliveryRef}
+          selectedDeliveryType={selectedDeliveryType}
+          setSelectedDeliveryType={setSelectedDeliveryType}
+        />
         <CheckoutPayment />
         <CheckoutReceiver 
           selectedOption={selectedOption}
