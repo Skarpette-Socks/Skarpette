@@ -1,26 +1,32 @@
 const Order = require('../models/order');
 const { format } = require('date-fns');
+const { DateTime } = require('luxon');
 
-const generateOrderNumber = async (orderDate) => {
+const getKyivTime = () => {
+    return DateTime.now().setZone('Europe/Kyiv').toJSDate();
+};
+
+const generateOrderNumber = async () => {
+    const orderDate = getKyivTime();
     const datePart = format(orderDate, 'ddMMyy');
-    const startOfDay = new Date(orderDate.setHours(0, 0, 0, 0));
-    const endOfDay = new Date(orderDate.setHours(23, 59, 59, 999));
-
-    const latestOrder = await Order.findOne({
-        orderDate: { $gte: startOfDay, $lt: endOfDay },
-    }).sort({ orderNumber: -1 });
 
     let sequenceNumber = '0001';
+    let orderNumber = `${datePart}${sequenceNumber}`;
 
-    if (latestOrder) {
-        const latestOrderNumber = latestOrder.orderNumber;
-        const latestSequence = latestOrderNumber.slice(-4);
+    let latestOrder = await Order.findOne({ orderNumber });
+
+    while (latestOrder) {
+        const latestSequence = orderNumber.slice(-4);
         sequenceNumber = (parseInt(latestSequence, 10) + 1)
             .toString()
             .padStart(4, '0');
+
+        orderNumber = `${datePart}${sequenceNumber}`;
+
+        latestOrder = await Order.findOne({ orderNumber });
     }
 
-    return `${datePart}${sequenceNumber}`;
+    return orderNumber;
 };
 
 const validateRecipientData = (orderData) => {
@@ -47,13 +53,12 @@ const validateRecipientData = (orderData) => {
 const createOrder = async (req, res) => {
     try {
         const orderData = req.body;
-
+        orderData.orderDate = getKyivTime();
         const validationError = validateRecipientData(orderData);
         if (validationError) {
             return res.status(400).json(validationError);
         }
-
-        orderData.orderNumber = await generateOrderNumber(new Date());
+        orderData.orderNumber = await generateOrderNumber();
         const newOrder = await Order.create(orderData);
         res.status(201).json(newOrder);
     } catch (error) {

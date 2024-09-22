@@ -25,8 +25,8 @@ const orderSchema = new mongoose.Schema({
         },
     ],
     orderDate: {
-        type: Date,
-        default: Date.now,
+        type: String,
+        required: true,
     },
     customerData: {
         firstName: {
