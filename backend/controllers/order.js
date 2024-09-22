@@ -23,11 +23,37 @@ const generateOrderNumber = async (orderDate) => {
     return `${datePart}${sequenceNumber}`;
 };
 
+const validateRecipientData = (orderData) => {
+    if (orderData.isDifferentRecipient) {
+        if (
+            !orderData.recipientData.firstName ||
+            !orderData.recipientData.lastName ||
+            !orderData.recipientData.phoneNumber
+        ) {
+            return 'All fields must be filled';
+        }
+    } else {
+        if (
+            orderData.recipientData.firstName ||
+            orderData.recipientData.lastName ||
+            orderData.recipientData.phoneNumber
+        ) {
+            return 'No fields should be filled';
+        }
+    }
+    return null;
+};
+
 const createOrder = async (req, res) => {
     try {
         const orderData = req.body;
-        const orderDate = new Date();
-        orderData.orderNumber = await generateOrderNumber(orderDate);
+
+        const validationError = validateRecipientData(orderData);
+        if (validationError) {
+            return res.status(400).json(validationError);
+        }
+
+        orderData.orderNumber = await generateOrderNumber(new Date());
         const newOrder = await Order.create(orderData);
         res.status(201).json(newOrder);
     } catch (error) {
