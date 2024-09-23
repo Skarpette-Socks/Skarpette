@@ -11,11 +11,10 @@
     font-size: 40px;
     font-weight: 500;
     color: $grayscale-800;
-    margin-top: 40px;
+    margin-top: 24px;
 
     @include on-tablet {
       font-size: 64px;
-      margin-top: 64px;
     }
   }
 
@@ -37,6 +36,7 @@
       text-align: center;
     }
   }
+
   &__items {
     grid-column: 1/-1;
 
@@ -54,6 +54,72 @@
 
     @include on-desktop {
       grid-template-columns: repeat(auto-fill, 303px);
+    }
+  }
+
+  &__no-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 24px;
+
+    @include on-tablet {
+      margin-top: 32px;
+    }
+  }
+
+  &__no-item-img {
+    width: 309px;
+    height: 142px;
+    object-fit: contain;
+
+    @include on-tablet {
+      width: 520px;
+      height: 231px;
+    }
+  }
+
+  &__no-item-main-text {
+    font-weight: 500;
+    font-size: 28px;
+    text-align: center;
+    color: black;
+    margin-top: 16px;
+
+    @include on-tablet {
+      font-size: 40px;
+      margin-top: 24px;
+    }
+  }
+
+  &__no-item-paragraph {
+    font-size: 14px;
+    font-weight: 400;
+    color: black;
+    text-align: center;
+    margin-top: 16px;
+
+    @include on-tablet {
+      font-size: 18px;
+    }
+  }
+
+  &__no-item-button {
+    padding: 20px;
+    font-weight: 500;
+    border-radius: 100px;
+    background-color: $primary-800;
+    color: $grayscale-0;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+    margin-top: 24px;
+
+    @include on-tablet {
+      padding: 20px 24px;
+      font-size: 18px;
+      margin-top: 40px;
     }
   }
 }
