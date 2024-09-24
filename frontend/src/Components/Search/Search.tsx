@@ -1,5 +1,5 @@
 import React, { useState, KeyboardEvent, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/img/icons/logo-black.svg";
 import search_icon from "../assets/img/icons/search.svg";
 import close_icon from "../assets/img/icons/close.svg";
@@ -50,7 +50,9 @@ const Search: React.FC<SearchProps> = ({ toggleSearch, isOpen }) => {
   return (
     <div className="search">
       <div className="search__logo">
-        <img src={logo} alt="site logo" className="search__logo-img" />
+        <Link to="/">
+          <img src={logo} alt="site logo" className="search__logo-img" />
+        </Link>
       </div>
 
       <div className="search__input">

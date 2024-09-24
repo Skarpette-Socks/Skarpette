@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Item from "../../Components/Item/Item";
 import DataItem from "../../types/DataItem";
 import "./SearchResults.scss";
 import PageNavigation from "../../Components/PageNavigation/PageNavigation";
 import ErrorNoResult from "../../Components/ErrorNoResult/ErrorNoResult";
+import MobilePagination from "../../Components/MobilePagination/MobilePagination";
+import Pagination from "../../Components/Pagination/Pagination";
 
 const SearchResultsPage: React.FC = () => {
   const [results, setResults] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [is404Error, setIs404Error] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(12);
+
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const query = searchParams.get("query") || "";
@@ -58,6 +63,24 @@ const SearchResultsPage: React.FC = () => {
     }
   }, [query]);
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = results.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(results.length / itemsPerPage);
+  const isMobile = window.innerWidth < 768;
+
+    const updateItemsPerPage = useCallback(() => {
+      setItemsPerPage(window.innerWidth >= 768 ? 16 : 12);
+    }, []);
+  
+    useEffect(() => {
+      updateItemsPerPage();
+      window.addEventListener("resize", updateItemsPerPage);
+      return () => {
+        window.removeEventListener("resize", updateItemsPerPage);
+      };
+    }, [updateItemsPerPage]);
+
   if (loading) {
     return <div className="search-results">Загрузка...</div>;
   }
@@ -81,7 +104,7 @@ const SearchResultsPage: React.FC = () => {
         <h1>Результати пошуку для: "{query}"</h1>
         <>
           <div className="search-results-grid">
-            {results.map((item) => (
+            {currentItems.map((item) => (
               <Item
                 key={item._id}
                 vendor_code={item.vendor_code}
@@ -95,6 +118,19 @@ const SearchResultsPage: React.FC = () => {
               />
             ))}
           </div>
+          {isMobile ? (
+            <MobilePagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          ) : (
+            <Pagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          )}
         </>
       </div>
     </>
