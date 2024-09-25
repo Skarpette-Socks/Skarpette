@@ -35,11 +35,22 @@ const Filter: React.FC<FilterProps> = ({
   const filterButtonsRef = useRef<HTMLDivElement>(null);
   const styles = ["Короткі", "Класичні", "Спортивні", "Медичні"];
 
+  useEffect(() => {
+    if (showMobileModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "visible";
+    }
 
-const toggleMobileModal = () => {
-  setShowMobileModal(!showMobileModal);
-};
+    // Cleanup function
+    return () => {
+      document.body.style.overflow = "visible";
+    };
+  }, [showMobileModal]);
 
+  const toggleMobileModal = () => {
+    setShowMobileModal(!showMobileModal);
+  };
   // Переключение фильтра
   const toggleFilter = (filter: "style" | "size") => {
     if (isMobile) {
@@ -150,20 +161,20 @@ const toggleMobileModal = () => {
   );
 
   // Обработчик изменения размера экрана
-useEffect(() => {
-  const handleResize = () => {
-    const newIsMobile = window.innerWidth < 768;
-    setIsMobile(newIsMobile);
-    if (!newIsMobile && showMobileModal) {
-      setShowMobileModal(false);
-    }
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      const newIsMobile = window.innerWidth < 768;
+      setIsMobile(newIsMobile);
+      if (!newIsMobile && showMobileModal) {
+        setShowMobileModal(false);
+      }
+    };
 
-  window.addEventListener("resize", handleResize);
-  return () => {
-    window.removeEventListener("resize", handleResize);
-  };
-}, [showMobileModal]);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [showMobileModal]);
 
   // Обработчик клика вне области фильтра
   useEffect(() => {
@@ -203,8 +214,7 @@ useEffect(() => {
                 {renderFilterButton("Стиль", "style")}
                 {renderFilterButton("Розмір (см)", "size")}
               </div>
-            )
-            }
+            )}
           </>
         )}
       </div>
