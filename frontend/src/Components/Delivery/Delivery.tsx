@@ -31,15 +31,16 @@ interface WarehouseInputRef {
 
 const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
   ({ selectedDeliveryType, setSelectedDeliveryType }, ref) => {
-    const [selectedCity, setSelectedCity] = useState<string>(""); //місто
-    const [building, setBuilding] = useState<string>(""); //будинок
-    const [flat, setFlat] = useState<string>(""); //квартира
-    const [ukrPostWarehouse, setUkrPostWarehouse] = useState<string>(""); //Відділення
-
+    const [selectedCity, setSelectedCity] = useState<string>(""); // Місто
+    const [building, setBuilding] = useState<string>(""); // Будинок
+    const [flat, setFlat] = useState<string>(""); // Квартира
+    const [ukrPostWarehouse, setUkrPostWarehouse] = useState<string>(""); // Відділення
     const [ukrPostError, setUkrPostError] = useState<string | null>(null);
-
     const [resetWarehouse, setResetWarehouse] = useState<boolean>(false);
     const [resetStreet, setResetStreet] = useState<boolean>(false);
+
+    // Добавляем новое состояние для отслеживания выбора города
+    const [isCitySelected, setIsCitySelected] = useState<boolean>(false);
 
     const streetInputRef = useRef<StreetInputRef>(null);
     const warehouseInputRef = useRef<WarehouseInputRef>(null);
@@ -74,7 +75,6 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
       switch (selectedDeliveryType) {
         case "nova-poshta-office":
           error = !selectedCity || !warehouseInputRef.current?.getWarehouse();
-
           break;
         case "nova-poshta-courier":
           error =
@@ -82,15 +82,12 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
             !streetInputRef.current?.getStreet() ||
             !building ||
             !flat;
-
           break;
         case "nova-poshta-poshtamat":
           error = !selectedCity || !warehouseInputRef.current?.getWarehouse();
-
           break;
         case "ukrposhta-office":
           error = !selectedCity || !ukrPostWarehouse;
-
           break;
         default:
           break;
@@ -108,6 +105,7 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
 
     const handleCitySelect = (city: string) => {
       setSelectedCity(city);
+      setIsCitySelected(true); // Город выбран
       setResetWarehouse(true);
       setResetStreet(true);
     };
@@ -122,6 +120,8 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
 
     const handleDeliveryOptionChange = (id: string) => {
       setSelectedDeliveryType(id);
+      setSelectedCity(""); // Сбрасываем город при изменении типа доставки
+      setIsCitySelected(false); // Город не выбран
       setResetWarehouse(true);
       setResetStreet(true);
     };
@@ -158,6 +158,7 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
               onWarehouseReset={handleWarehouseReset}
               deliveryType={selectedDeliveryType}
               ref={warehouseInputRef}
+              disabled={!isCitySelected} // Поле заблокировано, если город не выбран
             />
           </div>
         )}
@@ -172,6 +173,7 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
                 resetStreet={resetStreet}
                 onStreetReset={handleStreetReset}
                 ref={streetInputRef}
+                disabled={!isCitySelected} // Поле заблокировано, если город не выбран
               />
             </div>
             <div className="delivery__inputs">
@@ -185,6 +187,7 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
                   maxLength={50}
                   min={1}
                   required
+                  disabled={!isCitySelected} // Поле заблокировано, если город не выбран
                 />
               </div>
               <div className="input__container">
@@ -196,6 +199,7 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
                   placeholder="Квартира"
                   maxLength={50}
                   min={1}
+                  disabled={!isCitySelected} // Поле заблокировано, если город не выбран
                 />
               </div>
             </div>
@@ -212,6 +216,7 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
               onWarehouseReset={handleWarehouseReset}
               deliveryType={selectedDeliveryType}
               ref={warehouseInputRef}
+              disabled={!isCitySelected} // Поле заблокировано, если город не выбран
             />
           </div>
         )}
@@ -228,6 +233,7 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
                 value={ukrPostWarehouse}
                 onChange={handleUkrPostWarehouseChange}
                 maxLength={100}
+                disabled={!isCitySelected} // Поле заблокировано, если город не выбран
               />
               {ukrPostError && (
                 <div className="input__error">{ukrPostError}</div>
@@ -239,6 +245,7 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
     );
   }
 );
+
 
 interface DeliveryOptionsProps {
   selectedOption: string;
