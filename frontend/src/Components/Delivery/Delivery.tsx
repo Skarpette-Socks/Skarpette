@@ -4,7 +4,6 @@ import WarehouseInput from "../WarehouseInput/WarehouseInput";
 import StreetInput from "../StreetInput/StreetInput";
 import "./Delivery.scss";
 
-
 interface DeliveryProps {
   selectedDeliveryType: string;
   setSelectedDeliveryType: (s: string) => void;
@@ -18,239 +17,228 @@ interface DeliveryRef {
   getWarehouseUkrPost: () => string;
   getWarehouseNovaPost: () => string | undefined;
   getStreet: () => string | undefined;
-
 }
 
 interface StreetInputRef {
   isValid: () => boolean;
   getStreet: () => string | undefined;
-
 }
 
 interface WarehouseInputRef {
   isValid: () => boolean;
   getWarehouse: () => string | undefined;
-
 }
 
-const Delivery = forwardRef<DeliveryRef, DeliveryProps>((
-  {
-    selectedDeliveryType,
-    setSelectedDeliveryType
-  }, 
-  ref
-) => {
-  const [selectedCity, setSelectedCity] = useState<string>(""); //місто
-  const [building, setBuilding] = useState<string>(""); //будинок
-  const [flat, setFlat] = useState<string>(""); //квартира
-  const [ukrPostWarehouse, setUkrPostWarehouse] = useState<string>(""); //Відділення
-  
-  const [ukrPostError, setUkrPostError] = useState<string | null>(null);
-  
-  const [resetWarehouse, setResetWarehouse] = useState<boolean>(false);
-  const [resetStreet, setResetStreet] = useState<boolean>(false);
+const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
+  ({ selectedDeliveryType, setSelectedDeliveryType }, ref) => {
+    const [selectedCity, setSelectedCity] = useState<string>(""); //місто
+    const [building, setBuilding] = useState<string>(""); //будинок
+    const [flat, setFlat] = useState<string>(""); //квартира
+    const [ukrPostWarehouse, setUkrPostWarehouse] = useState<string>(""); //Відділення
 
-  const streetInputRef = useRef<StreetInputRef>(null);
-  const warehouseInputRef = useRef<WarehouseInputRef>(null);
+    const [ukrPostError, setUkrPostError] = useState<string | null>(null);
 
-  useImperativeHandle(ref, () => ({
-    isValid() {
-      return isValidForm();
-    },
-    getCity() {
-      return selectedCity;
-    },
-    getBuilding() {
-      return building;
-    },
-    getFlat() {
-      return flat;
-    },
-    getWarehouseUkrPost() {
-      return ukrPostWarehouse;
-    },
-    getWarehouseNovaPost() {
-      return warehouseInputRef.current?.getWarehouse();
-    },
-    getStreet() {
-      return streetInputRef.current?.getStreet();
-    }
-  }))
+    const [resetWarehouse, setResetWarehouse] = useState<boolean>(false);
+    const [resetStreet, setResetStreet] = useState<boolean>(false);
 
-  const isValidForm = () => {
-    let error = false;
+    const streetInputRef = useRef<StreetInputRef>(null);
+    const warehouseInputRef = useRef<WarehouseInputRef>(null);
 
-    switch (selectedDeliveryType) {
-      case 'nova-poshta-office' :
-        error = 
-          !selectedCity || 
-          !warehouseInputRef.current?.getWarehouse();
+    useImperativeHandle(ref, () => ({
+      isValid() {
+        return isValidForm();
+      },
+      getCity() {
+        return selectedCity;
+      },
+      getBuilding() {
+        return building;
+      },
+      getFlat() {
+        return flat;
+      },
+      getWarehouseUkrPost() {
+        return ukrPostWarehouse;
+      },
+      getWarehouseNovaPost() {
+        return warehouseInputRef.current?.getWarehouse();
+      },
+      getStreet() {
+        return streetInputRef.current?.getStreet();
+      },
+    }));
 
-        break;      
-      case 'nova-poshta-courier':
-        error =         
-          !selectedCity ||
-          !streetInputRef.current?.getStreet() ||
-          !building ||
-          !flat;
+    const isValidForm = () => {
+      let error = false;
 
-        break;
-      case 'nova-poshta-poshtamat':        
-        error = 
-          !selectedCity || 
-          !warehouseInputRef.current?.getWarehouse();
+      switch (selectedDeliveryType) {
+        case "nova-poshta-office":
+          error = !selectedCity || !warehouseInputRef.current?.getWarehouse();
 
-        break;
-      case 'ukrposhta-office':
-        error = 
-          !selectedCity || 
-          !ukrPostWarehouse;
+          break;
+        case "nova-poshta-courier":
+          error =
+            !selectedCity ||
+            !streetInputRef.current?.getStreet() ||
+            !building ||
+            !flat;
 
-        break;
-      default:
-        break;
-    }
+          break;
+        case "nova-poshta-poshtamat":
+          error = !selectedCity || !warehouseInputRef.current?.getWarehouse();
 
-    if (error) {
-      const el = document.querySelector('.delivery');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
+          break;
+        case "ukrposhta-office":
+          error = !selectedCity || !ukrPostWarehouse;
+
+          break;
+        default:
+          break;
       }
-    }
 
-    return !error;
-  }
+      if (error) {
+        const el = document.querySelector(".delivery");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" });
+        }
+      }
 
-  const handleCitySelect = (city: string) => {
-    setSelectedCity(city);
-    setResetWarehouse(true);
-    setResetStreet(true);
-  };
+      return !error;
+    };
 
-  const handleWarehouseReset = () => {
-    setTimeout(() => setResetWarehouse(false), 100);
-  };
+    const handleCitySelect = (city: string) => {
+      setSelectedCity(city);
+      setResetWarehouse(true);
+      setResetStreet(true);
+    };
 
-  const handleStreetReset = () => {
-    setResetStreet(false);
-  };
+    const handleWarehouseReset = () => {
+      setTimeout(() => setResetWarehouse(false), 100);
+    };
 
-  const handleDeliveryOptionChange = (id: string) => {
-    setSelectedDeliveryType(id);
-    setResetWarehouse(true);
-    setResetStreet(true);
-  };
+    const handleStreetReset = () => {
+      setResetStreet(false);
+    };
 
-  const handleUkrPostWarehouseChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = e.target.value;
-    const isCyrillic = /^[\u0400-\u04FF\s]*$/;
-    setUkrPostWarehouse(value);
-    
-    if (isCyrillic.test(value) || value === "") {
-      setUkrPostError(null);
-    } else {
-      setUkrPostError("Лише кирилиця");
-    }
-  };
+    const handleDeliveryOptionChange = (id: string) => {
+      setSelectedDeliveryType(id);
+      setResetWarehouse(true);
+      setResetStreet(true);
+    };
 
-  return (
-    <div className="delivery">
-      <div className="delivery__title">Доставка</div>
-      <DeliveryOptions
-        selectedOption={selectedDeliveryType}
-        onOptionChange={handleDeliveryOptionChange}
-      />
+    const handleUkrPostWarehouseChange = (
+      e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+      const value = e.target.value;
+      const isCyrillic = /^[\u0400-\u04FF0-9№/\s]*$/; // Добавлены цифры и спецсимволы
+      setUkrPostWarehouse(value);
 
-      {/* Вариант 1: Город и Отделение */}
-      {selectedDeliveryType === "nova-poshta-office" && (
-        <div className="delivery__inputs">
-          <CitiesInput onCitySelect={handleCitySelect} />
-          <WarehouseInput
-            selectedCity={selectedCity}
-            resetWarehouse={resetWarehouse}
-            onWarehouseReset={handleWarehouseReset}
-            deliveryType={selectedDeliveryType}
-            ref={warehouseInputRef}
-          />
-        </div>
-      )}
+      if (isCyrillic.test(value) || value === "") {
+        setUkrPostError(null);
+      } else {
+        setUkrPostError("Лише кирилиця, цифри і спецсимвол №");
+      }
+    };
 
-      {/* Вариант 2: Город, Улица, Дом и Квартира */}
-      {selectedDeliveryType === "nova-poshta-courier" && (
-        <div className="delivery__inputs-column">
+    return (
+      <div className="delivery">
+        <div className="delivery__title">Доставка</div>
+        <DeliveryOptions
+          selectedOption={selectedDeliveryType}
+          onOptionChange={handleDeliveryOptionChange}
+        />
+
+        {/* Вариант 1: Город и Отделение */}
+        {selectedDeliveryType === "nova-poshta-office" && (
           <div className="delivery__inputs">
             <CitiesInput onCitySelect={handleCitySelect} />
-            <StreetInput
+            <WarehouseInput
               selectedCity={selectedCity}
-              resetStreet={resetStreet}
-              onStreetReset={handleStreetReset}
-              ref={streetInputRef}
+              resetWarehouse={resetWarehouse}
+              onWarehouseReset={handleWarehouseReset}
+              deliveryType={selectedDeliveryType}
+              ref={warehouseInputRef}
             />
           </div>
+        )}
+
+        {/* Вариант 2: Город, Улица, Дом и Квартира */}
+        {selectedDeliveryType === "nova-poshta-courier" && (
+          <div className="delivery__inputs-column">
+            <div className="delivery__inputs">
+              <CitiesInput onCitySelect={handleCitySelect} />
+              <StreetInput
+                selectedCity={selectedCity}
+                resetStreet={resetStreet}
+                onStreetReset={handleStreetReset}
+                ref={streetInputRef}
+              />
+            </div>
+            <div className="delivery__inputs">
+              <div className="input__container">
+                <input
+                  type="text"
+                  value={building}
+                  onChange={(e) => setBuilding(e.target.value)}
+                  className="input__field"
+                  placeholder="Будинок"
+                  maxLength={50}
+                  min={1}
+                  required
+                />
+              </div>
+              <div className="input__container">
+                <input
+                  type="text"
+                  value={flat}
+                  onChange={(e) => setFlat(e.target.value)}
+                  className="input__field"
+                  placeholder="Квартира"
+                  maxLength={50}
+                  min={1}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Вариант 3: Город и Почтоматы */}
+        {selectedDeliveryType === "nova-poshta-poshtamat" && (
           <div className="delivery__inputs">
-            <div className="input__container">
-              <input
-                type="text"
-                value={building}
-                onChange={(e) => setBuilding(e.target.value)}
-                className="input__field"
-                placeholder="Будинок"
-                maxLength={50}
-                min={1}
-                required
-              />
-            </div>
-            <div className="input__container">
-              <input
-                type="text"
-                value={flat}
-                onChange={(e) => setFlat(e.target.value)}
-                className="input__field"
-                placeholder="Квартира"
-                maxLength={50}
-                min={1}
-              />
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Вариант 3: Город и Почтоматы */}
-      {selectedDeliveryType === "nova-poshta-poshtamat" && (
-        <div className="delivery__inputs">
-          <CitiesInput onCitySelect={handleCitySelect} />
-          <WarehouseInput
-            selectedCity={selectedCity}
-            resetWarehouse={resetWarehouse}
-            onWarehouseReset={handleWarehouseReset}
-            deliveryType={selectedDeliveryType}
-            ref={warehouseInputRef}
-          />
-        </div>
-      )}
-
-      {/* Вариант 4: Город и Один Инпут Вручную */}
-      {selectedDeliveryType === "ukrposhta-office" && (
-        <div className="delivery__inputs">
-          <CitiesInput onCitySelect={handleCitySelect} />
-          <div className="input__container">
-            <input
-              type="text"
-              className={`input__field ${ukrPostError ? "input__field--error" : ""}`}
-              placeholder="Відділення"
-              value={ukrPostWarehouse}
-              onChange={handleUkrPostWarehouseChange}
-              maxLength={100}
+            <CitiesInput onCitySelect={handleCitySelect} />
+            <WarehouseInput
+              selectedCity={selectedCity}
+              resetWarehouse={resetWarehouse}
+              onWarehouseReset={handleWarehouseReset}
+              deliveryType={selectedDeliveryType}
+              ref={warehouseInputRef}
             />
-            {ukrPostError && <div className="input__error">{ukrPostError}</div>}
           </div>
-        </div>
-      )}
-    </div>
-  );
-});
+        )}
+
+        {/* Вариант 4: Город и Один Инпут Вручную */}
+        {selectedDeliveryType === "ukrposhta-office" && (
+          <div className="delivery__inputs">
+            <CitiesInput onCitySelect={handleCitySelect} />
+            <div className="input__container">
+              <input
+                type="text"
+                className={`input__field ${ukrPostError ? "input__field--error" : ""}`}
+                placeholder="Відділення"
+                value={ukrPostWarehouse}
+                onChange={handleUkrPostWarehouseChange}
+                maxLength={100}
+              />
+              {ukrPostError && (
+                <div className="input__error">{ukrPostError}</div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+);
 
 interface DeliveryOptionsProps {
   selectedOption: string;
