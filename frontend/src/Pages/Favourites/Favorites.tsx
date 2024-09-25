@@ -4,7 +4,7 @@ import Item from "../../Components/Item/Item"; // импортируйте ва�
 import "./Favorites.scss";
 import PageNavigation from "../../Components/PageNavigation/PageNavigation";
 import MainPageListGoods from "../../Components/MainPageListGoods/MainPageListGoods";
-import no_fav from '../../Components/assets/img/no selected items.png';
+import no_fav from '../../Components/assets/img/no selected items.svg';
 import { Link } from "react-router-dom";
 
 const Favorites: React.FC = () => {
