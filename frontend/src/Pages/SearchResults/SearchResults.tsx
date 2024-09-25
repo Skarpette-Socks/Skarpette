@@ -69,17 +69,21 @@ const SearchResultsPage: React.FC = () => {
   const totalPages = Math.ceil(results.length / itemsPerPage);
   const isMobile = window.innerWidth < 768;
 
-    const updateItemsPerPage = useCallback(() => {
-      setItemsPerPage(window.innerWidth >= 768 ? 16 : 12);
-    }, []);
-  
-    useEffect(() => {
-      updateItemsPerPage();
-      window.addEventListener("resize", updateItemsPerPage);
-      return () => {
-        window.removeEventListener("resize", updateItemsPerPage);
-      };
-    }, [updateItemsPerPage]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
+  const updateItemsPerPage = useCallback(() => {
+    setItemsPerPage(window.innerWidth >= 768 ? 16 : 12);
+  }, []);
+
+  useEffect(() => {
+    updateItemsPerPage();
+    window.addEventListener("resize", updateItemsPerPage);
+    return () => {
+      window.removeEventListener("resize", updateItemsPerPage);
+    };
+  }, [updateItemsPerPage]);
 
   if (loading) {
     return <div className="search-results">Загрузка...</div>;
