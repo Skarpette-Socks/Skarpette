@@ -74,7 +74,7 @@ const SearchResultsPage: React.FC = () => {
   }, [currentPage]);
 
   const updateItemsPerPage = useCallback(() => {
-    setItemsPerPage(window.innerWidth >= 768 ? 16 : 12);
+    setItemsPerPage(window.innerWidth >= 1280 ? 16 : 12);
   }, []);
 
   useEffect(() => {
