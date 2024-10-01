@@ -1,0 +1,32 @@
+.loader {
+  background-color: #fff;
+  width: 100%;
+  height: 223px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__first-sock {
+    animation: bounce 1s ease-in-out infinite;
+    animation-delay: 0s;
+  }
+
+  &__second-sock {
+    animation: bounce 1s ease-in-out infinite;
+    animation-delay: 0.2s;
+  }
+
+  &__third-sock {
+    animation: bounce 1s ease-in-out infinite;
+    animation-delay: 0.4s;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}

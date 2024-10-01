@@ -7,7 +7,9 @@ import PageNavigation from "../Components/PageNavigation/PageNavigation";
 import ProductOrder from "../Components/ProductOrder/ProductOrder";
 import { fetchDataItem } from "../api/fetchDataItem";
 import DataItem from "../types/DataItem";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import Loader from "../Components/Loader/Loader";
+import no_result from "../Components/assets/img/NoSearchResult.png";
 
 
 const Product: React.FC = () => {
@@ -51,9 +53,7 @@ const Product: React.FC = () => {
   if (loading) {
     return (
       <>
-        <h1
-          style={{ textAlign: 'center', margin: '50px' }}
-        ><strong>Завантаження...</strong></h1>
+        <Loader/>
         <MainPageListGoods 
           title={listGoodsTitle} 
           catalogButton={false}
@@ -66,13 +66,27 @@ const Product: React.FC = () => {
   if (!item || VENDOR_CODE === '') {
     return (
       <>
-        <h1
-          style={{ textAlign: 'center', margin: '50px' }}
-        ><strong>Такого товару не існує або він був видалений ;&#40;</strong></h1>
-        <MainPageListGoods 
-          title={listGoodsTitle} 
-          catalogButton={false}
+        <PageNavigation
+          linkText="Каталог"
+          homeLink="/"
+          linkHref="/catalog/all-socks"
         />
+        <div className="error-component">
+          <img
+            src={no_result}
+            alt="no_result"
+            className="error-component__img"
+          />
+          <p className="error-component__text">
+            Такого товару не існує або він був видалений
+          </p>
+          <Link to="/catalog/all-socks">
+            <button className="error-component__button">
+              Перейти до каталогу
+            </button>
+          </Link>
+        </div>
+        <MainPageListGoods title={listGoodsTitle} catalogButton={false} />
       </>
     );
   }

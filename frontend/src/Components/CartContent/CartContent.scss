@@ -11,7 +11,6 @@
 
   @include on-tablet {
     margin-top: 64px;
-
   }
 
   &__title {
@@ -22,7 +21,6 @@
     @include on-tablet {
       font-size: 64px;
       margin-bottom: 64px;
-
     }
 
     @include on-desktop {
@@ -68,7 +66,6 @@
       cursor: pointer;
       object-fit: cover;
 
-
       @include on-tablet {
         width: 84px;
         height: 84px;
@@ -80,7 +77,6 @@
       flex-direction: column;
       gap: 8px;
       justify-content: space-around;
-
     }
 
     &-minorinfo {
@@ -103,7 +99,6 @@
 
       @include on-tablet {
         font-size: 16px;
-
       }
     }
 
@@ -115,7 +110,7 @@
       @include on-tablet {
         font-size: 16px;
       }
-  
+
       &-old {
         font-size: 14px;
         display: inline-block;
@@ -202,8 +197,7 @@
     background-color: $grayscale-50;
     border-radius: 16px;
     margin-top: 32px;
-    
-    
+
     @include on-desktop {
       margin: auto;
       margin-top: 0;
@@ -211,34 +205,34 @@
     }
   }
 
-  &__empty {
-    grid-column: 1/-1;
-    text-align: center;
-    font-weight: 600;
-    
-    &-text {
-      font-size: 24px;
-      margin-bottom: 8px;
-      @include on-tablet {
-        font-size: 32px;
-      }
+  // &__empty {
+  //   grid-column: 1/-1;
+  //   text-align: center;
+  //   font-weight: 600;
 
-    }
+  //   &-text {
+  //     font-size: 24px;
+  //     margin-bottom: 8px;
+  //     @include on-tablet {
+  //       font-size: 32px;
+  //     }
 
-    &-link {
-      font-size: 16px;
-      text-decoration: none;
-      color: #000;
+  //   }
 
-      &:hover {
-        color: $grayscale-800;
-      }
-  
-      @include on-tablet {
-        font-size: 24px;
-      }
-    }
-  }
+  //   &-link {
+  //     font-size: 16px;
+  //     text-decoration: none;
+  //     color: #000;
+
+  //     &:hover {
+  //       color: $grayscale-800;
+  //     }
+
+  //     @include on-tablet {
+  //       font-size: 24px;
+  //     }
+  //   }
+  // }
 
   &__info {
     display: flex;
@@ -248,7 +242,6 @@
     & > * {
       display: flex;
       justify-content: space-between;
-
     }
   }
 
@@ -287,13 +280,81 @@
     &:hover {
       background-color: $primary-1000;
     }
-    
+
     &-text {
       font-size: 16px;
-      
+
       @include on-tablet {
         font-size: 18px;
       }
+    }
+  }
+
+  &__no-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    // margin-top: 24px;
+    grid-column: 1/-1;
+
+    @include on-tablet {
+      // margin-top: 32px;
+      grid-column: 4/9;
+    }
+  }
+
+  &__no-item-img {
+    width: 309px;
+    height: 142px;
+    object-fit: contain;
+
+    @include on-tablet {
+      width: 520px;
+      height: 231px;
+    }
+  }
+
+  &__no-item-main-text {
+    font-weight: 500;
+    font-size: 28px;
+    text-align: center;
+    color: black;
+    margin-top: 16px;
+
+    @include on-tablet {
+      font-size: 40px;
+      margin-top: 24px;
+    }
+  }
+
+  &__no-item-paragraph {
+    font-size: 14px;
+    font-weight: 400;
+    color: black;
+    text-align: center;
+    margin-top: 16px;
+
+    @include on-tablet {
+      font-size: 18px;
+    }
+  }
+
+  &__no-item-button {
+    padding: 20px;
+    font-weight: 500;
+    border-radius: 100px;
+    background-color: $primary-800;
+    color: $grayscale-0;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+    margin-top: 24px;
+
+    @include on-tablet {
+      padding: 20px 24px;
+      font-size: 18px;
+      margin-top: 40px;
     }
   }
 }

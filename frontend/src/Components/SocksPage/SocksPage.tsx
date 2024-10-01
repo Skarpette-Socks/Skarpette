@@ -13,7 +13,7 @@ import { useParams } from "react-router-dom";
 import categories from "../../../json_links/categories.json";
 import { getSocksByCategory } from "../../api/fetchDataByCategory";
 import { fetchAllData } from "../../api/fetchAllData";
-
+import Loader from "../Loader/Loader";
 
 const SocksPage: React.FC = () => {
   const [socks, setSocks] = useState<DataItem[]>([]);
@@ -28,12 +28,11 @@ const SocksPage: React.FC = () => {
 
   console.log(TYPE_LINK);
 
-
-  const category = 
-    categories.find(category => category.link === `/catalog/${TYPE_LINK}`);
+  const category = categories.find(
+    (category) => category.link === `/catalog/${TYPE_LINK}`
+  );
 
   console.log(category);
-
 
   const updateItemsPerPage = useCallback(() => {
     setItemsPerPage(window.innerWidth >= 1280 ? 16 : 12);
@@ -41,13 +40,13 @@ const SocksPage: React.FC = () => {
 
   useEffect(() => {
     if (category) {
-      if (category.type === 'All') {
+      if (category.type === "All") {
         const loadData = async () => {
           setLoading(true);
           try {
             const result = await fetchAllData();
-            console.log('result', result);
-  
+            console.log("result", result);
+
             setSocks(result);
           } catch (error: any) {
             setError(error.message);
@@ -55,16 +54,15 @@ const SocksPage: React.FC = () => {
             setLoading(false);
           }
         };
-    
+
         loadData();
-  
       } else {
         const loadData = async () => {
           setLoading(true);
           try {
             const result = await getSocksByCategory(category.type);
-            console.log('result', result);
-  
+            console.log("result", result);
+
             setSocks(result);
           } catch (error: any) {
             setError(error.message);
@@ -73,7 +71,6 @@ const SocksPage: React.FC = () => {
           }
         };
         loadData();
-  
       }
     }
   }, [TYPE_LINK]);
@@ -127,8 +124,6 @@ const SocksPage: React.FC = () => {
     });
   }, [socks, selectedStyles, selectedSizes]);
 
-
-
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = sortedItems.slice(indexOfFirstItem, indexOfLastItem);
@@ -136,13 +131,19 @@ const SocksPage: React.FC = () => {
   const totalPages = Math.ceil(sortedItems.length / itemsPerPage);
   const isMobile = window.innerWidth < 768;
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return <Loader/>;
+  }
   if (error) return <div>Error: {error}</div>;
   if (!category) return <div>Такої категорії не знайдено</div>;
 
   return (
     <>
-      <PageNavigation linkText={category.dropdown_name} homeLink="/" linkHref={category.link} />
+      <PageNavigation
+        linkText={category.dropdown_name}
+        homeLink="/"
+        linkHref={category.link}
+      />
 
       <div className="socks">
         <h1 className="socks__title">{category?.dropdown_name}</h1>
