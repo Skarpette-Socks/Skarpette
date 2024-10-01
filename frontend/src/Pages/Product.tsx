@@ -10,7 +10,7 @@ import DataItem from "../types/DataItem";
 import { Link, useParams } from "react-router-dom";
 import Loader from "../Components/Loader/Loader";
 import no_result from "../Components/assets/img/NoSearchResult.png";
-
+import '../Components/ErrorNoResult/ErrorNoResult.scss'
 
 const Product: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
