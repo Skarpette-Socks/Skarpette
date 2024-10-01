@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Questions.scss";
 
 const Questions: React.FC = () => {
@@ -7,7 +8,7 @@ const Questions: React.FC = () => {
       <p className="questions__text">
         Ми будемо раді поспілкуватися! Залиште свій коментар за кнопкою нижче.
       </p>
-      <a href="#" className="questions__button">Написати</a>
+      <Link to="/contacts" className="questions__button">Написати</Link>
     </div>
   );
 };
