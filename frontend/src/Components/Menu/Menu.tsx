@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Dropdown from "../Dropdown/Dropdown";
 import cart from "../assets/img/icons/cart.svg";
 import "./Menu.scss";
+import { useCartItems } from "../../Context/CartContext";
 
 interface MenuProps {
   isOpen: boolean;
@@ -28,6 +29,14 @@ const Menu: React.FC<MenuProps> = ({ isOpen, toggleMenu }) => {
   }, [isOpen, scrollY]);
 
   const [topOffset, setTopOffset] = useState(0);
+
+    const { cartItems } = useCartItems();
+
+    // Подсчитываем количество товаров в корзине
+    const countItems = cartItems.reduce((sum, item) => {
+      const count = item.count ? item.count : 0;
+      return sum + count;
+    }, 0);
 
   useEffect(() => {
     const calculateTopOffset = () => {
@@ -57,7 +66,7 @@ const Menu: React.FC<MenuProps> = ({ isOpen, toggleMenu }) => {
       >
         <ul>
           <li className="menu__button">
-              <Dropdown toggleMenu={toggleMenu}/>
+            <Dropdown toggleMenu={toggleMenu} />
           </li>
           <li className="menu__item">
             <Link to="/offers" onClick={toggleMenu}>
@@ -85,7 +94,7 @@ const Menu: React.FC<MenuProps> = ({ isOpen, toggleMenu }) => {
             <div className="menu__cart-details">
               <img src={cart} alt="cart icon" className="menu__cart-icon" />
               <p className="menu__cart-text">Кошик</p>
-              <div className="menu__cart-count">2</div>
+              <div className="menu__cart-count">{countItems}</div>
             </div>
           </Link>
         </div>
