@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useState, lazy, Suspense } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,32 +6,33 @@ import {
   useLocation,
 } from "react-router-dom";
 import { FavoritesProvider } from "./Context/FavoritesContext";
+import { CartProvider } from "./Context/CartContext";
 import "./App.css";
 import "./Components/assets/styles/main.scss";
-
 import Footer from "./Components/Footer/Footer";
 import NavBar from "./Components/NavBar/NavBar";
 import SubHeader from "./Components/SubHeader/SubHeader";
-
-import AboutUs from "./Pages/AboutUs/AboutUs";
-import Cart from "./Pages/Cart";
-import Contacts from "./Pages/Contacts/Contacts";
-import Favorites from "./Pages/Favourites/Favorites";
-import PaymentDelivery from "./Pages/PaymentDelivery/PaymentDelivery";
-import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
-import Product from "./Pages/Product";
-import Promotions from "./Pages/Promotions";
-import Returning from "./Pages/Returning/Returning";
-import Checkout from "./Pages/Checkout/Checkout";
-import Shop from "./Pages/Shop";
-import { CartProvider } from "./Context/CartContext";
-import SocksPage from "./Components/SocksPage/SocksPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Search from "./Components/Search/Search";
-import SearchResults from "./Pages/SearchResults/SearchResults";
+import Loader from "./Components/Loader/Loader";
 
-// Список маршрутів
+const AboutUs = lazy(() => import("./Pages/AboutUs/AboutUs"));
+const Cart = lazy(() => import("./Pages/Cart"));
+const Contacts = lazy(() => import("./Pages/Contacts/Contacts"));
+const Favorites = lazy(() => import("./Pages/Favourites/Favorites"));
+const PaymentDelivery = lazy(
+  () => import("./Pages/PaymentDelivery/PaymentDelivery")
+);
+const PrivacyPolicy = lazy(() => import("./Pages/PrivacyPolicy/PrivacyPolicy"));
+const Product = lazy(() => import("./Pages/Product"));
+const Promotions = lazy(() => import("./Pages/Promotions"));
+const Returning = lazy(() => import("./Pages/Returning/Returning"));
+const Checkout = lazy(() => import("./Pages/Checkout/Checkout"));
+const Shop = lazy(() => import("./Pages/Shop"));
+const SocksPage = lazy(() => import("./Components/SocksPage/SocksPage"));
+const SearchResults = lazy(() => import("./Pages/SearchResults/SearchResults"));
+
 const routes = [
   { path: "/", element: <Shop /> },
   { path: "/offers", element: <Promotions /> },
@@ -45,7 +46,7 @@ const routes = [
   { path: "/return-of-goods", element: <Returning /> },
   { path: "/catalog/:TYPE_LINK", element: <SocksPage /> },
   { path: "/checkout", element: <Checkout /> },
-  {path:"/search-results", element:<SearchResults />},
+  { path: "/search-results", element: <SearchResults /> },
 ];
 
 interface LayoutProps {
@@ -86,11 +87,17 @@ const App: React.FC = () => {
       <CartProvider>
         <Router>
           <Layout>
-            <Routes>
-              {routes.map((route, index) => (
-                <Route key={index} path={route.path} element={route.element} />
-              ))}
-            </Routes>
+            <Suspense fallback={<Loader />}>
+              <Routes>
+                {routes.map((route, index) => (
+                  <Route
+                    key={index}
+                    path={route.path}
+                    element={route.element}
+                  />
+                ))}
+              </Routes>
+            </Suspense>
           </Layout>
         </Router>
       </CartProvider>

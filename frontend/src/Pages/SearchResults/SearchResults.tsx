@@ -7,6 +7,7 @@ import PageNavigation from "../../Components/PageNavigation/PageNavigation";
 import ErrorNoResult from "../../Components/ErrorNoResult/ErrorNoResult";
 import MobilePagination from "../../Components/MobilePagination/MobilePagination";
 import Pagination from "../../Components/Pagination/Pagination";
+import Loader from "../../Components/Loader/Loader";
 
 const SearchResultsPage: React.FC = () => {
   const [results, setResults] = useState<DataItem[]>([]);
@@ -86,7 +87,7 @@ const SearchResultsPage: React.FC = () => {
   }, [updateItemsPerPage]);
 
   if (loading) {
-    return <div className="search-results">Загрузка...</div>;
+    return <Loader/>;
   }
 
   if (is404Error) {
