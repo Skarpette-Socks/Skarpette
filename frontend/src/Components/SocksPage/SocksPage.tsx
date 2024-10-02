@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useCallback, useEffect, useState, useMemo } from "react";
 import "./SocksPage.scss";
-
 import DataItem from "../../types/DataItem";
 import PageNavigation from "../../Components/PageNavigation/PageNavigation";
 import Item from "../../Components/Item/Item";
@@ -24,63 +23,42 @@ const SocksPage: React.FC = () => {
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [sortedItems, setSortedItems] = useState<DataItem[]>([]);
-  const { TYPE_LINK } = useParams<string>();
+  const { TYPE_LINK } = useParams<{ TYPE_LINK: string }>();
 
-  console.log(TYPE_LINK);
-
-  const category = categories.find(
-    (category) => category.link === `/catalog/${TYPE_LINK}`
+  const category = useMemo(
+    () =>
+      categories.find((category) => category.link === `/catalog/${TYPE_LINK}`),
+    [TYPE_LINK]
   );
-
-  console.log(category);
 
   const updateItemsPerPage = useCallback(() => {
     setItemsPerPage(window.innerWidth >= 1280 ? 16 : 12);
   }, []);
 
-  useEffect(() => {
-    if (category) {
-      if (category.type === "All") {
-        const loadData = async () => {
-          setLoading(true);
-          try {
-            const result = await fetchAllData();
-            console.log("result", result);
-
-            setSocks(result);
-          } catch (error: any) {
-            setError(error.message);
-          } finally {
-            setLoading(false);
-          }
-        };
-
-        loadData();
-      } else {
-        const loadData = async () => {
-          setLoading(true);
-          try {
-            const result = await getSocksByCategory(category.type);
-            console.log("result", result);
-
-            setSocks(result);
-          } catch (error: any) {
-            setError(error.message);
-          } finally {
-            setLoading(false);
-          }
-        };
-        loadData();
-      }
+  const loadData = useCallback(async () => {
+    if (!category) return;
+    setLoading(true);
+    try {
+      const result =
+        category.type === "All"
+          ? await fetchAllData()
+          : await getSocksByCategory(category.type);
+      setSocks(result);
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
-  }, [TYPE_LINK]);
+  }, [category]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   useEffect(() => {
     updateItemsPerPage();
     window.addEventListener("resize", updateItemsPerPage);
-    return () => {
-      window.removeEventListener("resize", updateItemsPerPage);
-    };
+    return () => window.removeEventListener("resize", updateItemsPerPage);
   }, [updateItemsPerPage]);
 
   useEffect(() => {
@@ -89,19 +67,13 @@ const SocksPage: React.FC = () => {
 
   const handleFilterChange = useCallback(
     (type: "style" | "size", value: string) => {
-      if (type === "style") {
-        setSelectedStyles((prev) =>
-          prev.includes(value)
-            ? prev.filter((s) => s !== value)
-            : [...prev, value]
-        );
-      } else if (type === "size") {
-        setSelectedSizes((prev) =>
-          prev.includes(value)
-            ? prev.filter((s) => s !== value)
-            : [...prev, value]
-        );
-      }
+      const setSelected =
+        type === "style" ? setSelectedStyles : setSelectedSizes;
+      setSelected((prev) =>
+        prev.includes(value)
+          ? prev.filter((s) => s !== value)
+          : [...prev, value]
+      );
       setCurrentPage(1);
     },
     []
@@ -119,21 +91,22 @@ const SocksPage: React.FC = () => {
               ? selectedSizes.includes(sizeObj)
               : sizeObj.is_available && selectedSizes.includes(sizeObj.size)
           ));
-
       return matchesStyle && matchesSize;
     });
   }, [socks, selectedStyles, selectedSizes]);
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = sortedItems.slice(indexOfFirstItem, indexOfLastItem);
+  const { currentItems, totalPages } = useMemo(() => {
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    return {
+      currentItems: sortedItems.slice(indexOfFirstItem, indexOfLastItem),
+      totalPages: Math.ceil(sortedItems.length / itemsPerPage),
+    };
+  }, [currentPage, itemsPerPage, sortedItems]);
 
-  const totalPages = Math.ceil(sortedItems.length / itemsPerPage);
   const isMobile = window.innerWidth < 768;
 
-  if (loading) {
-    return <Loader/>;
-  }
+  if (loading) return <Loader />;
   if (error) return <div>Error: {error}</div>;
   if (!category) return <div>Такої категорії не знайдено</div>;
 
@@ -144,10 +117,8 @@ const SocksPage: React.FC = () => {
         homeLink="/"
         linkHref={category.link}
       />
-
       <div className="socks">
-        <h1 className="socks__title">{category?.dropdown_name}</h1>
-
+        <h1 className="socks__title">{category.dropdown_name}</h1>
         <div className="socks__filter-sort">
           <Filter
             selectedStyles={selectedStyles}
@@ -158,7 +129,6 @@ const SocksPage: React.FC = () => {
             onClearStyles={() => setSelectedStyles([])}
             sizes={category.sizes}
           />
-
           <Sort
             items={filteredSocks}
             selectedStyles={selectedStyles}
@@ -167,7 +137,6 @@ const SocksPage: React.FC = () => {
             setCurrentPage={setCurrentPage}
           />
         </div>
-
         {sortedItems.length === 0 ? (
           <div className="socks__no-items">
             За Вашим запитом нічого не знайдено :(

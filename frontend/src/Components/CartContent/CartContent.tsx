@@ -93,11 +93,11 @@ const CartContent: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <a href="/checkout">
+              <Link to="/checkout">
                 <button className="cart__button">
                   <div className="cart__button-text">Оформити замовлення</div>
                 </button>
-              </a>
+              </Link>
             </div>
           </>
         ) : (

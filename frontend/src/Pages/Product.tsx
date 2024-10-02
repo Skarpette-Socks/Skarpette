@@ -1,69 +1,52 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
-
+import React, { useEffect, useState, useCallback } from "react";
+import { Link, useParams } from "react-router-dom";
 import PromoCards from "../Components/PromoCards/PromoCards";
 import MainPageListGoods from "../Components/MainPageListGoods/MainPageListGoods";
 import PageNavigation from "../Components/PageNavigation/PageNavigation";
 import ProductOrder from "../Components/ProductOrder/ProductOrder";
 import { fetchDataItem } from "../api/fetchDataItem";
 import DataItem from "../types/DataItem";
-import { Link, useParams } from "react-router-dom";
 import Loader from "../Components/Loader/Loader";
 import no_result from "../Components/assets/img/NoSearchResult.png";
-import '../Components/ErrorNoResult/ErrorNoResult.scss'
+import "../Components/ErrorNoResult/ErrorNoResult.scss";
 
 const Product: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [item, setItem] = useState<DataItem>();
-  const { VENDOR_CODE } = useParams<string>();
+  const [item, setItem] = useState<DataItem | null>(null);
+  const { VENDOR_CODE } = useParams<{ VENDOR_CODE: string }>();
 
-  const listGoodsTitle = 'Вам може сподобатись';
+  const listGoodsTitle = "Вам може сподобатись";
 
-  useEffect(() => {
-    if (VENDOR_CODE) {
-      const loadData = async () => {
-        setLoading(true);
-        try {
-          const result = await fetchDataItem(+VENDOR_CODE);
-          console.log('result', result);
-
-          setItem(result[0]);
-        } catch (error: any) {
-          setError(error.message);
-        } finally {
-          setLoading(false);
-        }
-      };
-  
-      loadData();
+  const loadData = useCallback(async () => {
+    if (!VENDOR_CODE) return;
+    setLoading(true);
+    try {
+      const result = await fetchDataItem(+VENDOR_CODE);
+      setItem(result[0] || null);
+    } catch (error: unknown) {
+      setError(
+        error instanceof Error ? error.message : "Unknown error occurred"
+      );
+    } finally {
+      setLoading(false);
     }
   }, [VENDOR_CODE]);
 
   useEffect(() => {
-    console.log('item', item);
-  }, [item]);
-
-  useEffect(() => {
-    console.log('vendor code', VENDOR_CODE);
-  }, [VENDOR_CODE]);
-
-
+    loadData();
+  }, [loadData]);
 
   if (loading) {
     return (
       <>
-        <Loader/>
-        <MainPageListGoods 
-          title={listGoodsTitle} 
-          catalogButton={false}
-        />
+        <Loader />
+        <MainPageListGoods title={listGoodsTitle} catalogButton={false} />
       </>
     );
   }
 
-
-  if (!item || VENDOR_CODE === '') {
+  if (!item || !VENDOR_CODE) {
     return (
       <>
         <PageNavigation
@@ -92,9 +75,14 @@ const Product: React.FC = () => {
   }
 
   if (error) {
-    return <div 
-      style={{ textAlign: 'center', margin: '50px', fontSize: '32px' }}
-    ><strong>Помилка ;&#40; <br/>{error}</strong></div>;
+    return (
+      <div style={{ textAlign: "center", margin: "50px", fontSize: "32px" }}>
+        <strong>
+          Помилка ;&#40; <br />
+          {error}
+        </strong>
+      </div>
+    );
   }
 
   return (
@@ -104,20 +92,11 @@ const Product: React.FC = () => {
         homeLink="/"
         linkHref={`/product/${item.vendor_code}`}
       />
-  
-
-      <ProductOrder 
-        item={item}
-      />
-
+      <ProductOrder item={item} />
       <PromoCards />
-
-      <MainPageListGoods 
-        title={listGoodsTitle} 
-        catalogButton={false}
-      />
+      <MainPageListGoods title={listGoodsTitle} catalogButton={false} />
     </div>
   );
-}
+};
 
 export default Product;
