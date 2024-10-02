@@ -60,9 +60,14 @@ const orderSchema = new mongoose.Schema({
             type: String,
             required: true,
         },
-        departmentNumber: {
+        street: {
             type: String,
-            required: true,
+        },
+        apartmentNumber: {
+            type: Number,
+        },
+        departmentNumber: {
+            type: Number,
         },
     },
     paymentType: {
