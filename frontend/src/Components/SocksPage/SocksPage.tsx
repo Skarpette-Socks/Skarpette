@@ -13,6 +13,7 @@ import categories from "../../../json_links/categories.json";
 import { getSocksByCategory } from "../../api/fetchDataByCategory";
 import { fetchAllData } from "../../api/fetchAllData";
 import Loader from "../Loader/Loader";
+import PromoCards from "../PromoCards/PromoCards";
 
 const SocksPage: React.FC = () => {
   const [socks, setSocks] = useState<DataItem[]>([]);
@@ -170,7 +171,8 @@ const SocksPage: React.FC = () => {
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
               />
-            )}
+              )}
+              <PromoCards />
           </>
         )}
       </div>
