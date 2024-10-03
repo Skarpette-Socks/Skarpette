@@ -13,7 +13,7 @@
     margin-top: 40px;
 
     @include on-desktop {
-      margin-top: 64px;
+      margin-top: 24px;
       grid-column: 9/-1;
       order: 2;
     }
