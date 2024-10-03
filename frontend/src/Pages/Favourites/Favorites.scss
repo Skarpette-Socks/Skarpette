@@ -26,7 +26,7 @@
 
     @include on-tablet {
       font-size: 16px;
-      margin-top: 48px;
+      margin-top: 24px;
       width: 630px;
     }
 
@@ -49,7 +49,7 @@
 
     @include on-tablet {
       grid-template-columns: repeat(auto-fill, 294px);
-      margin-top: 80px;
+      margin-top: 24px;
     }
 
     @include on-desktop {
@@ -65,7 +65,7 @@
     margin-top: 24px;
 
     @include on-tablet {
-      margin-top: 32px;
+      margin-top: 24px;
     }
   }
 
