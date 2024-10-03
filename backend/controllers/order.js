@@ -50,13 +50,41 @@ const validateRecipientData = (orderData) => {
     return null;
 };
 
+const validateDeliveryData = (deliveryData) => {
+    if (!deliveryData.deliveryType) {
+        return 'Delivery type is missing';
+    }
+
+    if (deliveryData.deliveryType === "НПКур'єр") {
+        if (!deliveryData.street || !deliveryData.apartmentNumber) {
+            return `Street and Apartment Number should be filled for ${deliveryData.deliveryType}`;
+        } else if (deliveryData.departmentNumber) {
+            return `${deliveryData.deliveryType} does not require Department Number`;
+        }
+    } else {
+        if (!deliveryData.departmentNumber) {
+            return `Department Number should be filled for ${deliveryData.deliveryType}`;
+        } else if (deliveryData.street || deliveryData.apartmentNumber) {
+            return `${deliveryData.deliveryType} does not require Street or Apartment Number`;
+        }
+    }
+};
+
 const createOrder = async (req, res) => {
     try {
         const orderData = req.body;
+        console.log(orderData);
         orderData.orderDate = getKyivTime();
-        const validationError = validateRecipientData(orderData);
-        if (validationError) {
-            return res.status(400).json(validationError);
+        const recipientValidationError = validateRecipientData(orderData);
+        if (recipientValidationError) {
+            return res.status(400).json(recipientValidationError);
+        }
+        const deliveryValidationError = validateDeliveryData(
+            orderData.deliveryData
+        );
+
+        if (deliveryValidationError) {
+            return res.status(400).json(deliveryValidationError);
         }
         orderData.orderNumber = await generateOrderNumber();
         const newOrder = await Order.create(orderData);
