@@ -103,7 +103,7 @@ const LoginPage: React.FC = () => {
                 required
                 fullWidth
                 id="email"
-                label="Email"
+                label="Логін"
                 name="email"
                 autoComplete="email"
                 autoFocus
