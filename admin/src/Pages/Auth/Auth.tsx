@@ -143,7 +143,7 @@ const LoginPage: React.FC = () => {
                 fullWidth
                 variant="contained"
                 size="large"
-                sx={{ mt: 3, mb: 2 , borderRadius:"50px"}}
+                sx={{ mt: 3, mb: 2 , borderRadius:"50px",height:"48px"}}
               >
                 Увійти
               </Button>

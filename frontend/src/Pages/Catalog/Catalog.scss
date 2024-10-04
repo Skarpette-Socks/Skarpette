@@ -13,7 +13,7 @@
     color: $grayscale-1000;
 
     @include on-tablet {
-      margin-top: 64px;
+      margin-top: 24px;
       font-size: 64px;
     }
   }
@@ -29,7 +29,7 @@
 
     @include on-desktop {
       // grid-template-columns: repeat(4, 1fr); /* 4 колонки на широких экранах */
-      margin-top: 80px;
+      margin-top:24px;
       grid-row-gap: 64px; /* Отступ между строками */
     }
   }
@@ -45,6 +45,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin-top: 48px;
+    margin-top: 24px;
   }  
 }

@@ -7,7 +7,7 @@
   margin-top: 40px;
 
   @include on-tablet {
-    margin-top: 64px;
+    margin-top: 24px;
   }
 
   h1 {
@@ -31,7 +31,7 @@
 
     @include on-desktop {
       grid-template-columns: repeat(4, 1fr); /* 4 колонки на широких экранах */
-      margin-top: 80px;
+      margin-top: 24px;
       grid-row-gap: 64px; /* Отступ между строками */
     }
   }
