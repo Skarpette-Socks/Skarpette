@@ -86,16 +86,6 @@ function calculateDiscount(price, price2) {
     return 0;
 }
 
-function getSizesByType(type) {
-    const sizes = {
-        Men: ['25-27', '27-29', '29-31'],
-        Women: ['23-25', '25-27'],
-        Child: ['16', '18', '19-21', '21-23', '23-25'],
-    };
-
-    return sizes[type].map((size) => ({ size, is_available: true }));
-}
-
 skarpetteSchema.pre('save', function (next) {
     if (this.size.length === 0 && getSizesByType(this.type)) {
         this.size = getSizesByType(this.type);

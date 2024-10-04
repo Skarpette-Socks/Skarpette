@@ -94,6 +94,17 @@ const findSkarpettesByCriteria = async (criteria, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+const getSizesByType = (type) => {
+    const sizes = {
+        Men: ['25-27', '27-29', '29-31'],
+        Women: ['23-25', '25-27'],
+        Child: ['16', '18', '19-21', '21-23', '23-25'],
+    };
+
+    return sizes[type].map((size) => ({ size, is_available: true }));
+};
+
 const createSkarpette = async (req, res) => {
     try {
         const skarpetteData = req.body;
@@ -124,6 +135,7 @@ const createSkarpette = async (req, res) => {
             const sizesByType = getSizesByType(skarpetteData.type);
             skarpetteData.size = sizesByType;
         }
+        skarpetteData.size = getSizesByType(skarpetteData.type);
 
         const newSkarpette = await Skarpette.create(skarpetteData);
         res.status(201).json(newSkarpette);
