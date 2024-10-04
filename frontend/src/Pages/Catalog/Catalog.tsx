@@ -1,21 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useCallback, useEffect, useState, useMemo } from "react";
-import "./SocksPage.scss";
+import "./Catalog.scss";
 import DataItem from "../../types/DataItem";
 import PageNavigation from "../../Components/PageNavigation/PageNavigation";
 import Item from "../../Components/Item/Item";
 import MobilePagination from "../../Components/MobilePagination/MobilePagination";
 import Pagination from "../../Components/Pagination/Pagination";
-import Filter from "../Filter/Filter";
-import Sort from "../Sort/Sort";
+import Filter from "../../Components/Filter/Filter";
+import Sort from "../../Components/Sort/Sort";
 import { useParams } from "react-router-dom";
 import categories from "../../../json_links/categories.json";
 import { getSocksByCategory } from "../../api/fetchDataByCategory";
 import { fetchAllData } from "../../api/fetchAllData";
-import Loader from "../Loader/Loader";
-import PromoCards from "../PromoCards/PromoCards";
+import Loader from "../../Components/Loader/Loader";
+import PromoCards from "../../Components/PromoCards/PromoCards";
+import CatalogCategoryCircle from "../../Components/CatalogCategoryCircle/CatalogCategoryCircle";
 
-const SocksPage: React.FC = () => {
+const Catalog: React.FC = () => {
   const [socks, setSocks] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -120,6 +121,9 @@ const SocksPage: React.FC = () => {
       />
       <div className="socks">
         <h1 className="socks__title">{category.dropdown_name}</h1>
+        {category.type === "All" &&
+          <CatalogCategoryCircle />
+        }
         <div className="socks__filter-sort">
           <Filter
             selectedStyles={selectedStyles}
@@ -180,4 +184,4 @@ const SocksPage: React.FC = () => {
   );
 };
 
-export default SocksPage;
+export default Catalog;

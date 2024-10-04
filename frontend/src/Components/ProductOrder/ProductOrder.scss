@@ -328,8 +328,14 @@
   }
 
   &__good-in-cart {
-    color: $grayscale-600;
+    color: $primary-800;
     font-size: 14px;
+  }
+
+  &__max-count {
+    color: $color-error;
+    font-size: 14px;
+    margin-top: 8px;
   }
 
   &__size-button {
