@@ -30,7 +30,7 @@ const Promotions = lazy(() => import("./Pages/Promotions"));
 const Returning = lazy(() => import("./Pages/Returning/Returning"));
 const Checkout = lazy(() => import("./Pages/Checkout/Checkout"));
 const Shop = lazy(() => import("./Pages/Shop"));
-const SocksPage = lazy(() => import("./Components/SocksPage/SocksPage"));
+const SocksPage = lazy(() => import("./Pages/Catalog/Catalog"));
 const SearchResults = lazy(() => import("./Pages/SearchResults/SearchResults"));
 
 const routes = [

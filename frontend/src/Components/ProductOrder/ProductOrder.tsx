@@ -246,15 +246,13 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
 
             {cartItem && (
               <div className="product__good-in-cart">
-                У кошику {cartItem.count}шт
+                У кошику вже {cartItem.count}шт
               </div>
             )}
-            {cartItem?.count === 99 && (
-              <div className="product__good-in-cart">
-                Максимальна кількість
-              </div>
-            )}
+
           </div>
+
+          
 
           <div className="product__counter">
             <div className="product__counter-title">Кількість:</div>
@@ -263,6 +261,12 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
               setCount={setCounter}
               cartItemCount={cartItem?.count}
             />
+            
+            {cartItem?.count === 99 && (
+              <div className="product__max-count">
+                Максимальна кількість у кошику 99шт
+              </div>
+            )}
           </div>
 
           <div className="product__buttons-cart-fav">
