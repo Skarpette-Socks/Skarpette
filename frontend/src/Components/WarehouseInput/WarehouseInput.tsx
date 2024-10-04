@@ -39,7 +39,7 @@ const WarehouseInput = forwardRef<WarehouseInputRef, WarehouseInputProps>(
   ) => {
     const [warehouses, setWarehouses] = useState<string[]>([]);
     const [filteredWarehouses, setFilteredWarehouses] = useState<string[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
+    // const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [inputValue, setInputValue] = useState<string>("");
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -72,7 +72,7 @@ const WarehouseInput = forwardRef<WarehouseInputRef, WarehouseInputProps>(
         return;
       }
 
-      setLoading(true);
+      // setLoading(true);
       setError(null);
 
       try {
@@ -98,7 +98,7 @@ const WarehouseInput = forwardRef<WarehouseInputRef, WarehouseInputProps>(
         setWarehouses([]);
         setFilteredWarehouses([]);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     }, [selectedCity, deliveryType]);
 
@@ -215,7 +215,7 @@ const WarehouseInput = forwardRef<WarehouseInputRef, WarehouseInputProps>(
             disabled={disabled || !selectedCity} // Используем disabled
             maxLength={200}
           />
-          {loading && <div className="input__loading">Завантаження...</div>}
+          {/* {loading && <div className="input__loading">Завантаження...</div>} */}
         </div>
         {isOpen && filteredWarehouses.length > 0 && (
           <ul ref={listRef} className="input__list">

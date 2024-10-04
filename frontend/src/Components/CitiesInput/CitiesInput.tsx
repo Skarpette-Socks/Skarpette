@@ -8,7 +8,7 @@ interface CitiesInputProps {
 
 const CitiesInput: React.FC<CitiesInputProps> = ({ onCitySelect }) => {
   const [cities, setCities] = useState<string[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -23,7 +23,7 @@ const CitiesInput: React.FC<CitiesInputProps> = ({ onCitySelect }) => {
       return;
     }
 
-    setLoading(true);
+    // setLoading(true);
     setError(null);
 
     try {
@@ -36,7 +36,7 @@ const CitiesInput: React.FC<CitiesInputProps> = ({ onCitySelect }) => {
       setError("Помилка при виконанні запиту: " + (err as Error).message);
       setCities([]);
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   }, []);
 
@@ -122,9 +122,6 @@ const CitiesInput: React.FC<CitiesInputProps> = ({ onCitySelect }) => {
         />
         <div>
         </div>
-        {loading && (
-          <div className="input__loading">Завантаження...</div>
-        )}
       </div>
       {isOpen && cities.length > 0 && (
         <ul ref={listRef} className="input__list">
