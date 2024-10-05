@@ -38,9 +38,3 @@ Get All Skarpettes
 Request type: GET
 Example:
 http://localhost:5000/order
-
-Update Skarpette
-Request type: PUT
-Data: JSON with fields to update
-Example:
-http://localhost:5000/order/669fa1d2df106cad2294c2ca
