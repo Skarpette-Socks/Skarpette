@@ -5,6 +5,7 @@ const {
     DeleteObjectCommand,
 } = require('@aws-sdk/client-s3');
 const dotenv = require('dotenv');
+const { v4: uuidv4 } = require('uuid');
 
 dotenv.config();
 
@@ -117,9 +118,11 @@ const createSkarpette = async (req, res) => {
             const images = req.files;
             const imagesUrls = await Promise.all(
                 images.map(async (file) => {
+                    const fileExtension = file.originalname.split('.').pop();
+                    const newFileName = `${uuidv4()}.${fileExtension}`;
                     const imageUrl = await uploadImageToS3(
                         file.buffer,
-                        `images/${file.originalname}`
+                        `images/${newFileName}`
                     );
                     return imageUrl;
                 })
