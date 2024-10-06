@@ -1,13 +1,19 @@
 const Skarpette = require('../models/skarpette');
-const {
-    S3Client,
-    PutObjectCommand,
-    DeleteObjectCommand,
-} = require('@aws-sdk/client-s3');
+const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const dotenv = require('dotenv');
 const { v4: uuidv4 } = require('uuid');
+const sharp = require('sharp');
+const { Upload } = require('@aws-sdk/lib-storage');
 
 dotenv.config();
+
+//photos consts
+const aspectRatioWidth = 9;
+const aspectRatioHeight = 10;
+const targetWidth = 900;
+const targetHeight = Math.round(
+    (targetWidth * aspectRatioHeight) / aspectRatioWidth
+);
 
 const s3Client = new S3Client({
     region: process.env.AWSREGION,
@@ -19,17 +25,18 @@ const s3Client = new S3Client({
 });
 
 async function uploadImageToS3(buffer, destination) {
-    const params = {
-        Bucket: process.env.AWSBUCKETNAME,
-        Key: destination,
-        Body: buffer,
-    };
-
-    const command = new PutObjectCommand(params);
+    const upload = new Upload({
+        client: s3Client,
+        params: {
+            Bucket: process.env.AWSBUCKETNAME,
+            Key: destination,
+            Body: buffer,
+        },
+    });
 
     try {
-        const data = await s3Client.send(command);
-        return `https://${params.Bucket}.s3.${process.env.AWSREGION}.amazonaws.com/${destination}`;
+        const data = await upload.done();
+        return `https://${process.env.AWSBUCKETNAME}.s3.${process.env.AWSREGION}.amazonaws.com/${destination}`;
     } catch (error) {
         console.error('Error uploading image to S3:', error);
         throw error;
@@ -120,8 +127,13 @@ const createSkarpette = async (req, res) => {
                 images.map(async (file) => {
                     const fileExtension = file.originalname.split('.').pop();
                     const newFileName = `${uuidv4()}.${fileExtension}`;
+                    const resizedImage = await sharp(file.buffer).resize({
+                        width: targetWidth,
+                        height: targetHeight,
+                        fit: sharp.fit.cover,
+                    });
                     const imageUrl = await uploadImageToS3(
-                        file.buffer,
+                        resizedImage,
                         `images/${newFileName}`
                     );
                     return imageUrl;
@@ -201,8 +213,13 @@ const updateSkarpette = async (req, res) => {
                 images.map(async (file) => {
                     const fileExtension = file.originalname.split('.').pop();
                     const newFileName = `${uuidv4()}.${fileExtension}`;
+                    const resizedImage = await sharp(file.buffer).resize({
+                        width: targetWidth,
+                        height: targetHeight,
+                        fit: sharp.fit.cover,
+                    });
                     const imageUrl = await uploadImageToS3(
-                        file.buffer,
+                        resizedImage,
                         `images/${newFileName}`
                     );
                     return imageUrl;

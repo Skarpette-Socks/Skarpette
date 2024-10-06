@@ -6,11 +6,8 @@ const authMiddleware = require('../middleware/authMiddleware');
 const storage = multer.memoryStorage();
 const upload = multer({
     storage: storage,
-    limits: {
-        fileSize: 3 * 1024 * 1024,
-    },
     fileFilter: (req, file, cb) => {
-        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+        if (!file.originalname.match(/\.(jpg|jpeg|webm)$/)) {
             return cb(new Error('Only image files are allowed'), false);
         }
         cb(null, true);
