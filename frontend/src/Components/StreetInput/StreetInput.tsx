@@ -33,7 +33,6 @@ const StreetInput = forwardRef<StreetInputRef, StreetInputProps>(
     ref
   ) => {
     const [filteredStreets, setFilteredStreets] = useState<string[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [inputValue, setInputValue] = useState<string>("");
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -58,7 +57,6 @@ const StreetInput = forwardRef<StreetInputRef, StreetInputProps>(
           return;
         }
 
-        setLoading(true);
         setError(null);
 
         try {
@@ -71,8 +69,6 @@ const StreetInput = forwardRef<StreetInputRef, StreetInputProps>(
           console.error("Error in fetchStreetsData:", err);
           setError("Помилка при виконанні запиту: " + (err as Error).message);
           setFilteredStreets([]);
-        } finally {
-          setLoading(false);
         }
       },
       [selectedCity]
@@ -164,7 +160,6 @@ const StreetInput = forwardRef<StreetInputRef, StreetInputProps>(
             disabled={disabled || !selectedCity} // Используем disabled
             maxLength={200}
           />
-          {loading && <div className="input__loading">Завантаження...</div>}
         </div>
         {isOpen && filteredStreets.length > 0 && (
           <ul ref={listRef} className="input__list">
