@@ -29,49 +29,12 @@ Request type: GET
 Example:
 http://localhost:5000/skarpette/new
 
-Create Skarpette
-Request type: POST
-Data:
-all fields from model in form_data
-
-Delete Skarpette by ID
-Request type: DELETE
-Example: 
-http://localhost:5000/skarpette/669fa1d2df106cad2294c2ca
-
 Get All Skarpettes
 Request type: GET
 Example:
 http://localhost:5000/skarpette
 
-Update Skarpette
-Request type: PUT
-Data: JSON with fields to update
-Example:
-http://localhost:5000/skarpette/669fa1d2df106cad2294c2ca
-
-Create order
-Request type: POST
-Data:
-All fields from model in body
-
-Get order by ID
-Request type: GET
-Example:
-http://localhost:5000/order/669fa1d2df106cad2294c2ca
-
-Delete order by ID
-Request type: DELETE
-Example: 
-http://localhost:5000/order/669fa1d2df106cad2294c2ca
-
 Get All Skarpettes
 Request type: GET
 Example:
 http://localhost:5000/order
-
-Update Skarpette
-Request type: PUT
-Data: JSON with fields to update
-Example:
-http://localhost:5000/order/669fa1d2df106cad2294c2ca

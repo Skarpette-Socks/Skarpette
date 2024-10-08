@@ -1,12 +1,19 @@
 const Skarpette = require('../models/skarpette');
-const {
-    S3Client,
-    PutObjectCommand,
-    DeleteObjectCommand,
-} = require('@aws-sdk/client-s3');
+const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const dotenv = require('dotenv');
+const { v4: uuidv4 } = require('uuid');
+const sharp = require('sharp');
+const { Upload } = require('@aws-sdk/lib-storage');
 
 dotenv.config();
+
+//photos consts
+const aspectRatioWidth = 9;
+const aspectRatioHeight = 10;
+const targetWidth = 900;
+const targetHeight = Math.round(
+    (targetWidth * aspectRatioHeight) / aspectRatioWidth
+);
 
 const s3Client = new S3Client({
     region: process.env.AWSREGION,
@@ -18,17 +25,18 @@ const s3Client = new S3Client({
 });
 
 async function uploadImageToS3(buffer, destination) {
-    const params = {
-        Bucket: process.env.AWSBUCKETNAME,
-        Key: destination,
-        Body: buffer,
-    };
-
-    const command = new PutObjectCommand(params);
+    const upload = new Upload({
+        client: s3Client,
+        params: {
+            Bucket: process.env.AWSBUCKETNAME,
+            Key: destination,
+            Body: buffer,
+        },
+    });
 
     try {
-        const data = await s3Client.send(command);
-        return `https://${params.Bucket}.s3.${process.env.AWSREGION}.amazonaws.com/${destination}`;
+        const data = await upload.done();
+        return `https://${process.env.AWSBUCKETNAME}.s3.${process.env.AWSREGION}.amazonaws.com/${destination}`;
     } catch (error) {
         console.error('Error uploading image to S3:', error);
         throw error;
@@ -94,6 +102,17 @@ const findSkarpettesByCriteria = async (criteria, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+const getSizesByType = (type) => {
+    const sizes = {
+        Men: ['25-27', '27-29', '29-31'],
+        Women: ['23-25', '25-27'],
+        Child: ['16', '18', '19-21', '21-23', '23-25'],
+    };
+
+    return sizes[type].map((size) => ({ size, is_available: true }));
+};
+
 const createSkarpette = async (req, res) => {
     try {
         const skarpetteData = req.body;
@@ -106,9 +125,16 @@ const createSkarpette = async (req, res) => {
             const images = req.files;
             const imagesUrls = await Promise.all(
                 images.map(async (file) => {
+                    const fileExtension = file.originalname.split('.').pop();
+                    const newFileName = `${uuidv4()}.${fileExtension}`;
+                    const resizedImage = await sharp(file.buffer).resize({
+                        width: targetWidth,
+                        height: targetHeight,
+                        fit: sharp.fit.cover,
+                    });
                     const imageUrl = await uploadImageToS3(
-                        file.buffer,
-                        `images/${file.originalname}`
+                        resizedImage,
+                        `images/${newFileName}`
                     );
                     return imageUrl;
                 })
@@ -124,6 +150,7 @@ const createSkarpette = async (req, res) => {
             const sizesByType = getSizesByType(skarpetteData.type);
             skarpetteData.size = sizesByType;
         }
+        skarpetteData.size = getSizesByType(skarpetteData.type);
 
         const newSkarpette = await Skarpette.create(skarpetteData);
         res.status(201).json(newSkarpette);
@@ -184,9 +211,16 @@ const updateSkarpette = async (req, res) => {
             const images = req.files;
             const imagesUrls = await Promise.all(
                 images.map(async (file) => {
+                    const fileExtension = file.originalname.split('.').pop();
+                    const newFileName = `${uuidv4()}.${fileExtension}`;
+                    const resizedImage = await sharp(file.buffer).resize({
+                        width: targetWidth,
+                        height: targetHeight,
+                        fit: sharp.fit.cover,
+                    });
                     const imageUrl = await uploadImageToS3(
-                        file.buffer,
-                        `images/${file.originalname}`
+                        resizedImage,
+                        `images/${newFileName}`
                     );
                     return imageUrl;
                 })
