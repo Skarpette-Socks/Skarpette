@@ -6,12 +6,12 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { fetchStreets } from "../../api/FetchStreets";
+import { fetchStreets } from "../../../api/FetchStreets";
 
-import "../assets/styles/commonCheckoutInputesStyles.scss";
+import "../../assets/styles/commonCheckoutInputesStyles.scss";
 
 interface StreetInputProps {
-  selectedCity: string;
+  selectedCity: string | undefined;
   resetStreet: boolean;
   onStreetReset: () => void;
   disabled?: boolean; // Добавляем проп disabled
@@ -19,7 +19,7 @@ interface StreetInputProps {
 
 interface StreetInputRef {
   isValid: () => boolean;
-  getStreet: () => string | undefined;
+  getValue: () => string | undefined;
 }
 
 const StreetInput = forwardRef<StreetInputRef, StreetInputProps>(
@@ -42,12 +42,20 @@ const StreetInput = forwardRef<StreetInputRef, StreetInputProps>(
 
     useImperativeHandle(ref, () => ({
       isValid() {
-        return !error;
+        return isValidForm();
       },
-      getStreet() {
+      getValue() {
         return inputValue;
       },
     }));
+
+    const isValidForm = () => {
+      if (!inputValue) {
+        setError("Заповніть поле")
+      }
+
+      return !error;
+    }
 
     const fetchStreetsData = useCallback(
       async (query: string) => {
@@ -86,7 +94,7 @@ const StreetInput = forwardRef<StreetInputRef, StreetInputProps>(
       if (resetStreet) {
         setInputValue("");
         setFilteredStreets([]);
-        setError(null);
+        // setError(null);
         setIsOpen(false);
         setHighlightedIndex(-1);
         onStreetReset();

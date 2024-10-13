@@ -1,12 +1,24 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { fetchCities } from "../../api/FetchCities";
-import "../assets/styles/commonCheckoutInputesStyles.scss";
+import React, { useState, useEffect, useCallback, useRef, useImperativeHandle, forwardRef } from "react";
+import { fetchCities } from "../../../api/FetchCities";
+import "../../assets/styles/commonCheckoutInputesStyles.scss";
 
 interface CitiesInputProps {
   onCitySelect: (city: string) => void;
+  setIsCitySelected: (b: boolean) => void;
 }
 
-const CitiesInput: React.FC<CitiesInputProps> = ({ onCitySelect }) => {
+interface CitiesInputRef {
+  isValid: () => boolean;
+  getValue: () => string | undefined;
+}
+
+const CitiesInput = forwardRef<CitiesInputRef, CitiesInputProps>(
+  (
+    { 
+      onCitySelect,
+      setIsCitySelected, 
+    }, ref
+  ) => {
   const [cities, setCities] = useState<string[]>([]);
   // const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -16,15 +28,31 @@ const CitiesInput: React.FC<CitiesInputProps> = ({ onCitySelect }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
+  useImperativeHandle(ref, () => ({
+    isValid() {
+      return isValidForm();
+    },
+    getValue() {
+      return inputValue;
+    },
+  }));
+
+  const isValidForm = () => {
+    if (!inputValue) {
+      setError("Заповніть поле");
+    }
+
+    return !error;
+  }
+
   const fetchCitiesData = useCallback(async (query: string) => {
     if (query.length === 0) {
       setCities([]);
-      setError(null);
       return;
     }
 
     // setLoading(true);
-    setError(null);
+    // setError(null);
 
     try {
       const citiesData = await fetchCities(query);
@@ -53,6 +81,7 @@ const CitiesInput: React.FC<CitiesInputProps> = ({ onCitySelect }) => {
     setInputValue(value);
     setIsOpen(true);
     setHighlightedIndex(-1);
+    setIsCitySelected(false);
     if (value.length === 0) {
       setError(null);
     }
@@ -144,6 +173,6 @@ const CitiesInput: React.FC<CitiesInputProps> = ({ onCitySelect }) => {
       {error && <div className="input__error">{error}</div>}
     </div>
   );
-};
+});
 
 export default CitiesInput;

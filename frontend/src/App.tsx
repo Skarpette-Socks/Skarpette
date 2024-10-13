@@ -10,6 +10,8 @@ import { CartProvider } from "./Context/CartContext";
 import "./App.css";
 import "./Components/assets/styles/main.scss";
 import Footer from "./Components/Footer/Footer";
+import Admin from "../../admin/src/Admin";
+
 import NavBar from "./Components/NavBar/NavBar";
 import SubHeader from "./Components/SubHeader/SubHeader";
 import { ToastContainer } from "react-toastify";
@@ -47,6 +49,8 @@ const routes = [
   { path: "/catalog/:TYPE_LINK", element: <SocksPage /> },
   { path: "/checkout", element: <Checkout /> },
   { path: "/search-results", element: <SearchResults /> },
+  { path: "/admin", element: <Admin /> },
+
 ];
 
 interface LayoutProps {
@@ -56,6 +60,9 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
   const isCheckoutPage = location.pathname === "/checkout";
+  const isAdminPage = location.pathname === "/admin";
+  const showHeader = isCheckoutPage || isAdminPage;
+
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const toggleSearch = () => {
@@ -65,8 +72,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <>
       <ToastContainer pauseOnFocusLoss={false} />
-      {!isCheckoutPage && <SubHeader />}
-      {!isCheckoutPage && (
+      {!showHeader && <SubHeader />}
+      {!showHeader && (
         <div>
           {isSearchOpen ? (
             <Search toggleSearch={toggleSearch} isOpen={isSearchOpen} />
@@ -76,7 +83,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       )}
       {children}
-      {!isCheckoutPage && <Footer />}
+      {!showHeader && <Footer />}
     </>
   );
 };

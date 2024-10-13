@@ -83,22 +83,20 @@ const Checkout = () => {
     let isValidContactInfo = false;
     let isValidReceiverInfo = false;
     let isValidDeliveryRef = false;
-  
-    if (contactInfoRef.current) {
-      isValidContactInfo = contactInfoRef.current.isValid();
-    }
 
-    if (deliveryRef.current) {
-      isValidDeliveryRef = deliveryRef.current.isValid();
-    }
-  
     if (selectedOption === 'another-receiver' && receiverInfoRef.current) {
       isValidReceiverInfo = receiverInfoRef.current.isValid();
     } else {
       isValidReceiverInfo = true;
     }
 
-
+    if (deliveryRef.current) {
+      isValidDeliveryRef = deliveryRef.current.isValid();
+    }
+  
+    if (contactInfoRef.current) {
+      isValidContactInfo = contactInfoRef.current.isValid();
+    }
   
     if (isValidContactInfo && isValidReceiverInfo && isValidDeliveryRef) {
       if (selectedOption === 'self-receiver') {

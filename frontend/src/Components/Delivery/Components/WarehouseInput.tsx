@@ -9,12 +9,12 @@ import React, {
 import {
   fetchWarehouses,
   FetchWarehousesParams,
-} from "../../api/FetchWarehouse";
+} from "../../../api/FetchWarehouse";
 
-import "../assets/styles/commonCheckoutInputesStyles.scss";
+import "../../assets/styles/commonCheckoutInputesStyles.scss";
 
 interface WarehouseInputProps {
-  selectedCity: string;
+  selectedCity: string | undefined;
   resetWarehouse: boolean;
   onWarehouseReset: () => void;
   deliveryType: string;
@@ -23,7 +23,7 @@ interface WarehouseInputProps {
 
 interface WarehouseInputRef {
   isValid: () => boolean;
-  getWarehouse: () => string | undefined;
+  getValue: () => string | undefined;
 }
 
 const WarehouseInput = forwardRef<WarehouseInputRef, WarehouseInputProps>(
@@ -47,11 +47,12 @@ const WarehouseInput = forwardRef<WarehouseInputRef, WarehouseInputProps>(
     const inputRef = useRef<HTMLInputElement>(null);
     const listRef = useRef<HTMLUListElement>(null);
 
+
     useImperativeHandle(ref, () => ({
       isValid() {
         return isValidForm();
       },
-      getWarehouse() {
+      getValue() {
         return inputValue;
       },
     }));
