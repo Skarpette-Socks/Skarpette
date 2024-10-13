@@ -235,7 +235,7 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
             />
             <UkrPostWarInput
               isCitySelected={isCitySelected}
-              ref={buildingInputRef}
+              ref={ukrPostWarehouseRef}
             />
           </div>
         )}

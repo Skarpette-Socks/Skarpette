@@ -64,7 +64,7 @@ const ContactInfo = forwardRef<ReceiverInfoRef>((_, ref) => {
       error = true;
     }
   
-    if (phone.includes('_')) {
+    if (phone.includes('_') || !phone) {
       setPhoneTouched(true);
       setPhoneError('Неправильний номер телефону');
       error = true;
