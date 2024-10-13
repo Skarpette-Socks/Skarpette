@@ -1,5 +1,4 @@
 import React, { forwardRef, useImperativeHandle, useState } from "react";
-
 import '../../../../../Components/assets/styles/commonCheckoutInputesStyles.scss';
 
 
@@ -34,10 +33,10 @@ const UkrPostWarInput = forwardRef<FlatInputRef, FlatInputProps>(
       e: React.ChangeEvent<HTMLInputElement>
     ) => {
       const value = e.target.value;
-      const isCyrillic = /^[\u0400-\u04FF0-9№/\s]*$/; // Добавлены цифры и спецсимволы
+      const isCyrillic = /^[\u0400-\u04FF0-9№/\s]*$/;
       setInputValue(value);
 
-      if (isCyrillic.test(value) || value === "") {
+      if (isCyrillic.test(value)) {
         setError(null);
       } else {
         setError("Лише кирилиця, цифри і спецсимвол №");
@@ -48,6 +47,9 @@ const UkrPostWarInput = forwardRef<FlatInputRef, FlatInputProps>(
       if (!inputValue) {
         setError("Заповніть поле")
       }
+
+      console.log('errer',error);
+      
 
       return !error;
     }
