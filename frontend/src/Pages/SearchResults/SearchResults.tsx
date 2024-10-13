@@ -4,7 +4,7 @@ import Item from "../../Components/Item/Item";
 import DataItem from "../../types/DataItem";
 import "./SearchResults.scss";
 import PageNavigation from "../../Components/PageNavigation/PageNavigation";
-import ErrorNoResult from "./Components/ErrorNoResult/ErrorNoResult";
+import ErrorNoResult from "../../Components/ErrorNoResult/ErrorNoResult";
 import MobilePagination from "../../Components/MobilePagination/MobilePagination";
 import Pagination from "../../Components/Pagination/Pagination";
 import Loader from "../../Components/Loader/Loader";

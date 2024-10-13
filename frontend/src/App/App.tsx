@@ -27,7 +27,7 @@ const PaymentDelivery = lazy(
   () => import("../Pages/PaymentDelivery/PaymentDelivery")
 );
 const PrivacyPolicy = lazy(() => import("../Pages/PrivacyPolicy/PrivacyPolicy"));
-const Product = lazy(() => import("../Pages/Product"));
+const Product = lazy(() => import("../Pages/Product/Product"));
 const Promotions = lazy(() => import("../Pages/Promotions"));
 const Returning = lazy(() => import("../Pages/Returning/Returning"));
 const Checkout = lazy(() => import("../Pages/Checkout/Checkout"));
