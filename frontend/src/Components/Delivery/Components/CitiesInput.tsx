@@ -1,28 +1,27 @@
 import React, { useState, useEffect, useCallback, useRef, useImperativeHandle, forwardRef } from "react";
-import { fetchCities } from "../../api/FetchCities";
-import "../assets/styles/commonCheckoutInputesStyles.scss";
+import { fetchCities } from "../../../api/FetchCities";
+import "../../assets/styles/commonCheckoutInputesStyles.scss";
 
 interface CitiesInputProps {
   onCitySelect: (city: string) => void;
-  selectedCityError: string | null;
-
+  setIsCitySelected: (b: boolean) => void;
 }
 
 interface CitiesInputRef {
   isValid: () => boolean;
-  getCity: () => string | undefined;
+  getValue: () => string | undefined;
 }
 
 const CitiesInput = forwardRef<CitiesInputRef, CitiesInputProps>(
   (
     { 
-      onCitySelect, 
-      selectedCityError 
+      onCitySelect,
+      setIsCitySelected, 
     }, ref
   ) => {
   const [cities, setCities] = useState<string[]>([]);
   // const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(selectedCityError);
+  const [error, setError] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
@@ -33,7 +32,7 @@ const CitiesInput = forwardRef<CitiesInputRef, CitiesInputProps>(
     isValid() {
       return isValidForm();
     },
-    getCity() {
+    getValue() {
       return inputValue;
     },
   }));
@@ -53,7 +52,7 @@ const CitiesInput = forwardRef<CitiesInputRef, CitiesInputProps>(
     }
 
     // setLoading(true);
-    setError(null);
+    // setError(null);
 
     try {
       const citiesData = await fetchCities(query);
@@ -82,6 +81,7 @@ const CitiesInput = forwardRef<CitiesInputRef, CitiesInputProps>(
     setInputValue(value);
     setIsOpen(true);
     setHighlightedIndex(-1);
+    setIsCitySelected(false);
     if (value.length === 0) {
       setError(null);
     }
