@@ -1,7 +1,7 @@
-import './App.css'
+import './Admin.css'
 import Auth from './Pages/Auth/Auth'
 
-function App() {
+const Admin = () => {
 
   return (
     <>
@@ -10,4 +10,4 @@ function App() {
   )
 }
 
-export default App
+export default Admin;

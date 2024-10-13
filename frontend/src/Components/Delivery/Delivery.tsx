@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import CitiesInput from "../CitiesInput/CitiesInput";
 import WarehouseInput from "../WarehouseInput/WarehouseInput";
 import StreetInput from "../StreetInput/StreetInput";
@@ -29,21 +29,37 @@ interface WarehouseInputRef {
   getWarehouse: () => string | undefined;
 }
 
+interface CityInputRef {
+  isValid: () => boolean;
+  getCity: () => string | undefined;
+}
+
 const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
   ({ selectedDeliveryType, setSelectedDeliveryType }, ref) => {
     const [selectedCity, setSelectedCity] = useState<string>(""); // Місто
     const [building, setBuilding] = useState<string>(""); // Будинок
     const [flat, setFlat] = useState<string>(""); // Квартира
     const [ukrPostWarehouse, setUkrPostWarehouse] = useState<string>(""); // Відділення
-    const [ukrPostError, setUkrPostError] = useState<string | null>(null);
     const [resetWarehouse, setResetWarehouse] = useState<boolean>(false);
     const [resetStreet, setResetStreet] = useState<boolean>(false);
+
+    const [selectedCityError, setSelectedCityError] = useState<string | null>(null);
+    const [ukrPostError, setUkrPostError] = useState<string | null>(null);
+    const [buildingError, setBuildingPostError] = useState<string | null>(null);
+    const [flatError, setFlatPostError] = useState<string | null>(null);
+
 
     // Добавляем новое состояние для отслеживания выбора города
     const [isCitySelected, setIsCitySelected] = useState<boolean>(false);
 
     const streetInputRef = useRef<StreetInputRef>(null);
     const warehouseInputRef = useRef<WarehouseInputRef>(null);
+    const cityInputRef = useRef<CityInputRef>(null);
+
+    useEffect(() => {
+      resetErrors();
+      setUkrPostWarehouse('');
+    }, [selectedDeliveryType]);
 
     useImperativeHandle(ref, () => ({
       isValid() {
@@ -69,25 +85,64 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
       },
     }));
 
+    const resetErrors = () => {
+      setSelectedCityError(null);
+      setUkrPostError(null);
+      setBuildingPostError(null);
+      setFlatPostError(null);
+    }
+
     const isValidForm = () => {
       let error = false;
+      resetErrors();
 
       switch (selectedDeliveryType) {
-        case "nova-poshta-office":
-          error = !selectedCity || !warehouseInputRef.current?.getWarehouse();
+        case "nova-poshta-office": // 1
+          error = 
+            !cityInputRef.current?.isValid() || 
+            !warehouseInputRef.current?.isValid();
+          
+          cityInputRef.current?.isValid();
+          warehouseInputRef.current?.isValid();
           break;
-        case "nova-poshta-courier":
+        case "nova-poshta-courier": // 2
           error =
-            !selectedCity ||
-            !streetInputRef.current?.getStreet() ||
+            !cityInputRef.current?.isValid() ||
+            !streetInputRef.current?.isValid() ||
             !building ||
             !flat;
+
+          cityInputRef.current?.isValid();
+          streetInputRef.current?.isValid();
+
+          if (!building) {
+            setBuildingPostError('Заповніть поле');
+          }
+
+          if (!flat) {
+            setFlatPostError('Заповніть поле');
+          }
           break;
-        case "nova-poshta-poshtamat":
-          error = !selectedCity || !warehouseInputRef.current?.getWarehouse();
+        case "nova-poshta-poshtamat": // 3
+          error =
+            !cityInputRef.current?.isValid() || 
+            !warehouseInputRef.current?.isValid();
+
+          cityInputRef.current?.isValid()
+          warehouseInputRef.current?.isValid();
+
           break;
-        case "ukrposhta-office":
-          error = !selectedCity || !ukrPostWarehouse;
+        case "ukrposhta-office": // 4
+          error = 
+            !cityInputRef.current?.isValid() || 
+            !ukrPostWarehouse;
+          
+          cityInputRef.current?.isValid();
+
+
+          if (!ukrPostWarehouse) {
+            setUkrPostError('Заповніть поле');
+          }
           break;
         default:
           break;
@@ -151,7 +206,11 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
         {/* Вариант 1: Город и Отделение */}
         {selectedDeliveryType === "nova-poshta-office" && (
           <div className="delivery__inputs">
-            <CitiesInput onCitySelect={handleCitySelect} />
+            <CitiesInput 
+              onCitySelect={handleCitySelect} 
+              selectedCityError={selectedCityError} 
+              ref={cityInputRef}
+            />
             <WarehouseInput
               selectedCity={selectedCity}
               resetWarehouse={resetWarehouse}
@@ -167,7 +226,11 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
         {selectedDeliveryType === "nova-poshta-courier" && (
           <div className="delivery__inputs-column">
             <div className="delivery__inputs">
-              <CitiesInput onCitySelect={handleCitySelect} />
+            <CitiesInput 
+              onCitySelect={handleCitySelect} 
+              selectedCityError={selectedCityError} 
+              ref={cityInputRef}
+            />
               <StreetInput
                 selectedCity={selectedCity}
                 resetStreet={resetStreet}
@@ -182,25 +245,31 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
                   type="text"
                   value={building}
                   onChange={(e) => setBuilding(e.target.value)}
-                  className="input__field"
+                  className={`input__field ${buildingError ? "input__field--error" : ""}`}
                   placeholder="Будинок"
                   maxLength={50}
                   min={1}
                   required
                   disabled={!isCitySelected} // Поле заблокировано, если город не выбран
                 />
+                {buildingError && (
+                  <div className="input__error">{buildingError}</div>
+                )}
               </div>
               <div className="input__container">
                 <input
                   type="text"
                   value={flat}
                   onChange={(e) => setFlat(e.target.value)}
-                  className="input__field"
+                  className={`input__field ${flatError ? "input__field--error" : ""}`}
                   placeholder="Квартира"
                   maxLength={50}
                   min={1}
                   disabled={!isCitySelected} // Поле заблокировано, если город не выбран
                 />
+                {flatError && (
+                  <div className="input__error">{flatError}</div>
+                )}
               </div>
             </div>
           </div>
@@ -209,7 +278,11 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
         {/* Вариант 3: Город и Почтоматы */}
         {selectedDeliveryType === "nova-poshta-poshtamat" && (
           <div className="delivery__inputs">
-            <CitiesInput onCitySelect={handleCitySelect} />
+            <CitiesInput 
+              onCitySelect={handleCitySelect} 
+              selectedCityError={selectedCityError} 
+              ref={cityInputRef}
+            />
             <WarehouseInput
               selectedCity={selectedCity}
               resetWarehouse={resetWarehouse}
@@ -217,14 +290,18 @@ const Delivery = forwardRef<DeliveryRef, DeliveryProps>(
               deliveryType={selectedDeliveryType}
               ref={warehouseInputRef}
               disabled={!isCitySelected} // Поле заблокировано, если город не выбран
-            />
+            />            
           </div>
         )}
 
         {/* Вариант 4: Город и Один Инпут Вручную */}
         {selectedDeliveryType === "ukrposhta-office" && (
           <div className="delivery__inputs">
-            <CitiesInput onCitySelect={handleCitySelect} />
+            <CitiesInput 
+              onCitySelect={handleCitySelect} 
+              selectedCityError={selectedCityError}
+              ref={cityInputRef} 
+            />
             <div className="input__container">
               <input
                 type="text"

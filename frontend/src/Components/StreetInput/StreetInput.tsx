@@ -42,12 +42,20 @@ const StreetInput = forwardRef<StreetInputRef, StreetInputProps>(
 
     useImperativeHandle(ref, () => ({
       isValid() {
-        return !error;
+        return isValidForm();
       },
       getStreet() {
         return inputValue;
       },
     }));
+
+    const isValidForm = () => {
+      if (!inputValue) {
+        setError("Заповніть поле")
+      }
+
+      return !error;
+    }
 
     const fetchStreetsData = useCallback(
       async (query: string) => {
@@ -86,7 +94,7 @@ const StreetInput = forwardRef<StreetInputRef, StreetInputProps>(
       if (resetStreet) {
         setInputValue("");
         setFilteredStreets([]);
-        setError(null);
+        // setError(null);
         setIsOpen(false);
         setHighlightedIndex(-1);
         onStreetReset();
