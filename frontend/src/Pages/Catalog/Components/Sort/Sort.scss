@@ -1,0 +1,80 @@
+@import "../../../../Components/assets/styles/mixins";
+@import "../../../../Components/assets/styles/variables";
+
+.sort {
+  display: flex;
+  position: relative;
+  gap: 12px;
+  height: 20px;
+
+  &__title {
+    font-weight: 600;
+    font-size: 18px;
+
+    display: none;
+    @include on-tablet {
+      display: block;
+    }
+  }
+
+  &__button {
+    cursor: pointer;
+    display: flex;
+    gap: 4px;
+    height: 20px;
+    align-items: center;
+    justify-content: center;
+
+    &-text {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 16px;
+      padding-top: 4px;
+    }
+
+    &-icon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &__dropdown {
+    position: absolute;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #a3a3a3;
+    gap: 16px;
+    border-radius: 16px;
+    padding: 16px;
+    top: 25px;
+    right: 0px;
+    z-index: 10;
+    list-style: none;
+    width: 260px;
+
+    &-item {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &-checkbox {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background-color: transparent;
+      border: 1px solid #dbd7cd;
+      border-radius: 3px;
+
+      &.checked {
+        background-size: 14px 14px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-color: #19b080;
+        border-color: #19b080;
+        background-image: url('../assets/img/icons/check.svg');
+      }
+    }
+  }
+}

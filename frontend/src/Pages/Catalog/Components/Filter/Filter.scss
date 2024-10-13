@@ -1,0 +1,279 @@
+@import "../../../../Components/assets/styles/mixins";
+@import "../../../../Components/assets/styles/variables";
+
+.filter {
+  // display: inline-block;
+  position: relative;
+
+  &__header {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+    @include on-tablet {
+      gap: 12px;
+    }
+  }
+
+  &__header-title {
+    position: relative;
+
+    font-size: 16px;
+    font-weight: 600;
+    color: $grayscale-1000;
+    background-color: transparent;
+    border: none;
+  }
+
+  &__buttons {
+    position: relative;
+
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  &__button {
+    position: relative;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    border: none;
+    background-color: transparent;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+
+    &-icon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &__dropdown {
+    position: absolute;
+    z-index: 10;
+    left: 96px;
+    width: 200px;
+    background-color: $grayscale-0;
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid $grayscale-400;
+  }
+
+  &__category {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  &__category-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__category-item-checkbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    border: 1px solid $grayscale-200;
+    border-radius: 3px;
+    position: relative;
+    cursor: pointer;
+    /* Стили для фона чекбокса, когда он отмечен */
+
+    &:checked {
+      background-color: $primary-500;
+      border-color: $primary-500;
+      background-image: url("../assets/img/icons/check.svg");
+      background-size: 14px 14px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+
+  &__selected-filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  &__selected-filter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    padding: 12px;
+    border-radius: 100px;
+    background-color: $grayscale-1000;
+    color: $grayscale-0;
+  }
+
+  &__close-icon {
+    width: 16px;
+    height: 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  &__actions-save-button {
+    padding: 12px 16px;
+    width: 100%;
+    margin-top: 16px;
+    border-radius: 100px;
+
+    background-color: $primary-800;
+
+    font-weight: 600;
+    font-size: 14px;
+    color: $grayscale-0;
+    border: none;
+
+    cursor: pointer;
+  }
+
+  &__actions-clear-button {
+    width: 100%;
+    padding: 12px;
+    background-color: transparent;
+    border: none;
+    margin-top: 4px;
+
+    font-weight: 500;
+    font-size: 14px;
+
+    color: $grayscale-400;
+    cursor: pointer;
+  }
+
+  &__clear-all-button {
+    padding: 12px;
+    font-weight: 500;
+    font-size: 14px;
+    color: $grayscale-400;
+
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  &__mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+
+  &__mobile-content {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    background-color: $grayscale-0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    animation: slideIn 0.3s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  &__mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+
+    h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+  }
+
+  &__close-button {
+    background: none;
+    border: none;
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &__mobile-button {
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &__mobile-body {
+    padding: 16px;
+
+    h3 {
+      font-size: 24px;
+      font-weight: 500;
+      color: $grayscale-1000;
+    }
+
+    &-text {
+      margin-top: 16px;
+    }
+  }
+
+  &__category-items {
+    margin-top: 16px;
+  }
+
+  &__category-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  &__category-item-text {
+    font-size: 18px;
+    color: $grayscale-1000;
+    font-weight: 500;
+  }
+
+  &__mobile-footer {
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__mobile-break-line {
+    display: block;
+    height: 1px;
+    width: 100%;
+    border: 1px solid $grayscale-100;
+    margin-top: 16px;
+  }
+}

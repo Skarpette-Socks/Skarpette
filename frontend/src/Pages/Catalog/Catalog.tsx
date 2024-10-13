@@ -6,15 +6,15 @@ import PageNavigation from "../../Components/PageNavigation/PageNavigation";
 import Item from "../../Components/Item/Item";
 import MobilePagination from "../../Components/MobilePagination/MobilePagination";
 import Pagination from "../../Components/Pagination/Pagination";
-import Filter from "../../Components/Filter/Filter";
-import Sort from "../../Components/Sort/Sort";
+import Filter from "./Components/Filter/Filter";
+import Sort from "./Components/Sort/Sort";
 import { useParams } from "react-router-dom";
 import categories from "../../../json_links/categories.json";
 import { getSocksByCategory } from "../../api/fetchDataByCategory";
 import { fetchAllData } from "../../api/fetchAllData";
 import Loader from "../../Components/Loader/Loader";
 import PromoCards from "../../Components/PromoCards/PromoCards";
-import CatalogCategoryCircle from "../../Components/CatalogCategoryCircle/CatalogCategoryCircle";
+import CatalogCategoryCircle from "./Components/CatalogCategoryCircle/CatalogCategoryCircle";
 
 const Catalog: React.FC = () => {
   const [socks, setSocks] = useState<DataItem[]>([]);
