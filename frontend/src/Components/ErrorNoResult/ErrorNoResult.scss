@@ -1,5 +1,5 @@
-@import "../../../../Components/assets/styles/mixins";
-@import "../../../../Components/assets/styles/variables";
+@import "../assets/styles/mixins";
+@import "../assets/styles/variables";
 
 .error-component {
   @include content-padding-inline;

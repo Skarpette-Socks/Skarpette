@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import no_result from "../../../../Components/assets/img/NoSearchResult.png";
+import no_result from "../assets/img/NoSearchResult.png";
 import "./ErrorNoResult.scss";
-import PageNavigation from "../../../../Components/PageNavigation/PageNavigation";
+import PageNavigation from "../PageNavigation/PageNavigation";
 
 interface ErrorComponentProps {
   query: string;
