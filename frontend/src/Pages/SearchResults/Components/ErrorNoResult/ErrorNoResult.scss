@@ -1,0 +1,53 @@
+@import "../../../../Components/assets/styles/mixins";
+@import "../../../../Components/assets/styles/variables";
+
+.error-component {
+  @include content-padding-inline;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 19px;
+  margin-top: 24px;
+
+  @include on-tablet {
+    gap: 40px;
+  }
+
+  &__img {
+    width: 244px;
+    height: 135px;
+    object-fit: cover;
+
+    @include on-tablet {
+      width: 520px;
+      height: 287px;
+    }
+  }
+
+  &__text {
+    font-size: 20px;
+    font-weight: 500;
+    color: $grayscale-1000;
+    text-align: center;
+    @include on-tablet {
+      font-size: 24px;
+    }
+  }
+
+  &__button {
+    padding: 20px;
+    font-weight: 500;
+    border-radius: 100px;
+    background-color: $primary-800;
+    color: $grayscale-0;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+
+    @include on-tablet {
+      padding: 20px 24px;
+      font-size: 18px;
+    }
+  }
+}

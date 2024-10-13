@@ -1,0 +1,106 @@
+@import "../../../../Components/assets/styles/mixins";
+@import "../../../../Components/assets/styles/variables";
+
+
+.contact-info {
+  &__title {
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 24px;
+
+    @include on-tablet {
+      font-size: 28px;
+      margin-bottom: 32px;
+
+    }
+  }
+
+  &__inputs-cont {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+
+    @include on-tablet {
+      gap: 24px;
+
+    }
+  }
+
+  &__input {
+    position: relative;
+
+    &.error {
+      margin-bottom: 8px;
+      
+      @include on-tablet {
+        margin-bottom: 0;
+      }
+    }
+
+    &-name {
+      grid-column: 1/2;
+    }
+
+    &-surname {
+      grid-column: 2/-1;
+
+    }
+
+    &-phone {
+      grid-column: 1/-1;
+      position: relative;
+
+
+    }
+
+    &-mail {
+      grid-column: 1/-1;
+    }
+  }
+
+
+
+  &__field {
+    width: 100%;
+    padding: 14px 12px;
+    border-radius: 8px;
+    border: 1px solid $grayscale-200;
+    font-weight: 500;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+
+
+    @include on-tablet {
+      padding: 20px 16px;
+      font-size: 16px;
+    }
+
+    &.error {
+      border: 1px solid #D20202;
+
+      &:focus {
+        border-color: darken($color-error, 10%);
+      }
+    }
+
+    &:focus {
+      border-color: $primary-800;
+      outline: none;
+    }
+  }
+
+  &__error {
+    position: absolute;
+    color: #ff0000;
+    margin-top: 4px;
+    font-size: 14px;
+
+  }
+
+  &__tooltip {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
