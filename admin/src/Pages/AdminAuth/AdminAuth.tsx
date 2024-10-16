@@ -11,6 +11,7 @@ import {
   createTheme,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme({
   palette: {
@@ -23,11 +24,13 @@ const theme = createTheme({
   },
 });
 
-const LoginPage: React.FC = () => {
+const AdminAuth: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
+
+  const navigate = useNavigate();
 
   const validateEmail = (email: string) => {
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -38,17 +41,44 @@ const LoginPage: React.FC = () => {
     const newEmail = e.target.value;
     setEmail(newEmail);
     if (newEmail && !validateEmail(newEmail)) {
-      setEmailError("Будь ласка, введіть коректну email-адресу");
+      // setEmailError("Будь ласка, введіть коректну email-адресу");
     } else {
       setEmailError("");
     }
   };
 
-  const handleLogin = (event: React.FormEvent) => {
+  const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
+    
     if (validateEmail(email) && password) {
-      // Тут буде логіка авторизації
-      console.log("Спроба входу", { email, password });
+      try {
+        const response = await fetch("http://localhost:5000/authorization/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Невдала спроба авторизації");
+        }
+
+        const data = await response.json();
+        
+        if (data.token) {
+          localStorage.setItem("authToken", data.token);
+          console.log("Авторизація успішна", data);
+
+          navigate("/admin-page");
+        }
+
+      } catch (error) {
+        console.error("Помилка авторизації:", error);
+      }
     } else {
       setEmailError("Будь ласка, введіть коректну email-адресу");
     }
@@ -155,4 +185,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage;
+export default AdminAuth;
