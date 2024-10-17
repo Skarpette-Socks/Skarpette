@@ -1,5 +1,5 @@
-@import "../assets/styles/mixins";
-@import "../assets/styles/variables";
+@import "../../../Components/assets/styles/mixins";
+@import "../../../Components/assets/styles/variables";
 
 .product {
   @include content-padding-inline;

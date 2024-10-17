@@ -10,7 +10,7 @@ import { CartProvider } from "../Context/CartContext";
 // import "./App.css";
 import "../Components/assets/styles/main.scss";
 import Footer from "./Components/Footer/Footer";
-import Admin from "../../../admin/src/Admin";
+// import Admin from "../../../admin/src/Admin";
 
 import NavBar from "./Components/NavBar/NavBar";
 import SubHeader from "./Components/SubHeader/SubHeader";
@@ -18,6 +18,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Search from "./Components/Search/Search";
 import Loader from "../Components/Loader/Loader";
+import AdminPage from "../../../admin/src/Pages/AdminPage/AdminPage";
+import AdminAuth from "../../../admin/src/Pages/AdminAuth/AdminAuth";
 
 const AboutUs = lazy(() => import("../Pages/AboutUs/AboutUs"));
 const Cart = lazy(() => import("../Pages/Cart/Cart"));
@@ -49,7 +51,8 @@ const routes = [
   { path: "/catalog/:TYPE_LINK", element: <SocksPage /> },
   { path: "/checkout", element: <Checkout /> },
   { path: "/search-results", element: <SearchResults /> },
-  { path: "/admin", element: <Admin /> },
+  { path: "/admin", element: <AdminAuth /> },
+  { path: "/admin-page", element: <AdminPage /> },
 
 ];
 
@@ -59,9 +62,8 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
-  const isCheckoutPage = location.pathname === "/checkout";
-  const isAdminPage = location.pathname === "/admin";
-  const showHeader = isCheckoutPage || isAdminPage;
+  const noHeaderPaths = ["/checkout", "/admin", "/admin-page"];
+  const showHeader = noHeaderPaths.includes(location.pathname);
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
