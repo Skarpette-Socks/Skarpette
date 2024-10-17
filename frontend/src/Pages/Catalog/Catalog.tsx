@@ -81,10 +81,16 @@ const Catalog: React.FC = () => {
     []
   );
 
+  
+  
   const filteredSocks = useMemo(() => {
     return socks.filter((sock) => {
+      const newStyles = sock.style.split(',').map((style) => style.trim());
+  
       const matchesStyle =
-        selectedStyles.length === 0 || selectedStyles.includes(sock.style);
+        selectedStyles.length === 0 ||
+        newStyles.some((style) => selectedStyles.includes(style)); 
+
       const matchesSize =
         selectedSizes.length === 0 ||
         (Array.isArray(sock.size) &&
