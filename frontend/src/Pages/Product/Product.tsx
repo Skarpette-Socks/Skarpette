@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import PromoCards from "../../Components/PromoCards/PromoCards";
 import MainPageListGoods from "../../Components/MainPageListGoods/MainPageListGoods";
 import PageNavigation from "../../Components/PageNavigation/PageNavigation";
-import ProductOrder from "../../Components/ProductOrder/ProductOrder";
+import ProductOrder from "./Components/ProductOrder";
 import { fetchDataItem } from "../../api/fetchDataItem";
 import DataItem from "../../types/DataItem";
 import Loader from "../../Components/Loader/Loader";

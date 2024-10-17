@@ -61,6 +61,7 @@
 
     &-checkbox {
       appearance: none;
+      cursor: pointer;
       width: 20px;
       height: 20px;
       background-color: transparent;
@@ -73,7 +74,7 @@
         background-position: center;
         background-color: #19b080;
         border-color: #19b080;
-        background-image: url('../assets/img/icons/check.svg');
+        background-image: url('../../../../Components/assets/img/icons/check.svg');
       }
     }
   }

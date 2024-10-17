@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./ProductOrder.scss";
 
-import close from "../assets/img/icons/close.svg";
-import chevronLeft from "../assets/img/icons/chevron-left.svg";
-import chevronRight from "../assets/img/icons/chevron-right.svg";
+import close from "../../../Components/assets/img/icons/close.svg";
+import chevronLeft from "../../../Components/assets/img/icons/chevron-left.svg";
+import chevronRight from "../../../Components/assets/img/icons/chevron-right.svg";
 import ProductImageCircle from "./ProductImageCircle";
 
 interface Props {

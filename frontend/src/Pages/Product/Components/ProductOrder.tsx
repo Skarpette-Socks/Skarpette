@@ -2,24 +2,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./ProductOrder.scss";
 
-import chevronLeft from "../assets/img/icons/chevron-left.svg";
-import chevronRight from "../assets/img/icons/chevron-right.svg";
+import chevronLeft from "../../../Components/assets/img/icons/chevron-left.svg";
+import chevronRight from "../../../Components/assets/img/icons/chevron-right.svg";
 
-import heartIcon from "../assets/img/icons/heart.svg";
-import fillHeartIcon from "../assets/img/icons/heart-filled.svg";
+import heartIcon from "../../../Components/assets/img/icons/heart.svg";
+import fillHeartIcon from "../../../Components/assets/img/icons/heart-filled.svg";
 
-import plus from "../assets/img/icons/plus.svg";
-import close from "../assets/img/icons/close.svg";
+import plus from "../../../Components/assets/img/icons/plus.svg";
+import close from "../../../Components/assets/img/icons/close.svg";
 import ProductSizeButton from "./ProductSizeButton";
 import ProductImages from "./ProductImages";
 import ProductImageCircle from "./ProductImageCircle";
 import ProductZoom from "./ProductZoom";
-import DataItem from "../../types/DataItem";
-import { useFavorites } from "../../Context/FavoritesContext";
-import { useCartItems } from "../../Context/CartContext";
-import CounterButtonProduct from "../CounterButton/CounterButtonProduct";
-import FavoriteItem from "../../types/FavoriteItem";
-import CartItem from "../../types/CartItem";
+import DataItem from "../../../types/DataItem";
+import { useFavorites } from "../../../Context/FavoritesContext";
+import { useCartItems } from "../../../Context/CartContext";
+import CounterButtonProduct from "../../../Components/CounterButton/CounterButtonProduct";
+import FavoriteItem from "../../../types/FavoriteItem";
+import CartItem from "../../../types/CartItem";
 
 interface Props {
   item: DataItem;
