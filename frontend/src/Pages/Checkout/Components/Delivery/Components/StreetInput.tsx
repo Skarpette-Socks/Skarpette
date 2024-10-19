@@ -109,7 +109,6 @@ const StreetInput = forwardRef<StreetInputRef, StreetInputProps>(
     };
 
     const handleStreetSelect = (street: string) => {
-      console.log("Street selected:", street);
       setInputValue(street);
       setIsOpen(false);
       setError(null);

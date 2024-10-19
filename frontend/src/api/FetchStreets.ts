@@ -29,7 +29,6 @@ export const fetchStreets = async (
 
     const cityData = await cityResponse.json();
 
-    // console.log("Full city data response:", JSON.stringify(cityData, null, 2));
 
     // Проверка данных, чтобы убедиться, что мы получили город
     if (!cityData.success || !cityData.data || cityData.data.length === 0) {
@@ -45,9 +44,6 @@ export const fetchStreets = async (
       throw new Error("SettlementRef not found");
     }
 
-    console.log("Found SettlementRef (actually 'Ref'):", settlementRef);
-
-    // Второй запрос: поиск улиц по SettlementRef (Ref)
     const params: SearchSettlementStreetsParams = {
       StreetName: streetName,
       SettlementRef: settlementRef,

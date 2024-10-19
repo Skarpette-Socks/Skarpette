@@ -4,8 +4,8 @@ import CheckoutPayment from "./Components/CheckoutPayment/CheckoutPayment";
 import CheckoutReceiver from "./Components/CheckoutReceiver/CheckoutReceiver";
 import ContactInfo from "./Components/ContactInfo/ContactInfo";
 import Delivery from "./Components/Delivery/Delivery";
-import arrowLeft from '../../Components/assets/img/icons/arrow-left.svg';
-import logo from '../../Components/assets/img/icons/logo-green.svg';
+import arrowLeft from "../../Components/assets/img/icons/arrow-left.svg";
+import logo from "../../Components/assets/img/icons/logo-green.svg";
 
 import { useCartItems } from "../../Context/CartContext";
 import "./Checkout.scss";
@@ -35,7 +35,6 @@ interface DeliveryRef {
   getWarehouseUkrPost: () => string;
   getWarehouseNovaPost: () => string;
   getStreet: () => string;
-
 }
 
 const Checkout = () => {
@@ -48,11 +47,13 @@ const Checkout = () => {
   for (const cartItem of cartItems) {
     try {
       if (cartItem) {
-        const itemTotalPrice = +cartItem.count * (cartItem.price2 || cartItem.price);
+        const itemTotalPrice =
+          +cartItem.count * (cartItem.price2 || cartItem.price);
         newTotalPrice += itemTotalPrice;
 
         if (cartItem.price2) {
-          const discountForItem = +cartItem.count * (cartItem.price - cartItem.price2);
+          const discountForItem =
+            +cartItem.count * (cartItem.price - cartItem.price2);
           newTotalDiscount += discountForItem;
         }
       }
@@ -64,7 +65,7 @@ const Checkout = () => {
       }
     }
   }
-  
+
   const totalPrice = parseFloat(newTotalPrice.toFixed(2));
   const totalDiscount = parseFloat(newTotalDiscount.toFixed(2));
   // #endregion
@@ -84,7 +85,7 @@ const Checkout = () => {
     let isValidReceiverInfo = false;
     let isValidDeliveryRef = false;
 
-    if (selectedOption === 'another-receiver' && receiverInfoRef.current) {
+    if (selectedOption === "another-receiver" && receiverInfoRef.current) {
       isValidReceiverInfo = receiverInfoRef.current.isValid();
     } else {
       isValidReceiverInfo = true;
@@ -93,13 +94,13 @@ const Checkout = () => {
     if (deliveryRef.current) {
       isValidDeliveryRef = deliveryRef.current.isValid();
     }
-  
+
     if (contactInfoRef.current) {
       isValidContactInfo = contactInfoRef.current.isValid();
     }
-  
+
     if (isValidContactInfo && isValidReceiverInfo && isValidDeliveryRef) {
-      if (selectedOption === 'self-receiver') {
+      if (selectedOption === "self-receiver") {
         userData = {
           name: contactInfoRef.current?.getName(),
           surname: contactInfoRef.current?.getSurname(),
@@ -119,38 +120,38 @@ const Checkout = () => {
       }
 
       switch (selectedDeliveryType) {
-        case 'nova-poshta-office':
+        case "nova-poshta-office":
           deliveryData = {
             deliveryType: "Відділення Нової Пошти",
             city: deliveryRef.current?.getCity(),
             warehouse: deliveryRef.current?.getWarehouseNovaPost(),
-          }
+          };
 
-          break;      
-        case 'nova-poshta-courier':
+          break;
+        case "nova-poshta-courier":
           deliveryData = {
             deliveryType: "Кур'єр Нової Пошти",
             city: deliveryRef.current?.getCity(),
             street: deliveryRef.current?.getStreet(),
             building: deliveryRef.current?.getBuilding(),
             flat: deliveryRef.current?.getFlat(),
-          }
+          };
 
           break;
-        case 'nova-poshta-poshtamat':
+        case "nova-poshta-poshtamat":
           deliveryData = {
             deliveryType: "Поштомат Нової Пошти",
             city: deliveryRef.current?.getCity(),
             warehouse: deliveryRef.current?.getWarehouseNovaPost(),
-          }
+          };
 
           break;
-        case 'ukrposhta-office':
+        case "ukrposhta-office":
           deliveryData = {
             deliveryType: "Відділення Укрпошти",
             city: deliveryRef.current?.getCity(),
             warehouse: deliveryRef.current?.getWarehouseUkrPost(),
-          }
+          };
 
           break;
         default:
@@ -158,47 +159,37 @@ const Checkout = () => {
       }
 
       if (
-        !Object.values(userData).includes('') && 
-        !Object.values(deliveryData).includes('')
+        !Object.values(userData).includes("") &&
+        !Object.values(deliveryData).includes("")
       ) {
         postData();
-        console.log('posted');
-      } else {
-        console.log('Заповніть усі поля');
       }
-    } else {
-      console.log('Форма не пройшла валідацію');
     }
-  
-    console.log('userData', userData);
-    console.log('deliveryData', deliveryData);
-
   };
-  
 
   const postData = async () => {
     try {
-      const response = await fetch('http://localhost:5000/', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           cartItems: cartItems,
           userData: userData,
-          deliveryData: deliveryData
+          deliveryData: deliveryData,
         }),
       });
 
       if (response.ok) {
-        console.log('Дані успішно відправлені!');
+        console.log("Дані успішно відправлені!");
       } else {
-        console.error('Помилка при відправці даних');
+        console.error("Помилка при відправці даних");
       }
     } catch (error) {
-      console.error('Сталася помилка:', error);
+      console.error("Сталася помилка:", error);
     }
-  }
+  };
 
   return (
     <div className="checkout">
@@ -206,7 +197,11 @@ const Checkout = () => {
         <div className="checkout__header-info">
           <div className="checkout__header-title">Оформлення замовлення</div>
           <a href="/cart" className="checkout__header-back">
-            <img src={arrowLeft} alt="arrowLeft" className="checkout__header-back-arrow" />
+            <img
+              src={arrowLeft}
+              alt="arrowLeft"
+              className="checkout__header-back-arrow"
+            />
             <span className="checkout__header-back-text"> Назад до кошика</span>
           </a>
         </div>
@@ -214,28 +209,26 @@ const Checkout = () => {
       </div>
 
       <div className="checkout__order">
-        <CheckoutOrderMain 
+        <CheckoutOrderMain
           cartItems={cartItems}
           totalPrice={totalPrice}
           totalDiscount={totalDiscount}
         />
       </div>
       <div className="checkout__delivery">
-        <ContactInfo 
-          ref={contactInfoRef}
-        />
-        <Delivery 
+        <ContactInfo ref={contactInfoRef} />
+        <Delivery
           ref={deliveryRef}
           selectedDeliveryType={selectedDeliveryType}
           setSelectedDeliveryType={setSelectedDeliveryType}
         />
         <CheckoutPayment />
-        <CheckoutReceiver 
+        <CheckoutReceiver
           selectedOption={selectedOption}
           setSelectedOption={setSelectedOption}
           ref={receiverInfoRef}
         />
-        <CheckoutOrderPhone 
+        <CheckoutOrderPhone
           totalPrice={totalPrice}
           totalDiscount={totalDiscount}
         />
@@ -247,7 +240,6 @@ const Checkout = () => {
 
       <div className="checkout__footer">
         <FooterMinorInfo />
-
       </div>
     </div>
   );
