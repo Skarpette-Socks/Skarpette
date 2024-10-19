@@ -49,7 +49,7 @@ const AdminPage = () => {
   if (isLoggedIn === null) {
     return <div>Loading...</div>;
   }
-
+  
   return isLoggedIn ? <MainPage /> : <AdminNotLogged />;
 };
 
