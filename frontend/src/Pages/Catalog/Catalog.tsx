@@ -81,7 +81,7 @@ const Catalog: React.FC = () => {
     []
   );
 
-  
+
   
   const filteredSocks = useMemo(() => {
     return socks.filter((sock) => {

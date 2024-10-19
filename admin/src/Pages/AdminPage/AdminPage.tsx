@@ -1,46 +1,56 @@
 import React, { useEffect, useState } from "react";
 import "./AdminPage.scss";
 import { useNavigate } from "react-router-dom";
+import MainPage from "../Main/MainPage";
 
 const AdminPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
-
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAdminData = async () => {
       const token = localStorage.getItem("authToken");
-
-      const response = await fetch("https://api.example.com/user", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setIsLoggedIn(true);
-      } else {
+      
+      if (!token) {
+        console.log("Токен не знайдено у localStorage");
         setIsLoggedIn(false);
-        navigate("/admin")
+        navigate("/admin");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:5000/admin", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Дані адміністратора:", data);
+          setIsLoggedIn(true);
+        } else {
+          console.log("Запит не успішний, статус:", response.status);
+          setIsLoggedIn(false);
+          navigate("/admin");
+        }
+      } catch (error) {
+        console.error("Помилка при виконанні запиту:", error);
+        setIsLoggedIn(false);
+        navigate("/admin");
       }
     };
 
     fetchAdminData();
-  }, []);
+  }, [navigate]);
 
-  return isLoggedIn ? <AdminLogged /> : <AdminNotLogged />;
+  if (isLoggedIn === null) {
+    return <div>Loading...</div>;
+  }
 
-  // if (isLoggedIn === null) {
-  //   return <div>Loading...</div>;
-  // }
-
-};
-
-const AdminLogged = () => {
-  return <div className="admin">Hi, Admin</div>;
+  return isLoggedIn ? <MainPage /> : <AdminNotLogged />;
 };
 
 const AdminNotLogged = () => {

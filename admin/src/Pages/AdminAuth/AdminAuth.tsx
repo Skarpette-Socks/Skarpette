@@ -9,6 +9,7 @@ import {
   IconButton,
   ThemeProvider,
   createTheme,
+  Alert,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
@@ -25,53 +26,62 @@ const theme = createTheme({
 });
 
 const AdminAuth: React.FC = () => {
-  const [email, setEmail] = useState("");
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [emailError, setEmailError] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
-  const validateEmail = (email: string) => {
-    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return re.test(String(email).toLowerCase());
+  const validatelogin = (login: string) => {
+    // const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    // return re.test(String(login).toLowerCase());
+    return login;
   };
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newEmail = e.target.value;
-    setEmail(newEmail);
-    if (newEmail && !validateEmail(newEmail)) {
-      // setEmailError("Будь ласка, введіть коректну email-адресу");
+  const handleloginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newlogin = e.target.value;
+    setLogin(newlogin);
+    if (newlogin && !validatelogin(newlogin)) {
+      // setLoginError("Будь ласка, введіть коректну login-адресу");
     } else {
-      setEmailError("");
+      setLoginError("");
     }
   };
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
-    
-    if (validateEmail(email) && password) {
+    setError("");
+
+    if (login && password) {
       try {
-        const response = await fetch("http://localhost:5000/authorization/", {
+        const response = await fetch("http://localhost:5000/admin/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email,
+            login,
             password,
           }),
         });
 
-        if (!response.ok) {
-          throw new Error("Невдала спроба авторизації");
+        if (response.status === 401 || response.status === 400) {
+          setError("Неправильний логін або пароль. Спробуйте ще раз.");
+          return;
         }
 
-        const data = await response.json();
+        if (!response.ok) {
+          setError("Неправильний логін або пароль. Спробуйте ще раз.");
+          throw new Error("Невдала спроба авторизації");
+
+        }
+
+        const token = await response.json();
         
-        if (data.token) {
-          localStorage.setItem("authToken", data.token);
-          console.log("Авторизація успішна", data);
+        if (token) {
+          localStorage.setItem("authToken", token);
 
           navigate("/admin-page");
         }
@@ -80,7 +90,7 @@ const AdminAuth: React.FC = () => {
         console.error("Помилка авторизації:", error);
       }
     } else {
-      setEmailError("Будь ласка, введіть коректну email-адресу");
+      setLoginError("Будь ласка, введіть коректну login-адресу");
     }
   };
 
@@ -132,15 +142,15 @@ const AdminAuth: React.FC = () => {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
+                id="login"
                 label="Логін"
-                name="email"
-                autoComplete="email"
+                name="login"
+                autoComplete="login"
                 autoFocus
-                value={email}
-                onChange={handleEmailChange}
-                error={!!emailError}
-                helperText={emailError}
+                value={login}
+                onChange={handleloginChange}
+                error={!!loginError}
+                helperText={loginError}
               />
               <TextField
                 margin="normal"
@@ -168,6 +178,11 @@ const AdminAuth: React.FC = () => {
                   ),
                 }}
               />
+              {error && (
+                <Alert severity="error" sx={{ mt: 2 }}>
+                  {error}
+                </Alert>
+              )}
               <Button
                 type="submit"
                 fullWidth
