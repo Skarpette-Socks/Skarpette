@@ -2,8 +2,8 @@ import PageNavigation from "../../Components/PageNavigation/PageNavigation";
 import Questions from "../../Components/Questions/Questions";
 import "./PaymentDelivery.scss";
 
-import three_socks from '../../Components/assets/img/three-socks.png';
-import PromoCards from "../../Components/PromoCards/PromoCards";
+import three_socks from '../../assets/img/three-socks.png';
+import PromoCards from "../MainPage/MainPageComponents/PromoCards/PromoCards";
 
 const PaymentDelivery: React.FC = () => {
   return (

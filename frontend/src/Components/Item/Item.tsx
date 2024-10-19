@@ -1,6 +1,6 @@
 import "./Item.scss";
-import heartIcon from "../assets/img/icons/heart.svg";
-import fillHeartIcon from "../assets/img/icons/heart-filled.svg";
+import heartIcon from "../../assets/img/icons/heart.svg";
+import fillHeartIcon from "../../assets/img/icons/heart-filled.svg";
 import { useState, useEffect } from "react";
 import { useFavorites } from "../../Context/FavoritesContext";
 

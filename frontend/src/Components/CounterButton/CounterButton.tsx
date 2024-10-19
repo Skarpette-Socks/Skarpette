@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./CounterButton.scss";
-import plus from "../assets/img/icons/plus.svg";
-import minus from "../assets/img/icons/minus.svg";
+import plus from "../../assets/img/icons/plus.svg";
+import minus from "../../assets/img/icons/minus.svg";
 import { useCartItems } from "../../Context/CartContext";
 
 interface CounterButton {

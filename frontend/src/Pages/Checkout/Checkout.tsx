@@ -1,16 +1,16 @@
-import CheckoutOrderMain from "./Components/CheckoutOrder/CheckoutOrderMain";
-import CheckoutOrderPhone from "./Components/CheckoutOrder/CheckoutOrderPhone";
-import CheckoutPayment from "./Components/CheckoutPayment/CheckoutPayment";
-import CheckoutReceiver from "./Components/CheckoutReceiver/CheckoutReceiver";
-import ContactInfo from "./Components/ContactInfo/ContactInfo";
-import Delivery from "./Components/Delivery/Delivery";
-import arrowLeft from "../../Components/assets/img/icons/arrow-left.svg";
-import logo from "../../Components/assets/img/icons/logo-green.svg";
+import CheckoutOrderMain from "./CheckoutComponents/CheckoutOrder/CheckoutOrderMain";
+import CheckoutOrderPhone from "./CheckoutComponents/CheckoutOrder/CheckoutOrderPhone";
+import CheckoutPayment from "./CheckoutComponents/CheckoutPayment/CheckoutPayment";
+import CheckoutReceiver from "./CheckoutComponents/CheckoutReceiver/CheckoutReceiver";
+import ContactInfo from "./CheckoutComponents/ContactInfo/ContactInfo";
+import Delivery from "./CheckoutComponents/Delivery/Delivery";
+import arrowLeft from "../../assets/img/icons/arrow-left.svg";
+import logo from "../../assets/img/icons/logo-green.svg";
 
 import { useCartItems } from "../../Context/CartContext";
 import "./Checkout.scss";
 import { useRef, useState } from "react";
-import FooterMinorInfo from "../../App/Components/Footer/FooterMinorInfo";
+import FooterMinorInfo from "../../App/AppComponents/Footer/FooterMinorInfo";
 
 interface ContactInfoRef {
   isValid: () => boolean;

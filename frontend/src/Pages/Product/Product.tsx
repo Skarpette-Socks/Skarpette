@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
-import PromoCards from "../../Components/PromoCards/PromoCards";
-import MainPageListGoods from "../../Components/MainPageListGoods/MainPageListGoods";
+import PromoCards from "../MainPage/MainPageComponents/PromoCards/PromoCards";
+import MainPageListGoods from "../MainPage/MainPageComponents/MainPageListGoods/MainPageListGoods";
 import PageNavigation from "../../Components/PageNavigation/PageNavigation";
-import ProductOrder from "./Components/ProductOrder";
+import ProductOrder from "./ProductComponents/ProductOrder";
 import { fetchDataItem } from "../../api/fetchDataItem";
 import DataItem from "../../types/DataItem";
+
 import Loader from "../../Components/Loader/Loader";
-import no_result from "../../Components/assets/img/NoSearchResult.png";
+import no_result from "../../assets/img/NoSearchResult.png";
 import "../../Components/ErrorNoResult/ErrorNoResult.scss";
 
 const Product: React.FC = () => {

@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import react from "../../assets/react.svg";
+import react from "../assets/react.svg";
 
 interface Product {
   id: number;

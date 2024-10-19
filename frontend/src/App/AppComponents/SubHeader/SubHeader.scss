@@ -1,0 +1,25 @@
+@import "../../../assets/styles/mixins";
+@import '../../../assets/styles/variables';
+
+.subHeader {
+  height: 32px;
+  width: 100%;
+
+  @include on-tablet {
+    height: 40px;
+  }
+
+  @include on-desktop {
+    height: 40px;
+  }
+
+  background-color: #0b5a45;
+
+  color: $primary-200;
+  font-size: 14px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

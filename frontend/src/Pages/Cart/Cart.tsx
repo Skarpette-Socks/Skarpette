@@ -1,5 +1,5 @@
-import CartContent from "./Components/CartContent/CartContent";
-import MainPageListGoods from "../../Components/MainPageListGoods/MainPageListGoods";
+import CartContent from "./CartComponents/CartContent/CartContent";
+import MainPageListGoods from "../MainPage/MainPageComponents/MainPageListGoods/MainPageListGoods";
 import PageNavigation from "../../Components/PageNavigation/PageNavigation";
 
 const Cart: React.FC = () => {
