@@ -16,7 +16,7 @@ import {
   Logout,
 } from "@mui/icons-material";
 
-const drawerWidth = 250;
+const drawerWidth = 240;
 
 const menuItems = [
   { text: "Головна", icon: <Home />, path: "/" },
@@ -28,47 +28,50 @@ const menuItems = [
 
 const Sidebar = () => {
   return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: drawerWidth,
-          boxSizing: "border-box",
-          backgroundColor: "#fff",
-          borderRight: "1px solid rgba(0, 0, 0, 0.12)",
-        },
-      }}
-    >
-      <Box
+    <>
+      <Drawer
+        variant="permanent"
         sx={{
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
+          width: drawerWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+            backgroundColor: "#fff",
+            borderRight: "1px solid rgba(0, 0, 0, 0.12)",
+            paddingTop: "64px",
+          },
         }}
       >
-        <List sx={{ "& .MuiListItem-root": { marginBottom: "24px" } }}>
-          {menuItems.map((item) => (
-            <ListItem key={item.text} disablePadding>
+        <Box
+          sx={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <List sx={{ "& .MuiListItem-root": { marginBottom: "16px" } }}>
+            {menuItems.map((item) => (
+              <ListItem key={item.text} disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+            <ListItem disablePadding sx={{ marginTop: "32px" }}>
               <ListItemButton>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
+                <ListItemIcon>
+                  <Logout />
+                </ListItemIcon>
+                <ListItemText primary="Вихід" />
               </ListItemButton>
             </ListItem>
-          ))}
-          <ListItem disablePadding sx={{ marginTop: "200px" }}>
-            <ListItemButton>
-              <ListItemIcon>
-                <Logout />
-              </ListItemIcon>
-              <ListItemText primary="Вихід" />
-            </ListItemButton>
-          </ListItem>
-        </List>
-      </Box>
-    </Drawer>
+          </List>
+        </Box>
+      </Drawer>
+    </>
   );
 };
 
