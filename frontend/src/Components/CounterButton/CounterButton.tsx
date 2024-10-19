@@ -24,7 +24,6 @@ const CounterButton: React.FC<CounterButton> = ({
     // setCount(counter);
     if (isFocused === false) {
       if (index !== undefined) {
-        console.log('2');
         
         counterCartItem(cartItems[index], counter);
       }

@@ -48,7 +48,6 @@ const UkrPostWarInput = forwardRef<FlatInputRef, FlatInputProps>(
         setError("Заповніть поле")
       }
 
-      console.log('errer',error);
       
 
       return !error;

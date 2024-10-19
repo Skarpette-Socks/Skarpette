@@ -113,7 +113,6 @@ const Sort: React.FC<SortProps> = ({ items, selectedStyles, selectedSizes, setSo
         sortedArray = sortByDefault([...items]);
     }
 
-    console.log('sort updated', sortedArray.length);
     setCurrentPage(1);
 
     setSortedItems(sortedArray);
