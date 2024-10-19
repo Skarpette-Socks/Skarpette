@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import no_result from "../assets/img/NoSearchResult.png";
+import no_result from "../../assets/img/NoSearchResult.png";
 import "./ErrorNoResult.scss";
 import PageNavigation from "../PageNavigation/PageNavigation";
 

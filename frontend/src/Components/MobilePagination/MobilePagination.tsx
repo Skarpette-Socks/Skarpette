@@ -1,6 +1,7 @@
 import "./MobilePagination.scss";
-import arrowRight from "../assets/img/icons/chevron-right.svg";
-import arrowLeft from "../assets/img/icons/chevron-left.svg";
+import arrowRight from "../../assets/img/icons/chevron-right.svg";
+import arrowLeft from "../../assets/img/icons/chevron-left.svg";
+
 
 interface PaginationProps {
   totalPages: number;

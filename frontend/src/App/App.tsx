@@ -8,15 +8,15 @@ import {
 import { FavoritesProvider } from "../Context/FavoritesContext";
 import { CartProvider } from "../Context/CartContext";
 // import "./App.css";
-import "../Components/assets/styles/main.scss";
-import Footer from "./Components/Footer/Footer";
+import "../assets/styles/main.scss";
+import Footer from "./AppComponents/Footer/Footer";
 // import Admin from "../../../admin/src/Admin";
 
-import NavBar from "./Components/NavBar/NavBar";
-import SubHeader from "./Components/SubHeader/SubHeader";
+import NavBar from "./AppComponents/NavBar/NavBar";
+import SubHeader from "./AppComponents/SubHeader/SubHeader";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Search from "./Components/Search/Search";
+import Search from "./AppComponents/Search/Search";
 import Loader from "../Components/Loader/Loader";
 
 const AboutUs = lazy(() => import("../Pages/AboutUs/AboutUs"));
@@ -31,7 +31,7 @@ const Product = lazy(() => import("../Pages/Product/Product"));
 const Promotions = lazy(() => import("../Pages/Promotions"));
 const Returning = lazy(() => import("../Pages/Returning/Returning"));
 const Checkout = lazy(() => import("../Pages/Checkout/Checkout"));
-const Shop = lazy(() => import("../Pages/Shop"));
+const Shop = lazy(() => import("../Pages/MainPage/MainPage"));
 const SocksPage = lazy(() => import("../Pages/Catalog/Catalog"));
 const SearchResults = lazy(() => import("../Pages/SearchResults/SearchResults"));
 

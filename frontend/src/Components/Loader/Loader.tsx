@@ -1,5 +1,5 @@
 import './Loader.scss';
-import sock from '../assets/img/icons/AnimationSocks.svg';
+import sock from '../../assets/img/icons/AnimationSocks.svg';
 
 
 const Loader = () => {

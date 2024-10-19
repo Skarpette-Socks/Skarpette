@@ -3,8 +3,8 @@ import { useFavorites } from "../../Context/FavoritesContext";
 import Item from "../../Components/Item/Item"; // импортируйте ваш компонент Item
 import "./Favorites.scss";
 import PageNavigation from "../../Components/PageNavigation/PageNavigation";
-import MainPageListGoods from "../../Components/MainPageListGoods/MainPageListGoods";
-import no_fav from '../../Components/assets/img/no selected items.svg';
+import MainPageListGoods from "../MainPage/MainPageComponents/MainPageListGoods/MainPageListGoods";
+import no_fav from '../../assets/img/no selected items.svg';
 import { Link } from "react-router-dom";
 
 const Favorites: React.FC = () => {

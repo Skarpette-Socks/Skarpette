@@ -1,10 +1,10 @@
 import PageNavigation from "../../Components/PageNavigation/PageNavigation";
 import "./AboutUs.scss";
 
-import about_us_title from "../../Components/assets/img/about-us-1.png";
-import about_us_socks from "../../Components/assets/img/about-us-2.png";
-import about_us_white_socks from "../../Components/assets/img/about-us-3.png";
-import PromoCards from "../../Components/PromoCards/PromoCards";
+import about_us_title from "../../assets/img/about-us-1.png";
+import about_us_socks from "../../assets/img/about-us-2.png";
+import about_us_white_socks from "../../assets/img/about-us-3.png";
+import PromoCards from "../MainPage/MainPageComponents/PromoCards/PromoCards";
 
 const AboutUs: React.FC = () => {
   return (

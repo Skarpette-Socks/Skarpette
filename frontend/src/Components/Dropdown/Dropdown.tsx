@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./Dropdown.scss";
 
-import arrow_right from "../assets/img/icons/chevron-right.svg";
-import arrow_up from "../assets/img/icons/caret-up-filled.svg";
-import arrow_down from "../assets/img/icons/caret-down-filled.svg";
+import arrow_right from "../../assets/img/icons/chevron-right.svg";
+import arrow_up from "../../assets/img/icons/caret-up-filled.svg";
+import arrow_down from "../../assets/img/icons/caret-down-filled.svg";
 import options from "../../../json_links/categories.json";
 
 interface Props {

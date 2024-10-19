@@ -1,0 +1,146 @@
+@import "../../../../assets/styles/mixins";
+@import "../../../../assets/styles/variables";
+
+.categories-carousel {
+  @include content-padding-inline;
+  width: 100%;
+  // align-items: center;
+
+  @include on-desktop {
+    margin-bottom: 100px;
+  }
+  
+  &__container {
+    @include container-grid;
+
+    border-radius: 16px;
+    background-color: $grayscale-50;
+    margin-block: 24px;
+    padding: 24px 0 24px 24px;
+  }
+
+  &__item-text {
+    text-decoration: none;
+    
+    color: $grayscale-1000;
+  }
+
+  
+  &__info {
+    grid-column: 1/-1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-right: 24px;
+
+    @include on-tablet {
+      display: block;
+    }
+  }
+  
+  &__text {
+    @include on-tablet {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      
+    } 
+  }
+  
+  &__title {
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 18px;
+
+    @include on-tablet {
+      font-size: 32px;
+      margin-bottom: 0;
+    }
+  }
+
+  &__subtitle {
+    color: $grayscale-800;
+    font-weight: 400;
+    font-size: 14px;
+    width: 196px;
+
+    @include on-tablet {
+      text-align: right;
+    }
+
+    @include on-desktop {
+      text-align: left;
+    }
+  }
+
+  &__scroll {
+    @include on-tablet {
+      display: none;
+    }
+  }
+
+  &__list {
+    grid-column: 1/-1;
+    margin: 32px 24px 0 0;
+    overflow-x: scroll;
+    display: flex;
+    justify-content: space-around;
+    gap: 16px;
+
+    @include on-tablet {
+      gap: 24px;
+
+    }
+    
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    
+  }
+  
+  &__item {
+    display: flex;
+    flex-direction: column;
+    // width: 96px;
+    text-decoration: none;
+
+    @include on-tablet {
+      // width: 156px;
+      gap: 24px;
+
+    }
+
+    @include on-desktop {
+      padding-inline: 16px;
+    }
+
+    &-text {
+      margin-top: 16px;
+      text-align: center;
+      font-weight: 500;
+      font-size: 14px;
+
+      @include on-tablet {
+        font-size: 16px;
+      }
+    }
+  }
+
+
+  &__image {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    border: 1px solid $grayscale-200;
+
+    @include on-tablet {
+      width: 156px;
+      height: 156px;
+    }
+
+    
+  }
+
+
+}
+

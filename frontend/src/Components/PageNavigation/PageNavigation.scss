@@ -1,5 +1,6 @@
-@import "../assets/styles/mixins";
-@import "../assets/styles/variables";
+@import "../../assets/styles/mixins";
+@import "../../assets/styles/variables";
+
 
 .page-navigation {
   @include content-padding-inline;

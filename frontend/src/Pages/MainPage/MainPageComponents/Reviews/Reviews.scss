@@ -1,0 +1,177 @@
+@import "../../../../assets/styles/mixins";
+@import "../../../../assets/styles/variables";
+
+.reviews {
+  @include content-padding-inline;
+  margin-top: 80px;
+
+  @include on-tablet {
+    margin-top: 120px;
+  }
+
+  @include on-desktop {
+    margin-top: 120px;
+  }
+
+  &__container {
+    @include container-grid;
+
+    padding: 24px;
+
+    @include on-tablet {
+      padding: 40px;
+    }
+
+    background-color: $grayscale-50;
+    border-radius: 16px;
+
+
+  }
+
+  &__top-bar {
+    grid-column: 1/-1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @include on-tablet {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  &__title {
+    color: $grayscale-1000;
+    font-weight: 500;
+    font-size: 24px;
+
+    @include on-tablet {
+      font-size: 40px;
+      width: 364px;
+    }
+
+    @include on-desktop {
+      width: 100%;
+    }
+  }
+
+  &__feedback-button {
+    height: 40px;
+    width: 144px;
+    background-color: $primary-800;
+    border-radius: 100px;
+
+    font-size: 14px;
+    color: $grayscale-0;
+    font-weight: 600;
+    border: none;
+
+    cursor: pointer;
+
+    @include on-tablet {
+      height: 48px;
+      width: 168px;
+    }
+  }
+
+  &__slider {
+    grid-column: 1/-1;
+    display: flex;
+    justify-content: space-between;
+    gap: 32px;
+  }
+
+  &__item {
+    width: 280px;
+    padding: 16px;
+    border-radius: 8px;
+    background-color: $grayscale-0;
+    margin: 40px auto 0;
+
+    @include on-tablet {
+      width: 250px;
+      margin: 64px auto 0;
+    }
+
+    @include on-desktop {
+      width: 380px;
+    }
+
+    &-name {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    &-comment {
+      font-weight: 500;
+      font-size: 16px;
+      color: $grayscale-800;
+      margin-top: 24px;
+    }
+  }
+
+  &__stars {
+    img {
+      width: 20px;
+      height: 20px;
+
+      @include on-tablet {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+
+  &__controls {
+    grid-column: 1/-1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+
+    @include on-tablet {
+      margin-top: 140px;
+    }
+
+    @include on-desktop {
+      margin-top: 100px;
+    }
+
+    &-button {
+      background: transparent;
+      border: 1px solid $grayscale-200;
+      border-radius: 100px;
+      cursor: pointer;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        display: block;
+      }
+    }
+
+    &-page {
+      display: flex;
+      gap: 7px;
+      justify-content: center;
+      align-items: center;
+
+      &-total-page {
+        font-weight: 500;
+        font-size: 18px;
+        color: $grayscale-400;
+      }
+
+      &-current-page {
+        font-size: 18px;
+        font-weight: 600;
+        color: $grayscale-1000;
+      }
+    }
+  }
+}

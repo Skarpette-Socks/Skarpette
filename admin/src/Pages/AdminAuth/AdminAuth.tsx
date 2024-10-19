@@ -29,7 +29,6 @@ const AdminAuth: React.FC = () => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loginError, setLoginError] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -46,7 +45,7 @@ const AdminAuth: React.FC = () => {
     if (newlogin && !validatelogin(newlogin)) {
       // setLoginError("Будь ласка, введіть коректну login-адресу");
     } else {
-      setLoginError("");
+      // setLoginError("");
     }
   };
 
@@ -90,7 +89,7 @@ const AdminAuth: React.FC = () => {
         console.error("Помилка авторизації:", error);
       }
     } else {
-      setLoginError("Будь ласка, введіть коректну login-адресу");
+      setError("Неправильний логін або пароль. Спробуйте ще раз.");
     }
   };
 
@@ -149,8 +148,6 @@ const AdminAuth: React.FC = () => {
                 autoFocus
                 value={login}
                 onChange={handleloginChange}
-                error={!!loginError}
-                helperText={loginError}
               />
               <TextField
                 margin="normal"

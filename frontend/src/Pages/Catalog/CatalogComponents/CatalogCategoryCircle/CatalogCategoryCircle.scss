@@ -1,0 +1,99 @@
+@import "../../../../assets/styles/mixins";
+@import "../../../../assets/styles/variables";
+
+.category-circles {
+  margin-top: 24px;
+  display: flex;
+  gap: 45px;
+  justify-content: center;
+
+  @include on-tablet {
+    gap: 84px;
+
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    text-decoration: none;
+
+
+    
+    &-circle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $primary-100;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+
+      @include on-tablet {
+        width: 125px;
+        height: 125px;
+      }
+    }
+
+    &:hover {
+      .category-circles__item-circle {
+        border: 3px solid $primary-800;
+
+
+      }
+    }
+
+    &:active {
+      .category-circles__item-circle {
+        background-color: $primary-800;
+        & > img {
+          filter: invert(100%);
+        }
+      }
+
+    }
+
+    &-name {
+      font-weight: 500;
+      font-size: 9px;
+      align-self: center;
+      color: $grayscale-1000;
+
+      @include on-tablet {
+        font-size: 18px;
+      }
+    }
+
+    &-image {
+      &-woman {
+        width: 54px;
+        height: 54px;
+
+        @include on-tablet {
+          width: 106px;
+          height: 106px;
+        }
+      }
+
+      &-man {
+        width: 54px;
+        height: 54px;
+
+        @include on-tablet {
+          width: 106px;
+          height: 106px;
+        }
+      }
+
+      &-kids {
+        width: 44px;
+        height: 44px;
+
+        @include on-tablet {
+          width: 86px;
+          height: 86px;
+        }
+      }
+    }
+  }
+}

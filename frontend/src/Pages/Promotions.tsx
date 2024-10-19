@@ -1,5 +1,6 @@
 import PageNavigation from "../Components/PageNavigation/PageNavigation";
-import PromoCards from "../Components/PromoCards/PromoCards";
+import MainPageListGoods from "./MainPage/MainPageComponents/MainPageListGoods/MainPageListGoods";
+import PromoCards from "./MainPage/MainPageComponents/PromoCards/PromoCards";
 
 const Promotions: React.FC = () => {
   return (
@@ -8,6 +9,9 @@ const Promotions: React.FC = () => {
         linkText="Акції"
         homeLink="/"
         linkHref="/offers"
+      />
+      <MainPageListGoods
+        title='Новинки' 
       />
       <PromoCards />
     </>
