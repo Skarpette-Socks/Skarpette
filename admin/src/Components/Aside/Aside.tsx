@@ -8,7 +8,6 @@ import {
   Box,
 } from "@mui/material";
 import {
-  Home,
   ShoppingCart,
   Inventory,
   Payment,
@@ -19,9 +18,8 @@ import {
 const drawerWidth = 240;
 
 const menuItems = [
-  { text: "Головна", icon: <Home />, path: "/" },
-  { text: "Замовлення", icon: <ShoppingCart />, path: "/orders" },
   { text: "Товари", icon: <Inventory />, path: "/products" },
+  { text: "Замовлення", icon: <ShoppingCart />, path: "/orders" },
   { text: "Оплати", icon: <Payment />, path: "/payments" },
   { text: "Налаштування", icon: <Settings />, path: "/settings" },
 ];
@@ -60,7 +58,7 @@ const Sidebar = () => {
                 </ListItemButton>
               </ListItem>
             ))}
-            <ListItem disablePadding sx={{ marginTop: "32px" }}>
+            <ListItem disablePadding sx={{ marginTop: "200px" }}>
               <ListItemButton>
                 <ListItemIcon>
                   <Logout />
