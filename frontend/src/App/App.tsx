@@ -18,6 +18,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Search from "./AppComponents/Search/Search";
 import Loader from "../Components/Loader/Loader";
+import NotFound from "../Pages/NotFound/NotFound";
 
 const AboutUs = lazy(() => import("../Pages/AboutUs/AboutUs"));
 const Cart = lazy(() => import("../Pages/Cart/Cart"));
@@ -49,6 +50,8 @@ const routes = [
   { path: "/catalog/:TYPE_LINK", element: <SocksPage /> },
   { path: "/checkout", element: <Checkout /> },
   { path: "/search-results", element: <SearchResults /> },
+  { path: "*", element: <NotFound /> },
+
 
 ];
 

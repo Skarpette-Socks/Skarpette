@@ -14,7 +14,7 @@ const AdminPage = () => {
       if (!token) {
         console.log("Токен не знайдено у localStorage");
         setIsLoggedIn(false);
-        navigate("/admin");
+        navigate("/login");
         return;
       }
 
@@ -34,12 +34,12 @@ const AdminPage = () => {
         } else {
           console.log("Запит не успішний, статус:", response.status);
           setIsLoggedIn(false);
-          navigate("/admin");
+          navigate("/login");
         }
       } catch (error) {
         console.error("Помилка при виконанні запиту:", error);
         setIsLoggedIn(false);
-        navigate("/admin");
+        navigate("/login");
       }
     };
 
