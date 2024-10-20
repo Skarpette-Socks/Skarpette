@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import react from "../assets/react.svg";
+import react from "../../assets/react.svg";
 
 interface Product {
   id: number;
@@ -32,10 +32,37 @@ interface Product {
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   padding: "8px 16px",
   fontSize: 14,
+  borderRight: "1px solid #d0d0d0",
+  "&:last-child": {
+    borderRight: "none",
+  },
   "&.MuiTableCell-head": {
     backgroundColor: theme.palette.common.white,
     color: theme.palette.common.black,
     fontWeight: "bold",
+    borderBottom: "2px solid #d0d0d0",
+    fontSize: 14,
+  },
+  "&.size-cell": {
+    fontSize: 14,
+    whiteSpace: "normal",
+    wordBreak: "break-word",
+  },
+  "&.price-cell": {
+    fontSize: 14,
+  },
+  "&.discount-cell": {
+    fontSize: 14,
+  },
+  "&.name-cell": {
+    whiteSpace: "normal",
+    wordBreak: "break-word",
+    fontSize: 14,
+  },
+  "&.actions-cell": {
+    padding: "4px 8px",
+    minWidth: "100px",
+    fontSize: 14,
   },
 }));
 
@@ -45,6 +72,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
   "&:last-child td, &:last-child th": {
     border: 0,
+  },
+  "& td": {
+    borderRight: "1px solid #d0d0d0",
+    "&:last-child": {
+      borderRight: "none",
+    },
   },
 }));
 
@@ -56,11 +89,7 @@ const ImageCell = styled("img")({
 
 const generateMockData = (count: number): Product[] => {
   const mockData: Product[] = [];
-  const categories = [
-    "Дитячі,Жіночі,Жіночі",
-    "Жіночі,Жіночі,Жіночі,Жіночі",
-    "Чоловічі",
-  ];
+  const categories = ["Дитячі", "Жіночі", "Чоловічі"];
   const styles = ["Спорт", "Медичні", "Високі"];
   for (let i = 1; i <= count; i++) {
     mockData.push({
@@ -79,7 +108,7 @@ const generateMockData = (count: number): Product[] => {
   return mockData;
 };
 
-const rows: Product[] = generateMockData(50);
+const rows: Product[] = generateMockData(150);
 
 const ProductTable: React.FC = () => {
   const [page, setPage] = useState<number>(0);
@@ -129,12 +158,18 @@ const ProductTable: React.FC = () => {
   const isSelected = (id: number) => selected.indexOf(id) !== -1;
 
   return (
-    <Paper style={{ width: "85%", marginLeft: "auto", marginTop: "100px" }}>
-      <TableContainer style={{ maxHeight: "650px" }}>
+    <Paper
+      style={{
+        width: "85%",
+        marginLeft: "auto",
+        marginTop: "20px",
+      }}
+    >
+      <TableContainer style={{ maxHeight: "600px" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              <StyledTableCell padding="checkbox">
+              <StyledTableCell padding="checkbox" sx={{ width: "48px" }}>
                 <Checkbox
                   indeterminate={
                     selected.length > 0 && selected.length < rows.length
@@ -143,16 +178,48 @@ const ProductTable: React.FC = () => {
                   onChange={handleSelectAllClick}
                 />
               </StyledTableCell>
-              <StyledTableCell>Назва</StyledTableCell>
-              <StyledTableCell>Фото</StyledTableCell>
-              <StyledTableCell>Артикул</StyledTableCell>
-              <StyledTableCell>Категорія</StyledTableCell>
-              <StyledTableCell>Стиль</StyledTableCell>
-              <StyledTableCell>Розмір</StyledTableCell>
-              <StyledTableCell>Ціна</StyledTableCell>
-              <StyledTableCell>% знижки</StyledTableCell>
-              <StyledTableCell>Спеціальна ціна</StyledTableCell>
-              <StyledTableCell>Дії</StyledTableCell>
+              <StyledTableCell className="name-cell" sx={{ width: "15%" }}>
+                Назва
+              </StyledTableCell>
+              <StyledTableCell sx={{ width: "8%", textAlign: "center" }}>
+                Фото
+              </StyledTableCell>
+              <StyledTableCell sx={{ width: "10%", textAlign: "center" }}>
+                Артикул
+              </StyledTableCell>
+              <StyledTableCell sx={{ width: "10%", textAlign: "center" }}>
+                Категорія
+              </StyledTableCell>
+              <StyledTableCell sx={{ width: "10%", textAlign: "center" }}>
+                Стиль
+              </StyledTableCell>
+              <StyledTableCell
+                className="size-cell"
+                sx={{ width: "12%", textAlign: "center" }}
+              >
+                Розмір
+              </StyledTableCell>
+              <StyledTableCell
+                className="price-cell"
+                sx={{ width: "5%", textAlign: "center" }}
+              >
+                Ціна
+              </StyledTableCell>
+              <StyledTableCell
+                className="discount-cell"
+                sx={{ width: "5%", textAlign: "center" }}
+              >
+                % знижки
+              </StyledTableCell>
+              <StyledTableCell sx={{ width: "5%", textAlign: "center" }}>
+                Спец. ціна
+              </StyledTableCell>
+              <StyledTableCell
+                className="actions-cell"
+                sx={{ width: "100px", textAlign: "center" }}
+              >
+                Дії
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -170,31 +237,48 @@ const ProductTable: React.FC = () => {
                     key={row.id}
                     selected={isItemSelected}
                   >
-                    <StyledTableCell padding="checkbox">
+                    <StyledTableCell padding="checkbox" sx={{ width: "48px" }}>
                       <Checkbox checked={isItemSelected} />
                     </StyledTableCell>
-                    <StyledTableCell>{row.name}</StyledTableCell>
+                    <StyledTableCell className="name-cell">
+                      {row.name}
+                    </StyledTableCell>
                     <StyledTableCell>
                       <ImageCell src={row.photo} alt={row.name} />
                     </StyledTableCell>
                     <StyledTableCell>{row.article}</StyledTableCell>
                     <StyledTableCell>{row.category}</StyledTableCell>
                     <StyledTableCell>{row.style}</StyledTableCell>
-                    <StyledTableCell>{row.size}</StyledTableCell>
-                    <StyledTableCell>{row.price}</StyledTableCell>
-                    <StyledTableCell>{row.discount}</StyledTableCell>
-                    <StyledTableCell>{row.specialPrice}</StyledTableCell>
-                    <StyledTableCell>
-                      <IconButton size="small" aria-label="edit">
-                        <EditIcon fontSize="small" />
-                      </IconButton>
-                      <IconButton
-                        size="small"
-                        aria-label="delete"
-                        color="error"
+                    <StyledTableCell className="size-cell">
+                      {row.size}
+                    </StyledTableCell>
+                    <StyledTableCell className="price-cell">
+                      {row.price}
+                    </StyledTableCell>
+                    <StyledTableCell className="discount-cell">
+                      {row.discount}
+                    </StyledTableCell>
+                    <StyledTableCell sx={{ color: "green" }}>
+                      {row.specialPrice}
+                    </StyledTableCell>
+                    <StyledTableCell className="actions-cell">
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-around",
+                        }}
                       >
-                        <DeleteIcon fontSize="small" />
-                      </IconButton>
+                        <IconButton size="large" aria-label="edit">
+                          <EditIcon fontSize="medium" />
+                        </IconButton>
+                        <IconButton
+                          size="large"
+                          aria-label="delete"
+                          color="error"
+                        >
+                          <DeleteIcon fontSize="medium" />
+                        </IconButton>
+                      </div>
                     </StyledTableCell>
                   </StyledTableRow>
                 );
@@ -203,13 +287,14 @@ const ProductTable: React.FC = () => {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25, 50, 100]}
+        rowsPerPageOptions={[10, 25, 50, 100]}
         component="div"
         count={rows.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        sx={{ height: "55px" }}
       />
     </Paper>
   );
