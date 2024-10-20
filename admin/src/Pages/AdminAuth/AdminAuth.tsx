@@ -33,20 +33,9 @@ const AdminAuth: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const validatelogin = (login: string) => {
-    // const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    // return re.test(String(login).toLowerCase());
-    return login;
-  };
-
   const handleloginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newlogin = e.target.value;
     setLogin(newlogin);
-    if (newlogin && !validatelogin(newlogin)) {
-      // setLoginError("Будь ласка, введіть коректну login-адресу");
-    } else {
-      // setLoginError("");
-    }
   };
 
   const handleLogin = async (event: React.FormEvent) => {
@@ -66,15 +55,9 @@ const AdminAuth: React.FC = () => {
           }),
         });
 
-        if (response.status === 401 || response.status === 400) {
-          setError("Неправильний логін або пароль. Спробуйте ще раз.");
-          return;
-        }
-
         if (!response.ok) {
           setError("Неправильний логін або пароль. Спробуйте ще раз.");
           throw new Error("Невдала спроба авторизації");
-
         }
 
         const token = await response.json();
@@ -82,7 +65,7 @@ const AdminAuth: React.FC = () => {
         if (token) {
           localStorage.setItem("authToken", token);
 
-          navigate("/admin-page");
+          navigate("/admin");
         }
 
       } catch (error) {
@@ -181,8 +164,9 @@ const AdminAuth: React.FC = () => {
                 </Alert>
               )}
               <Button
-                component={Link}
-                to="/admin-main"
+                // component={Link}
+                // to="/admin"
+                type="submit"
                 fullWidth
                 variant="contained"
                 size="large"
