@@ -1,3 +1,4 @@
+import ActionButtons from "../../Components/ActionButtons/ActionButtons";
 import Sidebar from "../../Components/Aside/Aside";
 import Header from "../../Components/Header/Header";
 import ProductTable from "../../Components/Table/ProductTable";
@@ -5,7 +6,8 @@ import ProductTable from "../../Components/Table/ProductTable";
 const MainPage = () => {
   return (
     <>
-      <Header/>
+      <Header />
+      <ActionButtons/>
       <Sidebar />
       <ProductTable />
     </>

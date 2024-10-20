@@ -12,7 +12,7 @@ import {
   Alert,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const theme = createTheme({
   palette: {
@@ -181,11 +181,12 @@ const AdminAuth: React.FC = () => {
                 </Alert>
               )}
               <Button
-                type="submit"
+                component={Link}
+                to="/admin-main"
                 fullWidth
                 variant="contained"
                 size="large"
-                sx={{ mt: 3, mb: 2 , borderRadius:"50px",height:"48px"}}
+                sx={{ mt: 3, mb: 2, borderRadius: "50px", height: "48px" }}
               >
                 Увійти
               </Button>
