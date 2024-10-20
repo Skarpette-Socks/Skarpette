@@ -1,12 +1,12 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
-import CitiesInput from "./Components/CitiesInput";
-import WarehouseInput from "./Components/WarehouseInput";
-import StreetInput from "./Components/StreetInput";
+import CitiesInput from "./DeliveryComponents/CitiesInput";
+import WarehouseInput from "./DeliveryComponents/WarehouseInput";
+import StreetInput from "./DeliveryComponents/StreetInput";
 import "./Delivery.scss";
-import BuildingInput from "./Components/BuildingInput";
-import FlatInput from "./Components/FlatInput";
-import UkrPostWarInput from "./Components/UkrPostWarInput";
-import DeliveryOptions from "./Components/DeliveryOptions";
+import BuildingInput from "./DeliveryComponents/BuildingInput";
+import FlatInput from "./DeliveryComponents/FlatInput";
+import UkrPostWarInput from "./DeliveryComponents/UkrPostWarInput";
+import DeliveryOptions from "./DeliveryComponents/DeliveryOptions";
 
 interface DeliveryProps {
   selectedDeliveryType: string;

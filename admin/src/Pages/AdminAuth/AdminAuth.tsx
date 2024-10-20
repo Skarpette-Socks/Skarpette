@@ -164,8 +164,9 @@ const AdminAuth: React.FC = () => {
                 </Alert>
               )}
               <Button
-                component={Link}
-                to="/admin"
+                // component={Link}
+                // to="/admin"
+                type="submit"
                 fullWidth
                 variant="contained"
                 size="large"

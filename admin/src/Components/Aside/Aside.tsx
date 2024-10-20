@@ -11,18 +11,16 @@ import {
   ShoppingCart,
   Inventory,
   Payment,
-  Settings,
   Logout,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
-const drawerWidth = 240;
+const drawerWidth = 180;
 
 const menuItems = [
   { text: "Товари", icon: <Inventory />, path: "/products" },
   { text: "Замовлення", icon: <ShoppingCart />, path: "/orders" },
   { text: "Оплати", icon: <Payment />, path: "/payments" },
-  { text: "Налаштування", icon: <Settings />, path: "/settings" },
 ];
 
 
