@@ -78,6 +78,7 @@ const CitiesInput = forwardRef<CitiesInputRef, CitiesInputProps>(
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
+    setError('');
     setInputValue(value);
     setIsOpen(true);
     setHighlightedIndex(-1);

@@ -84,23 +84,21 @@ const Checkout = () => {
     let isValidContactInfo = false;
     let isValidReceiverInfo = false;
     let isValidDeliveryRef = false;
-
-    if (selectedOption === "another-receiver" && receiverInfoRef.current) {
+    if (selectedOption === 'another-receiver' && receiverInfoRef.current) {
       isValidReceiverInfo = receiverInfoRef.current.isValid();
     } else {
       isValidReceiverInfo = true;
     }
-
     if (deliveryRef.current) {
       isValidDeliveryRef = deliveryRef.current.isValid();
     }
-
+  
     if (contactInfoRef.current) {
       isValidContactInfo = contactInfoRef.current.isValid();
     }
-
+  
     if (isValidContactInfo && isValidReceiverInfo && isValidDeliveryRef) {
-      if (selectedOption === "self-receiver") {
+      if (selectedOption === 'self-receiver') {
         userData = {
           name: contactInfoRef.current?.getName(),
           surname: contactInfoRef.current?.getSurname(),
@@ -118,53 +116,55 @@ const Checkout = () => {
           payerPhone: contactInfoRef.current?.getPhone(),
         };
       }
-
       switch (selectedDeliveryType) {
-        case "nova-poshta-office":
+        case 'nova-poshta-office':
           deliveryData = {
             deliveryType: "Відділення Нової Пошти",
             city: deliveryRef.current?.getCity(),
             warehouse: deliveryRef.current?.getWarehouseNovaPost(),
-          };
-
-          break;
-        case "nova-poshta-courier":
+          }
+          break;      
+        case 'nova-poshta-courier':
           deliveryData = {
             deliveryType: "Кур'єр Нової Пошти",
             city: deliveryRef.current?.getCity(),
             street: deliveryRef.current?.getStreet(),
             building: deliveryRef.current?.getBuilding(),
             flat: deliveryRef.current?.getFlat(),
-          };
-
+          }
           break;
-        case "nova-poshta-poshtamat":
+        case 'nova-poshta-poshtamat':
           deliveryData = {
             deliveryType: "Поштомат Нової Пошти",
             city: deliveryRef.current?.getCity(),
             warehouse: deliveryRef.current?.getWarehouseNovaPost(),
-          };
-
+          }
           break;
-        case "ukrposhta-office":
+        case 'ukrposhta-office':
           deliveryData = {
             deliveryType: "Відділення Укрпошти",
             city: deliveryRef.current?.getCity(),
             warehouse: deliveryRef.current?.getWarehouseUkrPost(),
-          };
-
+          }
           break;
         default:
           break;
       }
-
       if (
-        !Object.values(userData).includes("") &&
-        !Object.values(deliveryData).includes("")
+        !Object.values(userData).includes('') && 
+        !Object.values(deliveryData).includes('')
       ) {
         postData();
+        console.log('posted');
+      } else {
+        console.log('Заповніть усі поля');
       }
+    } else {
+      console.log('Форма не пройшла валідацію');
     }
+  
+    console.log('userData', userData);
+    console.log('deliveryData', deliveryData);
   };
 
   const postData = async () => {

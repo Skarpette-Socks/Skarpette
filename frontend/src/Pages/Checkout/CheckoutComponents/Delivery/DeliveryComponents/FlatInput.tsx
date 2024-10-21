@@ -40,13 +40,18 @@ const FlatInput = forwardRef<FlatInputRef, FlatInputProps>(
       return !error;
     }
 
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setInputValue(event.target.value);
+      setError('');
+    }
+
     return (
       <div className="input">
         <div className="input__container">
           <input
             type="text"
             value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={handleInputChange}
             className={`input__field ${error ? "input__field--error" : ""}`}
             placeholder="Квартира"
             maxLength={50}

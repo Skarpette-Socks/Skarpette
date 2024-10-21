@@ -34,10 +34,15 @@ const BuildingInput = forwardRef<BuildingInputRef, BuildingInputProps>(
     
     const isValidForm = () => {
       if (!inputValue) {
-        setError("Заповніть поле")
+        setError("Заповніть поле");
       }
 
       return !error;
+    }
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setInputValue(event.target.value);
+      setError('');
     }
 
     return (
@@ -48,7 +53,7 @@ const BuildingInput = forwardRef<BuildingInputRef, BuildingInputProps>(
           <input
             type="text"
             value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={handleInputChange}
             className={`input__field ${error ? "input__field--error" : ""}`}
             placeholder="Будинок"
             maxLength={50}
