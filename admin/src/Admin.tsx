@@ -1,49 +1,79 @@
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Outlet, useNavigate } from "react-router-dom";
 import "./Admin.css";
 import AdminAuth from "./Pages/AdminAuth/AdminAuth";
-import AdminPage from "./Pages/AdminPage/AdminPage";
-import React, { ReactNode } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Components/Header/Header";
 import Sidebar from "./Components/Aside/Aside";
-import ProductTable from "./Components/Table/ProductTable";
+import NotFound from "./Pages/NotFound/NotFound";
+import MainPage from "./Pages/Main/MainPage";
+import Orders from "./Pages/Orders/Orders";
 // import MainPage from "./Pages/Main/MainPage";
 
-interface LayoutProps {
-  children: ReactNode;
-}
-
 const Admin = () => {
-
+  const Layout: React.FC = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+    const navigate = useNavigate();
   
-  const Layout: React.FC<LayoutProps> = ({ children }) => {
-    const location = useLocation();
-    const noHeaderPaths = ["/login"];
-    const showHeader = noHeaderPaths.includes(location.pathname);
+    useEffect(() => {
+      const fetchAdminData = async () => {
+        const token = localStorage.getItem("authToken");
+        
+        if (!token) {
+          console.log("Токен не знайдено у localStorage");
+          setIsLoggedIn(false);
+          return;
+        }
+  
+        try {
+          const response = await fetch("http://localhost:5000/admin", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+          });
+  
+          if (response.ok) {
+            const data = await response.json();
+            console.log("Дані адміністратора:", data);
+            setIsLoggedIn(true);
+          } else {
+            console.log("Запит не успішний, статус:", response.status);
+            setIsLoggedIn(false);
+          }
+        } catch (error) {
+          console.error("Помилка при виконанні запиту:", error);
+          setIsLoggedIn(false);
+        }
+      };
+  
+      fetchAdminData();
+    }, [navigate]);
+  
+    if (isLoggedIn === null) {
+      return <div>Завантаження...</div>;
+    }
 
-    return (
+    return isLoggedIn ? 
       <>
-        {!showHeader && 
-        <>
-          <Header />
-          <Sidebar />
-        </>}
-          {children}
+        <Header />
+        <Sidebar />
+        <Outlet />
       </>
-    );
+    : <AdminAuth />;
   }
 
   return (
     <Router>
-      <Layout>
-        <Routes>
-          <Route path="/login" element={<AdminAuth />} />
-          <Route path="/admin" element={<AdminPage />} >
-            <Route path="/admin/goods" element={<ProductTable />}/>
-            <Route path="*" element={<ProductTable />}/>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<MainPage />} />
+          <Route path="orders" element={<Orders />} />
 
-          </Route>
-        </Routes>
-      </Layout>
+            
+        </Route>
+        <Route path="*" element={<NotFound />}/>
+      </Routes>
     </Router>
   );
 };

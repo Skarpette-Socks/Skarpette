@@ -29,7 +29,7 @@ const Sidebar = () => {
 
   const logOut = () => {
     localStorage.removeItem("authToken");
-    navigate('/login');
+    navigate(0);
   }
 
   return (
