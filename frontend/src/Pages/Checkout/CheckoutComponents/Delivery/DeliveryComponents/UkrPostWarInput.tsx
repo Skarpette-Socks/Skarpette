@@ -37,7 +37,7 @@ const UkrPostWarInput = forwardRef<FlatInputRef, FlatInputProps>(
       setInputValue(value);
 
       if (isCyrillic.test(value)) {
-        setError(null);
+        setError('');
       } else {
         setError("Лише кирилиця, цифри і спецсимвол №");
       }
@@ -47,8 +47,6 @@ const UkrPostWarInput = forwardRef<FlatInputRef, FlatInputProps>(
       if (!inputValue) {
         setError("Заповніть поле")
       }
-
-      
 
       return !error;
     }

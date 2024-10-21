@@ -151,6 +151,7 @@ const WarehouseInput = forwardRef<WarehouseInputRef, WarehouseInputProps>(
       const value = event.target.value;
       setInputValue(value);
       setIsOpen(true);
+      setError('');
     };
 
     const handleWarehouseSelect = (warehouse: string) => {
