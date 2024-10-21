@@ -12,7 +12,7 @@ import {
   Alert,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme({
   palette: {
@@ -65,7 +65,7 @@ const AdminAuth: React.FC = () => {
         if (token) {
           localStorage.setItem("authToken", token);
 
-          navigate("/admin");
+          navigate(0);
         }
 
       } catch (error) {
