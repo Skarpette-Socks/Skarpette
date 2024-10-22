@@ -2,7 +2,8 @@ import { Button, Box } from "@mui/material";
 
 const ActionButtons = () => {
   return (
-    <Box sx={{ display: "flex", justifyContent:'space-around' ,marginTop:'80px'}}>
+        
+        <Box sx={{ display: "flex", justifyContent:'space-around', marginTop: "20px"}}>
       <Button variant="contained" color="error" sx={{ textTransform: "none" }}>
         Видалити
       </Button>

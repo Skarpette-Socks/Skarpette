@@ -15,7 +15,6 @@ import ProductImages from "./ProductImages";
 import ProductImageCircle from "./ProductImageCircle";
 import ProductZoom from "./ProductZoom";
 import DataItem from "../../../types/DataItem";
-
 import { useFavorites } from "../../../Context/FavoritesContext";
 import { useCartItems } from "../../../Context/CartContext";
 import CounterButtonProduct from "../../../Components/CounterButton/CounterButtonProduct";

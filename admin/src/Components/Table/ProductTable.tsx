@@ -160,12 +160,11 @@ const ProductTable: React.FC = () => {
   return (
     <Paper
       style={{
-        width: "85%",
-        marginLeft: "auto",
+        width: "100%",
         marginTop: "20px",
       }}
     >
-      <TableContainer style={{ maxHeight: "600px" }}>
+      <TableContainer style={{ maxHeight: "620px" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>

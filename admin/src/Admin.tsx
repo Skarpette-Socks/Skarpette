@@ -7,6 +7,7 @@ import Sidebar from "./Components/Aside/Aside";
 import NotFound from "./Pages/NotFound/NotFound";
 import MainPage from "./Pages/Main/MainPage";
 import Orders from "./Pages/Orders/Orders";
+import AdminPage from "./Pages/AdminPage/AdminPage";
 // import MainPage from "./Pages/Main/MainPage";
 
 const Admin = () => {
@@ -54,13 +55,7 @@ const Admin = () => {
       return <div>Завантаження...</div>;
     }
 
-    return isLoggedIn ? 
-      <>
-        <Header />
-        <Sidebar />
-        <Outlet />
-      </>
-    : <AdminAuth />;
+    return isLoggedIn ? <AdminPage /> : <AdminAuth />;
   }
 
   return (
