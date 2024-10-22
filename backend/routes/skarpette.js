@@ -7,7 +7,7 @@ const storage = multer.memoryStorage();
 const upload = multer({
     storage: storage,
     fileFilter: (req, file, cb) => {
-        if (!file.originalname.match(/\.(jpg|jpeg|webm)$/)) {
+        if (!file.originalname.match(/\.(jpg|jpeg|webp)$/)) {
             return cb(new Error('Only image files are allowed'), false);
         }
         cb(null, true);
