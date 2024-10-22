@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 const drawerWidth = 180;
 
 const menuItems = [
-  { text: "Товари", icon: <Inventory />, path: "/products" },
+  { text: "Товари", icon: <Inventory />, path: "/" },
   { text: "Замовлення", icon: <ShoppingCart />, path: "/orders" },
   { text: "Оплати", icon: <Payment />, path: "/payments" },
 ];
@@ -44,7 +44,6 @@ const Sidebar = () => {
             boxSizing: "border-box",
             backgroundColor: "#fff",
             borderRight: "1px solid rgba(0, 0, 0, 0.12)",
-            paddingTop: "64px",
           },
         }}
       >
@@ -62,7 +61,7 @@ const Sidebar = () => {
 
               return (
                 <ListItem key={text} disablePadding>
-                  <ListItemButton>
+                  <ListItemButton onClick={() => navigate(path)}>
                     <ListItemIcon>{icon}</ListItemIcon>
                     <ListItemText primary={text} />
                   </ListItemButton>
