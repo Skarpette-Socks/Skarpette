@@ -2,9 +2,7 @@
 
 const Orders = () => {
   return (
-    <>
-       Orders page
-    </>
+    <h1>Orders page</h1>
   );
 };
 
