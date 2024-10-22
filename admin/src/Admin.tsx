@@ -1,9 +1,7 @@
-import { BrowserRouter as Router, Route, Routes, Outlet, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
 import "./Admin.css";
 import AdminAuth from "./Pages/AdminAuth/AdminAuth";
 import React, { useEffect, useState } from "react";
-import Header from "./Components/Header/Header";
-import Sidebar from "./Components/Aside/Aside";
 import NotFound from "./Pages/NotFound/NotFound";
 import MainPage from "./Pages/Main/MainPage";
 import Orders from "./Pages/Orders/Orders";
