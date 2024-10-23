@@ -1,4 +1,5 @@
 import { Button, Box } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const ActionButtons = () => {
   return (
@@ -7,13 +8,15 @@ const ActionButtons = () => {
       <Button variant="contained" color="error" sx={{ textTransform: "none" }}>
         Видалити
       </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        sx={{ textTransform: "none" }}
-      >
-        Додати товар
-      </Button>
+      <Link to='/add'>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ textTransform: "none" }}
+        >
+          Додати товар
+        </Button>
+      </Link>
     </Box>
   );
 };

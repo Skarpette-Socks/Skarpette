@@ -6,6 +6,9 @@ import NotFound from "./Pages/NotFound/NotFound";
 import MainPage from "./Pages/Main/MainPage";
 import Orders from "./Pages/Orders/Orders";
 import AdminPage from "./Pages/AdminPage/AdminPage";
+import AddProduct from "./Pages/AddProduct/AddProduct";
+import EditProduct from "./Pages/EditProduct/EditProduct";
+
 // import MainPage from "./Pages/Main/MainPage";
 
 const Admin = () => {
@@ -62,8 +65,9 @@ const Admin = () => {
         <Route path="/" element={<Layout />}>
           <Route index element={<MainPage />} />
           <Route path="orders" element={<Orders />} />
+          <Route path="add" element={<AddProduct />} />
+          <Route path="edit/:VENDOR_CODE" element={<EditProduct />} />
 
-            
         </Route>
         <Route path="*" element={<NotFound />}/>
       </Routes>

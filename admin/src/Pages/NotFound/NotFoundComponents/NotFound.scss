@@ -1,7 +1,3 @@
-// @import "../../../assets/styles/mixins";
-// @import "../../../assets/styles/variables";
-
-
 .title {
   text-align: center;
   margin-top: 48px;
@@ -13,4 +9,6 @@
   font-size: 40px;
   display: flex;
   justify-content: center;
+  text-decoration: underline;
+  color: blue;
 }

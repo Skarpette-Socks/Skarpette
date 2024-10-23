@@ -6,7 +6,7 @@ const NotFoundContent: React.FC = () => {
     <h1 className="title">
       Такої сторінки не існує ;(
     </h1>
-    <a href="/" className="login">Залогінитись</a>
+    <a href="/" className="login">Увійти</a>
     
     </>
   )   
