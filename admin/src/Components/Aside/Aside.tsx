@@ -12,8 +12,10 @@ import {
   Inventory,
   Payment,
   Logout,
+  AddCircle,
 } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import './Aside.scss';
 
 const drawerWidth = 180;
 
@@ -21,6 +23,8 @@ const menuItems = [
   { text: "Товари", icon: <Inventory />, path: "/" },
   { text: "Замовлення", icon: <ShoppingCart />, path: "/orders" },
   { text: "Оплати", icon: <Payment />, path: "/payments" },
+  { text: "Новий товар", icon: <AddCircle />, path: "/add" },
+
 ];
 
 
@@ -60,12 +64,14 @@ const Sidebar = () => {
               const { text, icon, path } = item;
 
               return (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton onClick={() => navigate(path)}>
-                    <ListItemIcon>{icon}</ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                </ListItem>
+                <NavLink to={path}>
+                  <ListItem key={text} disablePadding>
+                    <ListItemButton>
+                      <ListItemIcon sx={{ minWidth: "40px" }}>{icon}</ListItemIcon>
+                      <ListItemText primary={text} />
+                    </ListItemButton>
+                  </ListItem>
+                </NavLink>
               );
             })}
             <ListItem disablePadding sx={{ marginTop: "200px" }}>
