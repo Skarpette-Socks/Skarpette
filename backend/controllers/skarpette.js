@@ -146,11 +146,22 @@ const createSkarpette = async (req, res) => {
             throw new Error('At least one image is required');
         }
 
-        if (!skarpetteData.size || skarpetteData.size.length === 0) {
+        // Transform the size data
+        skarpetteData.size = [];
+        Object.keys(req.body).forEach((key) => {
+            if (key.startsWith('size[')) {
+                skarpetteData.size.push({
+                    size: req.body[key],
+                    is_available: true,
+                });
+            }
+        });
+
+        // Check for sizes by type
+        if (skarpetteData.size.length === 0) {
             const sizesByType = getSizesByType(skarpetteData.type);
             skarpetteData.size = sizesByType;
         }
-        skarpetteData.size = getSizesByType(skarpetteData.type);
 
         const newSkarpette = await Skarpette.create(skarpetteData);
         res.status(201).json(newSkarpette);
@@ -159,6 +170,7 @@ const createSkarpette = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
+
 const getSkarpetteById = async (req, res) => {
     const { id } = req.params;
     try {
