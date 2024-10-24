@@ -16,7 +16,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DataItem from "../../types/DataItem";
 import { fetchAllData } from "../../api/fetchAllData";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { deleteItem } from "../../api/deleteItem";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   padding: "8px 16px",
@@ -39,6 +40,11 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   "&.price-cell": {
     fontSize: 14,
+  },
+  "&.price-cell.lined": {
+    textDecoration: "line-through",
+    opacity: 0.5,
+
   },
   "&.discount-cell": {
     fontSize: 14,
@@ -83,6 +89,7 @@ const ProductTable: React.FC = () => {
   const [selected, setSelected] = useState<number[]>([]);
   const [socks, setSocks] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -140,7 +147,12 @@ const ProductTable: React.FC = () => {
     setSelected(newSelected);
   };
 
-  const isSelected = (id: number) => selected.indexOf(id) !== -1;
+  const isSelected = (vendor_code: number) => selected.indexOf(vendor_code) !== -1;
+
+  const deleteThisItem = (id: string) => {
+    deleteItem(id);
+    navigate(0);
+  }
 
   if (loading) {
     return ('Завантаження...');
@@ -242,14 +254,14 @@ const ProductTable: React.FC = () => {
                     <StyledTableCell className="size-cell">
                       {allSizes}
                     </StyledTableCell>
-                    <StyledTableCell className="price-cell">
-                      {sock.price}
-                    </StyledTableCell>
+                      <StyledTableCell className={`price-cell ${sock.price2 ? 'lined' : ''}`}>
+                        {sock.price}грн
+                      </StyledTableCell>
                     <StyledTableCell className="discount-cell">
-                      {sock.discountPercentage}
+                      {sock.discountPercentage}%
                     </StyledTableCell>
                     <StyledTableCell sx={{ color: "green" }}>
-                      {sock.price2}
+                      {sock.price2 ? `${sock.price2}грн` : ''}
                     </StyledTableCell>
                     <StyledTableCell className="actions-cell">
                       <div
@@ -262,12 +274,12 @@ const ProductTable: React.FC = () => {
                           <IconButton size="large" aria-label="edit">
                             <EditIcon fontSize="medium" />
                           </IconButton>
-                      
                         </Link>
                         <IconButton
                           size="large"
                           aria-label="delete"
                           color="error"
+                          onClick={() => deleteThisItem(sock._id)}
                         >
                           <DeleteIcon fontSize="medium" />
                         </IconButton>
