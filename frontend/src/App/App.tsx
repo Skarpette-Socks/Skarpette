@@ -52,7 +52,6 @@ const routes = [
   { path: "/search-results", element: <SearchResults /> },
   { path: "*", element: <NotFound /> },
 
-
 ];
 
 interface LayoutProps {
