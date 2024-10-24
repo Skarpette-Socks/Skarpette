@@ -7,7 +7,7 @@ export interface FetchWarehousesParams {
   Page?: string;
   Limit?: string;
   Language?: string;
-  TypeOfWarehouseRef?: string;
+  TypeOfWarehouseRef?: string|string[];
   WarehouseId?: string;
 }
 
@@ -80,13 +80,16 @@ export const fetchWarehouseTypes = async (): Promise<
         Description: type.Description,
         DescriptionRu: type.DescriptionRu,
       }));
+
     } else {
       throw new Error("Ошибка API: Неверный формат ответа");
     }
   } catch (error) {
     throw new Error("Ошибка выполнения запроса: " + (error as Error).message);
   }
+  
 };
+
 
 export interface SearchSettlementStreetsParams {
   StreetName: string;

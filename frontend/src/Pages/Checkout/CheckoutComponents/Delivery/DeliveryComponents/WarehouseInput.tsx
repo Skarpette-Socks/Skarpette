@@ -11,15 +11,14 @@ import {
   FetchWarehousesParams,
 } from "../../../../../api/FetchWarehouse";
 
-import '../../../../../assets/styles/commonCheckoutInputesStyles.scss';
-
+import "../../../../../assets/styles/commonCheckoutInputesStyles.scss";
 
 interface WarehouseInputProps {
   selectedCity: string | undefined;
   resetWarehouse: boolean;
   onWarehouseReset: () => void;
   deliveryType: string;
-  disabled?: boolean; // Добавляем проп disabled
+  disabled?: boolean;
 }
 
 interface WarehouseInputRef {
@@ -29,25 +28,17 @@ interface WarehouseInputRef {
 
 const WarehouseInput = forwardRef<WarehouseInputRef, WarehouseInputProps>(
   (
-    {
-      selectedCity,
-      resetWarehouse,
-      onWarehouseReset,
-      deliveryType,
-      disabled, // Деструктурируем проп disabled
-    },
+    { selectedCity, resetWarehouse, onWarehouseReset, deliveryType, disabled },
     ref
   ) => {
     const [warehouses, setWarehouses] = useState<string[]>([]);
     const [filteredWarehouses, setFilteredWarehouses] = useState<string[]>([]);
-    // const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [inputValue, setInputValue] = useState<string>("");
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
     const inputRef = useRef<HTMLInputElement>(null);
     const listRef = useRef<HTMLUListElement>(null);
-
 
     useImperativeHandle(ref, () => ({
       isValid() {
@@ -74,35 +65,52 @@ const WarehouseInput = forwardRef<WarehouseInputRef, WarehouseInputProps>(
         return;
       }
 
-      // setLoading(true);
       setError(null);
 
       try {
-        const params: FetchWarehousesParams = {
+        const baseParams: FetchWarehousesParams = {
           CityName: selectedCity,
           Limit: "100000",
         };
 
         if (deliveryType === "nova-poshta-poshtamat") {
-          params.TypeOfWarehouseRef = "f9316480-5f2d-425d-bc2c-ac7cd29decf0";
+          const params = {
+            ...baseParams,
+            TypeOfWarehouseRef: "f9316480-5f2d-425d-bc2c-ac7cd29decf0",
+          };
+          const warehousesData = await fetchWarehouses(params);
+          setWarehouses(warehousesData);
+          setFilteredWarehouses(warehousesData);
         } else if (deliveryType === "nova-poshta-office") {
-          params.TypeOfWarehouseRef = "841339c7-591a-42e2-8233-7a0a00f0ed6f";
+          const warehouseTypes = [
+            "6f8c7162-4b72-4b0a-88e5-906948c6a92f",
+            "841339c7-591a-42e2-8233-7a0a00f0ed6f",
+            "6f8c7162-4b72-4b0a-88e5-906948c6a92f",
+          ];
+
+          const allPromises = warehouseTypes.map((type) =>
+            fetchWarehouses({
+              ...baseParams,
+              TypeOfWarehouseRef: type,
+            })
+          );
+
+          const results = await Promise.all(allPromises);
+          const combinedWarehouses = results.flat();
+
+          setWarehouses(combinedWarehouses);
+          setFilteredWarehouses(combinedWarehouses);
         }
 
-        const warehousesData = await fetchWarehouses(params);
-        setWarehouses(warehousesData);
-        setFilteredWarehouses(warehousesData);
-        if (warehousesData.length === 0) {
+        if (warehouses.length === 0) {
           setError("Відділення не знайдено");
         }
       } catch (err) {
         setError("Помилка при виконанні запиту: " + (err as Error).message);
         setWarehouses([]);
         setFilteredWarehouses([]);
-      } finally {
-        // setLoading(false);
       }
-    }, [selectedCity, deliveryType]);
+    }, [selectedCity, deliveryType, warehouses.length]);
 
     useEffect(() => {
       fetchWarehousesData();
@@ -151,7 +159,7 @@ const WarehouseInput = forwardRef<WarehouseInputRef, WarehouseInputProps>(
       const value = event.target.value;
       setInputValue(value);
       setIsOpen(true);
-      setError('');
+      setError("");
     };
 
     const handleWarehouseSelect = (warehouse: string) => {
@@ -215,10 +223,9 @@ const WarehouseInput = forwardRef<WarehouseInputRef, WarehouseInputProps>(
                 : "Відділення"
             }
             className={`input__field ${error ? "input__field--error" : ""}`}
-            disabled={disabled || !selectedCity} // Используем disabled
+            disabled={disabled || !selectedCity}
             maxLength={200}
           />
-          {/* {loading && <div className="input__loading">Завантаження...</div>} */}
         </div>
         {isOpen && filteredWarehouses.length > 0 && (
           <ul ref={listRef} className="input__list">

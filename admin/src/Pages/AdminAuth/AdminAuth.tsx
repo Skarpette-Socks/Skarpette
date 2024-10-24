@@ -61,13 +61,11 @@ const AdminAuth: React.FC = () => {
         }
 
         const token = await response.json();
-        
         if (token) {
           localStorage.setItem("authToken", token);
 
           navigate(0);
         }
-
       } catch (error) {
         console.error("Помилка авторизації:", error);
       }
