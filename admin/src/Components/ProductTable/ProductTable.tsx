@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -14,20 +14,9 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import react from "../../assets/react.svg";
-
-interface Product {
-  id: number;
-  name: string;
-  photo: string;
-  article: string;
-  category: string;
-  style: string;
-  size: string;
-  price: string;
-  discount: string;
-  specialPrice: string;
-}
+import DataItem from "../../types/DataItem";
+import { fetchAllData } from "../../api/fetchAllData";
+import { Link } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   padding: "8px 16px",
@@ -87,33 +76,29 @@ const ImageCell = styled("img")({
   objectFit: "contain",
 });
 
-const generateMockData = (count: number): Product[] => {
-  const mockData: Product[] = [];
-  const categories = ["Дитячі", "Жіночі", "Чоловічі"];
-  const styles = ["Спорт", "Медичні", "Високі"];
-  for (let i = 1; i <= count; i++) {
-    mockData.push({
-      id: i,
-      name: `Шкарпетки ${i}`,
-      photo: react,
-      article: "32432567",
-      category: categories[i % 3],
-      style: styles[i % 3],
-      size: "19-21, 21-23, 23-25, 25-27, 29-31",
-      price: "250 UAH",
-      discount: "20%",
-      specialPrice: "200 UAH",
-    });
-  }
-  return mockData;
-};
-
-const rows: Product[] = generateMockData(150);
 
 const ProductTable: React.FC = () => {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [selected, setSelected] = useState<number[]>([]);
+  const [socks, setSocks] = useState<DataItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const result = await fetchAllData()
+      setSocks(result);
+    } catch (error: any) {
+      throw new Error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -128,19 +113,19 @@ const ProductTable: React.FC = () => {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
+      const newSelected = socks.map((sock) => sock.vendor_code);
       setSelected(newSelected);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
-    const selectedIndex = selected.indexOf(id);
+  const handleClick = (event: React.MouseEvent<unknown>, vendor_code: number) => {
+    const selectedIndex = selected.indexOf(vendor_code);
     let newSelected: number[] = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
+      newSelected = newSelected.concat(selected, vendor_code);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -157,6 +142,10 @@ const ProductTable: React.FC = () => {
 
   const isSelected = (id: number) => selected.indexOf(id) !== -1;
 
+  if (loading) {
+    return ('Завантаження...');
+  }
+
   return (
     <Paper
       style={{
@@ -171,9 +160,9 @@ const ProductTable: React.FC = () => {
               <StyledTableCell padding="checkbox" sx={{ width: "48px" }}>
                 <Checkbox
                   indeterminate={
-                    selected.length > 0 && selected.length < rows.length
+                    selected.length > 0 && selected.length < socks.length
                   }
-                  checked={rows.length > 0 && selected.length === rows.length}
+                  checked={socks.length > 0 && selected.length === socks.length}
                   onChange={handleSelectAllClick}
                 />
               </StyledTableCell>
@@ -222,43 +211,45 @@ const ProductTable: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {socks
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                const isItemSelected = isSelected(row.id);
+              .map((sock) => {
+                const isItemSelected = isSelected(sock.vendor_code);
+                const allSizes = sock.size.filter(s => s.is_available).map(s => s.size).join(', ');
+                
                 return (
                   <StyledTableRow
                     hover
-                    onClick={(event) => handleClick(event, row.id)}
+                    onClick={(event) => handleClick(event, sock.vendor_code)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={row.id}
+                    key={sock.vendor_code}
                     selected={isItemSelected}
                   >
                     <StyledTableCell padding="checkbox" sx={{ width: "48px" }}>
                       <Checkbox checked={isItemSelected} />
                     </StyledTableCell>
                     <StyledTableCell className="name-cell">
-                      {row.name}
+                      {sock.name}
                     </StyledTableCell>
                     <StyledTableCell>
-                      <ImageCell src={row.photo} alt={row.name} />
+                      <ImageCell src={sock.images_urls[0]} alt={sock.name} />
                     </StyledTableCell>
-                    <StyledTableCell>{row.article}</StyledTableCell>
-                    <StyledTableCell>{row.category}</StyledTableCell>
-                    <StyledTableCell>{row.style}</StyledTableCell>
+                    <StyledTableCell>{sock.vendor_code}</StyledTableCell>
+                    <StyledTableCell>{sock.type}</StyledTableCell>
+                    <StyledTableCell>{sock.style}</StyledTableCell>
                     <StyledTableCell className="size-cell">
-                      {row.size}
+                      {allSizes}
                     </StyledTableCell>
                     <StyledTableCell className="price-cell">
-                      {row.price}
+                      {sock.price}
                     </StyledTableCell>
                     <StyledTableCell className="discount-cell">
-                      {row.discount}
+                      {sock.discountPercentage}
                     </StyledTableCell>
                     <StyledTableCell sx={{ color: "green" }}>
-                      {row.specialPrice}
+                      {sock.price2}
                     </StyledTableCell>
                     <StyledTableCell className="actions-cell">
                       <div
@@ -267,9 +258,12 @@ const ProductTable: React.FC = () => {
                           justifyContent: "space-around",
                         }}
                       >
-                        <IconButton size="large" aria-label="edit">
-                          <EditIcon fontSize="medium" />
-                        </IconButton>
+                        <Link to={`/edit/${sock.vendor_code}`}>
+                          <IconButton size="large" aria-label="edit">
+                            <EditIcon fontSize="medium" />
+                          </IconButton>
+                      
+                        </Link>
                         <IconButton
                           size="large"
                           aria-label="delete"
@@ -288,7 +282,7 @@ const ProductTable: React.FC = () => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 50, 100]}
         component="div"
-        count={rows.length}
+        count={socks.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

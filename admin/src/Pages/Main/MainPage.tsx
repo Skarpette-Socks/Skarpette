@@ -1,5 +1,5 @@
 import ActionButtons from "../../Components/ActionButtons/ActionButtons";
-import ProductTable from "../../Components/Table/ProductTable";
+import ProductTable from "../../Components/ProductTable/ProductTable";
 
 const MainPage = () => {
   return (
