@@ -17,6 +17,7 @@ const AddProduct = () => {
   const [sizes, setSizes] = useState<string[]>([]);
   const [styles, setStyles] = useState<string[]>([]);
   const [photos, setPhotos] = useState<string[]>([]);
+  const [isNew, setIsNew] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -30,11 +31,10 @@ const AddProduct = () => {
 
   const handleCategoryChange = (newCategory: Category) => {
     setCategory(newCategory);
-    setSizes([]); // Очищаємо вибір розмірів при зміні категорії
+    setSizes([]);
   };
 
-  const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
+  const handleSizeChange = (value: string) => {
     setSizes((prevSizes) =>
       prevSizes.includes(value)
         ? prevSizes.filter((size) => size !== value)
@@ -42,8 +42,7 @@ const AddProduct = () => {
     );
   };
 
-  const handleStyleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
+  const handleStyleChange = (value: string) => {
     setStyles((prevStyles) =>
       prevStyles.includes(value)
         ? prevStyles.filter((style) => style !== value)
@@ -262,22 +261,24 @@ const AddProduct = () => {
             <Box
               sx={{
                 display: "flex",
+                flexDirection: "row",
                 flexWrap: "wrap",
-                gap: 1,
+                gap: 2,
               }}
             >
               {sizesData[category].map((size) => (
-                <FormControlLabel
+                <Button
                   key={size}
-                  control={
-                    <Checkbox
-                      value={size}
-                      checked={sizes.includes(size)}
-                      onChange={handleSizeChange}
-                    />
-                  }
-                  label={size}
-                />
+                  variant={sizes.some(s => s === size) ? "contained" : "outlined"}
+                  onClick={() => handleSizeChange(size)}
+                  sx={{
+                    height: 40,
+                    width: 70,
+                    fontWeight: sizes.some(s => s === size) ? "bold" : "normal",
+                  }}
+                >
+                  {size}
+                </Button>
               ))}
             </Box>
           </Box>
@@ -293,19 +294,43 @@ const AddProduct = () => {
               }}
             >
               {stylesData.map((style) => (
-                <FormControlLabel
+                  <Button
                   key={style}
-                  control={
-                    <Checkbox
-                      value={style}
-                      checked={styles.includes(style)}
-                      onChange={handleStyleChange}
-                    />
-                  }
-                  label={style}
-                />
+                  variant={styles.some(s => s === style) ? "contained" : "outlined"}
+                  onClick={() => handleStyleChange(style)}
+                  sx={{
+                    height: 40,
+                    fontWeight: styles.some(s => s === style) ? "bold" : "normal",
+                  }}
+                >
+                  {style}
+                </Button>
               ))}
             </Box>
+          </Box>
+
+
+          {/* Новинки */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <Typography variant="h6">Новинки</Typography>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value={isNew}
+                  checked={isNew}
+                  onChange={() => setIsNew(prev => !prev)}
+                  sx={{
+                    justifyContent: "start"
+                  }}
+                />
+              } 
+              label={isNew}
+            />
           </Box>
         </Box>
       </Box>
