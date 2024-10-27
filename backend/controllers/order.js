@@ -144,7 +144,7 @@ const createOrder = async (req, res) => {
         const newOrder = await Order.create(orderData);
         res.status(201).json(newOrder);
     } catch (error) {
-        res.status(502).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
 };
 
