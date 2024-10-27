@@ -13,11 +13,16 @@ import DeleteIcon from "@mui/icons-material/Delete";
 type Category = "Жіночі" | "Чоловічі" | "Дитячі";
 
 const AddProduct = () => {
-  const [category, setCategory] = useState<Category>("Жіночі");
-  const [sizes, setSizes] = useState<string[]>([]);
-  const [styles, setStyles] = useState<string[]>([]);
-  const [photos, setPhotos] = useState<string[]>([]);
-  const [isNew, setIsNew] = useState<boolean>(false);
+  const [name, setName] = useState<string>(""); //+
+  const [description, setDescription] = useState<string>(""); //+
+  const [photos, setPhotos] = useState<string[]>([]); //+
+  const [compAndCare, setCompAndCare] = useState<string>(""); //+
+  const [category, setCategory] = useState<Category>("Жіночі"); //+
+  const [styles, setStyles] = useState<string[]>([]); //-
+  const [price, setPrice] = useState<number | null>(); //+-
+  const [price2, setPrice2] = useState<number | null>(); //+-
+  const [isNew, setIsNew] = useState<boolean>(false); //+
+  const [sizes, setSizes] = useState<string[]>([]); //-
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -95,7 +100,7 @@ const AddProduct = () => {
         sx={{
           display: "flex",
           flexDirection: "row",
-          gap: 4,
+          gap: 2,
           flexWrap: "wrap",
         }}
       >
@@ -105,17 +110,25 @@ const AddProduct = () => {
             flex: "2 1 60%",
             display: "flex",
             flexDirection: "column",
-            gap: 3,
+            gap: 2,
           }}
         >
           {/* Головна інформація */}
-          <Box>
+          <Box
+            sx={{
+              backgroundColor: "#fafafa",
+              padding: 2,
+              borderRadius: 2,
+            }}
+          >
             <Typography variant="h6">Головна Інформація</Typography>
             <TextField
               fullWidth
               label="Назва"
               variant="outlined"
               margin="normal"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
             />
             <TextField
               fullWidth
@@ -124,6 +137,8 @@ const AddProduct = () => {
               margin="normal"
               multiline
               rows={4}
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
             />
             <TextField
               fullWidth
@@ -132,12 +147,25 @@ const AddProduct = () => {
               margin="normal"
               multiline
               rows={4}
+              value={compAndCare}
+              onChange={(event) => setCompAndCare(event.target.value)}
             />
           </Box>
 
           {/* Ціноутворення */}
-          <Box>
-            <Typography variant="h6">Ціноутворення</Typography>
+          <Box
+            sx={{
+              backgroundColor: "#fafafa",
+              padding: 2,
+              borderRadius: 2,
+            }}
+          >
+            <Typography 
+              variant="h6"
+              paddingBottom={1}
+            >
+              Ціноутворення
+            </Typography>
             <Box
               sx={{
                 display: "flex",
@@ -149,12 +177,16 @@ const AddProduct = () => {
                 label="Ціна"
                 variant="outlined"
                 type="number"
+                value={price}
+                onChange={(event) => setPrice(+event.target.value)}
               />
               <TextField
                 fullWidth
                 label="Спеціальна ціна"
                 variant="outlined"
                 type="number"
+                value={price2}
+                onChange={(event) => setPrice2(+event.target.value)}
               />
             </Box>
           </Box>
@@ -166,12 +198,23 @@ const AddProduct = () => {
             flex: "1 1 30%",
             display: "flex",
             flexDirection: "column",
-            gap: 3,
+            gap: 2,
           }}
         >
           {/* Фотографії */}
-          <Box>
-            <Typography variant="h6">Фотографії</Typography>
+          <Box
+            sx={{
+              backgroundColor: "#fafafa",
+              padding: 2,
+              borderRadius: 2,
+            }}
+          >
+            <Typography 
+              variant="h6"
+              paddingBottom={1}
+            >
+              Фотографії (макс. 5шт)
+            </Typography>
             <Box
               sx={{
                 display: "flex",
@@ -183,9 +226,9 @@ const AddProduct = () => {
                 <Box
                   key={index}
                   sx={{
-                    width: 100,
+                    width: 90,
                     height: 100,
-                    backgroundColor: "#f0f0f0",
+                    backgroundColor: "#fafafa",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -210,9 +253,9 @@ const AddProduct = () => {
                 </Box>
               ))}
               {photos.length < 5 && (
-                <Button 
-                  variant="outlined" 
-                  sx={{ width: 100, height: 100 }}
+                <Button
+                  variant="outlined"
+                  sx={{ width: 90, height: 100 }}
                   onClick={handleButtonClick}
                 >
                   Додати
@@ -230,8 +273,19 @@ const AddProduct = () => {
           </Box>
 
           {/* Категорія */}
-          <Box>
-            <Typography variant="h6">Категорія</Typography>
+          <Box
+            sx={{
+              backgroundColor: "#fafafa",
+              padding: 2,
+              borderRadius: 2,
+            }}
+          >
+            <Typography 
+              variant="h6"
+              paddingBottom={1}
+            >
+              Категорія
+            </Typography>
             <Box
               sx={{
                 display: "flex",
@@ -256,8 +310,19 @@ const AddProduct = () => {
           </Box>
 
           {/* Розміри */}
-          <Box>
-            <Typography variant="h6">Розміри</Typography>
+          <Box
+            sx={{
+              backgroundColor: "#fafafa",
+              padding: 2,
+              borderRadius: 2,
+            }}
+          >
+            <Typography 
+              variant="h6"
+              paddingBottom={1}
+            >
+              Розміри
+            </Typography>
             <Box
               sx={{
                 display: "flex",
@@ -269,12 +334,16 @@ const AddProduct = () => {
               {sizesData[category].map((size) => (
                 <Button
                   key={size}
-                  variant={sizes.some(s => s === size) ? "contained" : "outlined"}
+                  variant={
+                    sizes.some((s) => s === size) ? "contained" : "outlined"
+                  }
                   onClick={() => handleSizeChange(size)}
                   sx={{
                     height: 40,
                     width: 70,
-                    fontWeight: sizes.some(s => s === size) ? "bold" : "normal",
+                    fontWeight: sizes.some((s) => s === size)
+                      ? "bold"
+                      : "normal",
                   }}
                 >
                   {size}
@@ -284,23 +353,38 @@ const AddProduct = () => {
           </Box>
 
           {/* Стилі */}
-          <Box>
-            <Typography variant="h6">Стилі</Typography>
+          <Box
+            sx={{
+              backgroundColor: "#fafafa",
+              padding: 2,
+              borderRadius: 2,
+            }}
+          >
+            <Typography 
+              variant="h6"
+              paddingBottom={1}
+            >
+              Стилі
+            </Typography>
             <Box
               sx={{
                 display: "flex",
                 flexWrap: "wrap",
-                gap: 1,
+                gap: 2,
               }}
             >
               {stylesData.map((style) => (
-                  <Button
+                <Button
                   key={style}
-                  variant={styles.some(s => s === style) ? "contained" : "outlined"}
+                  variant={
+                    styles.some((s) => s === style) ? "contained" : "outlined"
+                  }
                   onClick={() => handleStyleChange(style)}
                   sx={{
                     height: 40,
-                    fontWeight: styles.some(s => s === style) ? "bold" : "normal",
+                    fontWeight: styles.some((s) => s === style)
+                      ? "bold"
+                      : "normal",
                   }}
                 >
                   {style}
@@ -309,26 +393,33 @@ const AddProduct = () => {
             </Box>
           </Box>
 
-
           {/* Новинки */}
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
+              backgroundColor: "#fafafa",
+              padding: 2,
+              borderRadius: 2,
             }}
           >
-            <Typography variant="h6">Новинки</Typography>
+            <Typography 
+              variant="h6"
+              paddingBottom={1}
+            >
+              Новинки
+            </Typography>
             <FormControlLabel
               control={
                 <Checkbox
                   value={isNew}
                   checked={isNew}
-                  onChange={() => setIsNew(prev => !prev)}
+                  onChange={() => setIsNew((prev) => !prev)}
                   sx={{
-                    justifyContent: "start"
+                    justifyContent: "start",
                   }}
                 />
-              } 
+              }
               label={isNew}
             />
           </Box>
