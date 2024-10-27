@@ -1,6 +1,7 @@
 const Order = require('../models/order');
 const { format } = require('date-fns');
 const { DateTime } = require('luxon');
+const crypto = require('crypto');
 
 const getKyivTime = () => {
     return DateTime.now().setZone('Europe/Kyiv').toJSDate();
@@ -70,10 +71,59 @@ const validateDeliveryData = (deliveryData) => {
     }
 };
 
+function encrypt(text) {
+    const algorithm = process.env.CRYPTO_ALGORITHM;
+    const key = Buffer.from(process.env.CRYPTO_SECRET_KEY, 'hex');
+    const iv = crypto.randomBytes(16);
+    const cipher = crypto.createCipheriv(algorithm, key, iv);
+    let encrypted = cipher.update(text, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    return iv.toString('hex') + ':' + encrypted;
+}
+
+function decrypt(encryptedData) {
+    const algorithm = process.env.CRYPTO_ALGORITHM;
+    const key = Buffer.from(process.env.CRYPTO_SECRET_KEY, 'hex');
+    if (typeof encryptedData !== 'string') {
+        return;
+    }
+
+    const parts = encryptedData.split(':');
+    if (parts.length !== 2) {
+        throw new Error('Invalid encrypted data format.');
+    }
+
+    const iv = Buffer.from(parts.shift(), 'hex');
+    const encryptedText = Buffer.from(parts.join(':'), 'hex');
+    const decipher = crypto.createDecipheriv(algorithm, key, iv);
+    let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
+}
+
+const encryptObject = (obj) => {
+    const encryptedObject = {};
+    for (let key in obj) {
+        if (typeof obj[key] === 'string') {
+            encryptedObject[key] = encrypt(obj[key]);
+        } else {
+            encryptedObject[key] = obj[key];
+        }
+    }
+    return encryptedObject;
+};
+
+const decryptObject = (obj) => {
+    const decryptedObject = {};
+    for (let key in obj) {
+        decryptedObject[key] = decrypt(obj[key]);
+    }
+    return decryptedObject;
+};
+
 const createOrder = async (req, res) => {
     try {
-        const orderData = req.body;
-        console.log(orderData);
+        let orderData = req.body;
         orderData.orderDate = getKyivTime();
         const recipientValidationError = validateRecipientData(orderData);
         if (recipientValidationError) {
@@ -86,11 +136,15 @@ const createOrder = async (req, res) => {
         if (deliveryValidationError) {
             return res.status(400).json(deliveryValidationError);
         }
+        orderData.customerData = encryptObject(orderData.customerData);
+        if (orderData.recipientData) {
+            orderData.recipientData = encryptObject(orderData.recipientData);
+        }
         orderData.orderNumber = await generateOrderNumber();
         const newOrder = await Order.create(orderData);
         res.status(201).json(newOrder);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(502).json({ error: error.message });
     }
 };
 
@@ -100,6 +154,10 @@ const getOrderById = async (req, res) => {
         const order = await Order.findById(id);
         if (!order) {
             return res.status(404).json('Order not found');
+        }
+        order.customerData = decryptObject(order.customerData);
+        if (order.recipientData) {
+            order.recipientData = decryptObject(order.recipientData);
         }
         res.status(200).json(order);
     } catch (error) {
@@ -112,6 +170,12 @@ const getAllOrders = async (req, res) => {
         const orders = await Order.find();
         if (!orders) {
             return res.status(404).json('Orders not found');
+        }
+        for (let order of orders) {
+            order.customerData = decryptObject(order.customerData);
+            if (order.recipientData) {
+                order.recipientData = decryptObject(order.recipientData);
+            }
         }
         res.status(200).json(orders);
     } catch (error) {
