@@ -15,7 +15,7 @@ type Category = "Жіночі" | "Чоловічі" | "Дитячі";
 const AddProduct = () => {
   const [name, setName] = useState<string>(""); //+
   const [description, setDescription] = useState<string>(""); //+
-  const [photos, setPhotos] = useState<string[]>([]); //+
+  const [images, setImages] = useState<string[]>([]); //+
   const [compAndCare, setCompAndCare] = useState<string>(""); //+
   const [category, setCategory] = useState<Category>("Жіночі"); //+
   const [styles, setStyles] = useState<string[]>([]); //-
@@ -57,10 +57,10 @@ const AddProduct = () => {
 
   const handlePhotoAdd = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      const newPhotos = Array.from(event.target.files).map((file) =>
+      const newImages = Array.from(event.target.files).map((file) =>
         URL.createObjectURL(file)
       );
-      setPhotos((prevPhotos) => [...prevPhotos, ...newPhotos].slice(0, 5));
+      setImages((prevImages) => [...prevImages, ...newImages].slice(0, 5));
     }
   };
 
@@ -71,29 +71,48 @@ const AddProduct = () => {
   };
 
   const handlePhotoRemove = (index: number) => {
-    setPhotos(photos.filter((_, i) => i !== index));
+    setImages(images.filter((_, i) => i !== index));
   };
 
   return (
     <Box p={3}>
-      <Typography variant="h4" gutterBottom>
-        Додавання нового товару
-      </Typography>
-
       <Box
         sx={{
           display: "flex",
-          justifyContent: "right",
+          justifyContent: "space-between",
           mb: 3,
-          gap: 4,
         }}
       >
-        <Button variant="contained" color="secondary">
-          Очистити
-        </Button>
-        <Button variant="contained" color="primary">
-          Додати товар
-        </Button>
+        <Typography variant="h4">
+          Додавання нового товару
+        </Typography>
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "right",
+            gap: 4,
+          }}
+        >
+          <Button 
+            variant="contained" 
+            color="secondary" 
+            sx={{
+              height: 40
+            }}
+          >
+            Очистити
+          </Button>
+          <Button 
+            variant="contained" 
+            color="primary" 
+            sx={{
+              height: 40
+            }}
+          >
+            Додати товар
+          </Button>
+        </Box>
       </Box>
 
       <Box
@@ -222,7 +241,7 @@ const AddProduct = () => {
                 flexWrap: "wrap",
               }}
             >
-              {photos.map((photo, index) => (
+              {images.map((photo, index) => (
                 <Box
                   key={index}
                   sx={{
@@ -252,7 +271,7 @@ const AddProduct = () => {
                   </IconButton>
                 </Box>
               ))}
-              {photos.length < 5 && (
+              {images.length < 5 && (
                 <Button
                   variant="outlined"
                   sx={{ width: 90, height: 100 }}
