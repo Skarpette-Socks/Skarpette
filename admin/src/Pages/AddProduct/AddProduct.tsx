@@ -4,13 +4,16 @@ import {
   Button,
   Box,
   Typography,
-  Checkbox,
   IconButton,
-  FormControlLabel,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 type Category = "Жіночі" | "Чоловічі" | "Дитячі";
+
+// interface sizeItem {
+//   size: string;
+//   is_available:boolean;
+// }
 
 const AddProduct = () => {
   const [name, setName] = useState<string>(""); //+
@@ -19,9 +22,10 @@ const AddProduct = () => {
   const [compAndCare, setCompAndCare] = useState<string>(""); //+
   const [category, setCategory] = useState<Category>("Жіночі"); //+
   const [styles, setStyles] = useState<string[]>([]); //-
-  const [price, setPrice] = useState<number | null>(); //+-
-  const [price2, setPrice2] = useState<number | null>(); //+-
+  const [price, setPrice] = useState<number | null>(); //+
+  const [price2, setPrice2] = useState<number | null>(); //+
   const [isNew, setIsNew] = useState<boolean>(false); //+
+  const [isTop, setIsTop] = useState<boolean>(false); //+
   const [sizes, setSizes] = useState<string[]>([]); //-
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -412,7 +416,7 @@ const AddProduct = () => {
             </Box>
           </Box>
 
-          {/* Новинки */}
+          {/* Теги */}
           <Box
             sx={{
               display: "flex",
@@ -426,9 +430,45 @@ const AddProduct = () => {
               variant="h6"
               paddingBottom={1}
             >
-              Новинки
+              Теги
             </Typography>
-            <FormControlLabel
+            <Box
+              sx={{
+                display: "flex",
+                gap: 2
+              }}
+            >
+              <Button
+                variant={
+                  isNew ? "contained" : "outlined"
+                }
+                onClick={() => setIsNew((prev) => !prev)}
+                sx={{
+                  height: 40,
+                  fontWeight: isNew
+                    ? "bold"
+                    : "normal",
+                }}
+              >
+                NEW
+              </Button>
+              <Button
+                variant={
+                  isTop ? "contained" : "outlined"
+                }
+                onClick={() => setIsTop((prev) => !prev)}
+                sx={{
+                  height: 40,
+                  fontWeight: isTop
+                    ? "bold"
+                    : "normal",
+                }}
+              >
+                TOP
+              </Button>
+
+            </Box>
+            {/* <FormControlLabel
               control={
                 <Checkbox
                   value={isNew}
@@ -440,7 +480,7 @@ const AddProduct = () => {
                 />
               }
               label={isNew}
-            />
+            /> */}
           </Box>
         </Box>
       </Box>
