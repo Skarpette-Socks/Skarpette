@@ -5,6 +5,11 @@ import {
   Box,
   Typography,
   IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -34,6 +39,24 @@ const AddProduct = () => {
   const [isTop, setIsTop] = useState<boolean>(false); //+
   const [sizes, setSizes] = useState<sizeItem[]>([]); //+
 
+  const [openDialog, setOpenDialog] = useState(false);
+  const [refreshSizes, setRefreshSizes] = useState(false);
+
+  const clearAllFields = () => {
+    setName("");
+    setDescription("");
+    setImages([]);
+    setCompAndCare("");
+    setCategory("Жіночі");
+    setStyles([]);
+    setPrice(null);
+    setPrice2(null);
+    setIsNew(false);
+    setIsTop(false);
+    setOpenDialog(false);
+    setRefreshSizes(prev => !prev)
+  }
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const stylesData = ["Короткі", "Класичні", "Спортивні", "Медичні"];
@@ -47,7 +70,7 @@ const AddProduct = () => {
 
     console.log('sizes',sizes);
     
-  }, [category])
+  }, [category, refreshSizes])
 
   const handleSizeChange = (value: string) => {
     setSizes((prevSizes) => 
@@ -112,6 +135,7 @@ const AddProduct = () => {
             sx={{
               height: 40
             }}
+            onClick={() => setOpenDialog(true)}
           >
             Очистити
           </Button>
@@ -484,22 +508,29 @@ const AddProduct = () => {
               </Button>
 
             </Box>
-            {/* <FormControlLabel
-              control={
-                <Checkbox
-                  value={isNew}
-                  checked={isNew}
-                  onChange={() => setIsNew((prev) => !prev)}
-                  sx={{
-                    justifyContent: "start",
-                  }}
-                />
-              }
-              label={isNew}
-            /> */}
           </Box>
         </Box>
       </Box>
+
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+      >
+        <DialogTitle>Підтвердження очищення</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Ви дійсно хочете очистити всі поля?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="primary">
+            Скасувати
+          </Button>
+          <Button onClick={clearAllFields} color="error" autoFocus>
+            Очистити
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
