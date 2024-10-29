@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   TextField,
   Button,
@@ -10,10 +10,16 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 type Category = "Жіночі" | "Чоловічі" | "Дитячі";
 
-// interface sizeItem {
-//   size: string;
-//   is_available:boolean;
-// }
+interface sizeItem {
+  size: string;
+  is_available: boolean;
+}
+
+const sizesData: Record<Category, string[]> = {
+  Жіночі: ["23-25", "25-27"],
+  Чоловічі: ["25-27", "27-29", "29-31"],
+  Дитячі: ["16", "18", "19-21", "21-23", "23-25"],
+};
 
 const AddProduct = () => {
   const [name, setName] = useState<string>(""); //+
@@ -26,28 +32,30 @@ const AddProduct = () => {
   const [price2, setPrice2] = useState<number | null>(); //+
   const [isNew, setIsNew] = useState<boolean>(false); //+
   const [isTop, setIsTop] = useState<boolean>(false); //+
-  const [sizes, setSizes] = useState<string[]>([]); //-
+  const [sizes, setSizes] = useState<sizeItem[]>([]); //+
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const sizesData: Record<Category, string[]> = {
-    Жіночі: ["23-25", "25-27"],
-    Чоловічі: ["25-27", "27-29", "29-31"],
-    Дитячі: ["16", "18", "19-21", "21-23", "23-25"],
-  };
-
   const stylesData = ["Короткі", "Класичні", "Спортивні", "Медичні"];
 
-  const handleCategoryChange = (newCategory: Category) => {
-    setCategory(newCategory);
-    setSizes([]);
-  };
+  useEffect(() => {
+    const categorySizes = sizesData[category];
+    setSizes(categorySizes.map((currentSize) => ({
+      size: currentSize,
+      is_available: false,
+    })));
+
+    console.log('sizes',sizes);
+    
+  }, [category])
 
   const handleSizeChange = (value: string) => {
-    setSizes((prevSizes) =>
-      prevSizes.includes(value)
-        ? prevSizes.filter((size) => size !== value)
-        : [...prevSizes, value]
+    setSizes((prevSizes) => 
+      prevSizes.map((prevSize) => 
+        prevSize.size === value 
+          ? { ...prevSize, is_available: !prevSize.is_available }
+          : prevSize
+      )
     );
   };
 
@@ -319,7 +327,7 @@ const AddProduct = () => {
                 <Button
                   key={cat}
                   variant={category === cat ? "contained" : "outlined"}
-                  onClick={() => handleCategoryChange(cat as Category)}
+                  onClick={() => setCategory(cat as Category)}
                   sx={{
                     flex: 1,
                     height: 40,
@@ -354,24 +362,32 @@ const AddProduct = () => {
                 gap: 2,
               }}
             >
-              {sizesData[category].map((size) => (
-                <Button
-                  key={size}
-                  variant={
-                    sizes.some((s) => s === size) ? "contained" : "outlined"
-                  }
-                  onClick={() => handleSizeChange(size)}
-                  sx={{
-                    height: 40,
-                    width: 70,
-                    fontWeight: sizes.some((s) => s === size)
-                      ? "bold"
-                      : "normal",
-                  }}
-                >
-                  {size}
-                </Button>
-              ))}
+              {sizesData[category].map((size) => {
+                const selectedSize = sizes
+                  .find((curSize) => curSize.size === size)
+                  ?.is_available;
+
+                return (
+                  <Button
+                    key={size}
+                    variant={
+                      selectedSize 
+                        ? "contained" 
+                        : "outlined"
+                    }
+                    onClick={() => handleSizeChange(size)}
+                    sx={{
+                      height: 40,
+                      width: 70,
+                      fontWeight: selectedSize
+                        ? "bold"
+                        : "normal",
+                    }}
+                  >
+                    {size}
+                  </Button>
+                );
+              })}
             </Box>
           </Box>
 
