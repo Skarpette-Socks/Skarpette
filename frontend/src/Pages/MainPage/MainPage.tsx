@@ -6,7 +6,7 @@ import MainPageListGoods from "./MainPageComponents/MainPageListGoods/MainPageLi
 
 const MainPage: React.FC = () => {
   const newGoods = 'Новинки';
-  const yourFavorite = 'Ваші улюбленці';
+  const yourFavorite = 'Хіт продажів';
 
   return (
     <div>
