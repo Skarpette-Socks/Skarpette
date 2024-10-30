@@ -5,8 +5,16 @@ import {
   Box,
   Typography,
   IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 type Category = "Жіночі" | "Чоловічі" | "Дитячі";
 
@@ -22,17 +30,85 @@ const sizesData: Record<Category, string[]> = {
 };
 
 const AddProduct = () => {
-  const [name, setName] = useState<string>(""); //+
-  const [description, setDescription] = useState<string>(""); //+
-  const [images, setImages] = useState<string[]>([]); //+
-  const [compAndCare, setCompAndCare] = useState<string>(""); //+
-  const [category, setCategory] = useState<Category>("Жіночі"); //+
-  const [styles, setStyles] = useState<string[]>([]); //-
-  const [price, setPrice] = useState<number | null>(); //+
-  const [price2, setPrice2] = useState<number | null>(); //+
-  const [isNew, setIsNew] = useState<boolean>(false); //+
-  const [isTop, setIsTop] = useState<boolean>(false); //+
-  const [sizes, setSizes] = useState<sizeItem[]>([]); //+
+  const [name, setName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [images, setImages] = useState<string[]>([]);
+  const [compAndCare, setCompAndCare] = useState<string>("");
+  const [category, setCategory] = useState<Category>("Жіночі");
+  const [styles, setStyles] = useState<string[]>([]);
+  const [price, setPrice] = useState<number>(0);
+  const [price2, setPrice2] = useState<number>(0);
+  const [isNew, setIsNew] = useState<boolean>(false);
+  const [isTop, setIsTop] = useState<boolean>(false);
+  const [sizes, setSizes] = useState<sizeItem[]>([]);
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [refreshSizes, setRefreshSizes] = useState(false);
+
+  const clearAllFields = () => {
+    setName("");
+    setDescription("");
+    setImages([]);
+    setCompAndCare("");
+    setCategory("Жіночі");
+    setStyles([]);
+    setPrice(0);
+    setPrice2(0);
+    setIsNew(false);
+    setIsTop(false);
+    setOpenDialog(false);
+    setRefreshSizes(prev => !prev);
+  };
+
+  const isValidForm = () => {
+    if(!name) {
+      toast.error('Назва не може бути пустою');
+      return false;
+    }
+
+    if (price === 0) {
+      toast.error('Виберіть ціну');
+      return false;
+    }
+
+    if (price < 0) {
+      toast.error('Некоректна ціна');
+      return false;
+    }
+
+    if (price2 < 0) {
+      toast.error('Некоректна акційна ціна');
+      return false;
+    }
+
+    if (price2 >= price) {
+      toast.error('Акційна ціна не може бути більшою за регулярну');
+      return false;
+    }
+
+    if (images.length === 0) {
+      toast.error('Додайте принаймні 1 фото');
+      return false;
+    }
+
+    if(!sizes.some(size => size.is_available)) {
+      toast.error('Виберіть принаймні 1 розмір');
+      return false;
+    }
+
+    if (styles.length === 0) {
+      toast.error('Виберіть принаймні 1 стиль');
+      return false;
+    }
+  
+    return true;
+  }
+
+  const saveItem = () => {
+    if(isValidForm()) {
+      toast.success('Чудово!');
+    }
+  }
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -44,10 +120,8 @@ const AddProduct = () => {
       size: currentSize,
       is_available: false,
     })));
-
-    console.log('sizes',sizes);
     
-  }, [category])
+  }, [category, refreshSizes])
 
   const handleSizeChange = (value: string) => {
     setSizes((prevSizes) => 
@@ -112,6 +186,7 @@ const AddProduct = () => {
             sx={{
               height: 40
             }}
+            onClick={() => setOpenDialog(true)}
           >
             Очистити
           </Button>
@@ -121,6 +196,7 @@ const AddProduct = () => {
             sx={{
               height: 40
             }}
+            onClick={() => saveItem()}
           >
             Додати товар
           </Button>
@@ -205,18 +281,18 @@ const AddProduct = () => {
             >
               <TextField
                 fullWidth
-                label="Ціна"
+                label="Ціна(грн)"
                 variant="outlined"
                 type="number"
-                value={price}
+                value={price ? price : ''}
                 onChange={(event) => setPrice(+event.target.value)}
               />
               <TextField
                 fullWidth
-                label="Спеціальна ціна"
+                label="Акційна ціна(грн)"
                 variant="outlined"
                 type="number"
-                value={price2}
+                value={price2 ? price2 : ''}
                 onChange={(event) => setPrice2(+event.target.value)}
               />
             </Box>
@@ -484,22 +560,29 @@ const AddProduct = () => {
               </Button>
 
             </Box>
-            {/* <FormControlLabel
-              control={
-                <Checkbox
-                  value={isNew}
-                  checked={isNew}
-                  onChange={() => setIsNew((prev) => !prev)}
-                  sx={{
-                    justifyContent: "start",
-                  }}
-                />
-              }
-              label={isNew}
-            /> */}
           </Box>
         </Box>
       </Box>
+
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+      >
+        <DialogTitle>Підтвердження очищення</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Ви дійсно хочете очистити всі поля?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="primary">
+            Скасувати
+          </Button>
+          <Button onClick={clearAllFields} color="error" autoFocus>
+            Очистити
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
