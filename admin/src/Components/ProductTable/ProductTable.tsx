@@ -308,7 +308,9 @@ const ProductTable: React.FC = () => {
                       .map(s => s.size)
                       .join(', ');
 
-                  const allStyles = sock.style.join(', ');
+                  const allStyles = 
+                    sock.style
+                      .join(', ');
                   
                   return (
                     <StyledTableRow
@@ -342,7 +344,7 @@ const ProductTable: React.FC = () => {
                           {sock.price}грн
                         </StyledTableCell>
                       <StyledTableCell className="discount-cell">
-                        {sock.discountPercentage}%
+                        {sock.discountPercentage ? `${sock.discountPercentage}%` : ''}
                       </StyledTableCell>
                       <StyledTableCell sx={{ color: "green" }}>
                         {sock.price2 ? `${sock.price2}грн` : ''}
