@@ -57,15 +57,17 @@ const skarpetteSchema = new mongoose.Schema({
         enum: ['Men', 'Women', 'Child'],
         required: true,
     },
-    style: {
-        type: String,
-        required: true,
-    },
+    style: [
+        {
+            type: String,
+            required: true,
+        },
+    ],
     is_new: {
         type: Boolean,
         default: false,
     },
-    is_favorite: {
+    is_hit: {
         type: Boolean,
         default: false,
     },
@@ -75,6 +77,11 @@ const skarpetteSchema = new mongoose.Schema({
     },
     discountPercentage: {
         type: Number,
+    },
+    //Поняття не маю, як її назвати
+    is_new_main: {
+        type: Boolean,
+        default: false,
     },
 });
 
