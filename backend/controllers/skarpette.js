@@ -320,6 +320,85 @@ const getFilteredSkarpettes = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+const updateItemField = async (req, res, field) => {
+    try {
+        const { items } = req.body;
+
+        // Validate that `items` is an array
+        if (!Array.isArray(items)) {
+            return res
+                .status(400)
+                .json({ message: 'Items should be an array' });
+        }
+
+        // Convert items to numbers
+        const uniqueItems = [...new Set(items.map(Number))]; // Convert to numbers
+
+        // Check if there are exactly 4 unique items
+        if (uniqueItems.length < 4) {
+            return res
+                .status(400)
+                .json({ message: 'Please provide 4 unique items' });
+        }
+        if (uniqueItems.length !== items.length) {
+            return res.status(400).json({
+                message: 'Duplicate items found. Ensure all items are unique.',
+            });
+        }
+
+        // Verify that each `vendor_code` exists in the database
+        const existingItems = await Skarpette.find({
+            vendor_code: { $in: uniqueItems },
+        });
+        const existingVendorCodes = existingItems.map(
+            (item) => item.vendor_code
+        );
+        const missingVendorCodes = uniqueItems.filter(
+            (code) => !existingVendorCodes.includes(code)
+        );
+
+        // Debugging logs
+        console.log('Unique Items:', uniqueItems);
+        console.log('Existing Vendor Codes:', existingVendorCodes);
+        console.log('Missing Vendor Codes:', missingVendorCodes);
+
+        if (missingVendorCodes.length > 0) {
+            return res.status(404).json({
+                message: 'Some vendor codes do not exist in the database',
+                missing: missingVendorCodes, // Include missing codes for debugging
+            });
+        }
+
+        // Reset any existing field items
+        for (const item of existingItems) {
+            if (item[field]) {
+                item[field] = false;
+                await item.save();
+            }
+        }
+
+        // Set field to true for items with matching vendor codes
+        await Skarpette.updateMany(
+            { vendor_code: { $in: uniqueItems } },
+            { $set: { [field]: true } } // Use dynamic field name
+        );
+
+        // Retrieve and return the updated items
+        const updatedItems = await Skarpette.find({
+            vendor_code: { $in: uniqueItems },
+        });
+        res.status(200).json({
+            message: 'Updated successfully',
+            updated: updatedItems,
+        });
+    } catch (error) {
+        // Handle errors
+        res.status(500).json({ error: error.message });
+    }
+};
+const updateIsNewMain = (req, res) => updateItemField(req, res, 'is_new_main');
+const updateIsHit = (req, res) => updateItemField(req, res, 'is_hit');
+
 module.exports = {
     createSkarpette,
     deleteSkarpette,
@@ -330,4 +409,6 @@ module.exports = {
     getFilteredSkarpettes,
     getNewMainSkarpettes,
     getHitSkarpettes,
+    updateIsNewMain,
+    updateIsHit,
 };
