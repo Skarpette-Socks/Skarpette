@@ -16,8 +16,8 @@ const upload = multer({
 
 router.get('/search', skarpetteController.getSkarpettesByNameOrVendorCode);
 router.get('/filter', skarpetteController.getFilteredSkarpettes);
-router.get('/favorites', skarpetteController.getFavotireSkarpettes);
-router.get('/new', skarpetteController.getNewSkarpettes);
+router.get('/hit', skarpetteController.getHitSkarpettes);
+router.get('/newMain', skarpetteController.getNewMainSkarpettes);
 router.post(
     '/',
     authMiddleware,

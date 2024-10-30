@@ -200,11 +200,11 @@ const getAllSkarpettes = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-const getNewSkarpettes = async (req, res) => {
-    await findSkarpettesByCriteria({ is_new: true }, res);
+const getNewMainSkarpettes = async (req, res) => {
+    await findSkarpettesByCriteria({ is_new_main: true }, res);
 };
-const getFavotireSkarpettes = async (req, res) => {
-    await findSkarpettesByCriteria({ is_favorite: true }, res);
+const getHitSkarpettes = async (req, res) => {
+    await findSkarpettesByCriteria({ is_hit: true }, res);
 };
 const updateSkarpette = async (req, res) => {
     const { id } = req.params;
@@ -328,6 +328,6 @@ module.exports = {
     updateSkarpette,
     getSkarpettesByNameOrVendorCode,
     getFilteredSkarpettes,
-    getNewSkarpettes,
-    getFavotireSkarpettes,
+    getNewMainSkarpettes,
+    getHitSkarpettes,
 };
