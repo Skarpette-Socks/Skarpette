@@ -8,6 +8,8 @@ import Orders from "./Pages/Orders/Orders";
 import AdminPage from "./Pages/AdminPage/AdminPage";
 import AddProduct from "./Pages/AddProduct/AddProduct";
 import EditProduct from "./Pages/EditProduct/EditProduct";
+import { ToastContainer } from "react-toastify";
+
 
 const AuthWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
@@ -47,6 +49,16 @@ const AuthWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 const Admin = () => {
   return (
     <Router>
+      <ToastContainer 
+        pauseOnFocusLoss={false} 
+        position="top-right"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        pauseOnHover
+        theme="dark"
+      />
       <Routes>
         <Route path="/" element={
           <AuthWrapper>
