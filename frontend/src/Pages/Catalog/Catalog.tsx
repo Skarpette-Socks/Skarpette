@@ -83,12 +83,12 @@ const Catalog: React.FC = () => {
   
   const filteredSocks = useMemo(() => {
     return socks.filter((sock) => {
-      const newStyles = sock.style.split(',').map((style) => style.trim());
+      // const newStyles = sock.style.split(',').map((style) => style.trim());
   
       const matchesStyle =
         selectedStyles.length === 0 ||
-        newStyles.some((style: string) => selectedStyles.includes(style)); 
-        // sock.style.some((style: string) => selectedStyles.includes(style));
+        // newStyles.some((style: string) => selectedStyles.includes(style)); 
+        sock.style.some((style: string) => selectedStyles.includes(style));
 
       const matchesSize =
         selectedSizes.length === 0 ||

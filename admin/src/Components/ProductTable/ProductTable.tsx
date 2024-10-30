@@ -307,6 +307,8 @@ const ProductTable: React.FC = () => {
                       .filter(s => s.is_available)
                       .map(s => s.size)
                       .join(', ');
+
+                  const allStyles = sock.style.join(', ');
                   
                   return (
                     <StyledTableRow
@@ -332,7 +334,7 @@ const ProductTable: React.FC = () => {
                       </StyledTableCell>
                       <StyledTableCell>{sock.vendor_code}</StyledTableCell>
                       <StyledTableCell>{sock.type}</StyledTableCell>
-                      <StyledTableCell>{sock.style}</StyledTableCell>
+                      <StyledTableCell>{allStyles}</StyledTableCell>
                       <StyledTableCell className="size-cell">
                         {allSizes}
                       </StyledTableCell>

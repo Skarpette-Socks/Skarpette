@@ -62,7 +62,7 @@ const AddProduct = () => {
 
   const isValidForm = () => {
     if(!name) {
-      toast.error('Назва не може бути пустою');
+      toast.error('Додайте назву');
       return false;
     }
 
