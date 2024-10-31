@@ -64,10 +64,10 @@ const orderSchema = new mongoose.Schema({
             type: String,
         },
         apartmentNumber: {
-            type: Number,
+            type: String,
         },
         departmentNumber: {
-            type: Number,
+            type: String,
         },
     },
     paymentType: {
