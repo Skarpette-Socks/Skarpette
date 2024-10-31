@@ -5,7 +5,7 @@ import "./CartContent.scss";
 import CartContentItem from "./CartContentItem";
 import { Link } from "react-router-dom";
 
-import no_cart from '../../../../assets/img/NoItemsCart.svg';
+import no_cart from '../../../../assets/img/NoItemsInCart.svg';
 
 const CartContent: React.FC = () => {
   const { cartItems } = useCartItems();

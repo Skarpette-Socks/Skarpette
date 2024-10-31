@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { fetchDataItem } from '../../api/fetchDataItem';
 import DataItem from '../../types/DataItem';
+import Product from '../../Components/Product/Product';
 
 const EditProduct = () => {
   const { VENDOR_CODE } = useParams<{ VENDOR_CODE: string }>();
@@ -45,7 +46,7 @@ const EditProduct = () => {
   }
 
   return (
-    <h1>Edit Product {item.vendor_code}</h1>  
+    <Product pageType='edit' item={item}/> 
   )
 }
 
