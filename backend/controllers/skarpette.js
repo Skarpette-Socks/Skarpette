@@ -119,7 +119,9 @@ const createSkarpette = async (req, res) => {
         skarpetteData.images_urls = [];
 
         skarpetteData.vendor_code = await generateUniqueVendorCode();
-
+        if (skarpetteData.is_new_main || skarpetteData.is_hit) {
+            return res.status(400).json('Do not add is_new_main or is_hit');
+        }
         // Upload images
         if (req.files && req.files.length > 0) {
             const images = req.files;
