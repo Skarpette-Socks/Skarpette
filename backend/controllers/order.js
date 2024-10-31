@@ -104,7 +104,7 @@ function decrypt(encryptedData) {
 const encryptObject = (obj) => {
     const encryptedObject = {};
     for (let key in obj) {
-        if (typeof obj[key] === 'string') {
+        if (typeof obj[key] === 'string' && key !== 'deliveryType') {
             encryptedObject[key] = encrypt(obj[key]);
         } else {
             encryptedObject[key] = obj[key];
@@ -116,7 +116,11 @@ const encryptObject = (obj) => {
 const decryptObject = (obj) => {
     const decryptedObject = {};
     for (let key in obj) {
-        decryptedObject[key] = decrypt(obj[key]);
+        if (typeof obj[key] === 'string' && key !== 'deliveryType') {
+            decryptedObject[key] = decrypt(obj[key]);
+        } else {
+            decryptedObject[key] = obj[key];
+        }
     }
     return decryptedObject;
 };
@@ -137,6 +141,7 @@ const createOrder = async (req, res) => {
             return res.status(400).json(deliveryValidationError);
         }
         orderData.customerData = encryptObject(orderData.customerData);
+        orderData.deliveryData = encryptObject(orderData.deliveryData);
         if (orderData.recipientData) {
             orderData.recipientData = encryptObject(orderData.recipientData);
         }
@@ -156,6 +161,7 @@ const getOrderById = async (req, res) => {
             return res.status(404).json('Order not found');
         }
         order.customerData = decryptObject(order.customerData);
+        order.deliveryData = decryptObject(order.deliveryData);
         if (order.recipientData) {
             order.recipientData = decryptObject(order.recipientData);
         }
@@ -173,6 +179,7 @@ const getAllOrders = async (req, res) => {
         }
         for (let order of orders) {
             order.customerData = decryptObject(order.customerData);
+            order.deliveryData = decryptObject(order.deliveryData);
             if (order.recipientData) {
                 order.recipientData = decryptObject(order.recipientData);
             }
