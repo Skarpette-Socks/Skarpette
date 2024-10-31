@@ -9,6 +9,7 @@ import AdminPage from "./Pages/AdminPage/AdminPage";
 import AddProduct from "./Pages/AddProduct/AddProduct";
 import EditProduct from "./Pages/EditProduct/EditProduct";
 import { ToastContainer } from "react-toastify";
+import NewAndHitsPage from "./Pages/NewAndHits/NewAndHits";
 
 
 const AuthWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -49,8 +50,8 @@ const AuthWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 const Admin = () => {
   return (
     <Router>
-      <ToastContainer 
-        pauseOnFocusLoss={false} 
+      <ToastContainer
+        pauseOnFocusLoss={false}
         position="top-right"
         autoClose={4000}
         hideProgressBar={false}
@@ -60,15 +61,19 @@ const Admin = () => {
         theme="dark"
       />
       <Routes>
-        <Route path="/" element={
-          <AuthWrapper>
-            <AdminPage />
-          </AuthWrapper>
-        }>
+        <Route
+          path="/"
+          element={
+            <AuthWrapper>
+              <AdminPage />
+            </AuthWrapper>
+          }
+        >
           <Route index element={<MainPage />} />
           <Route path="orders" element={<Orders />} />
           <Route path="add" element={<AddProduct />} />
           <Route path="edit/:VENDOR_CODE" element={<EditProduct />} />
+          <Route path="new-and-hit" element={<NewAndHitsPage />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
