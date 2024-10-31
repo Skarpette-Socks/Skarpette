@@ -13,6 +13,7 @@ import {
   Payment,
   Logout,
   AddCircle,
+  Star,
 } from "@mui/icons-material";
 import { NavLink, useNavigate } from "react-router-dom";
 import './Aside.scss';
@@ -24,7 +25,7 @@ const menuItems = [
   { text: "Замовлення", icon: <ShoppingCart />, path: "/orders" },
   { text: "Оплати", icon: <Payment />, path: "/payments" },
   { text: "Новий товар", icon: <AddCircle />, path: "/add" },
-
+  { text: "Новинки та хіти", icon: <Star />, path: "/new-and-hit" },
 ];
 
 
