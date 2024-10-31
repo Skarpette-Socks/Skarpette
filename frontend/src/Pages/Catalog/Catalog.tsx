@@ -83,7 +83,6 @@ const Catalog: React.FC = () => {
   
   const filteredSocks = useMemo(() => {
     return socks.filter((sock) => {
-  
       const matchesStyle =
         selectedStyles.length === 0 ||
         sock.style.some((style: string) => selectedStyles.includes(style));
