@@ -35,12 +35,6 @@ const skarpetteSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    color: [
-        {
-            type: String,
-            required: true,
-        },
-    ],
     size: [sizeSchema],
     images_urls: [
         {
