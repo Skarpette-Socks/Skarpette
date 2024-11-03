@@ -1,22 +1,20 @@
-interface sizeItem {
-  size: string;
-  is_available:boolean;
-}
+import SizeItem from "./SizeItem";
 
 interface DataItem {
   _id: string;
   name: string;
-  description?: string;
+  description: string;
   vendor_code: number;
-  images_urls: string[];
-  composition_and_care?: string;
+  images_urls: File[];
+  composition_and_care: string;
   type: string;
   style: string[];
   price: number;
-  price2?: number;
-  is_new?: boolean;
+  price2: number;
+  is_new: boolean;
+  is_hit: boolean;
   is_in_stock?: boolean;
-  size: sizeItem[];
+  size: SizeItem[];
   discountPercentage?: number;
 }
 
