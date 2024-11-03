@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import "./ProductOrder.scss";
 
 import chevronLeft from "../../../assets/img/icons/chevron-left.svg";
@@ -38,7 +38,7 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
 
   const imgArr = item?.images_urls;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (productImage.current) {
       const handleResize = () => {
         const imgWidth = productImage.current!.offsetWidth;

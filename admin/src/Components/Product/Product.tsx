@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import {
   TextField,
   Button,
@@ -15,17 +15,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import DataItem from "../../types/DataItem";
+import ProductRef from "../../types/ProductRef";
+import Category from "../../types/Category";
+import SizeItem from "../../types/SizeItem";
 
-type Category = "Women" | "Men" | "Child";
-
-interface sizeItem {
-  size: string;
-  is_available: boolean;
-}
-
-interface productProps {
+interface ProductProps {
   pageType: 'add' | 'edit';
   item: DataItem;
+  saveItem: () => void;
 }
 
 const sizesData: Record<Category, string[]> = {
@@ -36,42 +33,127 @@ const sizesData: Record<Category, string[]> = {
 
 const defaultCategory: Category = Object.keys(sizesData)[0] as Category;
 
-const Product: React.FC<productProps> = (
-  { 
-    pageType,
-    item
-  }) => {
-  const categoryToUse = (["Women", "Men", "Child"].includes(item.type) ? item.type : defaultCategory) as Category
+const Product = forwardRef<ProductRef, ProductProps> (
+  (
+    { 
+      pageType,
+      item,
+      saveItem
+    }, ref
+  ) => {  
+  const setCategoryOnRender = (
+    Object.keys(sizesData)
+    .includes(item.type) 
+    ? item.type 
+    : defaultCategory) as Category;
 
   const [name, setName] = useState<string>(item.name);
-  const [description, setDescription] = useState<string | undefined>(item.description);
-  const [images, setImages] = useState<string[]>(item.images_urls);
-  const [compAndCare, setCompAndCare] = useState<string | undefined>(item.composition_and_care);
-  const [category, setCategory] = useState<Category>(categoryToUse);
+  const [description, setDescription] = useState<string>(item.description);
+  const [images, setImages] = useState<File[]>([]);
+  const [compAndCare, setCompAndCare] = useState<string>(item.composition_and_care);
+  const [category, setCategory] = useState<Category>(setCategoryOnRender);
   const [styles, setStyles] = useState<string[]>(item.style);
   const [price, setPrice] = useState<number>(item.price);
-  const [price2, setPrice2] = useState<number | undefined>(item.price2);
-  const [isNew, setIsNew] = useState<boolean | undefined>(item.is_new);
-  const [isTop, setIsTop] = useState<boolean>(false);
-  const [sizes, setSizes] = useState<sizeItem[]>(item.size);
+  const [price2, setPrice2] = useState<number>(item.price2);
+  const [isNew, setIsNew] = useState<boolean>(item.is_new);
+  const [isHit, setIsHit] = useState<boolean>(item.is_hit);
+  const [sizes, setSizes] = useState<SizeItem[]>(item.size);
+
+  useEffect(() => {
+    if (Array.isArray(item.images_urls)) {
+      setImages(item.images_urls.map(url => new File([], url)));
+    }
+  }, [item.images_urls]);
+
+  const imageUrls = images.map((image) => URL.createObjectURL(image));
+
+  useImperativeHandle(ref, () => ({
+    isValid() {
+      return isValidForm();
+    },
+    getName() {
+      console.log('name', name);
+      
+      return name;
+    },
+    getDescription() {
+      console.log('description', description);
+
+      return description;
+    },
+    getImages() {
+      console.log('images', images);
+      // const formData = new FormData();
+      // images.forEach((image) => {
+      //   formData.append('images', image);
+      // });
+
+      return images;
+    },
+    getCompAndCare() {
+      console.log('compAndCare', compAndCare);
+
+      return compAndCare;
+    },
+    getCategory() {
+      console.log('category', category);
+
+      return category;
+    },
+    getStyles() {
+      console.log('styles', styles);
+
+      return styles;
+    },
+    getPrice() {
+      console.log('price', price);
+
+      return price;
+    },
+    getPrice2() {
+      console.log('price2', price2);
+
+      return price2;
+    },
+    getIsNew() {
+      console.log('isNew', isNew);
+
+      return isNew;
+    },
+    getIsHit() {
+      console.log('isHit', isHit);
+
+      return isHit;
+    },
+    getSizes() {
+      console.log('sizes', sizes);
+
+      return sizes;
+    },
+    getPageType() {
+      return pageType;
+    }
+}));
 
   const [openDialog, setOpenDialog] = useState(false);
-  // const [refreshSizes, setRefreshSizes] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const stylesData = ["Короткі", "Класичні", "Спортивні", "Медичні"];
 
   const clearAllFields = () => {
     setName(item.name);
     setDescription(item.description);
     setImages(item.images_urls);
     setCompAndCare(item.composition_and_care);
-    setCategory(categoryToUse);
+    setCategory(setCategoryOnRender);
     setStyles(item.style);
     setPrice(item.price);
     setPrice2(item.price2);
     setIsNew(item.is_new);
-    setIsTop(false);
-    setOpenDialog(false);
+    setIsHit(item.is_hit);
     setSizes(item.size);
-    // setRefreshSizes(prev => !prev);
+    setOpenDialog(false);
   };
 
   const isValidForm = () => {
@@ -105,6 +187,11 @@ const Product: React.FC<productProps> = (
       return false;
     }
 
+    if (compAndCare === '' || !compAndCare) {
+      toast.error('Заповніть склад та догляд');
+      return false;
+    }
+
     if(!sizes.some(size => size.is_available)) {
       toast.error('Виберіть принаймні 1 розмір');
       return false;
@@ -118,15 +205,6 @@ const Product: React.FC<productProps> = (
     return true;
   }
 
-  const saveItem = () => {
-    if(isValidForm()) {
-      toast.success('Чудово!');
-    }
-  }
-
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const stylesData = ["Короткі", "Класичні", "Спортивні", "Медичні"];
 
   useEffect(() => {
     if (pageType === 'add' || category !== item.type) {
@@ -160,9 +238,7 @@ const Product: React.FC<productProps> = (
 
   const handlePhotoAdd = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      const newImages = Array.from(event.target.files).map((file) =>
-        URL.createObjectURL(file)
-      );
+      const newImages = Array.from(event.target.files);
       setImages((prevImages) => [...prevImages, ...newImages].slice(0, 5));
     }
   };
@@ -349,7 +425,7 @@ const Product: React.FC<productProps> = (
                 flexWrap: "wrap",
               }}
             >
-              {images.map((photo, index) => (
+              {imageUrls.map((photo, index) => (
                 <Box
                   key={index}
                   sx={{
@@ -391,7 +467,7 @@ const Product: React.FC<productProps> = (
                     type="file"
                     hidden
                     multiple
-                    accept="image/*"
+                    accept=".jpg, .jpeg, .webp"
                     onChange={handlePhotoAdd}
                   />
                 </Button>
@@ -557,7 +633,7 @@ const Product: React.FC<productProps> = (
               variant="h6"
               paddingBottom={1}
             >
-              Теги
+              Доп. функціонал
             </Typography>
             <Box
               sx={{
@@ -581,17 +657,17 @@ const Product: React.FC<productProps> = (
               </Button>
               <Button
                 variant={
-                  isTop ? "contained" : "outlined"
+                  isHit ? "contained" : "outlined"
                 }
-                onClick={() => setIsTop((prev) => !prev)}
+                onClick={() => setIsHit((prev) => !prev)}
                 sx={{
                   height: 40,
-                  fontWeight: isTop
+                  fontWeight: isHit
                     ? "bold"
                     : "normal",
                 }}
               >
-                TOP
+                HIT
               </Button>
 
             </Box>
@@ -626,6 +702,6 @@ const Product: React.FC<productProps> = (
       </Dialog>
     </Box>
   );
-};
+});
 
 export default Product;
