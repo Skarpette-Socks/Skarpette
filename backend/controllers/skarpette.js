@@ -79,18 +79,17 @@ async function generateUniqueVendorCode() {
     let isUnique = false;
 
     while (!isUnique) {
-        vendorCode = Math.floor(1000000 + Math.random() * 9000000);
-        const existingSkarpette = await Skarpette.findOne({
-            vendor_code: vendorCode,
-        });
+        vendorCode = Math.floor(1000000 + Math.random() * 9000000); // Генерує код від 1000000 до 9999999
+        const existingSkarpette = await Skarpette.findOne({ vendor_code: vendorCode });
         if (!existingSkarpette) {
             isUnique = true;
+        } else {
+            console.log(`Код ${vendorCode} вже існує, генеруємо новий...`);
         }
     }
 
     return vendorCode;
 }
-
 const findSkarpettesByCriteria = async (criteria, res) => {
     try {
         const skarpettes = await Skarpette.find(criteria);
@@ -113,62 +112,50 @@ const getSizesByType = (type) => {
     return sizes[type].map((size) => ({ size, is_available: true }));
 };
 
-const createSkarpette = async (req, res) => {
+async function createSkarpette(req, res) {
     try {
-        const skarpetteData = req.body;
-        skarpetteData.images_urls = [];
-
-        skarpetteData.vendor_code = await generateUniqueVendorCode();
-        // Upload images
-        if (req.files && req.files.length > 0) {
-            const images = req.files;
+        const skarpetteData = { ...req.body };
+        console.log('Запит:', skarpetteData)
+        if (skarpetteData.images && skarpetteData.images.length > 0) {
             const imagesUrls = await Promise.all(
-                images.map(async (file) => {
-                    const fileExtension = file.originalname.split('.').pop();
-                    const newFileName = `${uuidv4()}.${fileExtension}`;
-                    const resizedImage = await sharp(file.buffer).resize({
+                skarpetteData.images.map(async (base64Image) => {
+                    // Прибираємо префікс, якщо він є
+                    const base64String = base64Image.replace(/^data:image\/\w+;base64,/, "");
+
+                    // Конвертуємо Base64 у буфер
+                    const imageBuffer = Buffer.from(base64String, "base64");
+
+                    // Змінюємо розмір зображення
+                    const resizedImage = await sharp(imageBuffer).resize({
                         width: targetWidth,
                         height: targetHeight,
                         fit: sharp.fit.cover,
-                    });
-                    const imageUrl = await uploadImageToS3(
-                        resizedImage,
-                        `images/${newFileName}`
-                    );
+                    }).toBuffer();
+
+                    // Генеруємо унікальне ім'я файлу
+                    const fileExtension = "jpeg"; // Визначте розширення відповідно до вашого зображення
+                    const newFileName = `${uuidv4()}.${fileExtension}`;
+                    const imageUrl = await uploadImageToS3(resizedImage, `images/${newFileName}`);
+
                     return imageUrl;
                 })
             );
+
             skarpetteData.images_urls = imagesUrls;
         }
+        console.log('urls:', skarpetteData.images_urls)
+        skarpetteData.vendor_code = await generateUniqueVendorCode();
+        // Зберігання товару в базі даних (замініть на вашу логіку)
+        await Skarpette.create(skarpetteData);
 
-        if (skarpetteData.images_urls.length === 0) {
-            return res.status(400).json('At least 1 image is required');
-        }
-
-        // Transform the size data
-        skarpetteData.size = [];
-        Object.keys(req.body).forEach((key) => {
-            if (key.startsWith('size[')) {
-                skarpetteData.size.push({
-                    size: req.body[key],
-                    is_available: true,
-                });
-            }
-        });
-
-        // Check for sizes by type
-        if (skarpetteData.size.length === 0) {
-            const sizesByType = getSizesByType(skarpetteData.type);
-            skarpetteData.size = sizesByType;
-        }
-
-        const newSkarpette = await Skarpette.create(skarpetteData);
-        res.status(201).json(newSkarpette);
+        res.status(201).json({ message: "Товар успішно додано", skarpetteData });
     } catch (error) {
-        console.error('Error creating skarpette:', error);
-        res.status(500).json({ error: error.message });
+        console.error("Error creating skarpette:", error);
+        res.status(500).json({ error: "Не вдалося створити товар", details: error.message });
     }
-};
+}
+
+
 
 const getSkarpetteById = async (req, res) => {
     const { id } = req.params;
