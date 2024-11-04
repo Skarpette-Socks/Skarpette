@@ -83,10 +83,6 @@ const Product = forwardRef<ProductRef, ProductProps> (
     },
     getImages() {
       console.log('images', images);
-      // const formData = new FormData();
-      // images.forEach((image) => {
-      //   formData.append('images', image);
-      // });
 
       return images;
     },
@@ -179,6 +175,11 @@ const Product = forwardRef<ProductRef, ProductProps> (
 
     if (price2 !== undefined && price2 >= price) {
       toast.error('Акційна ціна не може бути більшою за регулярну');
+      return false;
+    }
+
+    if (!description) {
+      toast.error('Додайте опис');
       return false;
     }
 
