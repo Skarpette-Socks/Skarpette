@@ -69,6 +69,8 @@ const Product = forwardRef<ProductRef, ProductProps> (
 
   useImperativeHandle(ref, () => ({
     isValid() {
+      // return true;
+
       return isValidForm();
     },
     getName() {
@@ -82,9 +84,8 @@ const Product = forwardRef<ProductRef, ProductProps> (
       return description;
     },
     getImages() {
-      console.log('images', images);
-
-      return images;
+    
+      return images; // Повертаємо об'єкт FormData
     },
     getCompAndCare() {
       console.log('compAndCare', compAndCare);

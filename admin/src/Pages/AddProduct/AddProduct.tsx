@@ -11,17 +11,22 @@ const AddProduct = () => {
       const toastId = toast.loading("Завантаження...");
       const token = localStorage.getItem("authToken");
       if (!token) {
+        toast.update(toastId, {
+          render: `Сталася помилка: невалідний токен авторизації`,
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
         return;
       }
-  
-      // Конвертуємо кожне зображення в Base64
-      const images = await Promise.all(
-        productRef.current?.getImages().map(async (file) => {
-          const base64 = await toBase64(file); // Додаткова функція для конвертації
-          return base64;
-        })
-      );
-  
+
+      const images = productRef.current?.getImages();
+      const formData = new FormData();
+      
+      images.forEach((image) => {
+        formData.append('images', image);
+      });
+      
       const skarpetteData = {
         name: productRef.current?.getName(),
         description: productRef.current?.getDescription(),
@@ -32,19 +37,19 @@ const AddProduct = () => {
         price2: productRef.current?.getPrice2(),
         is_new: productRef.current?.getIsNew(),
         size: productRef.current?.getSizes(),
-        images, // Зображення як масив Base64
       };
-  
+      
+      formData.append('data', JSON.stringify(skarpetteData));
+      
       try {
         const response = await fetch("http://localhost:5000/skarpette", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
             Authorization: token,
           },
-          body: JSON.stringify(skarpetteData),
+          body: formData, 
         });
-  
+    
         if (response.ok) {
           toast.update(toastId, {
             render: "Новий товар успішно додано!",
@@ -71,7 +76,6 @@ const AddProduct = () => {
     }
   };
   
-  // Функція для конвертації файлів у Base64
   const toBase64 = (file: File) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
