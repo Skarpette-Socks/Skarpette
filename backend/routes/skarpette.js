@@ -15,20 +15,10 @@ const upload = multer({
     },
 });
 router.use(express.urlencoded({ extended: true }));
-router.post('/uploadPhoto', upload.single('images'), async (req, res, next) => {
-    try {
-        await skarpetteController.uploadPhoto(req, res);
-    } catch (error) {
-        next(error); // Передача помилки в обробник помилок
-    }
-});
-
 router.get('/search', skarpetteController.getSkarpettesByNameOrVendorCode);
 router.get('/filter', skarpetteController.getFilteredSkarpettes);
 router.get('/hit', skarpetteController.getHitSkarpettes);
 router.get('/newMain', skarpetteController.getNewMainSkarpettes);
-router.post('/updateIsNewMain', skarpetteController.updateIsNewMain);
-router.post('/updateIsHit', skarpetteController.updateIsHit);
 router.post(
     '/',
     authMiddleware,

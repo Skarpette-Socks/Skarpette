@@ -72,11 +72,6 @@ const skarpetteSchema = new mongoose.Schema({
     discountPercentage: {
         type: Number,
     },
-    //Поняття не маю, як її назвати
-    is_new_main: {
-        type: Boolean,
-        default: false,
-    },
 });
 
 function calculateDiscount(price, price2) {
@@ -95,6 +90,5 @@ skarpetteSchema.pre('save', function (next) {
     next();
 });
 
-const Skarpette = mongoose.model('Skarpette', skarpetteSchema);
-
+const Skarpette = mongoose.models.Skarpette || mongoose.model('Skarpette', skarpetteSchema);
 module.exports = Skarpette;

@@ -34,7 +34,7 @@ const getAllNews = async (req,res) => {
         if (!news.length) {
             return res.status(404).json('No news found');
         }
-        const skarpettes = await Promice.all(
+        const skarpettes = await Promise.all(
             //????
             news.map(async (neww) => {
                 return await Skarpette.findById(neww.skarpetteId);
