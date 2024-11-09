@@ -2,6 +2,7 @@ const router = require('express').Router();
 const multer = require('multer');
 const skarpetteController = require('../controllers/skarpette');
 const authMiddleware = require('../middleware/authMiddleware');
+const express = require('express');
 
 const storage = multer.memoryStorage();
 const upload = multer({
@@ -12,6 +13,14 @@ const upload = multer({
         }
         cb(null, true);
     },
+});
+router.use(express.urlencoded({ extended: true }));
+router.post('/uploadPhoto', upload.single('images'), async (req, res, next) => {
+    try {
+        await skarpetteController.uploadPhoto(req, res);
+    } catch (error) {
+        next(error); // Передача помилки в обробник помилок
+    }
 });
 
 router.get('/search', skarpetteController.getSkarpettesByNameOrVendorCode);

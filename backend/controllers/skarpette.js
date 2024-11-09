@@ -112,40 +112,61 @@ const getSizesByType = (type) => {
     return sizes[type].map((size) => ({ size, is_available: true }));
 };
 
+const uploadPhoto = async (req, res) => {
+    try {
+        const images = req.file;
+        if (images) {
+            return res.status(200).json('yes');
+        }
+        res.status(400).json('помилка');
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 async function createSkarpette(req, res) {
     try {
-        const skarpetteData = { ...req.body };
-        console.log('Запит:', skarpetteData)
-        if (skarpetteData.images && skarpetteData.images.length > 0) {
-            const imagesUrls = await Promise.all(
-                skarpetteData.images.map(async (base64Image) => {
-                    // Прибираємо префікс, якщо він є
-                    const base64String = base64Image.replace(/^data:image\/\w+;base64,/, "");
+        // Отримуємо текстові дані з поля 'data' (яке передає фронт)
+        const skarpetteData = JSON.parse(req.body.data);  // Парсимо JSON
+        console.log('Запит:', skarpetteData);
 
-                    // Конвертуємо Base64 у буфер
-                    const imageBuffer = Buffer.from(base64String, "base64");
+        // Якщо є файли зображень, обробляємо їх
+        if (req.files && req.files.length > 0) {
+            const imagesUrls = await Promise.all(
+                req.files.map(async (file) => {
+                    // Перевірка типу файлу
+                    if (!file.mimetype.startsWith("image/")) {
+                        throw new Error("Тільки зображення дозволені");
+                    }
 
                     // Змінюємо розмір зображення
-                    const resizedImage = await sharp(imageBuffer).resize({
-                        width: targetWidth,
-                        height: targetHeight,
-                        fit: sharp.fit.cover,
-                    }).toBuffer();
+                    const resizedImage = await sharp(file.buffer)
+                        .resize({
+                            width: targetWidth,  // Встановіть ці значення відповідно до необхідного розміру
+                            height: targetHeight,
+                            fit: sharp.fit.cover,
+                        })
+                        .toBuffer();
 
                     // Генеруємо унікальне ім'я файлу
-                    const fileExtension = "jpeg"; // Визначте розширення відповідно до вашого зображення
+                    const fileExtension = file.mimetype.split("/")[1];  // Отримуємо розширення з mime
                     const newFileName = `${uuidv4()}.${fileExtension}`;
+
+                    // Завантажуємо зображення в S3 і отримуємо URL
                     const imageUrl = await uploadImageToS3(resizedImage, `images/${newFileName}`);
 
                     return imageUrl;
                 })
             );
 
+            // Зберігаємо URL зображень в даних товару
             skarpetteData.images_urls = imagesUrls;
         }
-        console.log('urls:', skarpetteData.images_urls)
+
+        // Генеруємо унікальний код товару
         skarpetteData.vendor_code = await generateUniqueVendorCode();
-        // Зберігання товару в базі даних (замініть на вашу логіку)
+
+        // Зберігаємо товар в базі даних
         await Skarpette.create(skarpetteData);
 
         res.status(201).json({ message: "Товар успішно додано", skarpetteData });
@@ -397,4 +418,5 @@ module.exports = {
     getHitSkarpettes,
     updateIsNewMain,
     updateIsHit,
+    uploadPhoto,
 };

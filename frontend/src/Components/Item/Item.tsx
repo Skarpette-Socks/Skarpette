@@ -93,9 +93,16 @@ const Item: React.FC<ItemProps> = ({
         </p>
         
         <div className="item__prices">
-          <div className="item__price-new">{discount_price || price} грн</div>
-          {discount_price && <div className="item__price-old">{price} грн</div>}
+          {discount_price ? (
+            <>
+              <div className="item__price-new">{discount_price} грн</div>
+              <div className="item__price-old">{price} грн</div>
+            </>
+          ) : (
+            <div className="item__price-new">{price} грн</div>
+          )}
         </div>
+
       </div>
     </a>
   );
