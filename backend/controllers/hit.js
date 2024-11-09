@@ -81,7 +81,6 @@ const deleteHit = async (req,res) => {
     }
 }
 
-
 module.exports = {
     createHit,
     getAllHits,

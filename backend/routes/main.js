@@ -12,3 +12,4 @@ router.use('/hit', hitRouter);
 router.use('/new', newRouter);
 
 module.exports = router;
+
