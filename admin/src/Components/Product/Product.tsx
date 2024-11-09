@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   TextField,
   Button,
@@ -15,14 +15,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import DataItem from "../../types/DataItem";
-import ProductRef from "../../types/ProductRef";
 import Category from "../../types/Category";
 import SizeItem from "../../types/SizeItem";
 
 interface ProductProps {
   pageType: 'add' | 'edit';
   item: DataItem;
-  saveItem: () => void;
 }
 
 const sizesData: Record<Category, string[]> = {
@@ -33,14 +31,7 @@ const sizesData: Record<Category, string[]> = {
 
 const defaultCategory: Category = Object.keys(sizesData)[0] as Category;
 
-const Product = forwardRef<ProductRef, ProductProps> (
-  (
-    { 
-      pageType,
-      item,
-      saveItem
-    }, ref
-  ) => {  
+const Product: React.FC<ProductProps> = ({ pageType, item }) => {  
   const setCategoryOnRender = (
     Object.keys(sizesData)
     .includes(item.type) 
@@ -59,6 +50,88 @@ const Product = forwardRef<ProductRef, ProductProps> (
   const [isHit, setIsHit] = useState<boolean>(item.is_hit);
   const [sizes, setSizes] = useState<SizeItem[]>(item.size);
 
+  const fetchLink = 
+    pageType === 'add' 
+    ? "http://localhost:5000/skarpette" 
+    : `http://localhost:5000/skarpette/${item._id}`;
+
+  const fetchMethod = 
+    pageType === 'add' 
+    ? "POST" 
+    : "PUT";
+
+  const saveItem = async () => {
+    if (isValidForm()) {
+      const toastId = toast.loading("Завантаження...");
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        toast.update(toastId, {
+          render: `Сталася помилка: невалідний токен авторизації`,
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+        return;
+      }
+
+      const formData = new FormData();
+      
+      images.forEach((image) => {
+        formData.append('images', image);
+      });
+      
+      const skarpetteData = {
+        name,
+        description,
+        composition_and_care: compAndCare,
+        type: category,
+        style: styles,
+        price,
+        price2,
+        is_new: isNew,
+        size: sizes,
+      };
+      
+      formData.append('data', JSON.stringify(skarpetteData));
+      
+      try {
+        const response = await fetch(fetchLink, {
+          method: fetchMethod,
+          headers: {
+            Authorization: token,
+          },
+          body: formData, 
+        });
+    
+        if (response.ok) {
+          toast.update(toastId, {
+            render: `${
+              pageType === 'add' 
+              ? "Новий товар успішно додано!" 
+              : "Товар успішно оновлено!"}`,
+            type: "success",
+            isLoading: false,
+            autoClose: 3000,
+          });
+        } else {
+          toast.update(toastId, {
+            render: "Помилка при відправці даних",
+            type: "error",
+            isLoading: false,
+            autoClose: 3000,
+          });
+        }
+      } catch (error) {
+        toast.update(toastId, {
+          render: `Сталася помилка: ${error}`,
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     if (Array.isArray(item.images_urls)) {
       setImages(item.images_urls.map(url => new File([], url)));
@@ -66,71 +139,6 @@ const Product = forwardRef<ProductRef, ProductProps> (
   }, [item.images_urls]);
 
   const imageUrls = images.map((image) => URL.createObjectURL(image));
-
-  useImperativeHandle(ref, () => ({
-    isValid() {
-      // return true;
-
-      return isValidForm();
-    },
-    getName() {
-      console.log('name', name);
-      
-      return name;
-    },
-    getDescription() {
-      console.log('description', description);
-
-      return description;
-    },
-    getImages() {
-    
-      return images; // Повертаємо об'єкт FormData
-    },
-    getCompAndCare() {
-      console.log('compAndCare', compAndCare);
-
-      return compAndCare;
-    },
-    getCategory() {
-      console.log('category', category);
-
-      return category;
-    },
-    getStyles() {
-      console.log('styles', styles);
-
-      return styles;
-    },
-    getPrice() {
-      console.log('price', price);
-
-      return price;
-    },
-    getPrice2() {
-      console.log('price2', price2);
-
-      return price2;
-    },
-    getIsNew() {
-      console.log('isNew', isNew);
-
-      return isNew;
-    },
-    getIsHit() {
-      console.log('isHit', isHit);
-
-      return isHit;
-    },
-    getSizes() {
-      console.log('sizes', sizes);
-
-      return sizes;
-    },
-    getPageType() {
-      return pageType;
-    }
-}));
 
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -206,7 +214,6 @@ const Product = forwardRef<ProductRef, ProductProps> (
   
     return true;
   }
-
 
   useEffect(() => {
     if (pageType === 'add' || category !== item.type) {
@@ -704,6 +711,6 @@ const Product = forwardRef<ProductRef, ProductProps> (
       </Dialog>
     </Box>
   );
-});
+};
 
 export default Product;
