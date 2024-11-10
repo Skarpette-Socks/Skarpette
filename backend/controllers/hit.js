@@ -1,5 +1,5 @@
 const Hit = require('../models/hit');
-const Skarpette = require('../models/Skarpette');
+const Skarpette = require('../models/skarpette');
 
 const createHit = async (req, res) => {
     const {vendor_code} = req.params;
