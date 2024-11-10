@@ -17,9 +17,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import DataItem from "../../types/DataItem";
 import Category from "../../types/Category";
 import SizeItem from "../../types/SizeItem";
+import ProductPageType from "../../types/ProductPageType";
+
 
 interface ProductProps {
-  pageType: 'add' | 'edit';
+  pageType: string;
   item: DataItem;
 }
 
@@ -40,7 +42,7 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
 
   const [name, setName] = useState<string>(item.name);
   const [description, setDescription] = useState<string>(item.description);
-  const [images, setImages] = useState<File[]>([]);
+  const [images, setImages] = useState<(File | string)[]>(item.images_urls);
   const [compAndCare, setCompAndCare] = useState<string>(item.composition_and_care);
   const [category, setCategory] = useState<Category>(setCategoryOnRender);
   const [styles, setStyles] = useState<string[]>(item.style);
@@ -50,13 +52,15 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
   const [isHit, setIsHit] = useState<boolean>(item.is_hit);
   const [sizes, setSizes] = useState<SizeItem[]>(item.size);
 
+  const [deletedImages, setDeletedImages] = useState<string[]>([]);
+
   const fetchLink = 
-    pageType === 'add' 
+    pageType === ProductPageType.ADD 
     ? "http://localhost:5000/skarpette" 
     : `http://localhost:5000/skarpette/${item._id}`;
 
   const fetchMethod = 
-    pageType === 'add' 
+    pageType === ProductPageType.ADD 
     ? "POST" 
     : "PUT";
 
@@ -75,11 +79,15 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
       }
 
       const formData = new FormData();
-      
+
       images.forEach((image) => {
-        formData.append('images', image);
+        if (typeof image !== "string") {
+          formData.append("images", image);
+        }
       });
-      
+  
+      formData.append("deletedImages", JSON.stringify(deletedImages));
+  
       const skarpetteData = {
         name,
         description,
@@ -106,7 +114,7 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
         if (response.ok) {
           toast.update(toastId, {
             render: `${
-              pageType === 'add' 
+              pageType === ProductPageType.ADD 
               ? "Новий товар успішно додано!" 
               : "Товар успішно оновлено!"}`,
             type: "success",
@@ -132,13 +140,15 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
     }
   };
 
-  useEffect(() => {
-    if (Array.isArray(item.images_urls)) {
-      setImages(item.images_urls.map(url => new File([], url)));
-    }
-  }, [item.images_urls]);
+  // useEffect(() => {
+  //   if (Array.isArray(item.images_urls)) {
+  //     setImages(item.images_urls);
+  //   }
+  // }, [item.images_urls]);
 
-  const imageUrls = images.map((image) => URL.createObjectURL(image));
+  const imageUrls = images.map((image) =>
+    typeof image === "string" ? image : URL.createObjectURL(image)
+  );
 
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -216,7 +226,7 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
   }
 
   useEffect(() => {
-    if (pageType === 'add' || category !== item.type) {
+    if (pageType === ProductPageType.ADD || category !== item.type) {
       const categorySizes: string[] = sizesData[category];
       setSizes(
         categorySizes.map((currentSize) => ({
@@ -259,7 +269,17 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
   };
 
   const handlePhotoRemove = (index: number) => {
-    setImages(images.filter((_, i) => i !== index));
+    setImages((prevImages) => {
+      const updatedImages = [...prevImages];
+      const removedImage = updatedImages[index];
+
+      if (typeof removedImage === "string") {
+        setDeletedImages((prev) => [...prev, removedImage]);
+      }
+
+      updatedImages.splice(index, 1);
+      return updatedImages;
+    });
   };
 
   return (
@@ -272,7 +292,7 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
         }}
       >
         <Typography variant="h4">
-          {pageType === 'add' 
+          {pageType === ProductPageType.ADD 
           ?'Додавання нового товару' 
           :`Редагування товару ${item.vendor_code}`}
           
@@ -293,7 +313,7 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
             }}
             onClick={() => setOpenDialog(true)}
           >
-            {pageType === 'add' ? 'Очистити' : `Відмінити зміни`}
+            {pageType === ProductPageType.ADD ? 'Очистити' : `Відмінити зміни`}
           </Button>
           <Button 
             variant="contained" 
@@ -303,7 +323,7 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
             }}
             onClick={() => saveItem()}
           >
-            {pageType === 'add' ? 'Додати товар' : `Зберегти зміни`}
+            {pageType === ProductPageType.ADD ? 'Додати товар' : `Зберегти зміни`}
           </Button>
         </Box>
       </Box>
@@ -691,19 +711,19 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
         <DialogTitle>Підтвердження очищення</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {pageType === 'add' 
+            {pageType === ProductPageType.ADD 
             ? 'Ви дійсно хочете очистити всі поля?' 
             : `Відхилити всі зміни та повернути попередні значення товару?`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenDialog(false)} color="primary">
-            {pageType === 'add' 
+            {pageType === ProductPageType.ADD 
             ? 'Скасувати' 
             : `Ні`}
           </Button>
           <Button onClick={clearAllFields} color="error" autoFocus>
-            {pageType === 'add' 
+            {pageType === ProductPageType.ADD 
             ? 'Очистити' 
             : `Так`}
           </Button>
