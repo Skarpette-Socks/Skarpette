@@ -1,4 +1,4 @@
-const Hit = require('../models/Hit');
+const Hit = require('../models/hit');
 const Skarpette = require('../models/Skarpette');
 
 const createHit = async (req, res) => {
