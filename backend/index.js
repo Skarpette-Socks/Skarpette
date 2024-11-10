@@ -1,9 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const skarpetteRouter = require('./routes/skarpette');
-const orderRouter = require('./routes/order');
-const adminRouter = require('./routes/admin');
+const mainRouter = require('./routes/main');
 const cors = require('cors');
 
 dotenv.config();
@@ -22,9 +20,7 @@ mongoose
         console.log('Error connecting to MongoDB: ', error);
     });
 
-app.use('/skarpette', skarpetteRouter);
-app.use('/order', orderRouter);
-app.use('/admin', adminRouter);
+app.use('/', mainRouter);
 
 app.listen(process.env.PORT, () => {
     console.log('Backend is running');
