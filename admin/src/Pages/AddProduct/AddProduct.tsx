@@ -1,4 +1,5 @@
 import Product from "../../Components/Product/Product";
+import ProductPageType from "../../types/ProductPageType";
 
 const AddProduct = () => {
   const defaultProps = {
@@ -20,7 +21,7 @@ const AddProduct = () => {
 
   return (
     <Product 
-      pageType="add" 
+      pageType={ProductPageType.ADD} 
       item={defaultProps}
     />
   );
