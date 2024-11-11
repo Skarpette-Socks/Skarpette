@@ -42,13 +42,17 @@ const Sort: React.FC<SortProps> = ({ items, selectedStyles, selectedSizes, setSo
 
   const sortByDefault = (items: DataItem[]): DataItem[] => {
     setSortText('За замовчуванням');
-    return items.sort((a, b) => a.vendor_code - b.vendor_code);
+    return items.sort((a, b) => {
+      if (a.is_hit && !b.is_hit) return -1;
+      if (!a.is_hit && b.is_hit) return 1; 
+  
+      return a.vendor_code - b.vendor_code;
+    });
   };
+  
 
   const sortByPriceAscending = (items: DataItem[]): DataItem[] => {
     setSortText('Спочатку дешеві');
-
-    // return items.sort((a, b) => a.price - b.price);
 
     return items.sort((a, b) => {
       if (b.price2 && a.price2) {
