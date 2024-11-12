@@ -97,6 +97,7 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
         price,
         price2,
         is_new: isNew,
+        is_hit: isHit,
         size: sizes,
       };
       
