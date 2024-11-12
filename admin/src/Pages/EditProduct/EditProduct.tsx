@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { fetchDataItem } from '../../api/fetchDataItem';
 import DataItem from '../../types/DataItem';
 import Product from '../../Components/Product/Product';
+import ProductPageType from "../../types/ProductPageType";
 
 
 const EditProduct = () => {
@@ -46,7 +47,7 @@ const EditProduct = () => {
 
   return (
     <Product 
-      pageType='edit' 
+      pageType={ProductPageType.EDIT} 
       item={item}
     /> 
   )

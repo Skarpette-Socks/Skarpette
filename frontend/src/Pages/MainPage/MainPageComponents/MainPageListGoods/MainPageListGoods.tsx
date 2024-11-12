@@ -23,6 +23,7 @@ const MainPageListGoods: React.FC<Props> = ({
     // загрузка данных при монтировании компонента
     fetchDataWithNewLabel()
       .then((data) => {
+        console.log('newgoods', data)
         setGoods(data); // обновление состояния товаров
         setLoading(false); // завершение загрузки
       })
