@@ -28,24 +28,33 @@ const createNew = async (req, res) => {
     }
 }
 
-const getAllNews = async (req,res) => {
+const getAllNews = async (req, res) => {
     try {
         const news = await New.find();
         if (!news.length) {
             return res.status(404).json('No news found');
         }
-        const skarpettes = await Promise.all(
-            //????
+
+        const validNewsWithSkarpettes = await Promise.all(
             news.map(async (neww) => {
-                return await Skarpette.findById(neww.skarpetteId);
+                const skarpette = await Skarpette.findById(neww.skarpetteId);
+                if (!skarpette) {
+                    await New.findByIdAndDelete(neww._id);
+                    return null;
+                }
+                return skarpette;
             })
         );
-        res.status(200).json(skarpettes);
+        const response = validNewsWithSkarpettes.filter(item => item !== null);
+
+        res.status(200).json(response);
+
     } catch (error) {
         console.error('Error getting news:', error);
         res.status(500).json({ error: error.message });
     }
-}
+};
+
 
 const getNewByVendorCode = async (req,res) => {
     const {vendor_code} = req.params;

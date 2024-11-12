@@ -33,12 +33,19 @@ const getAllHits = async (req, res) => {
         if (!hits) {
             return res.status(404).json('No Hits found');
         }
-        const skarpettes = await Promise.all(
+
+        const validHitsWithSkarpettes = await Promise.all(
             hits.map(async (hit) => {
-                return await Skarpette.findById(hit.skarpetteId);
+                const skarpette = await Skarpette.findById(hit.skarpetteId);
+                if (!skarpette) {
+                    await Hit.findByIdAndDelete(hit._id);
+                    return null;
+                }
+                return skarpette;
             })
         );
-        res.status(200).json(skarpettes);
+        const response = validHitsWithSkarpettes.filter(item => item !== null);
+        res.status(200).json(response);
     }
     catch (error) {
         console.error('Error getting hits:', error);
