@@ -1,39 +1,25 @@
-import React, { useEffect, useState } from "react";
-
+import React from "react";
 import "./MainPageListGoods.scss";
 import chevron from "../../../../assets/img/icons/chevron-right.svg";
 import Item from "../../../../Components/Item/Item";
-import { fetchDataWithNewLabel } from "../../../../api/fetchDataWithNewLabel";
 import DataItem from "../../../../types/DataItem";
-
 
 interface Props {
   title: string;
   catalogButton?: boolean;
+  goods: DataItem[];
+  loading: boolean;
 }
 
 const MainPageListGoods: React.FC<Props> = ({
   title,
   catalogButton = false,
+  goods = [],
+  loading,
 }) => {
-  const [goods, setGoods] = useState<DataItem[]>([]); // состояние для товаров
-  const [loading, setLoading] = useState<boolean>(true); // состояние для загрузки
-
-  useEffect(() => {
-    // загрузка данных при монтировании компонента
-    fetchDataWithNewLabel()
-      .then((data) => {
-        console.log('newgoods', data)
-        setGoods(data); // обновление состояния товаров
-        setLoading(false); // завершение загрузки
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false); // завершение загрузки, даже если произошла ошибка
-      });
-  }, []);
-
   const visibleGoods = goods.slice(0, 4);
+  console.log(goods)
+
   return (
     <div className="list-goods">
       <div className="list-goods__container">
