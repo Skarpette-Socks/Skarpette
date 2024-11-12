@@ -80,7 +80,9 @@ async function generateUniqueVendorCode() {
 
     while (!isUnique) {
         vendorCode = Math.floor(1000000 + Math.random() * 9000000); // Генерує код від 1000000 до 9999999
-        const existingSkarpette = await Skarpette.findOne({ vendor_code: vendorCode });
+        const existingSkarpette = await Skarpette.findOne({
+            vendor_code: vendorCode,
+        });
         if (!existingSkarpette) {
             isUnique = true;
         } else {
@@ -127,7 +129,7 @@ const uploadPhoto = async (req, res) => {
 async function createSkarpette(req, res) {
     try {
         // Отримуємо текстові дані з поля 'data' (яке передає фронт)
-        const skarpetteData = JSON.parse(req.body.data);  // Парсимо JSON
+        const skarpetteData = JSON.parse(req.body.data); // Парсимо JSON
         console.log('Запит:', skarpetteData);
 
         // Якщо є файли зображень, обробляємо їх
@@ -135,25 +137,28 @@ async function createSkarpette(req, res) {
             const imagesUrls = await Promise.all(
                 req.files.map(async (file) => {
                     // Перевірка типу файлу
-                    if (!file.mimetype.startsWith("image/")) {
-                        throw new Error("Тільки зображення дозволені");
+                    if (!file.mimetype.startsWith('image/')) {
+                        throw new Error('Тільки зображення дозволені');
                     }
 
                     // Змінюємо розмір зображення
                     const resizedImage = await sharp(file.buffer)
                         .resize({
-                            width: targetWidth,  // Встановіть ці значення відповідно до необхідного розміру
+                            width: targetWidth, // Встановіть ці значення відповідно до необхідного розміру
                             height: targetHeight,
                             fit: sharp.fit.cover,
                         })
                         .toBuffer();
 
                     // Генеруємо унікальне ім'я файлу
-                    const fileExtension = file.mimetype.split("/")[1];  // Отримуємо розширення з mime
+                    const fileExtension = file.mimetype.split('/')[1]; // Отримуємо розширення з mime
                     const newFileName = `${uuidv4()}.${fileExtension}`;
 
                     // Завантажуємо зображення в S3 і отримуємо URL
-                    const imageUrl = await uploadImageToS3(resizedImage, `images/${newFileName}`);
+                    const imageUrl = await uploadImageToS3(
+                        resizedImage,
+                        `images/${newFileName}`
+                    );
 
                     return imageUrl;
                 })
@@ -169,14 +174,18 @@ async function createSkarpette(req, res) {
         // Зберігаємо товар в базі даних
         await Skarpette.create(skarpetteData);
 
-        res.status(201).json({ message: "Товар успішно додано", skarpetteData });
+        res.status(201).json({
+            message: 'Товар успішно додано',
+            skarpetteData,
+        });
     } catch (error) {
-        console.error("Error creating skarpette:", error);
-        res.status(500).json({ error: "Не вдалося створити товар", details: error.message });
+        console.error('Error creating skarpette:', error);
+        res.status(500).json({
+            error: 'Не вдалося створити товар',
+            details: error.message,
+        });
     }
 }
-
-
 
 const getSkarpetteById = async (req, res) => {
     const { id } = req.params;
@@ -215,6 +224,7 @@ const getHitSkarpettes = async (req, res) => {
 };
 const updateSkarpette = async (req, res) => {
     const { id } = req.params;
+    const imagesToDelete = req.body.imagesToDelete;
 
     try {
         let skarpette = await Skarpette.findById(id);
@@ -222,11 +232,22 @@ const updateSkarpette = async (req, res) => {
             return res.status(404).json({ error: 'Skarpette not found' });
         }
 
+        if (imagesToDelete && Array.isArray(imagesToDelete)) {
+            const deletePromises = skarpette.images_urls.map(async (image) => {
+                if (imagesToDelete.includes(image)) {
+                    await deleteImageFromS3(image);
+                    return null;
+                }
+                return image;
+            });
+
+            skarpette.images_urls = (await Promise.all(deletePromises)).filter(
+                Boolean
+            );
+        }
+
         let newImagesUrls = [];
-
         if (req.files && req.files.length > 0) {
-            await handleImageDeletion(skarpette, id);
-
             const images = req.files;
             const imagesUrls = await Promise.all(
                 images.map(async (file) => {
@@ -245,11 +266,9 @@ const updateSkarpette = async (req, res) => {
                 })
             );
             newImagesUrls = imagesUrls;
-        } else {
-            newImagesUrls = skarpette.images_urls;
         }
 
-        skarpette.images_urls = newImagesUrls;
+        skarpette.images_urls = [...skarpette.images_urls, ...newImagesUrls];
 
         Object.keys(req.body).forEach((key) => {
             if (key !== 'images_urls' && req.body[key] !== undefined) {
