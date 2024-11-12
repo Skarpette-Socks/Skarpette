@@ -71,8 +71,8 @@ const skarpetteSchema = new mongoose.Schema({
     },
     discountPercentage: {
         type: Number,
-    },
-});
+    }
+}, {timestamps: true});
 
 function calculateDiscount(price, price2) {
     if (price2 && price2 < price) {
