@@ -224,7 +224,8 @@ const getHitSkarpettes = async (req, res) => {
 };
 const updateSkarpette = async (req, res) => {
     const { id } = req.params;
-    const imagesToDelete = req.body.imagesToDelete;
+    const imagesToDelete = JSON.parse(req.body.imagesToDelete);
+    const reqBody = JSON.parse(req.body.data);
 
     try {
         let skarpette = await Skarpette.findById(id);
@@ -232,19 +233,20 @@ const updateSkarpette = async (req, res) => {
             return res.status(404).json({ error: 'Skarpette not found' });
         }
 
-        if (imagesToDelete && Array.isArray(imagesToDelete)) {
-            const deletePromises = skarpette.images_urls.map(async (image) => {
+        const deletePromises = skarpette.images_urls.map(async (image) => {
+            if (imagesToDelete && Array.isArray(imagesToDelete)) {
                 if (imagesToDelete.includes(image)) {
                     await deleteImageFromS3(image);
                     return null;
                 }
                 return image;
-            });
+            }
+        });
 
             skarpette.images_urls = (await Promise.all(deletePromises)).filter(
                 Boolean
             );
-        }
+
 
         let newImagesUrls = [];
         if (req.files && req.files.length > 0) {
@@ -270,9 +272,9 @@ const updateSkarpette = async (req, res) => {
 
         skarpette.images_urls = [...skarpette.images_urls, ...newImagesUrls];
 
-        Object.keys(req.body).forEach((key) => {
-            if (key !== 'images_urls' && req.body[key] !== undefined) {
-                skarpette[key] = req.body[key];
+        Object.keys(reqBody).forEach((key) => {
+            if (key !== 'images_urls' && reqBody[key] !== undefined) {
+                skarpette[key] = reqBody[key];
             }
         });
 

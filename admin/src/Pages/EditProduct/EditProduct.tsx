@@ -49,6 +49,7 @@ const EditProduct = () => {
     <Product 
       pageType={ProductPageType.EDIT} 
       item={item}
+      resetData={() => loadData()}
     /> 
   )
 }

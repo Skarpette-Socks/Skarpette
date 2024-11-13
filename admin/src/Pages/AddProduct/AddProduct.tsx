@@ -19,10 +19,15 @@ const AddProduct = () => {
     size: [],
   };
 
+  const resetData = () => {
+    return;
+  }
+
   return (
     <Product 
       pageType={ProductPageType.ADD} 
       item={defaultProps}
+      resetData={() => resetData()}
     />
   );
 };
