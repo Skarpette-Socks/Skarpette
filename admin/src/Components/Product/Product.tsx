@@ -23,6 +23,7 @@ import ProductPageType from "../../types/ProductPageType";
 interface ProductProps {
   pageType: string;
   item: DataItem;
+  resetData: () => void;
 }
 
 const sizesData: Record<Category, string[]> = {
@@ -33,7 +34,7 @@ const sizesData: Record<Category, string[]> = {
 
 const defaultCategory: Category = Object.keys(sizesData)[0] as Category;
 
-const Product: React.FC<ProductProps> = ({ pageType, item }) => {  
+const Product: React.FC<ProductProps> = ({ pageType, item, resetData }) => {  
   const setCategoryOnRender = (
     Object.keys(sizesData)
     .includes(item.type) 
@@ -52,7 +53,13 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
   const [isHit, setIsHit] = useState<boolean>(item.is_hit);
   const [sizes, setSizes] = useState<SizeItem[]>(item.size);
 
+  const [showButtons, setShowButtons] = useState<boolean>(true);
+
   const [deletedImages, setDeletedImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    console.log('deletedImages',deletedImages)
+  }, [deletedImages])
 
   const fetchLink = 
     pageType === ProductPageType.ADD 
@@ -68,6 +75,7 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
     if (isValidForm()) {
       const toastId = toast.loading("Завантаження...");
       const token = localStorage.getItem("authToken");
+      setShowButtons(false);
       if (!token) {
         toast.update(toastId, {
           render: `Сталася помилка: невалідний токен авторизації`,
@@ -86,8 +94,6 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
         }
       });
   
-      formData.append("deletedImages", JSON.stringify(deletedImages));
-  
       const skarpetteData = {
         name,
         description,
@@ -102,6 +108,11 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
       };
       
       formData.append('data', JSON.stringify(skarpetteData));
+
+      if (pageType === ProductPageType.EDIT) {
+        formData.append("imagesToDelete", JSON.stringify(deletedImages));
+        setDeletedImages([]);
+      }
       
       try {
         const response = await fetch(fetchLink, {
@@ -122,6 +133,13 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
             isLoading: false,
             autoClose: 3000,
           });
+          setShowButtons(true);
+
+          if (images.some(image => typeof image !== "string")) {
+            setTimeout(() => {
+              resetData();
+            }, 0);
+          }
         } else {
           toast.update(toastId, {
             render: "Помилка при відправці даних",
@@ -129,6 +147,7 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
             isLoading: false,
             autoClose: 3000,
           });
+          setShowButtons(true);
         }
       } catch (error) {
         toast.update(toastId, {
@@ -140,12 +159,6 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
       }
     }
   };
-
-  // useEffect(() => {
-  //   if (Array.isArray(item.images_urls)) {
-  //     setImages(item.images_urls);
-  //   }
-  // }, [item.images_urls]);
 
   const imageUrls = images.map((image) =>
     typeof image === "string" ? image : URL.createObjectURL(image)
@@ -170,6 +183,7 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
     setIsHit(item.is_hit);
     setSizes(item.size);
     setOpenDialog(false);
+    setDeletedImages([]);
   };
 
   const isValidForm = () => {
@@ -313,6 +327,7 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
               height: 40
             }}
             onClick={() => setOpenDialog(true)}
+            disabled={!showButtons}
           >
             {pageType === ProductPageType.ADD ? 'Очистити' : `Відмінити зміни`}
           </Button>
@@ -323,6 +338,7 @@ const Product: React.FC<ProductProps> = ({ pageType, item }) => {
               height: 40
             }}
             onClick={() => saveItem()}
+            disabled={!showButtons}
           >
             {pageType === ProductPageType.ADD ? 'Додати товар' : `Зберегти зміни`}
           </Button>
