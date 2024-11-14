@@ -1,6 +1,6 @@
 [
   { "name": "Про нас", "link": "/about-us" },
-  { "name": "Акції", "link": "/discounts" },
+  { "name": "Акції", "link": "/offers" },
   { "name": "Оплата та доставка", "link": "/payment-and-delivery" },
   { "name": "Повернення", "link": "/return-of-goods" },
   { "name": "Контакти", "link": "/contacts" },
