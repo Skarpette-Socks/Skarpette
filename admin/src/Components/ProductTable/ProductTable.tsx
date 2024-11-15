@@ -133,7 +133,7 @@ const TABLE_HEADERS: TableHeader[] = [
 // Основной компонент
 const ProductTable: React.FC = () => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(8);
   const [selected, setSelected] = useState<number[]>([]);
   const [socks, setSocks] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState(true);
