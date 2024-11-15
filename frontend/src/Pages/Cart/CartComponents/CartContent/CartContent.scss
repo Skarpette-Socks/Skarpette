@@ -20,11 +20,11 @@
 
     @include on-tablet {
       font-size: 64px;
-      margin-bottom: 64px;
+      margin-bottom: 24px;
     }
 
     @include on-desktop {
-      margin-bottom: 80px;
+      margin-bottom: 24px;
     }
   }
 

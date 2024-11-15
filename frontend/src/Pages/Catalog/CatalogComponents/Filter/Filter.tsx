@@ -73,9 +73,6 @@ const Filter: React.FC<FilterProps> = ({
     onClearStyles();
     onClearSizes();
     setOpenFilter(null);
-    if (isMobile) {
-      toggleMobileModal();
-    }
   };
 
   // Очистка всех фильтров
