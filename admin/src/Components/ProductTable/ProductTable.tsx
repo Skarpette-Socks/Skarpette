@@ -11,100 +11,144 @@ import {
   Checkbox,
   TablePagination,
   styled,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   Button,
   Box,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import DataItem from "../../types/DataItem";
-import { fetchAllData } from "../../api/fetchAllData";
 import { Link } from "react-router-dom";
+import { fetchAllData } from "../../api/fetchAllData";
 import { deleteItem } from "../../api/deleteItem";
+import { DeleteDialog } from "./DeleteDialog";
 
+// Типы данных
+interface SizeItem {
+  size: string;
+  is_available: boolean;
+}
+
+interface DataItem {
+  _id: string;
+  name: string;
+  images_urls: string[];
+  vendor_code: number;
+  type: string;
+  style: string[];
+  size: SizeItem[];
+  price: number;
+  price2?: number;
+  discountPercentage?: number;
+}
+
+// Стилизованные компоненты
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  padding: "8px 16px",
+  padding: "8px 12px",
   fontSize: 14,
   borderRight: "1px solid #d0d0d0",
-  "&:last-child": {
-    borderRight: "none",
-  },
+  "&:last-child": { borderRight: "none" },
   "&.MuiTableCell-head": {
     backgroundColor: theme.palette.common.white,
     color: theme.palette.common.black,
     fontWeight: "bold",
     borderBottom: "2px solid #d0d0d0",
-    fontSize: 14,
-  },
-  "&.size-cell": {
-    fontSize: 14,
-    whiteSpace: "normal",
-    wordBreak: "break-word",
-  },
-  "&.price-cell": {
-    fontSize: 14,
-  },
-  "&.price-cell.lined": {
-    textDecoration: "line-through",
-    opacity: 0.5,
-  },
-  "&.discount-cell": {
-    fontSize: 14,
+    whiteSpace: "nowrap",
   },
   "&.name-cell": {
+    minWidth: "200px",
+    maxWidth: "300px",
     whiteSpace: "normal",
     wordBreak: "break-word",
-    fontSize: 14,
+  },
+  "&.photo-cell": {
+    width: "60px",
+    padding: "4px",
+  },
+  "&.code-cell": {
+    width: "100px",
+    whiteSpace: "nowrap",
+  },
+  "&.category-cell, &.style-cell": {
+    minWidth: "120px",
+    whiteSpace: "normal",
+  },
+  "&.size-cell": {
+    minWidth: "150px",
+    whiteSpace: "normal",
+  },
+  "&.price-cell, &.discount-cell": {
+    width: "80px",
+    whiteSpace: "nowrap",
+    textAlign: "right",
+  },
+  "&.final-price": {
+    color: "green",
   },
   "&.actions-cell": {
-    padding: "4px 8px",
-    minWidth: "100px",
-    fontSize: 14,
+    width: "100px",
+    padding: "4px",
   },
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  "&:last-child td, &:last-child th": {
-    border: 0,
+  "&:nth-of-type(odd)": { backgroundColor: theme.palette.action.hover },
+  "&:last-child td, &:last-child th": { border: 0 },
+  "&:hover": {
+    backgroundColor: theme.palette.action.selected,
   },
   "& td": {
     borderRight: "1px solid #d0d0d0",
-    "&:last-child": {
-      borderRight: "none",
-    },
+    "&:last-child": { borderRight: "none" },
   },
 }));
 
 const ImageCell = styled("img")({
-  width: "40px",
-  height: "40px",
+  width: "50px",
+  height: "50px",
   objectFit: "contain",
+  display: "block",
+  margin: "0 auto",
 });
 
+interface TableHeader {
+  id: string;
+  label: string;
+  className: string;
+}
+
+const TABLE_HEADERS: TableHeader[] = [
+  { id: "name", label: "Назва", className: "name-cell" },
+  { id: "photo", label: "Фото", className: "photo-cell" },
+  { id: "vendor_code", label: "Артикул", className: "code-cell" },
+  { id: "type", label: "Категорія", className: "category-cell" },
+  { id: "style", label: "Стиль", className: "style-cell" },
+  { id: "size", label: "Розмір", className: "size-cell" },
+  { id: "price", label: "Ціна", className: "price-cell" },
+  { id: "discount", label: "% знижки", className: "discount-cell" },
+  { id: "special_price", label: "Спец. ціна", className: "final-price" },
+  { id: "actions", label: "Дії", className: "actions-cell" },
+];
+
+
+
+// Основной компонент
 const ProductTable: React.FC = () => {
-  const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selected, setSelected] = useState<number[]>([]);
   const [socks, setSocks] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [isBulkDelete, setIsBulkDelete] = useState<boolean>(false);
+  const [deleteDialog, setDeleteDialog] = useState({
+    open: false,
+    id: null as string | null,
+  });
 
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
       const result = await fetchAllData();
       setSocks(result);
-    } catch (error: any) {
-      throw new Error(error.message);
+    } catch (error) {
+      console.error("Failed to load data:", error);
     } finally {
       setLoading(false);
     }
@@ -114,300 +158,229 @@ const ProductTable: React.FC = () => {
     loadData();
   }, [loadData]);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelected = socks.map((sock) => sock.vendor_code);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
+    setSelected(
+      event.target.checked ? socks.map((sock) => sock.vendor_code) : []
+    );
   };
 
-  const handleClick = (
-    event: React.MouseEvent<unknown>,
-    vendor_code: number
-  ) => {
-    const selectedIndex = selected.indexOf(vendor_code);
-    let newSelected: number[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, vendor_code);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-  console.log('selected', selected);
-
-  const isSelected = (vendor_code: number) =>
-    selected.indexOf(vendor_code) !== -1;
-
-  const handleDeleteClick = (id: string) => {
-    setIsBulkDelete(false);
-    setDeleteId(id);
-    setOpenDialog(true);
+  const handleSelectClick = (vendor_code: number) => {
+    setSelected((prev) =>
+      prev.includes(vendor_code)
+        ? prev.filter((id) => id !== vendor_code)
+        : [...prev, vendor_code]
+    );
   };
 
-  const confirmDelete = async () => {
-    if (deleteId) {
-      await deleteItem(deleteId);
-      loadData();
-      setOpenDialog(false);
-      setDeleteId(null);
-    } else if (selected.length !== 0) {
-      const selectedItems = 
-        socks.filter(sock => 
-        selected.some(vendor => 
-        sock.vendor_code === vendor
-      ));
-      console.log('selectedItems', selectedItems);
-      
-      await Promise.all(selectedItems.map(item => deleteItem(item._id)));
-      setOpenDialog(false);
-      setDeleteId(null);
-      setIsBulkDelete(false);
-      loadData();
+  const handleDelete = async () => {
+    try {
+      if (deleteDialog.id) {
+        await deleteItem(deleteDialog.id);
+      } else if (selected.length) {
+        const selectedItems = socks.filter((sock) =>
+          selected.includes(sock.vendor_code)
+        );
+        await Promise.all(selectedItems.map((item) => deleteItem(item._id)));
+      }
+      await loadData();
+      setSelected([]);
+    } catch (error) {
+      console.error("Failed to delete items:", error);
+    } finally {
+      setDeleteDialog({ open: false, id: null });
     }
   };
 
-  const cancelDelete = () => {
-    setOpenDialog(false);
-    setDeleteId(null);
-    setIsBulkDelete(false);
-  };
-
-  const handleDeleteClickCouple = () => {
-    if (selected.length !== 0) {
-      setIsBulkDelete(true);
-      setOpenDialog(true);
+  const renderTableCell = (sock: DataItem, field: string) => {
+    switch (field) {
+      case "name":
+        return sock.name;
+      case "photo":
+        return <ImageCell src={sock.images_urls[0]} alt={sock.name} />;
+      case "vendor_code":
+        return sock.vendor_code;
+      case "type":
+        return sock.type;
+      case "style":
+        return sock.style.join(", ");
+      case "size":
+        return sock.size
+          .filter((s) => s.is_available)
+          .map((s) => s.size)
+          .join(", ");
+      case "price":
+        return (
+          <span className={sock.price2 ? "line-through opacity-50" : ""}>
+            {sock.price}грн
+          </span>
+        );
+      case "discount":
+        return sock.discountPercentage ? `${sock.discountPercentage}%` : "";
+      case "special_price":
+        return sock.price2 ? (
+          <span className="text-green-500">{sock.price2}грн</span>
+        ) : (
+          ""
+        );
+      case "actions":
+        return (
+          <Box display="flex" justifyContent="space-around">
+            <Link to={`/edit/${sock.vendor_code}`}>
+              <IconButton size="small">
+                <EditIcon />
+              </IconButton>
+            </Link>
+            <IconButton
+              size="small"
+              color="error"
+              onClick={() => setDeleteDialog({ open: true, id: sock._id })}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Box>
+        );
+      default:
+        return sock[field as keyof DataItem] || "";
     }
-  }
+  };
 
   if (loading) {
-    return "Завантаження...";
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="200px"
+      >
+        Завантаження...
+      </Box>
+    );
   }
 
   return (
-    <>
-      <Box
-      sx={{
-        display: "flex",
-        justifyContent: "space-around",
-        marginTop: "20px",
-      }}
-    >
-      <Button 
-        variant="contained" 
-        color="error" 
-        sx={{ textTransform: "none" }}
-        disabled={selected.length === 0}
-        onClick={handleDeleteClickCouple}
-      >
-        Видалити
-      </Button>
-      <Link to="/add">
+    <Box sx={{ maxWidth: "1400px", margin: "0 auto", padding: "0 16px" }}>
+      <Box display="flex" justifyContent="space-between" mt={3} mb={2}>
         <Button
           variant="contained"
-          color="primary"
-          sx={{ textTransform: "none" }}
+          color="error"
+          disabled={!selected.length}
+          onClick={() => setDeleteDialog({ open: true, id: null })}
         >
-          Додати товар
+          Видалити
         </Button>
-      </Link>
-    </Box>
-      <Paper
-        style={{
-          width: "100%",
-          marginTop: "20px",
-        }}
-      >
-        <TableContainer style={{ maxHeight: "620px" }}>
-          <Table stickyHeader aria-label="sticky table">
+        <Link to="/add">
+          <Button variant="contained">Додати товар</Button>
+        </Link>
+      </Box>
+
+      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <TableContainer
+          sx={{
+            maxHeight: {
+              xs: "400px",
+              sm: "500px",
+              md: "600px",
+            },
+            overflowX: "auto",
+          }}
+        >
+          <Table stickyHeader size="small">
             <TableHead>
               <TableRow>
-                <StyledTableCell padding="checkbox" sx={{ width: "48px" }}>
+                <StyledTableCell
+                  padding="checkbox"
+                  sx={{
+                    width: "48px",
+                    position: "sticky",
+                    left: 0,
+                    zIndex: 3,
+                    backgroundColor: "white",
+                  }}
+                >
                   <Checkbox
                     indeterminate={
                       selected.length > 0 && selected.length < socks.length
                     }
-                    checked={socks.length > 0 && selected.length === socks.length}
+                    checked={
+                      socks.length > 0 && selected.length === socks.length
+                    }
                     onChange={handleSelectAllClick}
                   />
                 </StyledTableCell>
-                <StyledTableCell className="name-cell" sx={{ width: "15%" }}>
-                  Назва
-                </StyledTableCell>
-                <StyledTableCell sx={{ width: "5%", textAlign: "center" }}>
-                  Фото
-                </StyledTableCell>
-                <StyledTableCell sx={{ width: "10%", textAlign: "center" }}>
-                  Артикул
-                </StyledTableCell>
-                <StyledTableCell sx={{ width: "10%", textAlign: "center" }}>
-                  Категорія
-                </StyledTableCell>
-                <StyledTableCell sx={{ width: "10%", textAlign: "center" }}>
-                  Стиль
-                </StyledTableCell>
-                <StyledTableCell
-                  className="size-cell"
-                  sx={{ width: "15%", textAlign: "center" }}
-                >
-                  Розмір
-                </StyledTableCell>
-                <StyledTableCell
-                  className="price-cell"
-                  sx={{ width: "5%", textAlign: "center" }}
-                >
-                  Ціна
-                </StyledTableCell>
-                <StyledTableCell
-                  className="discount-cell"
-                  sx={{ width: "5%", textAlign: "center" }}
-                >
-                  % знижки
-                </StyledTableCell>
-                <StyledTableCell sx={{ width: "5%", textAlign: "center" }}>
-                  Спец. ціна
-                </StyledTableCell>
-                <StyledTableCell
-                  className="actions-cell"
-                  sx={{ width: "100px", textAlign: "center" }}
-                >
-                  Дії
-                </StyledTableCell>
+                {TABLE_HEADERS.map((header) => (
+                  <StyledTableCell
+                    key={header.id}
+                    className={header.className}
+                    align={header.id === "name" ? "left" : "center"}
+                  >
+                    {header.label}
+                  </StyledTableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
               {socks
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((sock) => {
-                  const isItemSelected = isSelected(sock.vendor_code);
-                  const allSizes = 
-                    sock.size
-                      .filter(s => s.is_available)
-                      .map(s => s.size)
-                      .join(', ');
-
-                  const allStyles = 
-                    sock.style
-                      .join(', ');
-                  
-                  return (
-                    <StyledTableRow
-                      hover
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={sock.vendor_code}
-                      selected={isItemSelected}
+                .map((sock) => (
+                  <StyledTableRow
+                    key={sock.vendor_code}
+                    selected={selected.includes(sock.vendor_code)}
+                    hover
+                  >
+                    <StyledTableCell
+                      padding="checkbox"
+                      sx={{
+                        position: "sticky",
+                        left: 0,
+                        backgroundColor: selected.includes(sock.vendor_code)
+                          ? "action.selected"
+                          : "inherit",
+                      }}
                     >
-                      <StyledTableCell 
-                        padding="checkbox" 
-                        sx={{ width: "48px" }}
-                        onClick={(event) => handleClick(event, sock.vendor_code)}
+                      <Checkbox
+                        checked={selected.includes(sock.vendor_code)}
+                        onChange={() => handleSelectClick(sock.vendor_code)}
+                      />
+                    </StyledTableCell>
+                    {TABLE_HEADERS.map((header) => (
+                      <StyledTableCell
+                        key={`${sock.vendor_code}-${header.id}`}
+                        className={header.className}
                       >
-                        <Checkbox checked={isItemSelected} />
+                        {renderTableCell(sock, header.id)}
                       </StyledTableCell>
-                      <StyledTableCell className="name-cell">
-                        {sock.name}
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        <ImageCell src={sock.images_urls[0]} alt={sock.name} />
-                      </StyledTableCell>
-                      <StyledTableCell>{sock.vendor_code}</StyledTableCell>
-                      <StyledTableCell>{sock.type}</StyledTableCell>
-                      <StyledTableCell>{allStyles}</StyledTableCell>
-                      <StyledTableCell className="size-cell">
-                        {allSizes}
-                      </StyledTableCell>
-                        <StyledTableCell className={`price-cell ${sock.price2 ? 'lined' : ''}`}>
-                          {sock.price}грн
-                        </StyledTableCell>
-                      <StyledTableCell className="discount-cell">
-                        {sock.discountPercentage ? `${sock.discountPercentage}%` : ''}
-                      </StyledTableCell>
-                      <StyledTableCell sx={{ color: "green" }}>
-                        {sock.price2 ? `${sock.price2}грн` : ''}
-                      </StyledTableCell>
-                      <StyledTableCell className="actions-cell">
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-around",
-                          }}
-                        >
-                          <Link to={`/edit/${sock.vendor_code}`}>
-                            <IconButton size="large" aria-label="edit">
-                              <EditIcon fontSize="medium" />
-                            </IconButton>
-                          </Link>
-                          <IconButton
-                            size="large"
-                            aria-label="delete"
-                            color="error"
-                            onClick={() => handleDeleteClick(sock._id)}
-                          >
-                            <DeleteIcon fontSize="medium" />
-                          </IconButton>
-                        </div>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  );
-                })}
+                    ))}
+                  </StyledTableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
+
         <TablePagination
           rowsPerPageOptions={[10, 25, 50, 100]}
           component="div"
           count={socks.length}
           rowsPerPage={rowsPerPage}
           page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={{ height: "55px" }}
+          onPageChange={(_, newPage) => setPage(newPage)}
+          onRowsPerPageChange={(e) => {
+            setRowsPerPage(parseInt(e.target.value, 10));
+            setPage(0);
+          }}
+          sx={{
+            borderTop: "1px solid #e0e0e0",
+            backgroundColor: "white",
+          }}
         />
-
-        <Dialog open={openDialog} onClose={cancelDelete}>
-          <DialogTitle>Підтвердження видалення</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-            {isBulkDelete
-              ? `Ви дійсно хочете видалити ${selected.length} вибраних товарів?`
-              : `Ви дійсно хочете видалити цей товар?`}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={cancelDelete} color="primary">
-              Скасувати
-            </Button>
-            <Button onClick={confirmDelete} color="error" autoFocus>
-              Видалити
-            </Button>
-          </DialogActions>
-        </Dialog>
       </Paper>
-    </>
+
+      <DeleteDialog
+        open={deleteDialog.open}
+        itemCount={deleteDialog.id ? 1 : selected.length}
+        onConfirm={handleDelete}
+        onCancel={() => setDeleteDialog({ open: false, id: null })}
+      />
+    </Box>
   );
 };
 
