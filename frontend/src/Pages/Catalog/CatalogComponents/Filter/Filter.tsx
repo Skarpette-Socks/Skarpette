@@ -48,6 +48,10 @@ const Filter: React.FC<FilterProps> = ({
     };
   }, [showMobileModal]);
 
+  useEffect(() => {
+    handleClear();
+  }, [])
+
   const toggleMobileModal = () => {
     setShowMobileModal(!showMobileModal);
   };

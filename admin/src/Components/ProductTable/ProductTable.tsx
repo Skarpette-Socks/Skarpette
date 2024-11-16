@@ -210,7 +210,12 @@ const ProductTable: React.FC = () => {
           .join(", ");
       case "price":
         return (
-          <span className={sock.price2 ? "line-through opacity-50" : ""}>
+          <span
+            style={{
+              textDecoration: sock.price2 ? "line-through" : "none",
+              opacity: sock.price2 ? 0.5 : 1,
+            }}
+          >
             {sock.price}грн
           </span>
         );
