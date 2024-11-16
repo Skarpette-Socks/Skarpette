@@ -44,12 +44,17 @@ export const useCartItems = () => {
 export const CartProvider: React.FC<{ children: ReactNode}> = ({
   children,
 }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+  const getUpdatedCart = ():CartItem[] => {
     const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
-  });
+  }
 
-  
+  const [cartItems, setCartItems] = useState<CartItem[]>(getUpdatedCart());
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+  }, [cartItems]);
+
   const addCartItem: AddCartItem = ( item, counter, selectedSize ) => {
     if (selectedSize !== undefined) {
       const cartItem: CartItem = {
@@ -63,31 +68,30 @@ export const CartProvider: React.FC<{ children: ReactNode}> = ({
         count: counter
       }
 
-      const duplicateIndexes = cartItems
-        .map((currentItem, currentIndex) => (
-          currentItem.vendor_code === item.vendor_code ? currentIndex : -1
-        ))
-        .filter(index => index !== -1);
-
       let isChanged = false;
 
-      duplicateIndexes.map(duplicateItem => {
-        if (cartItems[duplicateItem]?.size === item.size[selectedSize].size) {
-          if (counter !== '' && cartItems[duplicateItem].count !== undefined) {
-            const newItem = cartItems[duplicateItem];
-            if (newItem.count) {
-              newItem.count += counter
+      setCartItems(() => {
+        const updatedCart = getUpdatedCart();
+        updatedCart.forEach((currentItem) => {
+          if (
+            currentItem.vendor_code === cartItem.vendor_code &&
+            currentItem.size === cartItem.size
+          ) {
+            if (cartItem.count && currentItem.count) {
+              currentItem.count += cartItem.count;
             }
-            setCartItems((cartItems) => [...cartItems])
             isChanged = true;
-            return;
           }
-        } 
-      })
+        });
+  
 
-      if (!isChanged) {
-        setCartItems([...cartItems, cartItem])
-      }
+        if (!isChanged) {
+          updatedCart.push(cartItem);
+        }
+  
+        return updatedCart;
+      });
+  
 
       Toaster({ 
         text: 'Товар додано до кошику', 
@@ -121,9 +125,6 @@ export const CartProvider: React.FC<{ children: ReactNode}> = ({
     });
   };
 
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [cartItems]);
 
   return (
     <CartContext.Provider
