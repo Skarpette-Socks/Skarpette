@@ -15,6 +15,8 @@ import { fetchAllData } from "../../api/fetchAllData";
 import Loader from "../../Components/Loader/Loader";
 import PromoCards from "../MainPage/MainPageComponents/PromoCards/PromoCards";
 import CatalogCategoryCircle from "./CatalogComponents/CatalogCategoryCircle/CatalogCategoryCircle";
+import close_white from "../../assets/img/icons/close-white.svg";
+
 
 const Catalog: React.FC = () => {
   const [socks, setSocks] = useState<DataItem[]>([]);
@@ -36,6 +38,11 @@ const Catalog: React.FC = () => {
   const updateItemsPerPage = useCallback(() => {
     setItemsPerPage(window.innerWidth >= 1280 ? 16 : 12);
   }, []);
+
+  const handleClearAll = () => {
+    setSelectedSizes([]);
+    setSelectedStyles([]);
+  }
 
   const loadData = useCallback(async () => {
     if (!category) return;
@@ -144,6 +151,30 @@ const Catalog: React.FC = () => {
             setCurrentPage={setCurrentPage}
           />
         </div>
+        {[...selectedStyles, ...selectedSizes].length !== 0 && 
+          <div className="filter__selected-filters">
+            {[...selectedStyles, ...selectedSizes].map((item) => (
+              <span key={item} className="filter__selected-filter">
+                {item}
+                <button
+                  onClick={() =>
+                    selectedStyles.includes(item)
+                      ? handleFilterChange("style", item)
+                      : handleFilterChange("size", item)
+                  }
+                  className="filter__close-icon"
+                >
+                  <img src={close_white} alt="close_white" />
+                </button>
+              </span>
+            ))}
+            {[...selectedStyles, ...selectedSizes].length > 0 && (
+              <button onClick={handleClearAll} className="filter__clear-all-button">
+                Очистити всі
+              </button>
+            )}
+          </div>
+        }
         {sortedItems.length === 0 ? (
           <div className="socks__no-items">
             За Вашим запитом нічого не знайдено :(

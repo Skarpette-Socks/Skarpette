@@ -38,6 +38,9 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
 
   const imgArr = item?.images_urls;
 
+  const touchStartRef = useRef<number | null>(null);
+  const touchEndRef = useRef<number | null>(null);
+
   useLayoutEffect(() => {
     if (productImage.current) {
       const handleResize = () => {
@@ -63,6 +66,30 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
       </>
     );
   }
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartRef.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndRef.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (
+      touchStartRef.current !== null &&
+      touchEndRef.current !== null &&
+      Math.abs(touchStartRef.current - touchEndRef.current) > 50
+    ) {
+      if (touchStartRef.current > touchEndRef.current) {
+        selectPhoto(1);
+      } else {
+        selectPhoto(-1);
+      }
+    }
+    touchStartRef.current = null;
+    touchEndRef.current = null;
+  };
 
   const selectPhoto = (num: number) => {
     if (num >= 1) {
@@ -155,6 +182,9 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
           <div
             className="product__image-container"
             style={{ height: `${imgHeight}px` }}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
             <img
               ref={productImage}

@@ -23,13 +23,12 @@
     gap: 24px; /* Отступы между элементами*/
     // grid-template-columns: repeat(2, 1fr); /* По умолчанию 2 колонки */
     // grid-template-rows: auto; /* Высота строк автоматическая */
-    margin-top: 56px;
+    margin-top:24px;
     grid-row-gap: 32px; /* Отступ между строками */
     justify-items: center;
 
     @include on-desktop {
       // grid-template-columns: repeat(4, 1fr); /* 4 колонки на широких экранах */
-      margin-top:24px;
       grid-row-gap: 64px; /* Отступ между строками */
     }
   }
@@ -45,6 +44,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    gap: 16px;
     margin-top: 24px;
   }  
 }
