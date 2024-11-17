@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import "./CategoriesCarousel.scss";
@@ -13,6 +13,14 @@ import items from "../../../../../json_links/categories.json";
 
 const CategoriesCarousel: React.FC = () => {
   const categoriesToShow = 6;
+
+  const listRef = useRef<HTMLUListElement | null>(null);
+
+  useEffect(() => {
+    if (listRef.current) {
+      listRef.current.scrollLeft = 0;
+    }
+  }, []);
 
   return (
     <div className="categories-carousel">
@@ -29,7 +37,7 @@ const CategoriesCarousel: React.FC = () => {
 
         </div>
 
-        <ul className="categories-carousel__list">
+        <ul className="categories-carousel__list" ref={listRef}>
           {items.map((item, index) => {
             const { carousel_name, link } = item;
 
