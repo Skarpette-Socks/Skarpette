@@ -38,8 +38,12 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
 
   const imgArr = item?.images_urls;
 
-  const touchStartRef = useRef<number | null>(null);
-  const touchEndRef = useRef<number | null>(null);
+  const touchStartRefX = useRef<number | null>(null);
+  const touchEndRefX = useRef<number | null>(null);
+
+  const touchStartRefY = useRef<number | null>(null);
+  const touchEndRefY = useRef<number | null>(null);
+
 
   useLayoutEffect(() => {
     if (productImage.current) {
@@ -68,27 +72,37 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
   }
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartRef.current = e.touches[0].clientX;
+    touchStartRefX.current = e.touches[0].clientX;
+    touchStartRefY.current = e.touches[0].clientY;
+
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndRef.current = e.touches[0].clientX;
+    touchEndRefX.current = e.touches[0].clientX;
+    touchEndRefY.current = e.touches[0].clientY;
+
   };
 
   const handleTouchEnd = () => {
     if (
-      touchStartRef.current !== null &&
-      touchEndRef.current !== null &&
-      Math.abs(touchStartRef.current - touchEndRef.current) > 50
+      touchStartRefX.current !== null &&
+      touchEndRefX.current !== null &&
+      touchStartRefY.current !== null &&
+      touchEndRefY.current !== null &&
+      Math.abs(touchStartRefX.current - touchEndRefX.current) > 50 &&
+      Math.abs(touchStartRefX.current - touchEndRefX.current) > 
+      Math.abs(touchStartRefY.current - touchEndRefY.current)
     ) {
-      if (touchStartRef.current > touchEndRef.current) {
+      if (touchStartRefX.current > touchEndRefX.current) {
         selectPhoto(1);
       } else {
         selectPhoto(-1);
       }
     }
-    touchStartRef.current = null;
-    touchEndRef.current = null;
+    touchStartRefX.current = null;
+    touchEndRefX.current = null;
+    touchStartRefY.current = null;
+    touchEndRefY.current = null;
   };
 
   const selectPhoto = (num: number) => {
