@@ -151,29 +151,30 @@ const Catalog: React.FC = () => {
             setCurrentPage={setCurrentPage}
           />
         </div>
-
-        <div className="filter__selected-filters">
-          {[...selectedStyles, ...selectedSizes].map((item) => (
-            <span key={item} className="filter__selected-filter">
-              {item}
-              <button
-                onClick={() =>
-                  selectedStyles.includes(item)
-                    ? handleFilterChange("style", item)
-                    : handleFilterChange("size", item)
-                }
-                className="filter__close-icon"
-              >
-                <img src={close_white} alt="close_white" />
+        {[...selectedStyles, ...selectedSizes].length !== 0 && 
+          <div className="filter__selected-filters">
+            {[...selectedStyles, ...selectedSizes].map((item) => (
+              <span key={item} className="filter__selected-filter">
+                {item}
+                <button
+                  onClick={() =>
+                    selectedStyles.includes(item)
+                      ? handleFilterChange("style", item)
+                      : handleFilterChange("size", item)
+                  }
+                  className="filter__close-icon"
+                >
+                  <img src={close_white} alt="close_white" />
+                </button>
+              </span>
+            ))}
+            {[...selectedStyles, ...selectedSizes].length > 0 && (
+              <button onClick={handleClearAll} className="filter__clear-all-button">
+                Очистити всі
               </button>
-            </span>
-          ))}
-          {[...selectedStyles, ...selectedSizes].length > 0 && (
-            <button onClick={handleClearAll} className="filter__clear-all-button">
-              Очистити всі
-            </button>
-          )}
-        </div>
+            )}
+          </div>
+        }
         {sortedItems.length === 0 ? (
           <div className="socks__no-items">
             За Вашим запитом нічого не знайдено :(
