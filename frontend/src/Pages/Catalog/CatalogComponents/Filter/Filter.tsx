@@ -4,7 +4,6 @@ import "./Filter.scss";
 // Импорт иконок
 import arrow_up from "../../../../assets/img/icons/caret-up-filled.svg";
 import arrow_down from "../../../../assets/img/icons/caret-down-filled.svg";
-import close_white from "../../../../assets/img/icons/close-white.svg";
 import close_icon from "../../../../assets/img/icons/close.svg";
 import plus_icon from "../../../../assets/img/icons/plus.svg";
 
@@ -79,11 +78,6 @@ const Filter: React.FC<FilterProps> = ({
     setOpenFilter(null);
   };
 
-  // Очистка всех фильтров
-  const handleClearAll = () => {
-    handleClear();
-  };
-
   // Отрисовка чекбоксов для фильтров
   const renderCheckboxes = (
     items: string[],
@@ -135,31 +129,6 @@ const Filter: React.FC<FilterProps> = ({
     </div>
   );
 
-  // Отрисовка выбранных фильтров
-  const renderSelectedFilters = () => (
-    <div className="filter__selected-filters">
-      {[...selectedStyles, ...selectedSizes].map((item) => (
-        <span key={item} className="filter__selected-filter">
-          {item}
-          <button
-            onClick={() =>
-              selectedStyles.includes(item)
-                ? onStyleChange(item)
-                : onSizeChange(item)
-            }
-            className="filter__close-icon"
-          >
-            <img src={close_white} alt="close_white" />
-          </button>
-        </span>
-      ))}
-      {[...selectedStyles, ...selectedSizes].length > 0 && (
-        <button onClick={handleClearAll} className="filter__clear-all-button">
-          Очистити всі
-        </button>
-      )}
-    </div>
-  );
 
   // Обработчик изменения размера экрана
   useEffect(() => {
@@ -223,7 +192,6 @@ const Filter: React.FC<FilterProps> = ({
       {!isMobile && openFilter === "style" && renderFilterDropdown("style")}
       {!isMobile && openFilter === "size" && renderFilterDropdown("size")}
 
-      {renderSelectedFilters()}
       {showMobileModal && (
         <div className="filter__mobile-overlay">
           <div className="filter__mobile-content">
