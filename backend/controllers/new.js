@@ -1,14 +1,16 @@
-const New = require("../models/new");
-const Skarpette = require("../models/skarpette");
+const New = require('../models/new');
+const Skarpette = require('../models/skarpette');
 
 const createNew = async (req, res) => {
-    const {vendor_code} = req.params;
+    const { vendor_code } = req.params;
     try {
-        const foundSkarpette = await Skarpette.findOne({vendor_code});
+        const foundSkarpette = await Skarpette.findOne({ vendor_code });
         if (!foundSkarpette) {
             return res.status(404).json('Skarpette not found');
         }
-        const existingNew = await New.findOne({skarpetteVendorCode: vendor_code});
+        const existingNew = await New.findOne({
+            skarpetteVendorCode: vendor_code,
+        });
         if (existingNew) {
             return res.status(400).json('New already exists');
         }
@@ -19,14 +21,14 @@ const createNew = async (req, res) => {
         //?
         const newNew = await New.create({
             skarpetteId: foundSkarpette._id,
-            skarpetteVendorCode: vendor_code
+            skarpetteVendorCode: vendor_code,
         });
         res.status(201).json(newNew);
-    } catch(error) {
+    } catch (error) {
         console.error('Error creating nes:', error);
         res.status(500).json({ error: error.message });
     }
-}
+};
 
 const getAllNews = async (req, res) => {
     try {
@@ -42,25 +44,25 @@ const getAllNews = async (req, res) => {
                     await New.findByIdAndDelete(neww._id);
                     return null;
                 }
-                return skarpette;
+                return { newId: neww._id, skarpette };
             })
         );
-        const response = validNewsWithSkarpettes.filter(item => item !== null);
+        const response = validNewsWithSkarpettes.filter(
+            (item) => item !== null
+        );
 
         res.status(200).json(response);
-
     } catch (error) {
         console.error('Error getting news:', error);
         res.status(500).json({ error: error.message });
     }
 };
 
-
-const getNewByVendorCode = async (req,res) => {
-    const {vendor_code} = req.params;
+const getNewByVendorCode = async (req, res) => {
+    const { vendor_code } = req.params;
     try {
         //??????
-        const neww = await New.findOne({skarpetteVendorCode: vendor_code});
+        const neww = await New.findOne({ skarpetteVendorCode: vendor_code });
         if (!neww) {
             return res.status(404).json('New not found');
         }
@@ -69,14 +71,13 @@ const getNewByVendorCode = async (req,res) => {
             return res.status(404).json('Skarpette not found');
         }
         res.status(200).json(neww);
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Error creating new:', error);
         res.status(500).json({ error: error.message });
     }
-}
+};
 
-const deleteNew = async (req,res) => {
+const deleteNew = async (req, res) => {
     const { id } = req.params;
     try {
         //?????????????????????????????????????????
@@ -90,11 +91,11 @@ const deleteNew = async (req,res) => {
         console.error('Error deleting new:', error);
         res.status(500).json({ error: error.message });
     }
-}
+};
 
 module.exports = {
     createNew,
     getAllNews,
     getNewByVendorCode,
-    deleteNew
-}
+    deleteNew,
+};
