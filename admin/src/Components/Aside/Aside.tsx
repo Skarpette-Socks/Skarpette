@@ -8,9 +8,9 @@ import {
   Box,
 } from "@mui/material";
 import {
-  ShoppingCart,
+  // ShoppingCart,
   Inventory,
-  Payment,
+  // Payment,
   Logout,
   AddCircle,
   Star,
@@ -22,8 +22,8 @@ const drawerWidth = 180;
 
 const menuItems = [
   { text: "Товари", icon: <Inventory />, path: "/" },
-  { text: "Замовлення", icon: <ShoppingCart />, path: "/orders" },
-  { text: "Оплати", icon: <Payment />, path: "/payments" },
+  // { text: "Замовлення", icon: <ShoppingCart />, path: "/orders" },
+  // { text: "Оплати", icon: <Payment />, path: "/payments" },
   { text: "Новий товар", icon: <AddCircle />, path: "/add" },
   { text: "Новинки та хіти", icon: <Star />, path: "/new-and-hit" },
 ];
