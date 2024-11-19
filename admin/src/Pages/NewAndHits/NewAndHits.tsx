@@ -1,11 +1,15 @@
 import HeaderBlock from "./Header/Header";
+import HitItemsBlock from "./HitItems/HitItems";
 import NewItemsBlock from "./NewItems/NewItemsBlock";
 
 const NewAndHits = () => {
   return (
     <>
       <HeaderBlock />
-      <NewItemsBlock/>
+      <div style={{ display: "flex", gap: "20px" }}>
+        <NewItemsBlock />
+        <HitItemsBlock />
+      </div>
     </>
   );
 }
