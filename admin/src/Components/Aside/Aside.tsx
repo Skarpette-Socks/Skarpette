@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   Drawer,
   List,
@@ -8,9 +9,7 @@ import {
   Box,
 } from "@mui/material";
 import {
-  // ShoppingCart,
   Inventory,
-  // Payment,
   Logout,
   AddCircle,
   Star,
@@ -22,20 +21,61 @@ const drawerWidth = 180;
 
 const menuItems = [
   { text: "Товари", icon: <Inventory />, path: "/" },
-  // { text: "Замовлення", icon: <ShoppingCart />, path: "/orders" },
-  // { text: "Оплати", icon: <Payment />, path: "/payments" },
   { text: "Новий товар", icon: <AddCircle />, path: "/add" },
   { text: "Новинки та хіти", icon: <Star />, path: "/new-and-hit" },
 ];
 
-
 const Sidebar = () => {
+  const [newItemsCount, setNewItemsCount] = useState<number | null>(null);
+  const [hitItemsCount, setHitItemsCount] = useState<number | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Запрос для новинок
+        const newResponse = await fetch("http://localhost:5000/new");
+        const newData = await newResponse.json();
+        
+        console.log("Ответ для новинок:", newData);  // Добавим вывод в консоль для диагностики
+        
+        // Проверка и подсчёт элементов в массиве
+        if (Array.isArray(newData) && newData.length > 0) {
+          setNewItemsCount(newData.length); // Подсчёт количества элементов в массиве
+        } else {
+          console.error("Новинки не найдены или структура данных неправильная", newData);
+        }
+
+        // Запрос для хитов
+        const hitResponse = await fetch("http://localhost:5000/hit");
+        const hitData = await hitResponse.json();
+        
+        console.log("Ответ для хитов:", hitData);  // Добавим вывод в консоль для диагностики
+        
+        // Проверка и подсчёт элементов в массиве
+        if (Array.isArray(hitData) && hitData.length > 0) {
+          setHitItemsCount(hitData.length); // Подсчёт количества элементов в массиве
+        } else {
+          console.error("Хиты не найдены или структура данных неправильная", hitData);
+        }
+      } catch (error) {
+        console.error("Error fetching new and hit items", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const logOut = () => {
     localStorage.removeItem("authToken");
     navigate(0);
-  }
+  };
+
+  // Условие для добавления красного фона и чёрного текста
+  const highlightNewAndHit = (newItemsCount !== 4 || hitItemsCount !== 4) ? { 
+    backgroundColor: 'red',  // Красный фон
+    color: 'black',  // Чёрный цвет текста
+  } : {};
 
   return (
     <>
@@ -65,8 +105,11 @@ const Sidebar = () => {
               const { text, icon, path } = item;
 
               return (
-                <NavLink to={path}>
-                  <ListItem key={text} disablePadding>
+                <NavLink to={path} key={text}>
+                  <ListItem 
+                    disablePadding
+                    sx={text === "Новинки та хіти" ? highlightNewAndHit : {}} 
+                  >
                     <ListItemButton>
                       <ListItemIcon sx={{ minWidth: "40px" }}>{icon}</ListItemIcon>
                       <ListItemText primary={text} />
