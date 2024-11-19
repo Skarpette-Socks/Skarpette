@@ -17,7 +17,7 @@ const MainPage: React.FC = () => {
 useEffect(() => {
   fetchGoods("new")
     .then((data) => {
-      const filteredNewGoods = data.map((item: any) => item.skarpette); // Извлекаем только объект с носками
+      const filteredNewGoods = data.map((item: any) => item.skarpette);
       setNewGoods(filteredNewGoods);
       setLoadingNew(false);
     })
@@ -28,7 +28,7 @@ useEffect(() => {
 
   fetchGoods("hit")
     .then((data) => {
-      const filteredHitGoods = data.map((item: any) => item.skarpette); // Извлекаем только объект с носками
+      const filteredHitGoods = data.map((item: any) => item.skarpette);
       setHitGoods(filteredHitGoods);
       setLoadingHit(false);
     })
