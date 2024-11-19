@@ -6,7 +6,7 @@ const NewAndHits = () => {
   return (
     <>
       <HeaderBlock />
-      <div style={{ display: "flex", gap: "20px" }}>
+      <div style={{ display: "flex", gap: "20px", justifyContent:"center" }}>
         <NewItemsBlock />
         <HitItemsBlock />
       </div>
