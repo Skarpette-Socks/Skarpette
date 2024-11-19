@@ -26,7 +26,7 @@ export const deleteItem = async (id: string) => {
   }
 };
 
-export const deleteFavItem = async (id: string) => {
+export const deleteNewItem = async (id: string) => {
   const token = localStorage.getItem("authToken");
 
   if (!token) {

@@ -6,12 +6,12 @@ const NewAndHits = () => {
   return (
     <>
       <HeaderBlock />
-      <div style={{ display: "flex", gap: "20px", justifyContent:"center" }}>
+      <div style={{ display: "flex", gap: "20px", justifyContent: "center" }}>
         <NewItemsBlock />
         <HitItemsBlock />
       </div>
     </>
   );
-}
+};
 
-export default NewAndHits
+export default NewAndHits;

@@ -6,11 +6,12 @@ import {
   IconButton,
   Card,
   CardContent,
+  Alert,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Alert } from "@mui/material";
 import { deleteHitItem } from "../../../api/deleteItem";
 import { createHitItem } from "../../../api/createNewItem";
+import { useItemsContext } from "../../../Context/ItemsContext";
 
 interface Size {
   size: string;
@@ -30,7 +31,7 @@ interface ProductData {
 }
 
 interface HitItem {
-  newId: string;
+  hitId: string;
   skarpette: ProductData;
 }
 
@@ -43,8 +44,14 @@ const HitItemsBlock = () => {
   const [inputs, setInputs] = useState<InputState[]>(
     Array(4).fill({ value: "", item: null })
   );
+  const [inputErrors, setInputErrors] = useState<boolean[]>(
+    Array(4).fill(false)
+  );
   const [error, setError] = useState<string>("");
-  const prevInputs = useRef<string[]>(Array(4).fill("")); // Инициализируем пустыми строками
+
+  const prevInputs = useRef<string[]>(Array(4).fill(""));
+
+  const { fetchItems: fetchAllItems } = useItemsContext(); // Берем метод из контекста
 
   const ensureFourInputs = (data: InputState[]) => {
     return Array(4)
@@ -66,7 +73,6 @@ const HitItemsBlock = () => {
       );
 
       setInputs(newInputs);
-      // Обновляем prevInputs после получения данных
       prevInputs.current = newInputs.map((input) => input.value.trim());
       setError("");
     } catch (err) {
@@ -75,14 +81,16 @@ const HitItemsBlock = () => {
     }
   };
 
-  const handleDelete = async (newId: string, inputIndex: number) => {
+  const handleDelete = async (hitId: string, inputIndex: number) => {
     try {
-      await deleteHitItem(newId);
+      await deleteHitItem(hitId);
+
       const newInputs = [...inputs];
       newInputs[inputIndex] = { value: "", item: null };
       setInputs(ensureFourInputs(newInputs));
-      prevInputs.current[inputIndex] = ""; // Обновляем только после успешного удаления
+      prevInputs.current[inputIndex] = "";
       setError("");
+      await fetchAllItems();
     } catch (err) {
       setError("Failed to delete item");
       console.error(err);
@@ -93,30 +101,29 @@ const HitItemsBlock = () => {
     const newInputs = [...inputs];
     newInputs[index] = { ...newInputs[index], value };
     setInputs(newInputs);
-    // Убираем обновление prevInputs здесь
+
+    // Сбрасываем ошибку, если пользователь изменяет значение
+    const newErrors = [...inputErrors];
+    newErrors[index] = false;
+    setInputErrors(newErrors);
   };
 
   const handleBlur = async (index: number) => {
     const inputValue = inputs[index].value.trim();
     const prevValue = prevInputs.current[index];
 
-    // Только если значение действительно изменилось
-    if (inputValue === prevValue) {
-      console.log("No changes, skipping request");
+    // Если значение пустое, устанавливаем ошибку и красную рамку
+    if (!inputValue) {
+      const newErrors = [...inputErrors];
+      newErrors[index] = true;
+      setInputErrors(newErrors);
+      setError("Input cannot be empty");
       return;
     }
 
-    try {
-      if (!inputValue) {
-        console.log("Empty input, handling delete");
-        const item = inputs[index].item;
-        if (item?.newId) {
-          await handleDelete(item.newId, index);
-        }
-        return;
-      }
+    if (inputValue === prevValue) return;
 
-      console.log("Making API request for:", inputValue);
+    try {
       const checkResponse = await fetch(
         `http://localhost:5000/skarpette/search?vendor_code=${encodeURIComponent(
           inputValue
@@ -137,16 +144,16 @@ const HitItemsBlock = () => {
       };
 
       await createHitItem(inputValue, itemData);
-      await fetchItems(); // Это обновит и prevInputs
+      await fetchItems();
+      await fetchAllItems(); // Обновляем данные в контексте
 
       setError("");
     } catch (err) {
-      console.error("Detailed error:", err);
+      console.error(err);
       setError(
         err instanceof Error ? err.message : "Failed to process vendor code"
       );
 
-      // Восстанавливаем предыдущее значение при ошибке
       const newInputs = [...inputs];
       newInputs[index] = { ...newInputs[index], value: prevValue };
       setInputs(newInputs);
@@ -216,11 +223,15 @@ const HitItemsBlock = () => {
                     onChange={(e) => handleInputChange(e.target.value, index)}
                     onBlur={() => handleBlur(index)}
                     size="small"
+                    error={inputErrors[index]} // Красная рамка при ошибке
+                    helperText={
+                      inputErrors[index] ? "This field is required" : ""
+                    }
                     sx={{
                       "& .MuiOutlinedInput-root": {
                         backgroundColor: "#fff",
                         "& fieldset": {
-                          borderColor: "#e0e0e0",
+                          borderColor: inputErrors[index] ? "red" : "#e0e0e0",
                         },
                       },
                     }}
@@ -243,7 +254,7 @@ const HitItemsBlock = () => {
                 )}
 
                 <IconButton
-                  onClick={() => handleDelete(input.item?.newId ?? "", index)}
+                  onClick={() => handleDelete(input.item?.hitId ?? "", index)}
                   color="error"
                   size="small"
                   sx={{
