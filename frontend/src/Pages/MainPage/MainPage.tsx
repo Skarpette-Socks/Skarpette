@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import CategoriesCarousel from "./MainPageComponents/CategoriesCarousel/CategoriesCarousel";
 import PromoCards from "./MainPageComponents/PromoCards/PromoCards";
@@ -13,27 +14,30 @@ const MainPage: React.FC = () => {
   const [loadingNew, setLoadingNew] = useState<boolean>(true);
   const [loadingHit, setLoadingHit] = useState<boolean>(true);
 
-  useEffect(() => {
-    fetchGoods("new")
-      .then((data) => {
-        setNewGoods(data);
-        setLoadingNew(false);
-      })
-      .catch((error) => {
-        console.error("Ошибка при загрузке новинок:", error);
-        setLoadingNew(false);
-      });
+useEffect(() => {
+  fetchGoods("new")
+    .then((data) => {
+      const filteredNewGoods = data.map((item: any) => item.skarpette); // Извлекаем только объект с носками
+      setNewGoods(filteredNewGoods);
+      setLoadingNew(false);
+    })
+    .catch((error) => {
+      console.error("Ошибка при загрузке новинок:", error);
+      setLoadingNew(false);
+    });
 
-    fetchGoods("hit")
-      .then((data) => {
-        setHitGoods(data);
-        setLoadingHit(false);
-      })
-      .catch((error) => {
-        console.error("Ошибка при загрузке хитов:", error);
-        setLoadingHit(false);
-      });
-  }, []);
+  fetchGoods("hit")
+    .then((data) => {
+      const filteredHitGoods = data.map((item: any) => item.skarpette); // Извлекаем только объект с носками
+      setHitGoods(filteredHitGoods);
+      setLoadingHit(false);
+    })
+    .catch((error) => {
+      console.error("Ошибка при загрузке хитов:", error);
+      setLoadingHit(false);
+    });
+}, []);
+
 
   return (
     <div>
