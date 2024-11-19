@@ -6,11 +6,12 @@ import {
   IconButton,
   Card,
   CardContent,
+  Alert,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Alert } from "@mui/material";
-import { deleteFavItem } from "../../../api/deleteItem";
+import { deleteNewItem } from "../../../api/deleteItem";
 import { createNewItem } from "../../../api/createNewItem";
+import { useItemsContext } from "../../../Context/ItemsContext";
 
 interface Size {
   size: string;
@@ -40,6 +41,7 @@ interface InputState {
 }
 
 const NewItemsComponent = () => {
+  const { fetchItems } = useItemsContext(); // Используем контекст
   const [inputs, setInputs] = useState<InputState[]>(
     Array(4).fill({ value: "", item: null })
   );
@@ -55,7 +57,7 @@ const NewItemsComponent = () => {
       .map((_, i) => data[i] || { value: "", item: null });
   };
 
-  const fetchItems = async () => {
+  const fetchLocalItems = async () => {
     try {
       const response = await fetch("http://localhost:5000/new");
       if (!response.ok) throw new Error("Failed to fetch items");
@@ -79,12 +81,14 @@ const NewItemsComponent = () => {
 
   const handleDelete = async (newId: string, inputIndex: number) => {
     try {
-      await deleteFavItem(newId);
+      await deleteNewItem(newId);
       const newInputs = [...inputs];
       newInputs[inputIndex] = { value: "", item: null };
       setInputs(ensureFourInputs(newInputs));
       prevInputs.current[inputIndex] = "";
       setError("");
+
+      await fetchItems();
     } catch (err) {
       setError("Failed to delete item");
       console.error(err);
@@ -136,7 +140,8 @@ const NewItemsComponent = () => {
       };
 
       await createNewItem(inputValue, itemData);
-      await fetchItems();
+      await fetchLocalItems();
+      await fetchItems(); // Обновляем данные через контекст
 
       setError("");
     } catch (err) {
@@ -152,7 +157,7 @@ const NewItemsComponent = () => {
   };
 
   useEffect(() => {
-    fetchItems();
+    fetchLocalItems();
   }, []);
 
   return (

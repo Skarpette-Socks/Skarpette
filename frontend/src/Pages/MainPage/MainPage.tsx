@@ -21,10 +21,6 @@ useEffect(() => {
       setNewGoods(filteredNewGoods);
       setLoadingNew(false);
     })
-    .catch((error) => {
-      console.error("Ошибка при загрузке новинок:", error);
-      setLoadingNew(false);
-    });
 
   fetchGoods("hit")
     .then((data) => {
@@ -32,10 +28,6 @@ useEffect(() => {
       setHitGoods(filteredHitGoods);
       setLoadingHit(false);
     })
-    .catch((error) => {
-      console.error("Ошибка при загрузке хитов:", error);
-      setLoadingHit(false);
-    });
 }, []);
 
 

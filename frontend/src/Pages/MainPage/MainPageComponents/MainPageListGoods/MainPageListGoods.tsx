@@ -18,7 +18,6 @@ const MainPageListGoods: React.FC<Props> = ({
   loading,
 }) => {
   const visibleGoods = goods.slice(0, 4);
-  console.log(goods)
 
   return (
     <div className="list-goods">
