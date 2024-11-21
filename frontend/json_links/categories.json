@@ -1,35 +1,34 @@
 [
-  { 
-    "footer_name": "Усі шкарпетки", 
-    "carousel_name": "Усі товари", 
+  {
+    "footer_name": "Жіночі шкарпетки",
+    "carousel_name": "Жіночі",
+    "dropdown_name": "Жіночі шкарпетки",
+    "link": "/catalog/womens-socks",
+    "type": "Women",
+    "sizes": ["23-25", "25-27"]
+  },
+  {
+    "footer_name": "Чоловічі шкарпетки",
+    "carousel_name": "Чоловічі",
+    "dropdown_name": "Чоловічі шкарпетки",
+    "link": "/catalog/mens-socks",
+    "type": "Men",
+    "sizes": ["25-27", "27-29", "29-31"]
+  },
+  {
+    "footer_name": "Дитячі шкарпетки",
+    "carousel_name": "Дитячі",
+    "dropdown_name": "Дитячі шкарпетки",
+    "link": "/catalog/kids-socks",
+    "type": "Child",
+    "sizes": ["16", "18", "19-21", "21-23", "23-25"]
+  },
+  {
+    "footer_name": "Усі шкарпетки",
+    "carousel_name": "Усі товари",
     "dropdown_name": "Усі шкарпетки",
     "link": "/catalog/all-socks",
     "type": "All",
     "sizes": []
-  },
-  { 
-    "footer_name": "Жіночі шкарпетки",
-    "carousel_name": "Жіночі", 
-    "dropdown_name": "Жіночі шкарпетки",
-    "link": "/catalog/womens-socks" ,
-    "type": "Women",
-    "sizes": ["23-25", "25-27"]
-  },
-  { 
-    "footer_name": "Чоловічі шкарпетки", 
-    "carousel_name": "Чоловічі", 
-    "dropdown_name": "Чоловічі шкарпетки",
-    "link": "/catalog/mens-socks" ,
-    "type": "Men",
-    "sizes": ["25-27", "27-29", "29-31"]
-  },
-  { 
-    "footer_name": "Дитячі шкарпетки", 
-    "carousel_name": "Дитячі", 
-    "dropdown_name": "Дитячі шкарпетки",
-    "link": "/catalog/kids-socks",
-    "type": "Child",
-    "sizes": ["16","18" ,"19-21", "21-23","23-25"]
   }
 ]
-
