@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {
   useState,
   useEffect,
@@ -72,44 +73,66 @@ const WarehouseInput = forwardRef<WarehouseInputRef, WarehouseInputProps>(
           Limit: "100000",
         };
 
+        const results: any[] = []; // Массив для сбора результатов
+
         if (deliveryType === "nova-poshta-poshtamat") {
           const params = {
             ...baseParams,
             TypeOfWarehouseRef: "f9316480-5f2d-425d-bc2c-ac7cd29decf0",
           };
           const warehousesData = await fetchWarehouses(params);
-          setWarehouses(warehousesData);
-          setFilteredWarehouses(warehousesData);
-        } else if (deliveryType === "nova-poshta-office") {
+          results.push(...warehousesData);
+        }
+
+        if (deliveryType === "nova-poshta-office") {
           const warehouseTypes = [
             "6f8c7162-4b72-4b0a-88e5-906948c6a92f",
             "841339c7-591a-42e2-8233-7a0a00f0ed6f",
             "9a68df70-0267-42a8-bb5c-37f427e36ee4",
           ];
 
-          const allPromises = warehouseTypes.map((type) =>
-            fetchWarehouses({
+          for (const type of warehouseTypes) {
+            const data = await fetchWarehouses({
               ...baseParams,
               TypeOfWarehouseRef: type,
-            })
-          );
-
-          const results = await Promise.all(allPromises);
-          const combinedWarehouses = results.flat();
-
-          setWarehouses(combinedWarehouses);
-          setFilteredWarehouses(combinedWarehouses);
+            });
+            results.push(...data);
+          }
         }
+        // Сортировка по номеру отделения
+        const sortedResults = results
+          .filter((value, index, self) => {
+            return (
+              index ===
+              self.findIndex((t) => JSON.stringify(t) === JSON.stringify(value))
+            ); // Уникальность по строковому значению
+          })
+          .sort((a, b) => {
+            const extractNumber = (str: string) => {
+              // Регулярное выражение для поиска номера после "№"
+              const match = str.match(/№\s*(\d+)/);
+              return match ? parseInt(match[1], 10) : Infinity; // Если не найдено, ставим в конец
+            };
 
-        if (warehouses.length === 0) {
+            const numberA = extractNumber(a); // a - это строка, содержащая номер
+            const numberB = extractNumber(b); // b - это строка, содержащая номер
+
+            return numberA - numberB; // Сравниваем числа для сортировки
+          });
+        // Фильтрация по уникальности, используя строковое представление склада
+
+        if (sortedResults.length === 0) {
           setError("Відділення не знайдено");
         }
+
+        setWarehouses(sortedResults);
+        setFilteredWarehouses(sortedResults);
       } catch (err) {
         setError("Помилка при виконанні запиту: " + (err as Error).message);
         setWarehouses([]);
         setFilteredWarehouses([]);
       }
-    }, [selectedCity, deliveryType, warehouses.length]);
+    }, [selectedCity, deliveryType]);
 
     useEffect(() => {
       fetchWarehousesData();
