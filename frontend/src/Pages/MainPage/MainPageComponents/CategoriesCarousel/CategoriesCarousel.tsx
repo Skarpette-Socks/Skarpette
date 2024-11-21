@@ -49,7 +49,7 @@ const CategoriesCarousel: React.FC = () => {
                   to={link}
                 >
                   <img
-                    src={`src/assets/img/carousel-img${index + 1}.png`}
+                    src={`src/assets/img/carousel-img${index + 1}.svg`}
                     alt={`image ${index + 1}`}
                     className="categories-carousel__image"
                   />
