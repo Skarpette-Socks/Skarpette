@@ -1,5 +1,13 @@
 [
   {
+    "footer_name": "Усі шкарпетки",
+    "carousel_name": "Усі товари",
+    "dropdown_name": "Усі шкарпетки",
+    "link": "/catalog/all-socks",
+    "type": "All",
+    "sizes": []
+  },
+  {
     "footer_name": "Жіночі шкарпетки",
     "carousel_name": "Жіночі",
     "dropdown_name": "Жіночі шкарпетки",
@@ -22,13 +30,5 @@
     "link": "/catalog/kids-socks",
     "type": "Child",
     "sizes": ["16", "18", "19-21", "21-23", "23-25"]
-  },
-  {
-    "footer_name": "Усі шкарпетки",
-    "carousel_name": "Усі товари",
-    "dropdown_name": "Усі шкарпетки",
-    "link": "/catalog/all-socks",
-    "type": "All",
-    "sizes": []
   }
 ]
