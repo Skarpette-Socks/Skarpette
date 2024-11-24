@@ -36,7 +36,7 @@ const CartContext = createContext<CartContextType | undefined>(
 export const useCartItems = () => {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error("useFavorites must be used within a FavoritesProvider");
+    throw new Error("useCart must be used within a CartProvider");
   }
   return context;
 };
@@ -51,9 +51,28 @@ export const CartProvider: React.FC<{ children: ReactNode}> = ({
 
   const [cartItems, setCartItems] = useState<CartItem[]>(getUpdatedCart());
 
+  const updateCart = (items:CartItem[]) => {
+    localStorage.setItem("cart", JSON.stringify(items));
+  }
+
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItems));
+    updateCart(cartItems);
   }, [cartItems]);
+
+  useEffect(() => {
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === "cart") {
+        const updatedCart = event.newValue ? JSON.parse(event.newValue) : [];
+        setCartItems(updatedCart);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   const addCartItem: AddCartItem = ( item, counter, selectedSize ) => {
     if (selectedSize !== undefined) {
