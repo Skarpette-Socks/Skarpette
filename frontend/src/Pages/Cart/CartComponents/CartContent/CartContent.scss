@@ -96,9 +96,11 @@
       cursor: pointer;
       text-decoration: none;
       color: $grayscale-1000;
-
+      padding-right: 8px;
+      
       @include on-tablet {
-        font-size: 16px;
+      padding-right: 12px;
+      font-size: 16px;
       }
     }
 
