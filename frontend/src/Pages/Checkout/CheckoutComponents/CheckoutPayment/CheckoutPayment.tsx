@@ -1,35 +1,28 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import './CheckoutPayment.scss'
+import "./CheckoutPayment.scss";
 
 const CheckoutPayment: React.FC = () => {
-  const [selectedOption, setSelectedOption] = useState('fondy');
+  const [selectedOption, setSelectedOption] = useState("fondy");
 
   const options = [
     {
       id: "fondy",
-      title: "Картками Visa та MasterCard через Fondy",
-      subtitle: "На сайті сервісу",
+      title: "Онлайн оплата банківською картою",
     },
     {
       id: "on-card",
-      title: "На картку",
-      subtitle: "Через дзвінок",
+      title: "Післяплата",
     },
-  ]
+  ];
 
   return (
     <div className="checkout-payment">
-      <h3 className="checkout-payment__title">
-        Оплата
-      </h3>
+      <h3 className="checkout-payment__title">Оплата</h3>
       <div className="checkout-payment__options">
         {options.map((option) => {
           return (
-            <label
-              key={option.id}
-              className='checkout-payment__option'
-            >
+            <label key={option.id} className="checkout-payment__option">
               <div className="checkout-payment__option-checkbox">
                 <input
                   type="radio"
@@ -43,17 +36,13 @@ const CheckoutPayment: React.FC = () => {
                 <div className="checkout-payment__option-title">
                   {option.title}
                 </div>
-                <div className="checkout-payment__option-subtitle">
-                  {option.subtitle}
-                </div>
               </div>
             </label>
-          )
+          );
         })}
       </div>
-
     </div>
   );
-}
+};
 
 export default CheckoutPayment;
