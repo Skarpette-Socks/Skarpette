@@ -1,17 +1,17 @@
-const Order = require('../models/order');
-const { format } = require('date-fns');
-const { DateTime } = require('luxon');
-const crypto = require('crypto');
+const Order = require("../models/order");
+const { format } = require("date-fns");
+const { DateTime } = require("luxon");
+const crypto = require("crypto");
 
 const getKyivTime = () => {
-    return DateTime.now().setZone('Europe/Kyiv').toJSDate();
+    return DateTime.now().setZone("Europe/Kyiv").toJSDate();
 };
 
 const generateOrderNumber = async () => {
     const orderDate = getKyivTime();
-    const datePart = format(orderDate, 'ddMMyy');
+    const datePart = format(orderDate, "ddMMyy");
 
-    let sequenceNumber = '0001';
+    let sequenceNumber = "01";
     let orderNumber = `${datePart}${sequenceNumber}`;
 
     let latestOrder = await Order.findOne({ orderNumber });
@@ -20,7 +20,7 @@ const generateOrderNumber = async () => {
         const latestSequence = orderNumber.slice(-4);
         sequenceNumber = (parseInt(latestSequence, 10) + 1)
             .toString()
-            .padStart(4, '0');
+            .padStart(4, "0");
 
         orderNumber = `${datePart}${sequenceNumber}`;
 
@@ -37,7 +37,7 @@ const validateRecipientData = (orderData) => {
             !orderData.recipientData.lastName ||
             !orderData.recipientData.phoneNumber
         ) {
-            return 'All fields must be filled';
+            return "All fields must be filled";
         }
     } else {
         if (
@@ -45,7 +45,7 @@ const validateRecipientData = (orderData) => {
             orderData.recipientData.lastName ||
             orderData.recipientData.phoneNumber
         ) {
-            return 'No fields should be filled';
+            return "No fields should be filled";
         }
     }
     return null;
@@ -53,7 +53,7 @@ const validateRecipientData = (orderData) => {
 
 const validateDeliveryData = (deliveryData) => {
     if (!deliveryData.deliveryType) {
-        return 'Delivery type is missing';
+        return "Delivery type is missing";
     }
 
     if (deliveryData.deliveryType === "НПКур'єр") {
@@ -73,38 +73,38 @@ const validateDeliveryData = (deliveryData) => {
 
 function encrypt(text) {
     const algorithm = process.env.CRYPTO_ALGORITHM;
-    const key = Buffer.from(process.env.CRYPTO_SECRET_KEY, 'hex');
+    const key = Buffer.from(process.env.CRYPTO_SECRET_KEY, "hex");
     const iv = crypto.randomBytes(16);
     const cipher = crypto.createCipheriv(algorithm, key, iv);
-    let encrypted = cipher.update(text, 'utf8', 'hex');
-    encrypted += cipher.final('hex');
-    return iv.toString('hex') + ':' + encrypted;
+    let encrypted = cipher.update(text, "utf8", "hex");
+    encrypted += cipher.final("hex");
+    return iv.toString("hex") + ":" + encrypted;
 }
 
 function decrypt(encryptedData) {
     const algorithm = process.env.CRYPTO_ALGORITHM;
-    const key = Buffer.from(process.env.CRYPTO_SECRET_KEY, 'hex');
-    if (typeof encryptedData !== 'string') {
+    const key = Buffer.from(process.env.CRYPTO_SECRET_KEY, "hex");
+    if (typeof encryptedData !== "string") {
         return;
     }
 
-    const parts = encryptedData.split(':');
+    const parts = encryptedData.split(":");
     if (parts.length !== 2) {
-        throw new Error('Invalid encrypted data format.');
+        throw new Error("Invalid encrypted data format.");
     }
 
-    const iv = Buffer.from(parts.shift(), 'hex');
-    const encryptedText = Buffer.from(parts.join(':'), 'hex');
+    const iv = Buffer.from(parts.shift(), "hex");
+    const encryptedText = Buffer.from(parts.join(":"), "hex");
     const decipher = crypto.createDecipheriv(algorithm, key, iv);
-    let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
-    decrypted += decipher.final('utf8');
+    let decrypted = decipher.update(encryptedText, "hex", "utf8");
+    decrypted += decipher.final("utf8");
     return decrypted;
 }
 
 const encryptObject = (obj) => {
     const encryptedObject = {};
     for (let key in obj) {
-        if (typeof obj[key] === 'string' && key !== 'deliveryType') {
+        if (typeof obj[key] === "string" && key !== "deliveryType") {
             encryptedObject[key] = encrypt(obj[key]);
         } else {
             encryptedObject[key] = obj[key];
@@ -116,7 +116,7 @@ const encryptObject = (obj) => {
 const decryptObject = (obj) => {
     const decryptedObject = {};
     for (let key in obj) {
-        if (typeof obj[key] === 'string' && key !== 'deliveryType') {
+        if (typeof obj[key] === "string" && key !== "deliveryType") {
             decryptedObject[key] = decrypt(obj[key]);
         } else {
             decryptedObject[key] = obj[key];
@@ -158,7 +158,7 @@ const getOrderById = async (req, res) => {
     try {
         const order = await Order.findById(id);
         if (!order) {
-            return res.status(404).json('Order not found');
+            return res.status(404).json("Order not found");
         }
         order.customerData = decryptObject(order.customerData);
         order.deliveryData = decryptObject(order.deliveryData);
@@ -175,7 +175,7 @@ const getAllOrders = async (req, res) => {
     try {
         const orders = await Order.find();
         if (!orders) {
-            return res.status(404).json('Orders not found');
+            return res.status(404).json("Orders not found");
         }
         for (let order of orders) {
             order.customerData = decryptObject(order.customerData);
@@ -196,10 +196,10 @@ const deleteOrder = async (req, res) => {
         const order = await Order.findById(id);
 
         if (!order) {
-            return res.status(404).json('Order not found');
+            return res.status(404).json("Order not found");
         }
         await order.deleteOne();
-        res.status(200).json('Order has been deleted');
+        res.status(200).json("Order has been deleted");
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -217,7 +217,7 @@ const updateOrder = async (req, res) => {
         );
 
         if (!updatedOrder) {
-            return res.status(404).json('Order not found');
+            return res.status(404).json("Order not found");
         }
         res.status(200).json(updatedOrder);
     } catch (error) {
