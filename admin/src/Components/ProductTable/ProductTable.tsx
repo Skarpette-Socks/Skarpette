@@ -164,12 +164,19 @@ const ProductTable: React.FC = () => {
   }, [loadData]);
 
   useEffect(() => {
-    setSocks(() => {
-      return socksDb.filter(sock => 
-        sock.name.toLowerCase().includes(searchInput.toLowerCase()) || 
-        sock.vendor_code.toString().includes(searchInput))
-    });
-  }, [searchInput]);
+    console.log( searchInput)
+
+    if(searchInput === '') {
+      console.log('socksDb', socksDb)
+      setSocks(socksDb);
+    } else {
+      setSocks(() => {
+        return socksDb.filter(sock => 
+          sock.name.toLowerCase().includes(searchInput.toLowerCase()) || 
+          sock.vendor_code.toString().includes(searchInput))
+      });
+    }
+  }, [searchInput, socksDb]);
 
   const highlightText = (text: string) => {
     if (!searchInput) return text;
@@ -410,7 +417,7 @@ const ProductTable: React.FC = () => {
         </TableContainer>
 
         <TablePagination
-          rowsPerPageOptions={[10, 25, 50, 100]}
+          rowsPerPageOptions={[8, 10, 25, 50, 100]}
           component="div"
           count={socks.length}
           rowsPerPage={rowsPerPage}
