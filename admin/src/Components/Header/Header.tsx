@@ -2,11 +2,9 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  InputBase,
   Avatar,
   Box,
 } from "@mui/material";
-import { Search as SearchIcon } from "@mui/icons-material";
 
 const Header = () => {
   return (
@@ -25,23 +23,6 @@ const Header = () => {
           Skarpette
           <span style={{ fontSize: "12px", color: "grey" }}>admin panel</span>
         </Typography>
-
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            backgroundColor: "#f5f5f5",
-            borderRadius: "4px",
-            padding: "4px 8px",
-            width: "500px",
-          }}
-        >
-          <SearchIcon sx={{ color: "grey", marginRight: 1 }} />
-          <InputBase
-            placeholder="Пошук..."
-            sx={{ color: "grey", width: "100%" }}
-          />
-        </Box>
 
         <Box
           sx={{

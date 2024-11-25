@@ -13,6 +13,7 @@ import {
   styled,
   Button,
   Box,
+  InputBase,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -20,6 +21,8 @@ import { Link } from "react-router-dom";
 import { fetchAllData } from "../../api/fetchAllData";
 import { deleteItem } from "../../api/deleteItem";
 import { DeleteDialog } from "./DeleteDialog";
+import { Search as SearchIcon } from "@mui/icons-material";
+
 
 // Типы данных
 interface SizeItem {
@@ -135,18 +138,20 @@ const ProductTable: React.FC = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [selected, setSelected] = useState<number[]>([]);
+  const [socksDb, setSocksDb] = useState<DataItem[]>([]);
   const [socks, setSocks] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteDialog, setDeleteDialog] = useState({
     open: false,
     id: null as string | null,
   });
+  const [searchInput, setSearchInput] = useState<string>('');
 
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
       const result = await fetchAllData();
-      setSocks(result);
+      setSocksDb(result);
     } catch (error) {
       console.error("Failed to load data:", error);
     } finally {
@@ -157,6 +162,31 @@ const ProductTable: React.FC = () => {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  useEffect(() => {
+    setSocks(() => {
+      return socksDb.filter(sock => 
+        sock.name.toLowerCase().includes(searchInput.toLowerCase()) || 
+        sock.vendor_code.toString().includes(searchInput))
+    });
+  }, [searchInput]);
+
+  const highlightText = (text: string) => {
+    if (!searchInput) return text;
+  
+    const regex = new RegExp(`(${searchInput})`, "gi");
+    const parts = text.split(regex);
+  
+    return parts.map((part, index) =>
+      part.toLowerCase() === searchInput.toLowerCase() ? (
+        <span key={index} style={{ backgroundColor: "orange", fontWeight: "bold" }}>
+          {part}
+        </span>
+      ) : (
+        part
+      )
+    );
+  };
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelected(
@@ -194,11 +224,11 @@ const ProductTable: React.FC = () => {
   const renderTableCell = (sock: DataItem, field: string) => {
     switch (field) {
       case "name":
-        return sock.name;
+        return highlightText(sock.name);
       case "photo":
         return <ImageCell src={sock.images_urls[0]} alt={sock.name} />;
       case "vendor_code":
-        return sock.vendor_code;
+        return highlightText(sock.vendor_code.toString()); 
       case "type":
         return sock.type;
       case "style":
@@ -273,6 +303,24 @@ const ProductTable: React.FC = () => {
         >
           Видалити
         </Button>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: "#f5f5f5",
+            borderRadius: "4px",
+            padding: "4px 8px",
+            width: "500px",
+          }}
+        >
+          <SearchIcon sx={{ color: "grey", marginRight: 1 }} />
+          <InputBase
+            placeholder="Пошук за назвою або артикулом"
+            sx={{ color: "grey", width: "100%" }}
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
+        </Box>
         <Link to="/add">
           <Button variant="contained">Додати товар</Button>
         </Link>
