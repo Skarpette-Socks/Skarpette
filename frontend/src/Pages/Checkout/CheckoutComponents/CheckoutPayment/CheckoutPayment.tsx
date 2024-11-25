@@ -8,7 +8,7 @@ const CheckoutPayment: React.FC = () => {
   const options = [
     {
       id: "fondy",
-      title: "Онлайн оплата банківською картою",
+      title: "Онлайн-оплата банківською картою",
     },
     {
       id: "on-card",
