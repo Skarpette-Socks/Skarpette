@@ -1,8 +1,9 @@
 import React from "react";
 import "./MainPageListGoods.scss";
-import chevron from "../../../../assets/img/icons/chevron-right.svg";
-import Item from "../../../../Components/Item/Item";
-import DataItem from "../../../../types/DataItem";
+import chevron from "../../../src/assets/img/icons/chevron-right.svg";
+
+import Item from "../Item/Item";
+import DataItem from "../../types/DataItem";
 
 interface Props {
   title: string;

@@ -235,7 +235,7 @@ const Checkout = () => {
       </div>
 
       <button className="checkout__button" onClick={handleCheckout}>
-        Оплатити замовлення
+        Створити замовлення
       </button>
 
       <div className="checkout__footer">

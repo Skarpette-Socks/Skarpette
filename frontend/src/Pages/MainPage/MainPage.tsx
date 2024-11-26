@@ -4,7 +4,7 @@ import CategoriesCarousel from "./MainPageComponents/CategoriesCarousel/Categori
 import PromoCards from "./MainPageComponents/PromoCards/PromoCards";
 import Reviews from "./MainPageComponents/Reviews/Reviews";
 import CustomSlider from "./MainPageComponents/Slider/CustomSlider";
-import MainPageListGoods from "./MainPageComponents/MainPageListGoods/MainPageListGoods";
+import MainPageListGoods from "../../Components/MainPageListGoods/MainPageListGoods";
 import { fetchGoods } from "../../api/fetchGoodsAtMainPage";
 import DataItem from "../../types/DataItem";
 

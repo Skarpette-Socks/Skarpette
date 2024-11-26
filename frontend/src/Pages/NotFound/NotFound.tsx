@@ -1,5 +1,5 @@
 import NotFoundContent from "./NotFoundComponents/NotFoundContent";
-import MainPageListGoods from "../MainPage/MainPageComponents/MainPageListGoods/MainPageListGoods";
+import MainPageListGoods from "../../Components/MainPageListGoods/MainPageListGoods";
 
 const NotFound: React.FC = () => {
   return (

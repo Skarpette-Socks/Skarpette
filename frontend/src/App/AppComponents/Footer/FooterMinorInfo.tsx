@@ -1,6 +1,5 @@
 import visa from "../../../assets/img/icons/visa.svg";
 import mastercard from "../../../assets/img/icons/mastercard.svg";
-import fondy from "../../../assets/img/icons/fondy.svg";
 
 const FooterMinorInfo: React.FC = () => {
   return (
@@ -26,7 +25,6 @@ const FooterMinorInfo: React.FC = () => {
           alt="mastercard logo"
           className="footer__mastercard-logo"
         />
-        <img src={fondy} alt="fondy logo" className="footer__fondy-logo" />
       </div>
     </div>
   );
