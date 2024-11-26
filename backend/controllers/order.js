@@ -60,8 +60,12 @@ const validateDeliveryData = (deliveryData) => {
     }
 
     if (deliveryData.deliveryType === "НПКур'єр") {
-        if (!deliveryData.street || !deliveryData.apartmentNumber) {
-            return `Street and Apartment Number should be filled for ${deliveryData.deliveryType}`;
+        if (
+            !deliveryData.street ||
+            !deliveryData.apartmentNumber ||
+            !deliveryData.houseNumber
+        ) {
+            return `Street, Apartment Number and House Number should be filled for ${deliveryData.deliveryType}`;
         } else if (deliveryData.departmentNumber) {
             return `${deliveryData.deliveryType} does not require Department Number`;
         }
@@ -240,6 +244,9 @@ const sendOrderEmailToOwner = async (orderData) => {
                         "Відсутні"
                     }</pre>
                 </li>
+                <li><strong>Коментар:</strong> ${
+                    orderData.comment || "Відсутній"
+                }</li>
                 <li><strong>Тип оплати:</strong> ${
                     orderData.paymentType || "Невідомо"
                 }</li>
@@ -282,6 +289,7 @@ const createOrder = async (req, res) => {
         if (orderData.recipientData) {
             orderData.recipientData = encryptObject(orderData.recipientData);
         }
+        orderData.comment = encrypt(orderData.comment);
         const newOrder = await Order.create(orderData);
         try {
             console.log(decrypt(orderData.customerData.email));
@@ -327,6 +335,7 @@ const getAllOrders = async (req, res) => {
             if (order.recipientData) {
                 order.recipientData = decryptObject(order.recipientData);
             }
+            order.comment = encrypt(order.comment);
         }
         res.status(200).json(orders);
     } catch (error) {
