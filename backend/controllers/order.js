@@ -1,7 +1,10 @@
 const Order = require("../models/order");
+const Skarpette = require("../models/skarpette");
 const { format } = require("date-fns");
 const { DateTime } = require("luxon");
 const crypto = require("crypto");
+const nodemailer = require("nodemailer");
+require("dotenv").config();
 
 const getKyivTime = () => {
     return DateTime.now().setZone("Europe/Kyiv").toJSDate();
@@ -125,6 +128,138 @@ const decryptObject = (obj) => {
     return decryptedObject;
 };
 
+const sendOrderEmailToCustomer = async (orderData, userEmail) => {
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
+        },
+        secure: true,
+    });
+
+    let orderDetails = "";
+    for (let item of orderData.items) {
+        const skarpette = await Skarpette.findById(item.skarpetteId);
+        if (skarpette) {
+            const imageUrl =
+                skarpette.images_urls?.[0] || "https://via.placeholder.com/200";
+            orderDetails += `
+                <div>
+                    <h3>${skarpette.name}</h3>
+                    <img src="${imageUrl}" alt="${skarpette.name}" style="width: 200px; height: auto; display: block; margin-bottom: 10px;" />
+                    <p>Розмір: ${item.size}</p>
+                    <p>Кількість: ${item.quantity}</p>
+                </div>
+                <hr />
+            `;
+        }
+    }
+
+    const mailOptions = {
+        from: `"Skarpette" ${process.env.EMAIL_USER}`,
+        to: userEmail,
+        subject: "Ваше замовлення підтверджено!",
+        html: `
+            <h1 style="color: #5A2D82;">Дякуємо за замовлення!</h1>
+            <p>Ви обрали:</p>
+            ${
+                orderDetails ||
+                "<p>Не знайдено товарів для вашого замовлення.</p>"
+            }
+        `,
+    };
+
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Email sent: ", info.response);
+    } catch (error) {
+        console.error("Error sending email: ", error);
+    }
+};
+
+const sendOrderEmailToOwner = async (orderData) => {
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
+        },
+        secure: true,
+    });
+
+    let orderDetails = "";
+    for (let item of orderData.items) {
+        const skarpette = await Skarpette.findById(item.skarpetteId);
+        if (skarpette) {
+            const imageUrl =
+                skarpette.images_urls?.[0] || "https://via.placeholder.com/200";
+            orderDetails += `
+                <div style="margin-bottom: 20px;">
+                    <h3>${skarpette.name}</h3>
+                    <img src="${imageUrl}" alt="${skarpette.name}" style="width: 200px; height: auto; margin-bottom: 10px;" />
+                    <p><strong>Розмір:</strong> ${item.size}</p>
+                    <p><strong>Кількість:</strong> ${item.quantity}</p>
+                </div>
+                <hr />
+            `;
+        }
+    }
+
+    const mailOptions = {
+        from: `"Skarpette" ${process.env.EMAIL_USER}`,
+        to: process.env.EMAIL_USER,
+        subject: "Нове замовлення в магазині Skarpette!",
+        html: `
+            <h1 style="color: #5A2D82;">Нове замовлення в магазині Skarpette!</h1>
+            <p><strong>Деталі замовлення:</strong></p>
+            <ul>
+                <li><strong>Номер замовлення:</strong> ${
+                    orderData.orderNumber || "Невідомо"
+                }</li>
+                <li><strong>Загальна сума:</strong> ${
+                    orderData.totalPrice || "Невідомо"
+                } грн</li>
+                <li><strong>Дані замовника:</strong>
+                    <pre>${
+                        JSON.stringify(orderData.customerData, null, 2) ||
+                        "Відсутні"
+                    }</pre>
+                </li>
+                <li><strong>Інший отримувач:</strong>
+                    <pre>${
+                        orderData.isDifferentRecipient &&
+                        orderData.recipientData
+                            ? JSON.stringify(orderData.recipientData, null, 2)
+                            : "Відсутній"
+                    }</pre>
+                </li>
+                <li><strong>Дані доставки:</strong>
+                    <pre>${
+                        JSON.stringify(orderData.deliveryData, null, 2) ||
+                        "Відсутні"
+                    }</pre>
+                </li>
+                <li><strong>Тип оплати:</strong> ${
+                    orderData.paymentType || "Невідомо"
+                }</li>
+                <li><strong>Оплачено:</strong> ${
+                    orderData.isPaid ? "Так" : "Ні"
+                }</li>
+            </ul>
+            <h2>Товари в замовленні:</h2>
+            <pre>${orderDetails || "Товари не знайдено."}</pre>
+        `,
+    };
+
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Email to owner sent: ", info.response);
+    } catch (error) {
+        console.error("Error sending email to owner: ", error);
+    }
+};
+
 const createOrder = async (req, res) => {
     try {
         let orderData = req.body;
@@ -140,13 +275,22 @@ const createOrder = async (req, res) => {
         if (deliveryValidationError) {
             return res.status(400).json(deliveryValidationError);
         }
+        orderData.orderNumber = await generateOrderNumber();
+        const emailOrder = { ...orderData };
         orderData.customerData = encryptObject(orderData.customerData);
         orderData.deliveryData = encryptObject(orderData.deliveryData);
         if (orderData.recipientData) {
             orderData.recipientData = encryptObject(orderData.recipientData);
         }
-        orderData.orderNumber = await generateOrderNumber();
         const newOrder = await Order.create(orderData);
+        try {
+            console.log(decrypt(orderData.customerData.email));
+            const email = decrypt(orderData.customerData.email);
+            await sendOrderEmailToCustomer(emailOrder, email);
+            await sendOrderEmailToOwner(emailOrder);
+        } catch (error) {
+            console.error("Error sending email: ", error);
+        }
         res.status(201).json(newOrder);
     } catch (error) {
         res.status(500).json({ error: error.message });
