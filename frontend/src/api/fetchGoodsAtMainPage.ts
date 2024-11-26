@@ -1,6 +1,11 @@
 import DataItem from "../types/DataItem";
 
-export const fetchGoods = async (type: "new" | "hit"): Promise<DataItem[]> => {
+interface PromiseDataItem {
+  newId: string,
+  skarpette: DataItem,
+}
+
+export const fetchGoods = async (type: "new" | "hit"): Promise<PromiseDataItem[]> => {
   try {
     const response = await fetch(`http://localhost:5000/${type}`);
     const data = await response.json();

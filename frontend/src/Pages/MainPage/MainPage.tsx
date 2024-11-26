@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import CategoriesCarousel from "./MainPageComponents/CategoriesCarousel/CategoriesCarousel";
 import PromoCards from "./MainPageComponents/PromoCards/PromoCards";
@@ -17,14 +16,14 @@ const MainPage: React.FC = () => {
 useEffect(() => {
   fetchGoods("new")
     .then((data) => {
-      const filteredNewGoods = data.map((item: any) => item.skarpette);
+      const filteredNewGoods = data.map((item) => item.skarpette);
       setNewGoods(filteredNewGoods);
       setLoadingNew(false);
     })
 
   fetchGoods("hit")
     .then((data) => {
-      const filteredHitGoods = data.map((item: any) => item.skarpette);
+      const filteredHitGoods = data.map((item) => item.skarpette);
       setHitGoods(filteredHitGoods);
       setLoadingHit(false);
     })
