@@ -312,11 +312,19 @@ const getOrderById = async (req, res) => {
         if (!order) {
             return res.status(404).json("Order not found");
         }
-        order.customerData = decryptObject(order.customerData);
-        order.deliveryData = decryptObject(order.deliveryData);
+        if (order.customerData) {
+            order.customerData = decryptObject(order.customerData);
+        }
+        if (order.deliveryData) {
+            order.deliveryData = decryptObject(order.deliveryData);
+        }
         if (order.recipientData) {
             order.recipientData = decryptObject(order.recipientData);
         }
+        if (order.comment) {
+            order.comment = encrypt(order.comment);
+        }
+
         res.status(200).json(order);
     } catch (error) {
         return res.status(500).json({ error: error.message });
@@ -330,12 +338,18 @@ const getAllOrders = async (req, res) => {
             return res.status(404).json("Orders not found");
         }
         for (let order of orders) {
-            order.customerData = decryptObject(order.customerData);
-            order.deliveryData = decryptObject(order.deliveryData);
+            if (order.customerData) {
+                order.customerData = decryptObject(order.customerData);
+            }
+            if (order.deliveryData) {
+                order.deliveryData = decryptObject(order.deliveryData);
+            }
             if (order.recipientData) {
                 order.recipientData = decryptObject(order.recipientData);
             }
-            order.comment = encrypt(order.comment);
+            if (order.comment) {
+                order.comment = encrypt(order.comment);
+            }
         }
         res.status(200).json(orders);
     } catch (error) {
