@@ -69,5 +69,15 @@
     font-size: 16px;
     color: $grayscale-600;
     margin-top: 16px;
+    text-align: justify;
+    line-height: 1.5;
+
+    &-list {
+      list-style-position: inside;
+
+      li {
+        margin-top: 12px;
+      }
+    }
   }
 }
