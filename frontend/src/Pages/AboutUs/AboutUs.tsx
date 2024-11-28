@@ -13,11 +13,14 @@ const AboutUs: React.FC = () => {
 
       <div className="about-us">
         <div className="about-us__title">
-          <h1>Шкарпетки від виробника</h1>
+          <h1>Про Skarpette</h1>
           <img src={about_us_title} alt="about us main photo" />
         </div>
 
         <article className="about-us__main-info">
+          <h2>
+            <b>Шкарпетки від виробника</b>
+          </h2>
           <section>
             Підприємство «ЛЯМІНОР» – це сучасне підприємство, що спеціалізується
             на виготовленні якісної шкарпеткової продукції за доступними цінами.

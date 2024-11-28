@@ -37,9 +37,8 @@
         margin-left: 40px;
       }
       @include on-desktop {
-        grid-column: 1 / 5;
+        grid-column: 1 / 6;
         margin: 40px;
-        text-align: center;
       }
     }
 
@@ -75,6 +74,19 @@
       @include on-desktop {
         font-size: 18px;
       }
+    }
+
+    h2 {
+      font-weight: 700 !important;
+      text-align: center;
+
+      @include on-desktop {
+        font-size: 32px;
+      }
+    }
+
+    b {
+      font-weight: 700;
     }
   }
 
