@@ -17,6 +17,7 @@
     border-radius: 16px;
     display: flex;
     flex-direction: column;
+    text-align: center;
 
     @include on-desktop {
       display: grid;
@@ -36,8 +37,7 @@
         margin-left: 40px;
       }
       @include on-desktop {
-        grid-column: 1 / 5;
-        white-space: nowrap;
+        grid-column: 1 / 6;
         margin: 40px;
       }
     }
@@ -74,6 +74,19 @@
       @include on-desktop {
         font-size: 18px;
       }
+    }
+
+    h2 {
+      font-weight: 700 !important;
+      text-align: center;
+
+      @include on-desktop {
+        font-size: 32px;
+      }
+    }
+
+    b {
+      font-weight: 700;
     }
   }
 
@@ -124,10 +137,28 @@
       font-weight: 500;
       font-size: 16px;
       color: $grayscale-1000;
+      line-height: 1.5;
 
       @include on-desktop {
         font-size: 18px;
       }
+    }
+
+    h2 {
+      font-weight: 700 !important;
+      text-align: center;
+
+      @include on-desktop {
+        font-size: 32px;
+      }
+    }
+
+    li {
+      list-style-position: inside;
+    }
+
+    b {
+      font-weight: 700;
     }
   }
 }

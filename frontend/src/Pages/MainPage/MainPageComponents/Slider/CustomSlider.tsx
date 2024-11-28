@@ -6,7 +6,7 @@ import "./CustomSlider.scss";
 
 import { NextArrow, PrevArrow } from "./CustomArrows";
 
-import slide_img_1 from "../../../../assets/img/slider_img_1.png";
+import slide_img_1 from "../../../../assets/img/slider_img_1.svg";
 // тестовые рандомные картинки
 import slide_img_2 from "../../../../assets/img/slide_img_2.png";
 import slide_img_3 from "../../../../assets/img/slide_img_3.png";
@@ -44,9 +44,9 @@ const CustomSlider: React.FC = () => {
   const slidesData: Slide[] = [
     {
       id: 1,
-      title: "Нове життя вічної традиції",
+      title: "Життя яскраве",
       description:
-        "Купуйте нашивки за областями та підтримуйте нашу армію — 30% отриманих коштів іде на підтримку ЗСУ!",
+        "Не обмежуйте себе буденністю.Не відкладайте на завтра те, що можна купити сьогодні!",
       button: "Перейти",
       imageUrl: slide_img_1,
     },
