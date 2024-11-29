@@ -94,19 +94,26 @@ const CartContent: React.FC = () => {
                 </div>
               </div>
               <Link to="/checkout">
-                <button className="cart__button">
+                <button
+                  disabled={totalPrice < 500}
+                  className={`cart__button ${
+                    totalPrice < 500 ? "disabled" : ""
+                  }`}
+                >
                   <div className="cart__button-text">Оформити замовлення</div>
                 </button>
               </Link>
+
             </div>
+            {totalPrice < 500 && (
+              <div className="cart__below-minimum">
+                Мінімальна сума замовлення для оформлення — 500 грн
+              </div>
+            )}
           </>
         ) : (
           <div className="cart__no-item">
-            <img
-              src={no_cart}
-              alt="no_fav"
-              className="cart__no-item-img"
-            />
+            <img src={no_cart} alt="no_fav" className="cart__no-item-img" />
             <h3 className="cart__no-item-main-text">Кошик порожній</h3>
             <p className="cart__no-item-paragraph">
               Кошик нудьгує на самоті... час це змінити :)
