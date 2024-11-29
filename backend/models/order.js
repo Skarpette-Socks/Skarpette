@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
     orderNumber: {
@@ -10,7 +10,7 @@ const orderSchema = new mongoose.Schema({
         {
             skarpetteId: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Skarpette',
+                ref: "Skarpette",
                 required: true,
             },
             size: {
@@ -49,11 +49,7 @@ const orderSchema = new mongoose.Schema({
     deliveryData: {
         deliveryType: {
             type: String,
-            enum: ['НПВідділення', "НПКур'єр", 'НППоштомат', 'УПВідділення'],
-            required: true,
-        },
-        region: {
-            type: String,
+            enum: ["НПВідділення", "НПКур'єр", "НППоштомат", "УПВідділення"],
             required: true,
         },
         city: {
@@ -61,6 +57,9 @@ const orderSchema = new mongoose.Schema({
             required: true,
         },
         street: {
+            type: String,
+        },
+        houseNumber: {
             type: String,
         },
         apartmentNumber: {
@@ -72,7 +71,7 @@ const orderSchema = new mongoose.Schema({
     },
     paymentType: {
         type: String,
-        enum: ['Card', 'Cash'],
+        enum: ["Card", "Cash"],
         required: true,
     },
     isPaid: {
@@ -105,7 +104,10 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    comment: {
+        type: String,
+    },
 });
 
-const Order = mongoose.model('Order', orderSchema);
+const Order = mongoose.model("Order", orderSchema);
 module.exports = Order;
