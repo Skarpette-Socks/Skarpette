@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import CategoriesCarousel from "./MainPageComponents/CategoriesCarousel/CategoriesCarousel";
 import PromoCards from "./MainPageComponents/PromoCards/PromoCards";
 import Reviews from "./MainPageComponents/Reviews/Reviews";
 import CustomSlider from "./MainPageComponents/Slider/CustomSlider";
-import MainPageListGoods from "./MainPageComponents/MainPageListGoods/MainPageListGoods";
+import MainPageListGoods from "../../Components/MainPageListGoods/MainPageListGoods";
 import { fetchGoods } from "../../api/fetchGoodsAtMainPage";
 import DataItem from "../../types/DataItem";
 
@@ -17,14 +16,14 @@ const MainPage: React.FC = () => {
 useEffect(() => {
   fetchGoods("new")
     .then((data) => {
-      const filteredNewGoods = data.map((item: any) => item.skarpette);
+      const filteredNewGoods = data.map((item) => item.skarpette);
       setNewGoods(filteredNewGoods);
       setLoadingNew(false);
     })
 
   fetchGoods("hit")
     .then((data) => {
-      const filteredHitGoods = data.map((item: any) => item.skarpette);
+      const filteredHitGoods = data.map((item) => item.skarpette);
       setHitGoods(filteredHitGoods);
       setLoadingHit(false);
     })
