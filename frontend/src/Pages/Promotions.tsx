@@ -1,5 +1,5 @@
 import PageNavigation from "../Components/PageNavigation/PageNavigation";
-import MainPageListGoods from "./MainPage/MainPageComponents/MainPageListGoods/MainPageListGoods";
+import MainPageListGoods from "../Components/MainPageListGoods/MainPageListGoods";
 import PromoCards from "./MainPage/MainPageComponents/PromoCards/PromoCards";
 
 const Promotions: React.FC = () => {

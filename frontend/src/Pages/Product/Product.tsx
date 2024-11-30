@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import PromoCards from "../MainPage/MainPageComponents/PromoCards/PromoCards";
-import MainPageListGoods from "../MainPage/MainPageComponents/MainPageListGoods/MainPageListGoods";
+import MainPageListGoods from "../../Components/MainPageListGoods/MainPageListGoods";
 import PageNavigation from "../../Components/PageNavigation/PageNavigation";
 import ProductOrder from "./ProductComponents/ProductOrder";
 import { fetchDataItem } from "../../api/fetchDataItem";

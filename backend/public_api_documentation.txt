@@ -34,7 +34,47 @@ Request type: GET
 Example:
 http://localhost:5000/skarpette
 
-Get All Skarpettes
-Request type: GET
+Create order
+Request type: POST
 Example:
 http://localhost:5000/order
+JSON Example:
+{
+  "items": [
+    {
+      "skarpetteId": "673cd3a2221158b4212420c9",
+      "size": "27-29",
+      "quantity": 2
+    }
+  ],
+  "customerData": {
+    "firstName": "Іван",
+    "lastName": "Петренко",
+    "phoneNumber": "+380501234567",
+    "email": "ho4upitsu@gmail.com"
+  },
+  "deliveryData": {
+    "deliveryType": "НПКур'єр",
+    "city": "Київ",
+    "street": "Вулиця",
+    "houseNumber": "123",
+    "apartmentNumber": "12"
+  },
+  "paymentType": "Card",
+  "isPaid": false,
+  "recipientData": {
+    
+      "firstName": "Олег",
+      "lastName": "Петренко",
+      "phoneNumber": "+380631234567"
+    },
+  "isCompleted": false,
+  "isDifferentRecipient": true,
+  "comment": "kupi mi piwko",
+  "totalPrice": 200
+}
+
+Returns:
+201 and order
+400 if validation failed
+500 in case of error 
