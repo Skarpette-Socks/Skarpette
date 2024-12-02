@@ -13,7 +13,7 @@ const FooterMinorInfo: React.FC = () => {
           Політика&nbsp;конфіденційності
         </a>
 
-        <a href="/privacy-policy" className="footer__terms-link">
+        <a href="/term-of-use" className="footer__terms-link">
           Умови&nbsp;використання
         </a>
       </div>
