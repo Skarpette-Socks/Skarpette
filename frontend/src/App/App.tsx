@@ -20,6 +20,7 @@ import Search from "./AppComponents/Search/Search";
 import Loader from "../Components/Loader/Loader";
 import NotFound from "../Pages/NotFound/NotFound";
 import TermsOfUse from "../Pages/TermOfUse/TermOfUse";
+import ProtectedRoute from "../Components/ProtectedRoute/ProtectedRoute";
 
 const AboutUs = lazy(() => import("../Pages/AboutUs/AboutUs"));
 const Cart = lazy(() => import("../Pages/Cart/Cart"));
@@ -101,13 +102,26 @@ const App: React.FC = () => {
           <Layout>
             <Suspense fallback={<Loader />}>
               <Routes>
-                {routes.map((route, index) => (
-                  <Route
-                    key={index}
-                    path={route.path}
-                    element={route.element}
-                  />
-                ))}
+                {routes.map((route, index) => {
+                  if (route.path === "/checkout") {
+                    return (
+                      <Route
+                        key={index}
+                        path={route.path}
+                        element={
+                          <ProtectedRoute>{route.element}</ProtectedRoute>
+                        }
+                      />
+                    );
+                  }
+                  return (
+                    <Route
+                      key={index}
+                      path={route.path}
+                      element={route.element}
+                    />
+                  );
+                })}
               </Routes>
             </Suspense>
           </Layout>
