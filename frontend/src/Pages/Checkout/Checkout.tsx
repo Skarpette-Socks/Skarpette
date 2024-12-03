@@ -167,6 +167,7 @@ const Checkout = () => {
         !Object.values(deliveryData).includes("")
       ) {
         postData();
+        navigate("/success-order");
         console.log("posted");
       } else {
         console.log("Заповніть усі поля");

@@ -21,6 +21,7 @@ import Loader from "../Components/Loader/Loader";
 import NotFound from "../Pages/NotFound/NotFound";
 import TermsOfUse from "../Pages/TermOfUse/TermOfUse";
 import ProtectedRoute from "../Components/ProtectedRoute/ProtectedRoute";
+import SuccessOrder from "../Pages/SuccessOrder/SuccessOrder";
 
 const AboutUs = lazy(() => import("../Pages/AboutUs/AboutUs"));
 const Cart = lazy(() => import("../Pages/Cart/Cart"));
@@ -57,6 +58,7 @@ const routes = [
   { path: "/catalog/:TYPE_LINK", element: <SocksPage /> },
   { path: "/checkout", element: <Checkout /> },
   { path: "/search-results", element: <SearchResults /> },
+  {path : "/success-order", element: <SuccessOrder/>},
   { path: "*", element: <NotFound /> },
 ];
 
