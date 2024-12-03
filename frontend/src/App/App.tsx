@@ -58,7 +58,7 @@ const routes = [
   { path: "/catalog/:TYPE_LINK", element: <SocksPage /> },
   { path: "/checkout", element: <Checkout /> },
   { path: "/search-results", element: <SearchResults /> },
-  {path : "/success-order", element: <SuccessOrder/>},
+  { path: "/success-order", element: <SuccessOrder /> },
   { path: "*", element: <NotFound /> },
 ];
 
@@ -105,7 +105,10 @@ const App: React.FC = () => {
             <Suspense fallback={<Loader />}>
               <Routes>
                 {routes.map((route, index) => {
-                  if (route.path === "/checkout") {
+                  if (
+                    route.path === "/checkout" ||
+                    route.path === "/success-order"
+                  ) {
                     return (
                       <Route
                         key={index}
