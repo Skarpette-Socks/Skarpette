@@ -8,8 +8,7 @@ import React, {
 } from "react";
 import { fetchStreets } from "../../../../../api/FetchStreets";
 
-import '../../../../../assets/styles/commonCheckoutInputesStyles.scss';
-
+import "../../../../../assets/styles/commonCheckoutInputesStyles.scss";
 
 interface StreetInputProps {
   selectedCity: string | undefined;
@@ -35,7 +34,7 @@ const StreetInput = forwardRef<StreetInputRef, StreetInputProps>(
   ) => {
     const [filteredStreets, setFilteredStreets] = useState<string[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [inputValue, setInputValue] = useState<string>("");
+    const [inputValue, setInputValue] = useState<string>(""); // Изменено: Введённое значение хранится
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -46,23 +45,27 @@ const StreetInput = forwardRef<StreetInputRef, StreetInputProps>(
         return isValidForm();
       },
       getValue() {
-        return inputValue;
+        // Изменено: Возвращаем значение из поля ввода, даже если оно отсутствует в списке
+        return inputValue.trim();
       },
     }));
 
     const isValidForm = () => {
-      if (!inputValue) {
-        setError("Заповніть поле")
+      if (!inputValue.trim()) {
+        setError("Заповніть поле");
+        return false;
       }
 
-      return !error;
-    }
+      // Сбрасываем ошибку, если поле заполнено
+      setError(null);
+      return true;
+    };
 
     const fetchStreetsData = useCallback(
       async (query: string) => {
         if (!selectedCity || query.length < 2) {
           setFilteredStreets([]);
-          setError(null);
+          setError(null); // Сбрасываем ошибку
           return;
         }
 
@@ -71,8 +74,10 @@ const StreetInput = forwardRef<StreetInputRef, StreetInputProps>(
         try {
           const streetsData = await fetchStreets(selectedCity, query);
           setFilteredStreets(streetsData);
+
+          // Убираем установку ошибки, если список пуст
           if (streetsData.length === 0) {
-            setError("Вулиць не знайдено");
+            setFilteredStreets([]); // Очищаем список, но не выставляем ошибку
           }
         } catch (err) {
           console.error("Error in fetchStreetsData:", err);
@@ -95,7 +100,6 @@ const StreetInput = forwardRef<StreetInputRef, StreetInputProps>(
       if (resetStreet) {
         setInputValue("");
         setFilteredStreets([]);
-        // setError(null);
         setIsOpen(false);
         setHighlightedIndex(-1);
         onStreetReset();
@@ -106,11 +110,11 @@ const StreetInput = forwardRef<StreetInputRef, StreetInputProps>(
       const value = event.target.value;
       setInputValue(value);
       setIsOpen(true);
-      setError('');
+      setError(null); // Сбрасываем ошибку при любом изменении текста
     };
 
     const handleStreetSelect = (street: string) => {
-      setInputValue(street);
+      setInputValue(street); // Изменено: Устанавливаем выбранную улицу
       setIsOpen(false);
       setError(null);
     };
