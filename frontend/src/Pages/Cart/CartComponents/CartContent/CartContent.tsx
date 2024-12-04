@@ -103,11 +103,10 @@ const CartContent: React.FC = () => {
                   <div className="cart__button-text">Оформити замовлення</div>
                 </button>
               </Link>
-
             </div>
             {totalPrice < 500 && (
               <div className="cart__below-minimum">
-                Мінімальна сума замовлення для оформлення — 500 грн
+                Мінімальна сума замовлення 500грн
               </div>
             )}
           </>

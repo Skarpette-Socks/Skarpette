@@ -19,6 +19,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Search from "./AppComponents/Search/Search";
 import Loader from "../Components/Loader/Loader";
 import NotFound from "../Pages/NotFound/NotFound";
+import TermsOfUse from "../Pages/TermOfUse/TermOfUse";
+import ProtectedRoute from "../Components/ProtectedRoute/ProtectedRoute";
+import SuccessOrder from "../Pages/SuccessOrder/SuccessOrder";
 
 const AboutUs = lazy(() => import("../Pages/AboutUs/AboutUs"));
 const Cart = lazy(() => import("../Pages/Cart/Cart"));
@@ -27,14 +30,18 @@ const Favorites = lazy(() => import("../Pages/Favourites/Favorites"));
 const PaymentDelivery = lazy(
   () => import("../Pages/PaymentDelivery/PaymentDelivery")
 );
-const PrivacyPolicy = lazy(() => import("../Pages/PrivacyPolicy/PrivacyPolicy"));
+const PrivacyPolicy = lazy(
+  () => import("../Pages/PrivacyPolicy/PrivacyPolicy")
+);
 const Product = lazy(() => import("../Pages/Product/Product"));
 const Promotions = lazy(() => import("../Pages/Promotions"));
 const Returning = lazy(() => import("../Pages/Returning/Returning"));
 const Checkout = lazy(() => import("../Pages/Checkout/Checkout"));
 const Shop = lazy(() => import("../Pages/MainPage/MainPage"));
 const SocksPage = lazy(() => import("../Pages/Catalog/Catalog"));
-const SearchResults = lazy(() => import("../Pages/SearchResults/SearchResults"));
+const SearchResults = lazy(
+  () => import("../Pages/SearchResults/SearchResults")
+);
 
 const routes = [
   { path: "/", element: <Shop /> },
@@ -43,6 +50,7 @@ const routes = [
   { path: "/payment-and-delivery", element: <PaymentDelivery /> },
   { path: "/contacts", element: <Contacts /> },
   { path: "/favorites", element: <Favorites /> },
+  { path: "/term-of-use", element: <TermsOfUse /> },
   { path: "/cart", element: <Cart /> },
   { path: "/product/:VENDOR_CODE", element: <Product /> },
   { path: "/privacy-policy", element: <PrivacyPolicy /> },
@@ -50,8 +58,8 @@ const routes = [
   { path: "/catalog/:TYPE_LINK", element: <SocksPage /> },
   { path: "/checkout", element: <Checkout /> },
   { path: "/search-results", element: <SearchResults /> },
+  { path: "/success-order", element: <SuccessOrder /> },
   { path: "*", element: <NotFound /> },
-
 ];
 
 interface LayoutProps {
@@ -96,13 +104,29 @@ const App: React.FC = () => {
           <Layout>
             <Suspense fallback={<Loader />}>
               <Routes>
-                {routes.map((route, index) => (
-                  <Route
-                    key={index}
-                    path={route.path}
-                    element={route.element}
-                  />
-                ))}
+                {routes.map((route, index) => {
+                  if (
+                    route.path === "/checkout" ||
+                    route.path === "/success-order"
+                  ) {
+                    return (
+                      <Route
+                        key={index}
+                        path={route.path}
+                        element={
+                          <ProtectedRoute>{route.element}</ProtectedRoute>
+                        }
+                      />
+                    );
+                  }
+                  return (
+                    <Route
+                      key={index}
+                      path={route.path}
+                      element={route.element}
+                    />
+                  );
+                })}
               </Routes>
             </Suspense>
           </Layout>

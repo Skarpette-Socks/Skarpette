@@ -9,7 +9,8 @@ import logo from "../../assets/img/icons/logo-green.svg";
 
 import { useCartItems } from "../../Context/CartContext";
 import "./Checkout.scss";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import FooterMinorInfo from "../../App/AppComponents/Footer/FooterMinorInfo";
 import { fetchAllData } from "../../api/fetchAllData";
 import DataItem from "../../types/DataItem";
@@ -44,6 +45,7 @@ const Checkout = () => {
   const { cartItems, deleteCartItem } = useCartItems();
   const isItemsDeleted = useRef<boolean>(false);
   // #region CheckoutOrderRegion
+  const navigate = useNavigate();
 
   let newTotalPrice = 0;
   let newTotalDiscount = 0;
@@ -72,6 +74,16 @@ const Checkout = () => {
 
   const totalPrice = parseFloat(newTotalPrice.toFixed(2));
   const totalDiscount = parseFloat(newTotalDiscount.toFixed(2));
+
+  useEffect(() => {
+    const isPriceValid = () => totalPrice >= 500;
+
+    if (!isPriceValid()) {
+      alert("Сума замовлення має бути не менше 500 грн.");
+      navigate(-1); // Повертаємо користувача до кошика
+    }
+  }, [totalPrice, navigate]);
+
   // #endregion
 
   const [selectedOption, setSelectedOption] = useState("self-receiver");
@@ -130,7 +142,7 @@ const Checkout = () => {
     let isValidContactInfo = false;
     let isValidReceiverInfo = false;
     let isValidDeliveryRef = false;
-    if (selectedOption === 'another-receiver' && receiverInfoRef.current) {
+    if (selectedOption === "another-receiver" && receiverInfoRef.current) {
       isValidReceiverInfo = receiverInfoRef.current.isValid();
     } else {
       isValidReceiverInfo = true;
@@ -138,13 +150,13 @@ const Checkout = () => {
     if (deliveryRef.current) {
       isValidDeliveryRef = deliveryRef.current.isValid();
     }
-  
+
     if (contactInfoRef.current) {
       isValidContactInfo = contactInfoRef.current.isValid();
     }
-  
+
     if (isValidContactInfo && isValidReceiverInfo && isValidDeliveryRef) {
-      if (selectedOption === 'self-receiver') {
+      if (selectedOption === "self-receiver") {
         userData = {
           name: contactInfoRef.current?.getName(),
           surname: contactInfoRef.current?.getSurname(),
@@ -163,35 +175,35 @@ const Checkout = () => {
         };
       }
       switch (selectedDeliveryType) {
-        case 'nova-poshta-office':
+        case "nova-poshta-office":
           deliveryData = {
             deliveryType: "Відділення Нової Пошти",
             city: deliveryRef.current?.getCity(),
             warehouse: deliveryRef.current?.getWarehouseNovaPost(),
-          }
-          break;      
-        case 'nova-poshta-courier':
+          };
+          break;
+        case "nova-poshta-courier":
           deliveryData = {
             deliveryType: "Кур'єр Нової Пошти",
             city: deliveryRef.current?.getCity(),
             street: deliveryRef.current?.getStreet(),
             building: deliveryRef.current?.getBuilding(),
             flat: deliveryRef.current?.getFlat(),
-          }
+          };
           break;
-        case 'nova-poshta-poshtamat':
+        case "nova-poshta-poshtamat":
           deliveryData = {
             deliveryType: "Поштомат Нової Пошти",
             city: deliveryRef.current?.getCity(),
             warehouse: deliveryRef.current?.getWarehouseNovaPost(),
-          }
+          };
           break;
-        case 'ukrposhta-office':
+        case "ukrposhta-office":
           deliveryData = {
             deliveryType: "Відділення Укрпошти",
             city: deliveryRef.current?.getCity(),
             warehouse: deliveryRef.current?.getWarehouseUkrPost(),
-          }
+          };
           break;
         default:
           break;
@@ -202,13 +214,14 @@ const Checkout = () => {
         isItemsDeleted.current === false
       ) {
         postData();
-        console.log('posted');
+        navigate("/success-order");
+        console.log("posted");
       } else {
         isItemsDeleted.current = false;
         console.log('Заповніть усі поля або спробуйте ще раз');
       }
     } else {
-      console.log('Форма не пройшла валідацію');
+      console.log("Форма не пройшла валідацію");
     }
   
     console.log('userData', userData);
