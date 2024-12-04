@@ -11,6 +11,9 @@ import { useCartItems } from "../../Context/CartContext";
 import "./Checkout.scss";
 import { useRef, useState } from "react";
 import FooterMinorInfo from "../../App/AppComponents/Footer/FooterMinorInfo";
+import { fetchAllData } from "../../api/fetchAllData";
+import DataItem from "../../types/DataItem";
+import CartItem from "../../types/CartItem";
 
 interface ContactInfoRef {
   isValid: () => boolean;
@@ -38,8 +41,9 @@ interface DeliveryRef {
 }
 
 const Checkout = () => {
+  const { cartItems, deleteCartItem } = useCartItems();
+  const isItemsDeleted = useRef<boolean>(false);
   // #region CheckoutOrderRegion
-  const { cartItems } = useCartItems();
 
   let newTotalPrice = 0;
   let newTotalDiscount = 0;
@@ -79,8 +83,50 @@ const Checkout = () => {
   const contactInfoRef = useRef<ContactInfoRef>(null);
   const receiverInfoRef = useRef<ReceiverInfoRef>(null);
   const deliveryRef = useRef<DeliveryRef>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [deletedSocks, setDeletedSocks] = useState<CartItem[]>([]);
+  const [handleDialog, setHandleDialog] = useState<boolean>(false);
 
-  const handleCheckout = () => {
+  const availabilityCheck = async () => {
+    let socksDb: DataItem[] = [];
+
+    setLoading(true);
+    try {
+      socksDb = await fetchAllData();
+    } catch (error) {
+      console.error("Failed to load data:", error);
+    } finally {
+      setLoading(false);
+    }
+    
+    const unavailableItems = cartItems.filter((cartItem, index) => {
+      const matchedItem = socksDb.find(dbItem => cartItem.vendor_code === dbItem.vendor_code);
+      if(!matchedItem) { 
+        deleteCartItem(index);
+        isItemsDeleted.current = true;
+        return true;
+      }
+      const sizeItem = matchedItem.size.find(curSize => curSize.size === cartItem.size);
+      if (!sizeItem || !sizeItem.is_available) {
+        deleteCartItem(index);
+        isItemsDeleted.current = true;
+        return true;
+      }
+
+      return false;
+    })
+
+    console.log('unavailableItems', unavailableItems)
+
+    setDeletedSocks(unavailableItems);
+
+    return unavailableItems.length === 0;
+  }
+
+  const handleCheckout = async () => {
+    // await availabilityCheck();
+    setHandleDialog(!await availabilityCheck())
+    console.log('deletedSocks', deletedSocks)
     let isValidContactInfo = false;
     let isValidReceiverInfo = false;
     let isValidDeliveryRef = false;
@@ -152,12 +198,14 @@ const Checkout = () => {
       }
       if (
         !Object.values(userData).includes('') && 
-        !Object.values(deliveryData).includes('')
+        !Object.values(deliveryData).includes('') &&
+        isItemsDeleted.current === false
       ) {
         postData();
         console.log('posted');
       } else {
-        console.log('Заповніть усі поля');
+        isItemsDeleted.current = false;
+        console.log('Заповніть усі поля або спробуйте ще раз');
       }
     } else {
       console.log('Форма не пройшла валідацію');
@@ -165,9 +213,11 @@ const Checkout = () => {
   
     console.log('userData', userData);
     console.log('deliveryData', deliveryData);
+    console.log('')
   };
 
   const postData = async () => {
+    console.log(cartItems)
     try {
       const response = await fetch("http://localhost:5000/", {
         method: "POST",
@@ -234,9 +284,30 @@ const Checkout = () => {
         />
       </div>
 
-      <button className="checkout__button" onClick={handleCheckout}>
+      <button 
+        className="checkout__button" 
+        onClick={handleCheckout}
+        disabled={loading}
+      >
         Створити замовлення
       </button>
+
+      {handleDialog && (
+        <div className="dialog-overlay">
+          <div className="dialog">
+            <div className="dialog__content">
+              <h1>Кошик оновився</h1>
+              <h3>Деяких товарів немає в наявності</h3>
+              <button 
+                className="dialog__button" 
+                onClick={() => setHandleDialog(false)}
+              >
+                OК
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="checkout__footer">
         <FooterMinorInfo />

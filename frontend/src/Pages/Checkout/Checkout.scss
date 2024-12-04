@@ -199,3 +199,47 @@
     }
   }
 }
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialog {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 600px;
+  max-width: 90%;
+
+  &__image {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.dialog__content {
+  text-align: center;
+}
+
+.dialog__button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: $primary-800;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.dialog__button:hover {
+  background-color: $primary-1000;
+}
