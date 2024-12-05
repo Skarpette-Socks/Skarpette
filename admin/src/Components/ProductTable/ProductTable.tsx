@@ -151,7 +151,7 @@ const ProductTable: React.FC = () => {
     setLoading(true);
     try {
       const result = await fetchAllData();
-      setSocksDb(result);
+      setSocksDb(result.reverse());
     } catch (error) {
       console.error("Failed to load data:", error);
     } finally {
