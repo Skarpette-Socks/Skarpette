@@ -17,7 +17,9 @@ const Dropdown: React.FC<Props> = ({ toggleMenu }) => {
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
     if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-      setIsActive(false);
+      setTimeout(() => {
+        setIsActive(false);
+      },0)
     }
   }, []);
 
