@@ -3,15 +3,20 @@ import { useEffect, useState } from "react";
 import { useCartItems } from "../../../../Context/CartContext";
 import "./CartContent.scss";
 import CartContentItem from "./CartContentItem";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import no_cart from '../../../../assets/img/NoItemsCartNew.svg';
+import DataItem from "../../../../types/DataItem";
+import { fetchAllData } from "../../../../api/fetchAllData";
 
 const CartContent: React.FC = () => {
-  const { cartItems } = useCartItems();
+  const { cartItems, deleteCartItem } = useCartItems();
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalDiscount, setTotalDiscount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [handleDialog, setHandleDialog] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTotalPrice(0);
@@ -46,6 +51,46 @@ const CartContent: React.FC = () => {
     calculatePrices();
   }, [cartItems]);
 
+  const availabilityCheck = async () => {
+    let socksDb: DataItem[] = [];
+
+    setLoading(true);
+    try {
+      socksDb = await fetchAllData();
+    } catch (error) {
+      console.error("Failed to load data:", error);
+    } finally {
+      setLoading(false);
+    }
+    
+    const unavailableItems = cartItems.filter((cartItem, index) => {
+      const matchedItem = socksDb.find(dbItem => cartItem.vendor_code === dbItem.vendor_code);
+      if(!matchedItem) { 
+        deleteCartItem(index);
+        return true;
+      }
+      const sizeItem = matchedItem.size.find(curSize => curSize.size === cartItem.size);
+      if (!sizeItem || !sizeItem.is_available) {
+        deleteCartItem(index);
+        return true;
+      }
+
+      return false;
+    })
+
+    console.log('unavailableItems', unavailableItems)
+
+    return unavailableItems.length === 0;
+  }
+
+  const createOrder = async () => {
+    if (await availabilityCheck()) {
+      navigate("/checkout");
+    } else {
+      setHandleDialog(true);
+    }
+  }
+
   return (
     <div className="cart">
       <div className="cart__container">
@@ -69,7 +114,7 @@ const CartContent: React.FC = () => {
             <div className="cart__order">
               <div className="cart__info">
                 {loading ? (
-                  <div className="">Раухємо...</div>
+                  <div className="">Рахуємо...</div>
                 ) : (
                   <>
                     <div className="cart__to-pay">
@@ -93,16 +138,17 @@ const CartContent: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <Link to="/checkout">
+              {/* <Link to="/checkout"> */}
                 <button
                   disabled={totalPrice < 500}
                   className={`cart__button ${
                     totalPrice < 500 ? "disabled" : ""
                   }`}
+                  onClick={createOrder}
                 >
                   <div className="cart__button-text">Оформити замовлення</div>
                 </button>
-              </Link>
+              {/* </Link> */}
             </div>
             {totalPrice < 500 && (
               <div className="cart__below-minimum">
@@ -125,6 +171,23 @@ const CartContent: React.FC = () => {
           </div>
         )}
       </div>
+
+      {handleDialog && (
+        <div className="dialog-overlay">
+          <div className="dialog">
+            <div className="dialog__content">
+              <h1>Кошик оновився</h1>
+              <h3>Деяких товарів немає в наявності</h3>
+              <button 
+                className="dialog__button" 
+                onClick={() => setHandleDialog(false)}
+              >
+                OК
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

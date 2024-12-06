@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 import FooterMinorInfo from "../../App/AppComponents/Footer/FooterMinorInfo";
 import { fetchAllData } from "../../api/fetchAllData";
 import DataItem from "../../types/DataItem";
-import CartItem from "../../types/CartItem";
 
 interface ContactInfoRef {
   isValid: () => boolean;
@@ -96,7 +95,6 @@ const Checkout = () => {
   const receiverInfoRef = useRef<ReceiverInfoRef>(null);
   const deliveryRef = useRef<DeliveryRef>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [deletedSocks, setDeletedSocks] = useState<CartItem[]>([]);
   const [handleDialog, setHandleDialog] = useState<boolean>(false);
 
   const availabilityCheck = async () => {
@@ -130,15 +128,12 @@ const Checkout = () => {
 
     console.log('unavailableItems', unavailableItems)
 
-    setDeletedSocks(unavailableItems);
-
     return unavailableItems.length === 0;
   }
 
   const handleCheckout = async () => {
     // await availabilityCheck();
     setHandleDialog(!await availabilityCheck())
-    console.log('deletedSocks', deletedSocks)
     let isValidContactInfo = false;
     let isValidReceiverInfo = false;
     let isValidDeliveryRef = false;
