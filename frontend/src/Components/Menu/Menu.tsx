@@ -69,22 +69,38 @@ const Menu: React.FC<MenuProps> = ({ isOpen, toggleMenu }) => {
             <Dropdown toggleMenu={toggleMenu} />
           </li>
           <li className="menu__item">
-            <Link to="/offers" onClick={toggleMenu}>
+            <Link 
+              to="/offers" 
+              onClick={toggleMenu} 
+              data-menu-link="offers"
+            >
               Акції
             </Link>
           </li>
           <li className="menu__item">
-            <Link to="/about-us" onClick={toggleMenu}>
+            <Link 
+              to="/about-us" 
+              onClick={toggleMenu} 
+              data-menu-link="about-us"
+            >
               Про нас
             </Link>
           </li>
           <li className="menu__item">
-            <Link to="/payment-and-delivery" onClick={toggleMenu}>
+            <Link 
+              to="/payment-and-delivery" 
+              onClick={toggleMenu} 
+              data-menu-link="payment"
+            >
               Оплата та доставка
             </Link>
           </li>
           <li className="menu__item">
-            <Link to="/contacts" onClick={toggleMenu}>
+            <Link 
+              to="/contacts" 
+              onClick={toggleMenu} 
+              data-menu-link="contacts"
+            >
               Контакти
             </Link>
           </li>

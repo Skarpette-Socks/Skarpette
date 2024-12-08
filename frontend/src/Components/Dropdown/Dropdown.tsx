@@ -16,10 +16,14 @@ const Dropdown: React.FC<Props> = ({ toggleMenu }) => {
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
-    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-      setTimeout(() => {
-        setIsActive(false);
-      },0)
+    const target = event.target as HTMLElement;
+  
+    if (
+      menuRef.current &&
+      !menuRef.current.contains(target) &&
+      !target.closest("[data-menu-link]")
+    ) {
+      setIsActive(false);
     }
   }, []);
 
@@ -38,11 +42,11 @@ const Dropdown: React.FC<Props> = ({ toggleMenu }) => {
     setIsActive((prev) => !prev);
   };
 
-  const handleItemClick = () => {
+  const handleItemClick = React.useCallback(() => {
     setIsActive(false);
     toggleMenu();
     window.scrollTo(0, 0);
-  };
+  }, [toggleMenu]);
 
   const renderedOptions = React.useMemo(() => {
     return options.map((option) => (
@@ -58,7 +62,7 @@ const Dropdown: React.FC<Props> = ({ toggleMenu }) => {
         </span>
       </Link>
     ));
-  }, [handleItemClick]); // Обязательно добавляем handleItemClick в зависимости
+  }, [handleItemClick]);
 
   return (
     <div className="dropdown" ref={menuRef}>

@@ -224,22 +224,24 @@
     width: 40px;
     height: 40px;
   }
-}
 
-.dialog__content {
-  text-align: center;
-}
+  &__content {
+    text-align: center;
 
-.dialog__button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: $primary-800;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
+  }
 
-.dialog__button:hover {
-  background-color: $primary-1000;
+  &__button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: $primary-800;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $primary-1000;
+
+    }
+  }
 }
