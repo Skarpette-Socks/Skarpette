@@ -14,14 +14,13 @@ import FooterMinorInfo from "./FooterMinorInfo";
 const Footer = () => {
   const [categoriesOpened, setCategoriesOpened] = useState(false);
   const [aboutUsOpened, setAboutUsOpened] = useState(false);
-  const newCategories = []
+  const newCategories = [];
 
   for (const category of categories) {
     newCategories.push({
       name: category.footer_name,
-      link: category.link
-    })
-    
+      link: category.link,
+    });
   }
 
   return (
@@ -40,19 +39,19 @@ const Footer = () => {
         <div className="footer__categories">
           <div className="footer__subtitle">Категорії</div>
 
-          <FooterLinks items={newCategories}/>
+          <FooterLinks items={newCategories} />
         </div>
 
         <div className="footer__about-us">
           <div className="footer__subtitle">Про компанію</div>
 
-          <FooterLinks items={usefulLinks}/>
+          <FooterLinks items={usefulLinks} />
         </div>
 
         <div className="footer__dropdowns">
           <div className="footer__greyline"></div>
 
-          <div 
+          <div
             className="footer__dropdown-catalog"
             onClick={() => setCategoriesOpened(!categoriesOpened)}
           >
@@ -66,16 +65,15 @@ const Footer = () => {
                   <img src={plus} alt="Plus" />
                 )}
               </span>
-
             </div>
 
-            {categoriesOpened && <FooterLinks items={newCategories}/>}
+            {categoriesOpened && <FooterLinks items={newCategories} />}
           </div>
 
           <div className="footer__greyline"></div>
 
-          <div 
-            className="footer__dropdown-about-us" 
+          <div
+            className="footer__dropdown-about-us"
             onClick={() => setAboutUsOpened(!aboutUsOpened)}
           >
             <div className="footer__dropdown-container">
@@ -92,8 +90,7 @@ const Footer = () => {
               </span>
             </div>
 
-            {aboutUsOpened && <FooterLinks items={usefulLinks}/>}
-
+            {aboutUsOpened && <FooterLinks items={usefulLinks} />}
           </div>
 
           <div className="footer__greyline"></div>
@@ -112,8 +109,17 @@ const Footer = () => {
                 Номер телефону
               </div>
 
-              <a href="tel:+380983264872" className="footer__phone-number-item">
+              <a
+                href="tel:+38 (098) 32-64-872"
+                className="footer__phone-number-item"
+              >
                 +38 (098) 32-64-872
+              </a>
+              <a
+                href="tel:+38 (093) 42-80-091"
+                className="footer__phone-number-item"
+              >
+                +38 (093) 42-80-091
               </a>
             </div>
 
@@ -122,7 +128,9 @@ const Footer = () => {
                 Пошта для зв’язку
               </div>
 
-              <a href="mail:scarpettehelp@gmail.com">scarpettehelp@gmail.com</a>
+              <a href="mail:scarpettehelp@gmail.com">
+                shop.skarpette@gmail.com
+              </a>
             </div>
 
             <div className="footer__address">
@@ -131,7 +139,7 @@ const Footer = () => {
               </div>
 
               <div className="footer__address-info">
-                Київ, вул. Антоновича 24/10
+                Львівська обл., м. Шептицький, вул. Шептицького
               </div>
               <div className="footer__address-fop">
                 ФОП Ковальчук Марина Андріївна
