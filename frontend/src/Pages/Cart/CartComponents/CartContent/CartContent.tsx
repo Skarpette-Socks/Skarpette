@@ -140,9 +140,9 @@ const CartContent: React.FC = () => {
               </div>
               {/* <Link to="/checkout"> */}
                 <button
-                  disabled={totalPrice < 500}
+                  disabled={totalPrice < 500 || loading}
                   className={`cart__button ${
-                    totalPrice < 500 ? "disabled" : ""
+                    totalPrice < 500 || loading ? "disabled" : ""
                   }`}
                   onClick={createOrder}
                 >
