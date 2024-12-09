@@ -44,7 +44,6 @@ const Contacts: React.FC = () => {
             <div className="contacts__adress">
               <h3 className="contacts__subtitle">ФІЗИЧНА АДРЕСА</h3>
               <p>Львівська обл., м. Шептицький, вул. Шептицького</p>
-              <p>ФОП Ковальчук Марина Андріївна</p>
             </div>
           </div>
 

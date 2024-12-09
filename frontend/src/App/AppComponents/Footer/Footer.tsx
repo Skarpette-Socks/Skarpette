@@ -141,9 +141,6 @@ const Footer = () => {
               <div className="footer__address-info">
                 Львівська обл., м. Шептицький, вул. Шептицького
               </div>
-              <div className="footer__address-fop">
-                ФОП Ковальчук Марина Андріївна
-              </div>
             </div>
           </div>
         </div>
