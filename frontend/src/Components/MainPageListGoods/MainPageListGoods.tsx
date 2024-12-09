@@ -10,7 +10,7 @@ interface Props {
   title: string;
   catalogButton?: boolean;
   goods?: DataItem[];
-  loading: boolean;
+  loading?: boolean;
 }
 
 const MainPageListGoods: React.FC<Props> = ({

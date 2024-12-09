@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import FooterMinorInfo from "../../App/AppComponents/Footer/FooterMinorInfo";
 import { fetchAllData } from "../../api/fetchAllData";
 import DataItem from "../../types/DataItem";
-import CartItem from "../../types/CartItem";
+import CommentInput from "./CheckoutComponents/CommentInput/CommentInput";
 
 interface ContactInfoRef {
   isValid: () => boolean;
@@ -39,6 +39,11 @@ interface DeliveryRef {
   getWarehouseUkrPost: () => string;
   getWarehouseNovaPost: () => string;
   getStreet: () => string;
+}
+
+interface CommentRef {
+  isValid: () => boolean;
+  getComment: () => string;
 }
 
 const Checkout = () => {
@@ -91,12 +96,13 @@ const Checkout = () => {
     useState<string>("nova-poshta-office");
   let userData = {};
   let deliveryData = {};
+  let orderComment = '';
 
   const contactInfoRef = useRef<ContactInfoRef>(null);
   const receiverInfoRef = useRef<ReceiverInfoRef>(null);
+  const commentRef = useRef<CommentRef>(null);
   const deliveryRef = useRef<DeliveryRef>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [deletedSocks, setDeletedSocks] = useState<CartItem[]>([]);
   const [handleDialog, setHandleDialog] = useState<boolean>(false);
 
   const availabilityCheck = async () => {
@@ -130,15 +136,11 @@ const Checkout = () => {
 
     console.log('unavailableItems', unavailableItems)
 
-    setDeletedSocks(unavailableItems);
-
     return unavailableItems.length === 0;
   }
 
   const handleCheckout = async () => {
-    // await availabilityCheck();
     setHandleDialog(!await availabilityCheck())
-    console.log('deletedSocks', deletedSocks)
     let isValidContactInfo = false;
     let isValidReceiverInfo = false;
     let isValidDeliveryRef = false;
@@ -208,6 +210,10 @@ const Checkout = () => {
         default:
           break;
       }
+
+      if (commentRef.current && commentRef.current.isValid()) {
+        orderComment = commentRef.current.getComment();
+      }
       if (
         !Object.values(userData).includes('') && 
         !Object.values(deliveryData).includes('') &&
@@ -226,6 +232,7 @@ const Checkout = () => {
   
     console.log('userData', userData);
     console.log('deliveryData', deliveryData);
+    console.log('orderComment', orderComment)
     console.log('')
   };
 
@@ -241,6 +248,7 @@ const Checkout = () => {
           cartItems: cartItems,
           userData: userData,
           deliveryData: deliveryData,
+          orderComment: orderComment
         }),
       });
 
@@ -294,6 +302,10 @@ const Checkout = () => {
         <CheckoutOrderPhone
           totalPrice={totalPrice}
           totalDiscount={totalDiscount}
+        />
+
+        <CommentInput 
+          ref={commentRef}
         />
       </div>
 
