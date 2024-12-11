@@ -8,9 +8,8 @@ const orderSchema = new mongoose.Schema({
     },
     items: [
         {
-            skarpetteId: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Skarpette",
+            skarpetteVendorCode: {
+                type: Number,
                 required: true,
             },
             size: {
