@@ -144,7 +144,9 @@ const sendOrderEmailToCustomer = async (orderData, userEmail) => {
 
     let orderDetails = "";
     for (let item of orderData.items) {
-        const skarpette = await Skarpette.findById(item.skarpetteId);
+        const skarpette = await Skarpette.findOne({
+            vendor_code: item.skarpetteVendorCode,
+        });
         if (skarpette) {
             const imageUrl =
                 skarpette.images_urls?.[0] || "https://via.placeholder.com/200";
@@ -194,7 +196,9 @@ const sendOrderEmailToOwner = async (orderData) => {
 
     let orderDetails = "";
     for (let item of orderData.items) {
-        const skarpette = await Skarpette.findById(item.skarpetteId);
+        const skarpette = await Skarpette.findOne({
+            vendor_code: item.skarpetteVendorCode,
+        });
         if (skarpette) {
             const imageUrl =
                 skarpette.images_urls?.[0] || "https://via.placeholder.com/200";
