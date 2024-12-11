@@ -283,6 +283,7 @@ const createOrder = async (req, res) => {
             return res.status(400).json({ error: deliveryValidationError });
         }
         orderData.orderNumber = await generateOrderNumber();
+        orderDataForEmail = { ...orderData };
         orderData.customerData = encryptObject(orderData.customerData);
         if (orderData.isDifferentRecipient) {
             orderData.recipientData = encryptObject(orderData.recipientData);
@@ -290,14 +291,11 @@ const createOrder = async (req, res) => {
         const newOrder = new Order(orderData);
         await newOrder.save();
         await sendOrderEmailToCustomer(
-            orderData,
-            decrypt(orderData.customerData.email)
+            orderDataForEmail,
+            orderDataForEmail.customerData.email
         );
-        await sendOrderEmailToOwner(orderData);
-        res.status(201).json({
-            message: "Order created successfully",
-            orderNumber: orderData.orderNumber,
-        });
+        await sendOrderEmailToOwner(orderDataForEmail);
+        res.status(201).json(newOrder);
     } catch (error) {
         console.error("Error creating order:", error);
         res.status(500).json({ message: "Internal server error" });
