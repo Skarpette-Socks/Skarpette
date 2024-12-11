@@ -78,3 +78,31 @@ Returns:
 201 and order
 400 if validation failed
 500 in case of error 
+
+Send Feedback
+Request type: POST
+Example: http://localhost:5000/email/sendFeedback
+JSON Example:
+{
+    "score": 3,
+    "firstname": "sdfg",
+    "lastname": "aasda",
+    "comment": "comment"
+}
+Returns:
+200 if email send
+400 if validation failed
+500 in case of error
+
+Send Help Form
+Request type: POST
+Example: http://localhost:5000/email/sendHelpForm
+JSON Example:
+{
+    "firstname": "sdfg",
+    "email": "aasda",
+    "comment": "comment"
+}
+200 if email send
+400 if validation failed
+500 in case of error
