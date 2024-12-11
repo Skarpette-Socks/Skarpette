@@ -46,6 +46,12 @@ interface CommentRef {
   getComment: () => string;
 }
 
+interface Items {
+  skarpetteId: string,
+  size: string,
+  quantity: number | ''
+}
+
 const Checkout = () => {
   const { cartItems, deleteCartItem } = useCartItems();
   const isItemsDeleted = useRef<boolean>(false);
@@ -94,9 +100,11 @@ const Checkout = () => {
   const [selectedOption, setSelectedOption] = useState("self-receiver");
   const [selectedDeliveryType, setSelectedDeliveryType] =
     useState<string>("nova-poshta-office");
-  let userData = {};
+
+  let customerData = {};
+  let recipientData = {};
   let deliveryData = {};
-  let orderComment = '';
+  let comment = '';
 
   const contactInfoRef = useRef<ContactInfoRef>(null);
   const receiverInfoRef = useRef<ReceiverInfoRef>(null);
@@ -158,53 +166,48 @@ const Checkout = () => {
     }
 
     if (isValidContactInfo && isValidReceiverInfo && isValidDeliveryRef) {
-      if (selectedOption === "self-receiver") {
-        userData = {
-          name: contactInfoRef.current?.getName(),
-          surname: contactInfoRef.current?.getSurname(),
-          mail: contactInfoRef.current?.getMail(),
-          phone: contactInfoRef.current?.getPhone(),
-        };
-      } else {
-        userData = {
-          name: receiverInfoRef.current?.getName(),
-          surname: receiverInfoRef.current?.getSurname(),
-          mail: contactInfoRef.current?.getMail(),
-          phone: receiverInfoRef.current?.getPhone(),
-          payerName: contactInfoRef.current?.getName(),
-          payerSurname: contactInfoRef.current?.getSurname(),
-          payerPhone: contactInfoRef.current?.getPhone(),
+      customerData = {
+        firstName: contactInfoRef.current?.getName(),
+        lastName: contactInfoRef.current?.getSurname(),
+        phoneNumber: contactInfoRef.current?.getPhone(),
+        email: contactInfoRef.current?.getMail(),
+      };
+      if (selectedOption === "another-receiver") {
+        recipientData = {
+          firstName: receiverInfoRef.current?.getName(),
+          lastName: receiverInfoRef.current?.getSurname(),
+          phoneNumber: receiverInfoRef.current?.getPhone(),
         };
       }
       switch (selectedDeliveryType) {
         case "nova-poshta-office":
           deliveryData = {
-            deliveryType: "Відділення Нової Пошти",
+            deliveryType: "НПВідділення",
             city: deliveryRef.current?.getCity(),
-            warehouse: deliveryRef.current?.getWarehouseNovaPost(),
+            departmentNumber: deliveryRef.current?.getWarehouseNovaPost(),
           };
           break;
         case "nova-poshta-courier":
           deliveryData = {
-            deliveryType: "Кур'єр Нової Пошти",
+            deliveryType: "НПКур'єр",
             city: deliveryRef.current?.getCity(),
             street: deliveryRef.current?.getStreet(),
-            building: deliveryRef.current?.getBuilding(),
-            flat: deliveryRef.current?.getFlat(),
+            houseNumber: deliveryRef.current?.getBuilding(),
+            apartmentNumber: deliveryRef.current?.getFlat(),
           };
           break;
         case "nova-poshta-poshtamat":
           deliveryData = {
-            deliveryType: "Поштомат Нової Пошти",
+            deliveryType: "НППоштомат",
             city: deliveryRef.current?.getCity(),
-            warehouse: deliveryRef.current?.getWarehouseNovaPost(),
+            departmentNumber: deliveryRef.current?.getWarehouseNovaPost(),
           };
           break;
         case "ukrposhta-office":
           deliveryData = {
-            deliveryType: "Відділення Укрпошти",
+            deliveryType: "УПВідділення",
             city: deliveryRef.current?.getCity(),
-            warehouse: deliveryRef.current?.getWarehouseUkrPost(),
+            departmentNumber: deliveryRef.current?.getWarehouseUkrPost(),
           };
           break;
         default:
@@ -212,15 +215,14 @@ const Checkout = () => {
       }
 
       if (commentRef.current && commentRef.current.isValid()) {
-        orderComment = commentRef.current.getComment();
+        comment = commentRef.current.getComment();
       }
       if (
-        !Object.values(userData).includes('') && 
+        !Object.values(customerData).includes('') && 
         !Object.values(deliveryData).includes('') &&
         isItemsDeleted.current === false
       ) {
         postData();
-        navigate("/success-order");
         console.log("posted");
       } else {
         isItemsDeleted.current = false;
@@ -230,35 +232,55 @@ const Checkout = () => {
       console.log("Форма не пройшла валідацію");
     }
   
-    console.log('userData', userData);
+    console.log('customerData', customerData);
     console.log('deliveryData', deliveryData);
-    console.log('orderComment', orderComment)
+    console.log('comment', comment)
     console.log('')
   };
 
   const postData = async () => {
     console.log(cartItems)
+    const items: Items[] = [];
+
+    cartItems.map((cartItem) => {
+      items.push({
+        skarpetteId: cartItem.image,
+        size: cartItem.size,
+        quantity: cartItem.count
+      });
+    });
+
+    setLoading(true);
+
     try {
-      const response = await fetch("http://localhost:5000/", {
+      const response = await fetch("http://localhost:5000/order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          cartItems: cartItems,
-          userData: userData,
-          deliveryData: deliveryData,
-          orderComment: orderComment
+          items,
+          customerData,
+          deliveryData,
+          paymentType: "Card",
+          recipientData,
+          isDifferentRecipient: true,
+          comment,
+          totalPrice
         }),
       });
 
       if (response.ok) {
         console.log("Дані успішно відправлені!");
+        navigate("/success-order");
+
       } else {
         console.error("Помилка при відправці даних");
       }
     } catch (error) {
       console.error("Сталася помилка:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -310,7 +332,7 @@ const Checkout = () => {
       </div>
 
       <button 
-        className="checkout__button" 
+        className={`checkout__button ${loading ? 'disabled' : ''}`}
         onClick={handleCheckout}
         disabled={loading}
       >
