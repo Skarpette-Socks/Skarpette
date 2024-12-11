@@ -34,6 +34,7 @@ const generateOrderNumber = async () => {
 };
 
 const validateRecipientData = (orderData) => {
+    console.log(orderData);
     if (orderData.isDifferentRecipient) {
         if (
             !orderData.recipientData.firstName ||
@@ -43,11 +44,7 @@ const validateRecipientData = (orderData) => {
             return "All fields must be filled";
         }
     } else {
-        if (
-            orderData.recipientData.firstName ||
-            orderData.recipientData.lastName ||
-            orderData.recipientData.phoneNumber
-        ) {
+        if (orderData.recipientData) {
             return "No fields should be filled";
         }
     }
@@ -277,35 +274,33 @@ const createOrder = async (req, res) => {
         orderData.orderDate = getKyivTime();
         const recipientValidationError = validateRecipientData(orderData);
         if (recipientValidationError) {
-            return res.status(400).json(recipientValidationError);
+            return res.status(400).json({ error: recipientValidationError });
         }
         const deliveryValidationError = validateDeliveryData(
             orderData.deliveryData
         );
-
         if (deliveryValidationError) {
-            return res.status(400).json(deliveryValidationError);
+            return res.status(400).json({ error: deliveryValidationError });
         }
         orderData.orderNumber = await generateOrderNumber();
-        const emailOrder = { ...orderData };
         orderData.customerData = encryptObject(orderData.customerData);
-        orderData.deliveryData = encryptObject(orderData.deliveryData);
-        if (orderData.recipientData) {
+        if (orderData.isDifferentRecipient) {
             orderData.recipientData = encryptObject(orderData.recipientData);
         }
-        orderData.comment = encrypt(orderData.comment);
-        const newOrder = await Order.create(orderData);
-        try {
-            console.log(decrypt(orderData.customerData.email));
-            const email = decrypt(orderData.customerData.email);
-            await sendOrderEmailToCustomer(emailOrder, email);
-            await sendOrderEmailToOwner(emailOrder);
-        } catch (error) {
-            console.error("Error sending email: ", error);
-        }
-        res.status(201).json(newOrder);
+        const newOrder = new Order(orderData);
+        await newOrder.save();
+        await sendOrderEmailToCustomer(
+            orderData,
+            decrypt(orderData.customerData.email)
+        );
+        await sendOrderEmailToOwner(orderData);
+        res.status(201).json({
+            message: "Order created successfully",
+            orderNumber: orderData.orderNumber,
+        });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error creating order:", error);
+        res.status(500).json({ message: "Internal server error" });
     }
 };
 
