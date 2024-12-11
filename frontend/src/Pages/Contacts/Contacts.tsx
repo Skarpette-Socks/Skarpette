@@ -27,8 +27,8 @@ const Contacts: React.FC = () => {
               </div>
               <div className="contacts__numbers">
                 <h3 className="contacts__subtitle">НОМЕР ТЕЛЕФОНУ</h3>
-                <p>+38 (098) 63-80-932</p>
-                <p>+38 (067) 23-11-423</p>
+                <p>+38 (098) 32-64-872</p>
+                <p>+38 (093) 42-80-091</p>
               </div>
             </div>
 
@@ -36,15 +36,14 @@ const Contacts: React.FC = () => {
               <h3 className="contacts__subtitle">ПОШТА ДЛЯ ЗВ'ЯЗКУ</h3>
               <p>
                 <a href="mailto:scarpettehelp@gmail.com">
-                  scarpettehelp@gmail.com
+                  shop.skarpette@gmail.com
                 </a>
               </p>
             </div>
 
             <div className="contacts__adress">
               <h3 className="contacts__subtitle">ФІЗИЧНА АДРЕСА</h3>
-              <p>Київ, вул. Антоновича 24/10, 86085</p>
-              <p>ФОП Ковальчук Марина Андріївна</p>
+              <p>Львівська обл., м. Шептицький, вул. Шептицького</p>
             </div>
           </div>
 
