@@ -1,9 +1,9 @@
-const Skarpette = require('../models/skarpette');
-const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3');
-const dotenv = require('dotenv');
-const { v4: uuidv4 } = require('uuid');
-const sharp = require('sharp');
-const { Upload } = require('@aws-sdk/lib-storage');
+const Skarpette = require("../models/skarpette");
+const { S3Client, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+const dotenv = require("dotenv");
+const { v4: uuidv4 } = require("uuid");
+const sharp = require("sharp");
+const { Upload } = require("@aws-sdk/lib-storage");
 
 dotenv.config();
 
@@ -38,7 +38,7 @@ async function uploadImageToS3(buffer, destination) {
         const data = await upload.done();
         return `https://${process.env.AWSBUCKETNAME}.s3.${process.env.AWSREGION}.amazonaws.com/${destination}`;
     } catch (error) {
-        console.error('Error uploading image to S3:', error);
+        console.error("Error uploading image to S3:", error);
         throw error;
     }
 }
@@ -56,7 +56,7 @@ async function deleteImageFromS3(imageUrl) {
         const data = await s3Client.send(command);
         return data;
     } catch (error) {
-        console.error('Error deleting image from S3:', error);
+        console.error("Error deleting image from S3:", error);
         throw error;
     }
 }
@@ -95,32 +95,7 @@ async function generateUniqueVendorCode() {
 const findSkarpettesByCriteria = async (criteria, res) => {
     try {
         const skarpettes = await Skarpette.find(criteria);
-        if (!skarpettes || skarpettes.length === 0) {
-            return res.status(404).json('Skarpettes not found');
-        }
         res.status(200).json(skarpettes);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-const getSizesByType = (type) => {
-    const sizes = {
-        Men: ['25-27', '27-29', '29-31'],
-        Women: ['23-25', '25-27'],
-        Child: ['16', '18', '19-21', '21-23', '23-25'],
-    };
-
-    return sizes[type].map((size) => ({ size, is_available: true }));
-};
-
-const uploadPhoto = async (req, res) => {
-    try {
-        const images = req.file;
-        if (images) {
-            return res.status(200).json('yes');
-        }
-        res.status(400).json('помилка');
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -130,15 +105,15 @@ async function createSkarpette(req, res) {
     try {
         // Отримуємо текстові дані з поля 'data' (яке передає фронт)
         const skarpetteData = JSON.parse(req.body.data); // Парсимо JSON
-        console.log('Запит:', skarpetteData);
+        console.log("Запит:", skarpetteData);
 
         // Якщо є файли зображень, обробляємо їх
         if (req.files && req.files.length > 0) {
             const imagesUrls = await Promise.all(
                 req.files.map(async (file) => {
                     // Перевірка типу файлу
-                    if (!file.mimetype.startsWith('image/')) {
-                        throw new Error('Тільки зображення дозволені');
+                    if (!file.mimetype.startsWith("image/")) {
+                        throw new Error("Тільки зображення дозволені");
                     }
 
                     // Змінюємо розмір зображення
@@ -151,7 +126,7 @@ async function createSkarpette(req, res) {
                         .toBuffer();
 
                     // Генеруємо унікальне ім'я файлу
-                    const fileExtension = file.mimetype.split('/')[1]; // Отримуємо розширення з mime
+                    const fileExtension = file.mimetype.split("/")[1]; // Отримуємо розширення з mime
                     const newFileName = `${uuidv4()}.${fileExtension}`;
 
                     // Завантажуємо зображення в S3 і отримуємо URL
@@ -175,13 +150,13 @@ async function createSkarpette(req, res) {
         await Skarpette.create(skarpetteData);
 
         res.status(201).json({
-            message: 'Товар успішно додано',
+            message: "Товар успішно додано",
             skarpetteData,
         });
     } catch (error) {
-        console.error('Error creating skarpette:', error);
+        console.error("Error creating skarpette:", error);
         res.status(500).json({
-            error: 'Не вдалося створити товар',
+            error: "Не вдалося створити товар",
             details: error.message,
         });
     }
@@ -192,7 +167,7 @@ const getSkarpetteById = async (req, res) => {
     try {
         const skarpette = await Skarpette.findById(id);
         if (!skarpette) {
-            return res.status(404).json('Skarpette not found');
+            return res.status(404).json("Skarpette not found");
         }
         res.status(200).json(skarpette);
     } catch (error) {
@@ -205,11 +180,11 @@ const getAllSkarpettes = async (req, res) => {
         if (req.query.filter) {
             return res
                 .status(400)
-                .json({ error: 'There should not be any query parameters' });
+                .json({ error: "There should not be any query parameters" });
         }
         const skarpettes = await Skarpette.find();
         if (!skarpettes) {
-            return res.status(404).json('Skarpettes not found');
+            return res.status(404).json("Skarpettes not found");
         }
         res.status(200).json(skarpettes);
     } catch (error) {
@@ -230,7 +205,7 @@ const updateSkarpette = async (req, res) => {
     try {
         let skarpette = await Skarpette.findById(id);
         if (!skarpette) {
-            return res.status(404).json({ error: 'Skarpette not found' });
+            return res.status(404).json({ error: "Skarpette not found" });
         }
 
         const deletePromises = skarpette.images_urls.map(async (image) => {
@@ -243,17 +218,16 @@ const updateSkarpette = async (req, res) => {
             }
         });
 
-            skarpette.images_urls = (await Promise.all(deletePromises)).filter(
-                Boolean
-            );
-
+        skarpette.images_urls = (await Promise.all(deletePromises)).filter(
+            Boolean
+        );
 
         let newImagesUrls = [];
         if (req.files && req.files.length > 0) {
             const images = req.files;
             const imagesUrls = await Promise.all(
                 images.map(async (file) => {
-                    const fileExtension = file.originalname.split('.').pop();
+                    const fileExtension = file.originalname.split(".").pop();
                     const newFileName = `${uuidv4()}.${fileExtension}`;
                     const resizedImage = await sharp(file.buffer).resize({
                         width: targetWidth,
@@ -273,7 +247,7 @@ const updateSkarpette = async (req, res) => {
         skarpette.images_urls = [...skarpette.images_urls, ...newImagesUrls];
 
         Object.keys(reqBody).forEach((key) => {
-            if (key !== 'images_urls' && reqBody[key] !== undefined) {
+            if (key !== "images_urls" && reqBody[key] !== undefined) {
                 skarpette[key] = reqBody[key];
             }
         });
@@ -281,7 +255,7 @@ const updateSkarpette = async (req, res) => {
         const updatedSkarpette = await skarpette.save();
         res.status(200).json(updatedSkarpette);
     } catch (error) {
-        console.error('Error updating skarpette:', error);
+        console.error("Error updating skarpette:", error);
         res.status(500).json({ error: error.message });
     }
 };
@@ -291,13 +265,13 @@ const deleteSkarpette = async (req, res) => {
     try {
         const skarpette = await Skarpette.findById(id);
         if (!skarpette) {
-            return res.status(404).json({ error: 'Skarpette not found' });
+            return res.status(404).json({ error: "Skarpette not found" });
         }
 
         await handleImageDeletion(skarpette, id);
 
         await skarpette.deleteOne();
-        res.status(200).json('Skarpette has been deleted');
+        res.status(200).json("Skarpette has been deleted");
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -309,24 +283,24 @@ const getSkarpettesByNameOrVendorCode = async (req, res) => {
 
         if (name) {
             skarpettes = await Skarpette.find({
-                name: { $regex: new RegExp(name, 'i') },
+                name: { $regex: new RegExp(name, "i") },
             });
         } else if (vendor_code) {
             const vendorCode = parseInt(vendor_code);
             if (isNaN(vendorCode)) {
                 return res
                     .status(400)
-                    .json({ error: 'Invalid vendor code format' });
+                    .json({ error: "Invalid vendor code format" });
             }
             skarpettes = await Skarpette.find({ vendor_code: vendorCode });
         } else {
             return res
                 .status(400)
-                .json({ error: 'No search parameters provided' });
+                .json({ error: "No search parameters provided" });
         }
 
         if (skarpettes.length === 0) {
-            return res.status(404).json('Skarpettes not found');
+            return res.status(404).json("Skarpettes not found");
         }
         res.status(200).json(skarpettes);
     } catch (error) {
