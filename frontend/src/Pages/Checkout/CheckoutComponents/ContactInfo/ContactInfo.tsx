@@ -1,7 +1,7 @@
 import {  forwardRef, useImperativeHandle, useState } from "react";
 import cn from 'classnames';
 import "./ContactInfo.scss";
-import InputMask from 'react-input-mask';
+import InputMask from 'react-input-mask-next';
 import Tooltip from "../../../../Components/Tooltip/Tooltip";
 
 interface ReceiverInfoRef {

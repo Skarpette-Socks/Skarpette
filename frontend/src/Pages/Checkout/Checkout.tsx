@@ -46,10 +46,19 @@ interface CommentRef {
   getComment: () => string;
 }
 
+interface PaymentRef {
+  getPaymentType: () => string;
+}
+
 interface Items {
-  skarpetteId: string,
+  skarpetteVendorCode: number,
   size: string,
   quantity: number | ''
+}
+
+const ReceiverOption = {
+  SELF:'self-receiver',
+  ANOTHER: 'another-receiver'
 }
 
 const Checkout = () => {
@@ -97,7 +106,7 @@ const Checkout = () => {
 
   // #endregion
 
-  const [selectedOption, setSelectedOption] = useState("self-receiver");
+  const [selectedOption, setSelectedOption] = useState(ReceiverOption.SELF);
   const [selectedDeliveryType, setSelectedDeliveryType] =
     useState<string>("nova-poshta-office");
 
@@ -110,6 +119,7 @@ const Checkout = () => {
   const receiverInfoRef = useRef<ReceiverInfoRef>(null);
   const commentRef = useRef<CommentRef>(null);
   const deliveryRef = useRef<DeliveryRef>(null);
+  const paymentTypeRef = useRef<PaymentRef>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [handleDialog, setHandleDialog] = useState<boolean>(false);
 
@@ -152,7 +162,7 @@ const Checkout = () => {
     let isValidContactInfo = false;
     let isValidReceiverInfo = false;
     let isValidDeliveryRef = false;
-    if (selectedOption === "another-receiver" && receiverInfoRef.current) {
+    if (selectedOption === ReceiverOption.ANOTHER && receiverInfoRef.current) {
       isValidReceiverInfo = receiverInfoRef.current.isValid();
     } else {
       isValidReceiverInfo = true;
@@ -172,7 +182,7 @@ const Checkout = () => {
         phoneNumber: contactInfoRef.current?.getPhone(),
         email: contactInfoRef.current?.getMail(),
       };
-      if (selectedOption === "another-receiver") {
+      if (selectedOption === ReceiverOption.ANOTHER) {
         recipientData = {
           firstName: receiverInfoRef.current?.getName(),
           lastName: receiverInfoRef.current?.getSurname(),
@@ -244,14 +254,16 @@ const Checkout = () => {
 
     cartItems.map((cartItem) => {
       items.push({
-        skarpetteId: cartItem.image,
+        skarpetteVendorCode: cartItem.vendor_code,
         size: cartItem.size,
         quantity: cartItem.count
       });
     });
-
+    
+    const isDifferentRecipient = selectedOption === ReceiverOption.ANOTHER;
+    const paymentType = paymentTypeRef.current?.getPaymentType();
+    
     setLoading(true);
-
     try {
       const response = await fetch("http://localhost:5000/order", {
         method: "POST",
@@ -262,9 +274,9 @@ const Checkout = () => {
           items,
           customerData,
           deliveryData,
-          paymentType: "Card",
+          paymentType,
           recipientData,
-          isDifferentRecipient: true,
+          isDifferentRecipient,
           comment,
           totalPrice
         }),
@@ -272,8 +284,11 @@ const Checkout = () => {
 
       if (response.ok) {
         console.log("Дані успішно відправлені!");
-        navigate("/success-order");
-
+        const responseData = await response.json();
+        console.log('Дані з відповіді:', responseData.orderNumber);
+        navigate("/success-order", {
+          state: { orderNumber: responseData.orderNumber },
+        });
       } else {
         console.error("Помилка при відправці даних");
       }
@@ -315,7 +330,9 @@ const Checkout = () => {
           selectedDeliveryType={selectedDeliveryType}
           setSelectedDeliveryType={setSelectedDeliveryType}
         />
-        <CheckoutPayment />
+        <CheckoutPayment 
+          ref={paymentTypeRef}
+        />
         <CheckoutReceiver
           selectedOption={selectedOption}
           setSelectedOption={setSelectedOption}

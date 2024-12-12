@@ -25,7 +25,7 @@ const CheckoutOrderMain: React.FC<CheckoutOrderMainProps> = ({
         <div className="checkout-order__greytext">{countItems} шт.</div>
     </div>
       <div className="checkout-order__goods">
-        {cartItems.map((cartItem) => {  
+        {cartItems.map((cartItem, index) => {  
           const {  
             image,
             name,
@@ -54,7 +54,7 @@ const CheckoutOrderMain: React.FC<CheckoutOrderMainProps> = ({
           } 
 
           return (
-            <div className="checkout-order__item">
+            <div className="checkout-order__item" key={index}>
               <div className="checkout-order__item-img-inf">
                 <img src={image} alt={name} className="checkout-order__image"/>
                 <div className="checkout-order__item-info">
