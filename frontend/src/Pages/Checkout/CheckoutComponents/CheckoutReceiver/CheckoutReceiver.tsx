@@ -167,6 +167,7 @@ const CheckoutReceiver = forwardRef<ReceiverInfoRef, ContactInfoProps>((
                   name="receiver"
                   checked={selectedOption === option.id}
                   onClick={() => setSelectedOption(option.id)}
+                  onChange={() => {}}
                 />
                 <span className="checkout-receiver__option-checkmark"></span>
               </div>

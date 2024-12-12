@@ -1,17 +1,32 @@
-import { useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 
 import "./CheckoutPayment.scss";
 
-const CheckoutPayment: React.FC = () => {
-  const [selectedOption, setSelectedOption] = useState("fondy");
+const PaymentType = {
+  CARD: 'Card',
+  CASH: 'Cash'
+}
+
+interface PaymentRef {
+  getPaymentType: () => string;
+}
+
+const CheckoutPayment = forwardRef<PaymentRef> (( _ , ref) => {
+  const [selectedOption, setSelectedOption] = useState(PaymentType.CARD);
+
+  useImperativeHandle(ref, () => ({
+    getPaymentType() {
+      return selectedOption;
+    }
+  }));
 
   const options = [
     {
-      id: "fondy",
+      id: PaymentType.CARD,
       title: "Онлайн-оплата банківською картою",
     },
     {
-      id: "on-card",
+      id: PaymentType.CASH,
       title: "Післяплата",
     },
   ];
@@ -29,6 +44,7 @@ const CheckoutPayment: React.FC = () => {
                   name="payment"
                   checked={selectedOption === option.id}
                   onClick={() => setSelectedOption(option.id)}
+                  onChange={() => {}}
                 />
                 <span className="checkout-payment__option-checkmark"></span>
               </div>
@@ -43,6 +59,6 @@ const CheckoutPayment: React.FC = () => {
       </div>
     </div>
   );
-};
+});
 
 export default CheckoutPayment;
