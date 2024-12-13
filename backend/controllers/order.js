@@ -285,8 +285,12 @@ const createOrder = async (req, res) => {
         orderData.orderNumber = await generateOrderNumber();
         orderDataForEmail = { ...orderData };
         orderData.customerData = encryptObject(orderData.customerData);
+        orderData.deliveryData = encryptObject(orderData.deliveryData);
         if (orderData.isDifferentRecipient) {
             orderData.recipientData = encryptObject(orderData.recipientData);
+        }
+        if (orderData.comment) {
+            orderData.comment = encrypt(orderData.comment);
         }
         const newOrder = new Order(orderData);
         await newOrder.save();
@@ -345,7 +349,7 @@ const getAllOrders = async (req, res) => {
                 order.recipientData = decryptObject(order.recipientData);
             }
             if (order.comment) {
-                order.comment = encrypt(order.comment);
+                order.comment = decrypt(order.comment);
             }
         }
         res.status(200).json(orders);
