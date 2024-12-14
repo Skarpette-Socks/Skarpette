@@ -23,17 +23,19 @@ const MainPageListGoods: React.FC<Props> = ({
   const [goodsToShow, setGoodsToShow] = useState<DataItem[]>(visibleGoods);
 
   useEffect(() => {
-    if(goods.length === 0 || !goods) {
+    if (goods.length > 0) {
+      setGoodsToShow(goods.slice(0, 4));
+    } else {
       fetchGoods("hit")
-        .then((data) => {   
+        .then((data) => {
           const filteredHitGoods = data.map((item) => item.skarpette);
           setGoodsToShow(filteredHitGoods);
         })
         .catch((error) => {
-          console.error("Ошибка при загрузке хитов:", error);
+          console.error("Помилка:", error);
         });
     }
-  }, []);
+  }, [goods]);
 
   return (
     <div className="list-goods">
