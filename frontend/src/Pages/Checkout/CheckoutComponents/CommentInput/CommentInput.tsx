@@ -40,6 +40,7 @@ const CommentInput = forwardRef<CommentRef>(( _ ,ref) => {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder='Коментар до замовлення'
+          maxLength={500}
         />
       )}
     </div>
