@@ -1,24 +1,144 @@
 import  { useState } from "react";
+import { toast } from "react-toastify";
 import "./ContactsForm.scss";
 
 const ContactsForm = () => {
+  const [name, setName] = useState<string>("");
+  const [mail, setMail] = useState<string>("");
   const [message, setMessage] = useState<string>("");
-  const [error, setError] = useState<boolean>(false);
+
+  const [nameError, setNameError] = useState<string>('');
+  const [mailError, setMailError] = useState<string>('');
+  const [messageError, setMessageError] = useState<string>('');
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event?.preventDefault();
+    let isValid = true;
+
+    setNameError('');
+    setMailError('');
+    setMessageError('');
+
+    if (name.length === 0) {
+      setNameError('Заповніть поле')
+      isValid = false;
+    }
+
+    if (name.length >= 100) {
+      setNameError('Перевищено максимальну кільість символів')
+      isValid = false;
+    }
+
+    if (!emailRegex.test(mail)) {
+      setMailError('Невалідний мейл');
+      isValid = false;
+    }
+
+
+    if (message.length <= 500) {
+      setMessageError('');
+    } else {
+      isValid = false;
+      setMessageError('Помилка: перевищено максимально допустиму кількість символів.');
+    }
+    
+    if (message.length === 0) {
+      setMessageError('Заповніть поле')
+      isValid = false;
+    }
+
+    if (isValid) {
+      const toaster = toast.loading('Відправляємо...', {
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+
+      try {
+        const response = await fetch('http://localhost:5000/email/sendHelpForm', {
+          method:'POST',
+          headers: {
+            'Content-Type':'application/json', 
+          },
+          body: JSON.stringify({
+            firstname: name,
+            email: mail,
+            comment: message
+          })
+        })
+
+        if (response.ok) {
+          toast.update(toaster, { 
+              render: "Повідомлення відправлено!", 
+              type: "success", 
+              isLoading: false, 
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            }
+          )
+
+          setName('');
+          setMail('');
+          setMessage('');
+        } else {
+          toast.update(toaster, { 
+              render: "Помилка при відправці повідомлення", 
+              type: "error", 
+              isLoading: false, 
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            }
+          )
+        }
+      } catch(error) {
+        console.log(error);
+      }
+    }
+  }
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (value.length <= 100) {
+      setName(value);
+      setNameError('')
+    }
+  }
+
+  const handleMailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (value.length <= 100) {
+      setMail(value);
+      setMailError('')
+    }
+  }
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const inputValue = e.target.value;
 
     if (inputValue.length <= 500) {
       setMessage(inputValue);
-      setError(false);
+      setMessageError('');
     } else {
-      setError(true);
+      setMessageError('Помилка: перевищено максимально допустиму кількість символів.');
     }
   };
 
 
   return (
-    <form action="#" className="contacts-form">
+    <form action="#" className="contacts-form" onSubmit={handleSubmit}>
       <p className="contacts-form__title" id="contacts-form__title">
         Форма для зв’язку
       </p>
@@ -27,38 +147,56 @@ const ContactsForm = () => {
         type="text"
         required
         placeholder="Ім’я"
-        className="contacts-form__name"
+        value={name}
+        onChange={handleNameChange}
+        className={`contacts-form__name ${nameError ? "contacts-form__message-error" : ""}`}
         maxLength={100}
       />
+
+      {nameError && (
+        <p className="contacts-form__error-message">
+          {nameError}
+        </p>
+      )}
 
       <input
         type="email"
         required
         placeholder="Електронна пошта"
-        className="contacts-form__email"
+        value={mail}
+        onChange={handleMailChange}
+        className={`contacts-form__email ${mailError ? "contacts-form__message-error" : ""}`}
         maxLength={100}
       />
+
+      {mailError && (
+        <p className="contacts-form__error-message">
+          {mailError}
+        </p>
+      )}
 
       <textarea
         required
         placeholder="Повідомлення"
-        className={`contacts-form__message ${error ? "contacts-form__message-error" : ""}`}
+        className={`contacts-form__message ${messageError ? "contacts-form__message-error" : ""}`}
         value={message}
         onChange={handleMessageChange}
+        maxLength={500}
       ></textarea>
 
-      {error && (
+      {messageError && (
         <p className="contacts-form__error-message">
-          Помилка: перевищено максимально допустиму кількість символів.
+          {messageError}
         </p>
       )}
 
-      <input
+      <button
         type="submit"
-        value="Надіслати"
         className="contacts-form__button"
-        disabled={error}
-      />
+        disabled={!!messageError}
+      >
+        Надіслати
+      </button>
     </form>
   );
 };
