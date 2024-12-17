@@ -11,6 +11,8 @@ const ContactsForm = () => {
   const [mailError, setMailError] = useState<string>('');
   const [messageError, setMessageError] = useState<string>('');
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const isCyrillic = /^[\u0400-\u04FF№/\s]*$/;
+
 
   const handleSubmit = async (event: React.FormEvent) => {
     event?.preventDefault();
@@ -105,14 +107,18 @@ const ContactsForm = () => {
         console.log(error);
       }
     }
+
+    
   }
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
-    if (value.length <= 100) {
+    if (!isCyrillic.test(value)) {
+      setNameError('Лише кирилиця');
+    } else if (value.length <= 100) {
       setName(value);
-      setNameError('')
+      setNameError('');
     }
   }
 
@@ -138,7 +144,7 @@ const ContactsForm = () => {
 
 
   return (
-    <form action="#" className="contacts-form" onSubmit={handleSubmit}>
+    <form action="#" className="contacts-form">
       <p className="contacts-form__title" id="contacts-form__title">
         Форма для зв’язку
       </p>
@@ -191,9 +197,10 @@ const ContactsForm = () => {
       )}
 
       <button
-        type="submit"
+        // type="submit"
         className="contacts-form__button"
         disabled={!!messageError}
+        onClick={handleSubmit}
       >
         Надіслати
       </button>
