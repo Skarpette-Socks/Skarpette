@@ -16,7 +16,7 @@ interface DataItem {
   price2?: number;
   is_new?: boolean;
   is_hit?: boolean;
-  is_in_stock?: boolean;
+  is_in_stock: boolean;
   size: sizeItem[];
   discountPercentage?: number;
 }

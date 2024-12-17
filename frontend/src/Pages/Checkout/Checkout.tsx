@@ -137,12 +137,14 @@ const Checkout = () => {
     }
     
     const unavailableItems = cartItems.filter((cartItem, index) => {
-      const matchedItem = socksDb.find(dbItem => cartItem.vendor_code === dbItem.vendor_code);
-      if(!matchedItem) { 
+      const matchedItem = socksDb
+        .find(dbItem => cartItem.vendor_code === dbItem.vendor_code);
+      if(!matchedItem || !matchedItem.is_in_stock) { 
         deleteCartItem(index);
         isItemsDeleted.current = true;
         return true;
       }
+
       const sizeItem = matchedItem.size.find(curSize => curSize.size === cartItem.size);
       if (!sizeItem || !sizeItem.is_available) {
         deleteCartItem(index);
@@ -151,7 +153,7 @@ const Checkout = () => {
       }
 
       return false;
-    })
+    });
 
     console.log('unavailableItems', unavailableItems)
 

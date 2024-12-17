@@ -68,6 +68,7 @@ const MainPageListGoods: React.FC<Props> = ({
                 price={item.price}
                 discount_price={item.price2}
                 isNew={item.is_new}
+                is_in_stock={item.is_in_stock}
               />
             ))
           )}
