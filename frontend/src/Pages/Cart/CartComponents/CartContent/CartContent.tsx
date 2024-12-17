@@ -64,8 +64,9 @@ const CartContent: React.FC = () => {
     }
     
     const unavailableItems = cartItems.filter((cartItem, index) => {
-      const matchedItem = socksDb.find(dbItem => cartItem.vendor_code === dbItem.vendor_code);
-      if(!matchedItem) { 
+      const matchedItem = socksDb
+        .find(dbItem => cartItem.vendor_code === dbItem.vendor_code);
+      if(!matchedItem || !matchedItem.is_in_stock) { 
         deleteCartItem(index);
         return true;
       }
