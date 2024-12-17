@@ -51,6 +51,7 @@ const Product: React.FC<ProductProps> = ({ pageType, item, resetData }) => {
   const [price2, setPrice2] = useState<number>(item.price2);
   const [isNew, setIsNew] = useState<boolean>(item.is_new);
   const [isHit, setIsHit] = useState<boolean>(item.is_hit);
+  const [isSoldOut, setIsSoldOut] = useState<boolean>(!item.is_in_stock);
   const [sizes, setSizes] = useState<SizeItem[]>(item.size);
 
   const [showButtons, setShowButtons] = useState<boolean>(true);
@@ -105,6 +106,7 @@ const Product: React.FC<ProductProps> = ({ pageType, item, resetData }) => {
         is_new: isNew,
         is_hit: isHit,
         size: sizes,
+        is_in_stock: !isSoldOut
       };
       
       formData.append('data', JSON.stringify(skarpetteData));
@@ -182,6 +184,7 @@ const Product: React.FC<ProductProps> = ({ pageType, item, resetData }) => {
     setIsNew(item.is_new);
     setIsHit(item.is_hit);
     setSizes(item.size);
+    setIsSoldOut(!item.is_in_stock);
     setOpenDialog(false);
     setDeletedImages([]);
   };
@@ -716,6 +719,20 @@ const Product: React.FC<ProductProps> = ({ pageType, item, resetData }) => {
                 HIT
               </Button>
 
+              <Button
+                variant={
+                  isSoldOut ? "contained" : "outlined"
+                }
+                onClick={() => setIsSoldOut((prev) => !prev)}
+                sx={{
+                  height: 40,
+                  fontWeight: isSoldOut
+                    ? "bold"
+                    : "normal",
+                }}
+              >
+                Продано
+              </Button>
             </Box>
           </Box>
         </Box>

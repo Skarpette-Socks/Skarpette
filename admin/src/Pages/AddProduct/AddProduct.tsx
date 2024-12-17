@@ -17,6 +17,7 @@ const AddProduct = () => {
     is_hit: false,
     isTop: false,
     size: [],
+    is_in_stock: true,
   };
 
   const resetData = () => {
