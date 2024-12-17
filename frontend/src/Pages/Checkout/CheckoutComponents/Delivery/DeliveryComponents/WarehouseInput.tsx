@@ -11,6 +11,8 @@ import {
   fetchWarehouses,
   FetchWarehousesParams,
 } from "../../../../../api/FetchWarehouse";
+import { debounce } from "lodash";
+
 
 import "../../../../../assets/styles/commonCheckoutInputesStyles.scss";
 
@@ -57,86 +59,97 @@ const WarehouseInput = forwardRef<WarehouseInputRef, WarehouseInputProps>(
       }
       return true;
     };
-    const fetchWarehousesData = useCallback(async () => {
-      if (!selectedCity) {
-        setWarehouses([]);
-        setFilteredWarehouses([]);
+
+    const fetchWarehousesData = useCallback(
+      debounce(async () => {
+        if (!selectedCity) {
+          setWarehouses([]);
+          setFilteredWarehouses([]);
+          setError(null);
+          return;
+        }
+    
         setError(null);
-        return;
-      }
-
-      setError(null);
-
-      try {
-        const baseParams: FetchWarehousesParams = {
-          CityName: selectedCity,
-          Limit: "100000",
-        };
-
-        const results: any[] = []; // Массив для сбора результатов
-
-        if (deliveryType === "nova-poshta-poshtamat") {
-          const params = {
-            ...baseParams,
-            TypeOfWarehouseRef: "f9316480-5f2d-425d-bc2c-ac7cd29decf0",
+        try {
+          const baseParams: FetchWarehousesParams = {
+            CityName: selectedCity,
+            Limit: "100000",
           };
-          const warehousesData = await fetchWarehouses(params);
-          results.push(...warehousesData);
-        }
-
-        if (deliveryType === "nova-poshta-office") {
-          const warehouseTypes = [
-            "6f8c7162-4b72-4b0a-88e5-906948c6a92f",
-            "841339c7-591a-42e2-8233-7a0a00f0ed6f",
-            "9a68df70-0267-42a8-bb5c-37f427e36ee4",
-          ];
-
-          for (const type of warehouseTypes) {
-            const data = await fetchWarehouses({
+    
+          const results: any[] = [];
+    
+          if (deliveryType === "nova-poshta-poshtamat") {
+            const params = {
               ...baseParams,
-              TypeOfWarehouseRef: type,
-            });
-            results.push(...data);
-          }
-        }
-        // Сортировка по номеру отделения
-        const sortedResults = results
-          .filter((value, index, self) => {
-            return (
-              index ===
-              self.findIndex((t) => JSON.stringify(t) === JSON.stringify(value))
-            ); // Уникальность по строковому значению
-          })
-          .sort((a, b) => {
-            const extractNumber = (str: string) => {
-              // Регулярное выражение для поиска номера после "№"
-              const match = str.match(/№\s*(\d+)/);
-              return match ? parseInt(match[1], 10) : Infinity; // Если не найдено, ставим в конец
+              TypeOfWarehouseRef: "f9316480-5f2d-425d-bc2c-ac7cd29decf0",
             };
-
-            const numberA = extractNumber(a); // a - это строка, содержащая номер
-            const numberB = extractNumber(b); // b - это строка, содержащая номер
-
-            return numberA - numberB; // Сравниваем числа для сортировки
-          });
-        // Фильтрация по уникальности, используя строковое представление склада
-
-        if (sortedResults.length === 0) {
-          setError("Відділення не знайдено");
+            const warehousesData = await fetchWarehouses(params);
+            results.push(...warehousesData);
+          }
+    
+          if (deliveryType === "nova-poshta-office") {
+            const warehouseTypes = [
+              "6f8c7162-4b72-4b0a-88e5-906948c6a92f",
+              "841339c7-591a-42e2-8233-7a0a00f0ed6f",
+              "9a68df70-0267-42a8-bb5c-37f427e36ee4",
+            ];
+    
+            for (const type of warehouseTypes) {
+              const data = await fetchWarehouses({
+                ...baseParams,
+                TypeOfWarehouseRef: type,
+              });
+              results.push(...data);
+            }
+          }
+    
+          const sortedResults = results
+            .filter((value, index, self) => {
+              return (
+                index ===
+                self.findIndex((t) => JSON.stringify(t) === JSON.stringify(value))
+              );
+            })
+            .sort((a, b) => {
+              const extractNumber = (str: string) => {
+                const match = str.match(/№\s*(\d+)/);
+                return match ? parseInt(match[1], 10) : Infinity;
+              };
+    
+              const numberA = extractNumber(a);
+              const numberB = extractNumber(b);
+    
+              return numberA - numberB;
+            });
+    
+          if (sortedResults.length === 0) {
+            setError("Відділення не знайдено");
+          }
+    
+          setWarehouses(sortedResults);
+          setFilteredWarehouses(sortedResults);
+        } catch (err) {
+          setError("Помилка при виконанні запиту: " + (err as Error).message);
+          setWarehouses([]);
+          setFilteredWarehouses([]);
         }
+      }, 500), // Debounce на 500 мс
+      [selectedCity, deliveryType]
+    );
+    
+    
 
-        setWarehouses(sortedResults);
-        setFilteredWarehouses(sortedResults);
-      } catch (err) {
-        setError("Помилка при виконанні запиту: " + (err as Error).message);
-        setWarehouses([]);
-        setFilteredWarehouses([]);
-      }
-    }, [selectedCity, deliveryType]);
 
     useEffect(() => {
-      fetchWarehousesData();
-    }, [fetchWarehousesData]);
+      if (selectedCity) {
+        fetchWarehousesData();
+      }
+    
+      return () => {
+        fetchWarehousesData.cancel();
+      };
+    }, [selectedCity, fetchWarehousesData]);
+    
 
     useEffect(() => {
       if (resetWarehouse) {
