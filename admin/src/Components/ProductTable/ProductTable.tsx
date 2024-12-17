@@ -41,6 +41,7 @@ interface DataItem {
   price: number;
   price2?: number;
   discountPercentage?: number;
+  is_in_stock: boolean
 }
 
 // Стилизованные компоненты
@@ -90,6 +91,10 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     width: "100px",
     padding: "4px",
   },
+  "&.out-of-stock": {
+    filter: "opacity(0.5)",
+    backgroundColor: 'rgb(220, 137, 137)',
+  }
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -231,7 +236,11 @@ const ProductTable: React.FC = () => {
   const renderTableCell = (sock: DataItem, field: string) => {
     switch (field) {
       case "name":
-        return highlightText(sock.name);
+        if (sock.is_in_stock) {
+          return highlightText(sock.name);
+        } else  {
+          return highlightText(sock.name + ' [ПРОДАНО]');
+        }
       case "photo":
         return <ImageCell src={sock.images_urls[0]} alt={sock.name} />;
       case "vendor_code":
@@ -405,7 +414,9 @@ const ProductTable: React.FC = () => {
                     {TABLE_HEADERS.map((header) => (
                       <StyledTableCell
                         key={`${sock.vendor_code}-${header.id}`}
-                        className={header.className}
+                        className={`${header.className} ${
+                          !sock.is_in_stock ? 'out-of-stock' : ''}`
+                        }
                       >
                         {renderTableCell(sock, header.id)}
                       </StyledTableCell>

@@ -193,6 +193,7 @@ const Catalog: React.FC = () => {
                   discount_price={item.price2}
                   isNew={item.is_new}
                   discountPercentage={item.discountPercentage}
+                  is_in_stock={item.is_in_stock}
                 />
               ))}
             </div>

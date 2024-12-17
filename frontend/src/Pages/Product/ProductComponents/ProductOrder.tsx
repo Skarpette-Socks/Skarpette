@@ -284,11 +284,12 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
                   index={index}
                   selectedSize={selectedSize}
                   setSize={setSize}
+                  is_in_stock={item.is_in_stock}
                 />
               ))}
             </div>
 
-            {cartItem && (
+            {(cartItem && item.is_in_stock) && (
               <div className="product__good-in-cart">
                 У кошику вже {cartItem.count}шт
               </div>
@@ -299,29 +300,36 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
           
 
           <div className="product__counter">
-            <div className="product__counter-title">Кількість:</div>
-            <CounterButtonProduct 
-              count={counter}
-              setCount={setCounter}
-              cartItemCount={cartItem?.count}
-            />
-            
-            {cartItem?.count === 99 && (
-              <div className="product__max-count">
-                Максимальна кількість у кошику 99шт
-              </div>
+            {item.is_in_stock && (
+              <>
+                <div className="product__counter-title">Кількість:</div>
+                <CounterButtonProduct 
+                  count={counter}
+                  setCount={setCounter}
+                  cartItemCount={cartItem?.count}
+                />
+                
+                {cartItem?.count === 99 && (
+                  <div className="product__max-count">
+                    Максимальна кількість у кошику 99шт
+                  </div>
+                )}
+              </>
             )}
           </div>
 
           <div className="product__buttons-cart-fav">
             <button
               className={`product__add-to-cart 
-                ${selectedSize === undefined || counter === 0 ? `disabled` : ``}
+                ${selectedSize === undefined || counter === 0 || !item.is_in_stock ? `disabled` : ``}
               `}
               onClick={() => addCartItem( item, counter, selectedSize )}
-              disabled={selectedSize === undefined || counter === 0}
+              disabled={selectedSize === undefined || counter === 0 || !item.is_in_stock}
             >
-              Додати у кошик
+              {!item.is_in_stock ? (
+                'Немає в наявності'
+              ) : 'Додати у кошик'}
+              
             </button>
             <button
               className="product__add-to-fav"

@@ -24,7 +24,11 @@ const Favorites: React.FC = () => {
           {favorites.length > 0 ? (
             <div className="favorites__items">
               {favorites.map((item) => (
-                <Item key={item.vendor_code} {...item} />
+                <Item   
+                  key={item.vendor_code} 
+                  {...item}
+                  is_in_stock={true}
+                />
               ))}
             </div>
           ) : (

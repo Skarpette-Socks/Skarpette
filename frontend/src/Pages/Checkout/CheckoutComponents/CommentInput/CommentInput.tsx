@@ -11,6 +11,8 @@ interface CommentRef {
 const CommentInput = forwardRef<CommentRef>(( _ ,ref) => {
   const [value, setValue] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [error, setError] = useState('');
+  const maxLength = 500;
 
   useImperativeHandle(ref, () => ({
     isValid() {
@@ -20,6 +22,17 @@ const CommentInput = forwardRef<CommentRef>(( _ ,ref) => {
       return value;
     }
   }));
+
+  const handleValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+
+    if (value.length > maxLength) {
+      setError('Перевищено максимальну кількість символів');
+    } else {
+      setError('');
+      setValue(value);
+    }
+  }
 
   return (
     <div className="comment">
@@ -35,13 +48,21 @@ const CommentInput = forwardRef<CommentRef>(( _ ,ref) => {
         </button>
       </div>
       {isOpen && (
-        <textarea 
-          className="comment__input" 
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder='Коментар до замовлення'
-          maxLength={500}
-        />
+        <>
+          <textarea 
+            className="comment__input" 
+            value={value}
+            onChange={handleValue}
+            placeholder='Коментар до замовлення'
+            maxLength={maxLength + 1}
+          />
+        
+          {error && (
+          <p className="comment__error-message">
+            {error}
+          </p>
+      )}
+        </>
       )}
     </div>
   )

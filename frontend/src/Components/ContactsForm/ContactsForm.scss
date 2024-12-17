@@ -74,6 +74,7 @@
     height: 48px;
     width: 100%;
     background-color: $primary-800;
+    background-color: rgb(220, 137, 137);
     border-radius: 100px;
     padding: 14px 20px;
     font-weight: 600;
@@ -89,20 +90,20 @@
     }
 
     &:hover {
-      background-color: darken($primary-800, 10%);
+      background-color: $primary-1000;
     }
   }
 
   &__error-message {
     color: $color-error !important;
-    font-size: 14px  !important;
+    font-size: 14px  ;
     text-align: center;
     width: 100%;
-    margin-top: -8px;
-    margin-bottom: 8px;
+    margin-top: -16px;
+    margin-bottom: -14px;
 
     @include on-tablet {
-      font-size: 18px !important;
+      font-size: 18px ;
     }
   }
 

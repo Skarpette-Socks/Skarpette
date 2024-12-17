@@ -43,4 +43,16 @@
       font-size: 16px;
     }
   }
+
+  &__error-message {
+    color: $color-error;
+    font-size: 14px ;
+    text-align: left;
+    width: 100%;
+    margin-top: 4px;
+
+    @include on-tablet {
+      font-size: 18px;
+    }
+  }
 }

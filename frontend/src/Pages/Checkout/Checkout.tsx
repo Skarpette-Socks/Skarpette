@@ -15,6 +15,7 @@ import FooterMinorInfo from "../../App/AppComponents/Footer/FooterMinorInfo";
 import { fetchAllData } from "../../api/fetchAllData";
 import DataItem from "../../types/DataItem";
 import CommentInput from "./CheckoutComponents/CommentInput/CommentInput";
+import { toast } from "react-toastify";
 
 interface ContactInfoRef {
   isValid: () => boolean;
@@ -136,12 +137,14 @@ const Checkout = () => {
     }
     
     const unavailableItems = cartItems.filter((cartItem, index) => {
-      const matchedItem = socksDb.find(dbItem => cartItem.vendor_code === dbItem.vendor_code);
-      if(!matchedItem) { 
+      const matchedItem = socksDb
+        .find(dbItem => cartItem.vendor_code === dbItem.vendor_code);
+      if(!matchedItem || !matchedItem.is_in_stock) { 
         deleteCartItem(index);
         isItemsDeleted.current = true;
         return true;
       }
+
       const sizeItem = matchedItem.size.find(curSize => curSize.size === cartItem.size);
       if (!sizeItem || !sizeItem.is_available) {
         deleteCartItem(index);
@@ -150,7 +153,7 @@ const Checkout = () => {
       }
 
       return false;
-    })
+    });
 
     console.log('unavailableItems', unavailableItems)
 
@@ -291,9 +294,27 @@ const Checkout = () => {
         });
       } else {
         console.error("Помилка при відправці даних");
+        toast.error("Помилка при відправці даних", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
       }
     } catch (error) {
       console.error("Сталася помилка:", error);
+      toast.error(`Сталася помилка: ${error}`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
     } finally {
       setLoading(false);
     }
