@@ -13,6 +13,7 @@ interface Props {
   index: number;
   selectedSize: number | undefined;
   setSize: (index: number, is_available:boolean) => void;
+  is_in_stock: boolean
 }
 
 const ProductSizeButton: React.FC<Props> = ({
@@ -20,6 +21,7 @@ const ProductSizeButton: React.FC<Props> = ({
   index,
   selectedSize,
   setSize,
+  is_in_stock
 }) => {
   if (typeof button !== 'string') {
     const { size, is_available } = button;
@@ -28,12 +30,13 @@ const ProductSizeButton: React.FC<Props> = ({
       <div
         className={cn(
           `product__size-button${
-            is_available === false
+            is_available === false || 
+            is_in_stock === false
               ? ` disabled`
               : `${selectedSize === index ? ` active` : ``}`
           }`
         )}
-        onClick={() => setSize(index, is_available)}
+        onClick={() => setSize(index, is_available && is_in_stock)}
       >
         {size}
       </div>
