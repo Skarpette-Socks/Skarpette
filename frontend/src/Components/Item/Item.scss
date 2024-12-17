@@ -49,6 +49,11 @@
       width: 303px;
       height: 340px;
     }
+
+    &.out-of-stock {
+      opacity: 0.5;
+      filter: brightness(70%);
+    }
   }
 
   &__category {
@@ -109,15 +114,26 @@
     }
   }
 
-  &__new {
+  &__info-buttons {
     position: absolute;
+    top: 4px;
+    left: 4px;
+    display: flex;
+    
+    @include on-tablet {
+      top: 16px;
+      left: 16px;
+
+    }
+  }
+
+  &__new {
     border: 1px solid $grayscale-200;
     background-color: $grayscale-50;
     width: 43px;
     height: 32px;
     border-radius: 100px;
-    top: 4px;
-    left: 4px;
+
 
     display: flex;
     justify-content: center;
@@ -142,8 +158,6 @@
     width: 43px;
     height: 32px;
     border-radius: 100px;
-    top: 40px;
-    left: 4px;
 
     display: flex;
     justify-content: center;
@@ -154,8 +168,6 @@
     color: $grayscale-0;
 
     @include on-tablet {
-      top: 64px;
-      left: 16px;
       width: 55px;
       height: 40px;
       font-size: 14px;
@@ -195,5 +207,30 @@
         height: 24px;
       }
     }
+  }
+
+  &__out-of-stock {
+    position: absolute;
+    bottom: 83px;
+    left: 15px;
+    color: black;
+    font-weight: 400;
+    text-transform: uppercase;
+    text-wrap: nowrap;
+    font-size: 12px;
+
+    @include on-tablet {
+      font-size: 20px;
+      bottom: 103px;
+      left: 45px;
+    }
+
+    @include on-desktop {
+      bottom: 103px;
+      left: 50px;
+    }
+    // display: flex;
+    // justify-content: center;
+    // align-self: center;
   }
 }

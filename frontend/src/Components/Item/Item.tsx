@@ -13,6 +13,7 @@ interface ItemProps {
   discount_price?: number;
   isNew?: boolean;
   discountPercentage?: number;
+  is_in_stock: boolean
 }
 
 const Item: React.FC<ItemProps> = ({
@@ -24,6 +25,7 @@ const Item: React.FC<ItemProps> = ({
   discount_price,
   isNew,
   discountPercentage,
+  is_in_stock,
 }) => {
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   const [isFavorite, setIsFavorite] = useState(false);
@@ -70,12 +72,21 @@ const Item: React.FC<ItemProps> = ({
   return (
     <a href={`/product/${vendor_code}`} className="item">
       <div className="item__image-container">
-        <img src={image} alt={name} className="item__image" loading="lazy"/>
-        {isNew && <span className="item__new">NEW</span>}
+        <img 
+          src={image} 
+          alt={name} 
+          className={`item__image ${!is_in_stock ? 'out-of-stock' : ''}`} 
+          loading="lazy"
+        />
 
-        {discountPercentage !== undefined && discountPercentage > 0 && (
-          <span className="item__discount">-{discountPercentage}%</span>
-        )}
+        <div className="item__info-buttons">
+          {isNew && <span className="item__new">NEW</span>}
+
+          {discountPercentage !== undefined && discountPercentage > 0 && (
+            <span className="item__discount">-{discountPercentage}%</span>
+          )}
+        </div>
+        {!is_in_stock && <span className="item__out-of-stock">Немає в наявності</span>}
 
         <button className="item__favorite" onClick={toggleFavorite}>
           <img
