@@ -15,6 +15,7 @@ import FooterMinorInfo from "../../App/AppComponents/Footer/FooterMinorInfo";
 import { fetchAllData } from "../../api/fetchAllData";
 import DataItem from "../../types/DataItem";
 import CommentInput from "./CheckoutComponents/CommentInput/CommentInput";
+import { toast } from "react-toastify";
 
 interface ContactInfoRef {
   isValid: () => boolean;
@@ -291,9 +292,27 @@ const Checkout = () => {
         });
       } else {
         console.error("Помилка при відправці даних");
+        toast.error("Помилка при відправці даних", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
       }
     } catch (error) {
       console.error("Сталася помилка:", error);
+      toast.error(`Сталася помилка: ${error}`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
     } finally {
       setLoading(false);
     }
