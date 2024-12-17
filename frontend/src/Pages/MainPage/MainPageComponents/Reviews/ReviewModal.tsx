@@ -24,7 +24,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
   const [messageError, setMessageError] = useState<string>('');
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
+  const isCyrillic = /^[\u0400-\u04FF№/\s]*$/;
 
   if (!isOpen) return null;
 
@@ -137,21 +137,26 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
 
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-
-    if (value.length <= 50) {
+  
+    if (!isCyrillic.test(value)) {
+      setFirstNameError('Лише кирилиця');
+    } else if (value.length <= 50) {
       setFirstName(value);
       setFirstNameError('');
     }
-  }
-
+  };
+  
   const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-
-    if (value.length <= 50) {
+  
+    if (!isCyrillic.test(value)) {
+      setLastNameError('Лише кирилиця');
+    } else if (value.length <= 50) {
       setLastName(value);
-      setLastNameError('')
+      setLastNameError('');
     }
-  }
+  };
+  
 
   const handleMailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
