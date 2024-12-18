@@ -65,6 +65,8 @@ const ReceiverOption = {
 const Checkout = () => {
   const { cartItems, deleteCartItem } = useCartItems();
   const isItemsDeleted = useRef<boolean>(false);
+  const [underBurronError, setUnderButonError] = useState<string>('');
+
   // #region CheckoutOrderRegion
   const navigate = useNavigate();
 
@@ -100,10 +102,11 @@ const Checkout = () => {
     const isPriceValid = () => totalPrice >= 500;
 
     if (!isPriceValid()) {
-      alert("Сума замовлення має бути не менше 500 грн.");
-      navigate(-1); // Повертаємо користувача до кошика
+      setUnderButonError("Мінімальна сума замовлення 500грн");
+    } else {
+      setUnderButonError('');
     }
-  }, [totalPrice, navigate]);
+  }, [totalPrice]);
 
   // #endregion
 
@@ -191,6 +194,8 @@ const Checkout = () => {
           lastName: receiverInfoRef.current?.getSurname(),
           phoneNumber: receiverInfoRef.current?.getPhone(),
         };
+      } else {
+        recipientData = false
       }
       switch (selectedDeliveryType) {
         case "nova-poshta-office":
@@ -370,12 +375,17 @@ const Checkout = () => {
       </div>
 
       <button 
-        className={`checkout__button ${loading ? 'disabled' : ''}`}
+        className={`checkout__button ${loading || underBurronError ? 'disabled' : ''}`}
         onClick={handleCheckout}
         disabled={loading}
       >
         Створити замовлення
       </button>
+      {underBurronError && (
+        <p className="checkout__button-error">
+          {underBurronError}
+        </p>
+      )}
 
       {handleDialog && (
         <div className="dialog-overlay">
