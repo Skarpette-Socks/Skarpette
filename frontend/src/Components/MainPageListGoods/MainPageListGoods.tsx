@@ -35,7 +35,7 @@ const MainPageListGoods: React.FC<Props> = ({
     } else if (goods.length > 0) {
       setGoodsToShow(goods.slice(0, 4));
     }
-  }, [loading, goods]);
+  }, [loading]);
 
   return (
     <div className="list-goods">

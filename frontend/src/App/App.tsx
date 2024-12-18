@@ -20,7 +20,6 @@ import Search from "./AppComponents/Search/Search";
 import Loader from "../Components/Loader/Loader";
 import NotFound from "../Pages/NotFound/NotFound";
 import TermsOfUse from "../Pages/TermOfUse/TermOfUse";
-import ProtectedRoute from "../Components/ProtectedRoute/ProtectedRoute";
 import SuccessOrder from "../Pages/SuccessOrder/SuccessOrder";
 
 const AboutUs = lazy(() => import("../Pages/AboutUs/AboutUs"));
@@ -105,20 +104,6 @@ const App: React.FC = () => {
             <Suspense fallback={<Loader />}>
               <Routes>
                 {routes.map((route, index) => {
-                  if (
-                    route.path === "/checkout" ||
-                    route.path === "/success-order"
-                  ) {
-                    return (
-                      <Route
-                        key={index}
-                        path={route.path}
-                        element={
-                          <ProtectedRoute>{route.element}</ProtectedRoute>
-                        }
-                      />
-                    );
-                  }
                   return (
                     <Route
                       key={index}

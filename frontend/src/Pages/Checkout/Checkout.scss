@@ -183,6 +183,30 @@
 
     }
 
+    &-error {
+      color: red;
+      font-size: 12px;
+      display: flex;
+      justify-content: center;
+      grid-column: 1 / -1;
+      grid-row: 4 / 5;
+      // width: auto;
+  
+  
+      @include on-tablet {
+        margin-inline: 0;
+        grid-row: 5 / 6;
+        font-size: 14px;
+  
+        padding: 14px;
+      }
+  
+      @include on-desktop {
+        grid-row: 4 / 5;
+  
+        grid-column: 2 / 7;
+      }
+    }
     &:hover :not(.disabled){
       background-color: $primary-1000;
     }
