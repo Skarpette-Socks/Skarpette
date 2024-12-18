@@ -36,6 +36,7 @@
 
     @include on-desktop {
       grid-column: 1/8;
+      grid-row: 2/5;
     }
   }
 
@@ -204,6 +205,7 @@
       margin: auto;
       margin-top: 0;
       grid-column: 9/-1;
+      grid-row: 2/3;
     }
   }
 
@@ -374,6 +376,7 @@
     font-weight: 500;
     @include on-desktop {
       grid-column: 9/-1;
+      grid-row: 3/4;
     }
   }
 }
