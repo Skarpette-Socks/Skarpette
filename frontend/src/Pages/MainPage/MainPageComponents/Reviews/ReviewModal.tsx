@@ -24,7 +24,8 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
   const [messageError, setMessageError] = useState<string>('');
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const isCyrillic = /^[\u0400-\u04FF№/\s]*$/;
+  const isCyrillic = /^[\u0400-\u04FF-ʼ/\s]*$/;
+
 
   if (!isOpen) return null;
 
@@ -91,10 +92,10 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
           },
           body: JSON.stringify({
             score: rating,
-            firstname: firstName,
-            lastname: lastName,
-            email,
-            comment: message
+            firstname: firstName.trim(),
+            lastname: lastName.trim(),
+            email: email.trim(),
+            comment: message.trim()
           })
         })
         onClose();

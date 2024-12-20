@@ -3,6 +3,5 @@
   { "name": "Акції", "link": "/offers" },
   { "name": "Оплата та доставка", "link": "/payment-and-delivery" },
   { "name": "Повернення", "link": "/return-of-goods" },
-  { "name": "Контакти", "link": "/contacts" },
-  { "name": "Написати відгук", "link": "/contacts" }
+  { "name": "Контакти", "link": "/contacts" }
 ]
