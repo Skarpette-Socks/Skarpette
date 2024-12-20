@@ -16,6 +16,7 @@ import { fetchAllData } from "../../api/fetchAllData";
 import DataItem from "../../types/DataItem";
 import CommentInput from "./CheckoutComponents/CommentInput/CommentInput";
 import { toast } from "react-toastify";
+import CheckoutButton from "./CheckoutComponents/CheckoutButton/CheckoutButton";
 
 interface ContactInfoRef {
   isValid: () => boolean;
@@ -65,7 +66,7 @@ const ReceiverOption = {
 const Checkout = () => {
   const { cartItems, deleteCartItem } = useCartItems();
   const isItemsDeleted = useRef<boolean>(false);
-  const [underBurronError, setUnderButonError] = useState<string>('');
+  const [underButtonError, setUnderButonError] = useState<string>('');
 
   // #region CheckoutOrderRegion
   const navigate = useNavigate();
@@ -374,16 +375,14 @@ const Checkout = () => {
         />
       </div>
 
-      <button 
-        className={`checkout__button ${loading || underBurronError ? 'disabled' : ''}`}
-        onClick={handleCheckout}
-        disabled={loading}
-      >
-        Створити замовлення
-      </button>
-      {underBurronError && (
+      <CheckoutButton
+        loading={loading}
+        underButtonError={!!underButtonError}
+        handleCheckout={handleCheckout}
+      />
+      {underButtonError && (
         <p className="checkout__button-error">
-          {underBurronError}
+          {underButtonError}
         </p>
       )}
 
