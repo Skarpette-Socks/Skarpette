@@ -145,31 +145,107 @@ const sendOrderEmailToCustomer = async (orderData, userEmail) => {
             vendor_code: item.skarpetteVendorCode,
         });
         if (skarpette) {
+            const price = skarpette.price2 || skarpette.price;
             const imageUrl =
                 skarpette.images_urls?.[0] || "https://via.placeholder.com/200";
             orderDetails += `
-                <div>
-                    <h3>${skarpette.name}</h3>
-                    <img src="${imageUrl}" alt="${skarpette.name}" style="width: 200px; height: auto; display: block; margin-bottom: 10px;" />
-                    <p>Розмір: ${item.size}</p>
-                    <p>Кількість: ${item.quantity}</p>
+                <div style="display: flex; align-items: center; gap: 60px; margin-top: 30px;"> <!-- Збільшено gap -->
+                    <div style="flex-shrink: 0; margin-right: 20px;"> <!-- Додано margin-right -->
+                        <img src="${imageUrl}" alt="${skarpette.name}" style="width: 124px; height: 124px; object-fit: cover; border-radius: 10px;" />
+                    </div>
+                    <div>
+                        <p style="margin: 0; margin-bottom: 8px; font-size: 16px;"><b>Артикул:</b> ${skarpette.vendor_code}</p>
+                        <p style="margin: 0; margin-bottom: 8px; font-size: 16px;"><b>Назва:</b> ${skarpette.name}</p>
+                        <p style="margin: 0; margin-bottom: 8px; font-size: 16px;"><b>Розмір:</b> ${item.size}</p>
+                        <p style="margin: 0; margin-bottom: 8px; font-size: 16px;"><b>Кількість:</b> ${item.quantity}</p>
+                        <p style="margin: 0; font-size: 16px;"><b>Ціна:</b> ${price} грн</p>
+                    </div>
                 </div>
-                <hr />
             `;
         }
     }
 
+    const customerInfo = `<p style="margin: 0; margin-bottom: 8px; font-size: 16px;"><b>Покупець: </b>${
+        orderData.customerData.firstName
+    } ${orderData.customerData.lastName}, ${
+        orderData.customerData.phoneNumber
+    }, ${orderData.deliveryData.city}${
+        orderData.deliveryData.street
+            ? ", " + orderData.deliveryData.street
+            : ""
+    }${
+        orderData.deliveryData.houseNumber
+            ? ", " + orderData.deliveryData.houseNumber
+            : ""
+    }${
+        orderData.deliveryData.apartmentNumber
+            ? ", " + orderData.deliveryData.apartmentNumber
+            : ""
+    }</p>`;
+
+    let otherCustomerInfo = "";
+    if (orderData.isDifferentRecipient) {
+        otherCustomerInfo = `<p style="margin: 0; margin-bottom: 8px; font-size: 16px;"><b>Інший отримувач: </b>${orderData.recipientData.firstName} ${orderData.recipientData.lastName}, ${orderData.recipientData.phoneNumber}</p>`;
+    }
+
     const mailOptions = {
-        from: `"Skarpette" ${process.env.EMAIL_USER}`,
-        to: userEmail,
-        subject: "Ваше замовлення підтверджено!",
+        from: `Skarpette <${process.env.EMAIL_USER}>`,
+        to: orderData.customerData.email,
+        subject: "Дякуємо за замовлення!",
         html: `
-            <h1 style="color: #5A2D82;">Дякуємо за замовлення!</h1>
-            <p>Ви обрали:</p>
-            ${
-                orderDetails ||
-                "<p>Не знайдено товарів для вашого замовлення.</p>"
-            }
+          <!DOCTYPE html>
+          <html style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.42857143; margin: 0; padding: 0;">
+            <head>
+              <meta charset="UTF-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+              <title>Деталі замовлення</title>
+            </head>
+            <body>
+              <div style="max-width: 800px; margin: 20px auto; padding: 20px;">
+                <h2 style="color: black; font-size: 22px; font-weight: 400; line-height: 26.4px; letter-spacing: -0.01em; text-align: left; text-underline-position: from-font;
+                text-decoration-skip-ink: none;">
+                    Дякуємо, що обрали Skarpette.com.ua! <br />
+                    Ваше замовлення №${orderData.orderNumber}. <br />
+                    Менеджер онлайн замовлень зв'яжеться з Вами найближчим часом для
+                    узгодження всіх деталей. <br />
+                    Якщо у Вас виникли будь-які запитання, напишіть нам на пошту
+                    shop.skarpette@gmail.com або зателефонуйте за номером телефону
+                    +38 (098) 32-64-872
+                </h2>
+                <hr style="height: 1px; border: none; background-color: #edeff1; margin-top: 20px;" />
+    
+                ${orderDetails}
+    
+                <hr style="height: 1px; border: none; background-color: #edeff1; margin-top: 20px;" />
+    
+                <p style="margin: 0; padding: 0; font-size: 16px; font-family: MacPaw Fixel, sans-serif;"><b>Вартість замовлення: </b>${
+                    orderData.totalPrice
+                } грн</p>
+    
+                <div style="margin-top: 20px;">
+                    <div style="margin-bottom: 10px; font-size: 16px; font-family: MacPaw Fixel, sans-serif;">
+                        ${customerInfo}
+                    </div>
+                    ${
+                        orderData.isDifferentRecipient
+                            ? `<div style="margin-bottom: 10px; font-size: 16px; font-family: MacPaw Fixel, sans-serif;">
+                                <p><b>Інший отримувач:</b> ${otherCustomerInfo}</p> 
+                            </div>`
+                            : ""
+                    }
+                </div>
+                <div style="margin-top: 20px;">
+                    <p style="margin: 0; padding: 0; font-size: 16px;"><b>Спосіб оплати:</b> ${
+                        orderData.paymentType
+                    }</p>
+                </div>
+                <p style="margin-top: 40px; font-size: 22px; font-weight: 400; line-height: 26.4px; letter-spacing: -0.01em; text-align: left; text-underline-position: from-font; text-decoration-skip-ink: none;">
+                    З любов’ю, Ваші
+                    <a href="https://skarpette.com.ua/" target="_blank">Skarpette.com.ua</a>
+                </p>
+            </div>
+            </body>
+          </html>
         `,
     };
 
@@ -216,7 +292,7 @@ const sendOrderEmailToOwner = async (orderData) => {
         to: process.env.EMAIL_USER,
         subject: "Нове замовлення в магазині Skarpette!",
         html: `
-            <h1 style="color: #5A2D82;">Нове замовлення в магазині Skarpette!</h1>
+            <h1>Нове замовлення в магазині Skarpette!</h1>
             <p><strong>Деталі замовлення:</strong></p>
             <ul>
                 <li><strong>Номер замовлення:</strong> ${
