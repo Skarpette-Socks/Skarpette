@@ -11,7 +11,7 @@ const ContactsForm = () => {
   const [mailError, setMailError] = useState<string>('');
   const [messageError, setMessageError] = useState<string>('');
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const isCyrillic = /^[\u0400-\u04FF№/\s]*$/;
+  const isCyrillic = /^[\u0400-\u04FF-ʼ/\s]*$/;
 
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -27,7 +27,7 @@ const ContactsForm = () => {
       isValid = false;
     }
 
-    if (name.length >= 100) {
+    if (name.length >= 50) {
       setNameError('Перевищено максимальну кільість символів')
       isValid = false;
     }
@@ -68,9 +68,9 @@ const ContactsForm = () => {
             'Content-Type':'application/json', 
           },
           body: JSON.stringify({
-            firstname: name,
-            email: mail,
-            comment: message
+            firstname: name.trim(),
+            email: mail.trim(),
+            comment: message.trim()
           })
         })
 
@@ -116,7 +116,7 @@ const ContactsForm = () => {
 
     if (!isCyrillic.test(value)) {
       setNameError('Лише кирилиця');
-    } else if (value.length <= 100) {
+    } else if (value.length <= 50) {
       setName(value);
       setNameError('');
     }
@@ -156,7 +156,7 @@ const ContactsForm = () => {
         value={name}
         onChange={handleNameChange}
         className={`contacts-form__name ${nameError ? "contacts-form__message-error" : ""}`}
-        maxLength={100}
+        maxLength={51}
       />
 
       {nameError && (
