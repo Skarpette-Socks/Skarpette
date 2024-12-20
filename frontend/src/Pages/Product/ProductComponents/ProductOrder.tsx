@@ -44,7 +44,6 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
   const touchStartRefY = useRef<number | null>(null);
   const touchEndRefY = useRef<number | null>(null);
 
-
   useLayoutEffect(() => {
     if (productImage.current) {
       const handleResize = () => {
@@ -74,13 +73,11 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartRefX.current = e.touches[0].clientX;
     touchStartRefY.current = e.touches[0].clientY;
-
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
     touchEndRefX.current = e.touches[0].clientX;
     touchEndRefY.current = e.touches[0].clientY;
-
   };
 
   const handleTouchEnd = () => {
@@ -90,8 +87,8 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
       touchStartRefY.current !== null &&
       touchEndRefY.current !== null &&
       Math.abs(touchStartRefX.current - touchEndRefX.current) > 50 &&
-      Math.abs(touchStartRefX.current - touchEndRefX.current) > 
-      Math.abs(touchStartRefY.current - touchEndRefY.current)
+      Math.abs(touchStartRefX.current - touchEndRefX.current) >
+        Math.abs(touchStartRefY.current - touchEndRefY.current)
     ) {
       if (touchStartRefX.current > touchEndRefX.current) {
         selectPhoto(1);
@@ -156,31 +153,30 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
         name: item.name,
         price: item.price,
         discount_price: item.price2,
-      }
+      };
       addToFavorites(newItem);
     }
-  }; 
+  };
 
   const { cartItems, addCartItem } = useCartItems();
   const [cartItem, setCartItem] = useState<CartItem | undefined>();
-  
+
   useEffect(() => {
-    
     if (selectedSize !== undefined) {
       setCartItem(
         cartItems.find((cartItem) => {
-        const cartItemKey = cartItem.vendor_code + cartItem.size;
-        const itemKey = item.vendor_code + item.size[selectedSize].size;
-        
-        if (cartItem.count !== '') {
-          return (cartItemKey === itemKey);
-        }
-      }))
+          const cartItemKey = cartItem.vendor_code + cartItem.size;
+          const itemKey = item.vendor_code + item.size[selectedSize].size;
+
+          if (cartItem.count !== "") {
+            return cartItemKey === itemKey;
+          }
+        })
+      );
     } else {
       setCartItem(undefined);
     }
-  }, [selectedSize, cartItems])
-
+  }, [selectedSize, cartItems]);
 
   return (
     <div className="product">
@@ -289,26 +285,23 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
               ))}
             </div>
 
-            {(cartItem && item.is_in_stock) && (
+            {cartItem && item.is_in_stock && (
               <div className="product__good-in-cart">
                 У кошику вже {cartItem.count}шт
               </div>
             )}
-
           </div>
-
-          
 
           <div className="product__counter">
             {item.is_in_stock && (
               <>
                 <div className="product__counter-title">Кількість:</div>
-                <CounterButtonProduct 
+                <CounterButtonProduct
                   count={counter}
                   setCount={setCounter}
                   cartItemCount={cartItem?.count}
                 />
-                
+
                 {cartItem?.count === 99 && (
                   <div className="product__max-count">
                     Максимальна кількість у кошику 99шт
@@ -321,15 +314,20 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
           <div className="product__buttons-cart-fav">
             <button
               className={`product__add-to-cart 
-                ${selectedSize === undefined || counter === 0 || !item.is_in_stock ? `disabled` : ``}
+                ${
+                  selectedSize === undefined ||
+                  counter === 0 ||
+                  !item.is_in_stock
+                    ? `disabled`
+                    : ``
+                }
               `}
-              onClick={() => addCartItem( item, counter, selectedSize )}
-              disabled={selectedSize === undefined || counter === 0 || !item.is_in_stock}
+              onClick={() => addCartItem(item, counter, selectedSize)}
+              disabled={
+                selectedSize === undefined || counter === 0 || !item.is_in_stock
+              }
             >
-              {!item.is_in_stock ? (
-                'Немає в наявності'
-              ) : 'Додати у кошик'}
-              
+              {!item.is_in_stock ? "Немає в наявності" : "Додати у кошик"}
             </button>
             <button
               className="product__add-to-fav"
@@ -424,12 +422,22 @@ const ProductOrder: React.FC<Props> = ({ item }) => {
 
               {paymentOpened && (
                 <div className="product__dropdown-text">
-                  Оплата здійснюється через систему онлайн платежів Fondy на
-                  сайті.
-                  <br />
-                  <br />
-                  Товари надсилаються щоденно по буднях за допомогою служб
-                  доставки «Нова Пошта» та Укрпошта з 10:00 до 16:30.
+                  Оплатити замовлення ви можете онлайн карткою MasterCard та
+                  Visa. Доставка товару здійснюється після підтвердження оплати
+                  товару. Відправка здійснюється у відділеннях Нова пошта та
+                  Укрпошта. Безкоштовна доставка від 2000 грн. але не більше
+                  5000 грн. <br />
+                  <p> Умови доставки Новою Поштою:</p>
+                  <ul>
+                    <li>Термін доставки 1-3 дні.</li>
+                    <li> Вартість доставки від 90 грн.</li>
+                    <li> Відправка замовлень з понеділка по п’ятницю.</li>
+                  </ul>
+                  <p> Умови доставки Укрпоштою:</p>
+                  <ul>
+                    <li>Терміни доставки 2-7 днів.</li>
+                    <li> Вартість доставки від 65 грн.</li>
+                  </ul>
                 </div>
               )}
             </div>
