@@ -153,12 +153,12 @@ const sendOrderEmailToCustomer = async (orderData, userEmail) => {
                     <div style="flex-shrink: 0; margin-right: 20px;"> <!-- Додано margin-right -->
                         <img src="${imageUrl}" alt="${skarpette.name}" style="width: 124px; height: 124px; object-fit: cover; border-radius: 10px;" />
                     </div>
-                    <div>
-                        <p style="margin: 0; margin-bottom: 8px; font-size: 16px;"><b>Артикул:</b> ${skarpette.vendor_code}</p>
-                        <p style="margin: 0; margin-bottom: 8px; font-size: 16px;"><b>Назва:</b> ${skarpette.name}</p>
-                        <p style="margin: 0; margin-bottom: 8px; font-size: 16px;"><b>Розмір:</b> ${item.size}</p>
-                        <p style="margin: 0; margin-bottom: 8px; font-size: 16px;"><b>Кількість:</b> ${item.quantity}</p>
-                        <p style="margin: 0; font-size: 16px;"><b>Ціна:</b> ${price} грн</p>
+                    <div style="flex-direction: column; justify-content: space-between; height: 124px;"> <!-- Розподіл по висоті -->
+                        <p style="margin: 0; font-size: 16px; font-family: 'MacPaw Fixel', sans-serif;"><b>Артикул:</b> ${skarpette.vendor_code}</p>
+                        <p style="margin: 0; font-size: 16px; font-family: 'MacPaw Fixel', sans-serif;"><b>Назва:</b> ${skarpette.name}</p>
+                        <p style="margin: 0; font-size: 16px; font-family: 'MacPaw Fixel', sans-serif;"><b>Розмір:</b> ${item.size}</p>
+                        <p style="margin: 0; font-size: 16px; font-family: 'MacPaw Fixel', sans-serif;"><b>Кількість:</b> ${item.quantity} шт</p>
+                        <p style="margin: 0; font-size: 16px; font-family: 'MacPaw Fixel', sans-serif;"><b>Ціна:</b> ${price} грн</p>
                     </div>
                 </div>
             `;
@@ -273,18 +273,31 @@ const sendOrderEmailToOwner = async (orderData) => {
             vendor_code: item.skarpetteVendorCode,
         });
         if (skarpette) {
+            const price = skarpette.price2 || skarpette.price;
             const imageUrl =
                 skarpette.images_urls?.[0] || "https://via.placeholder.com/200";
             orderDetails += `
-                <div style="margin-bottom: 20px;">
-                    <h3>${skarpette.name}</h3>
-                    <img src="${imageUrl}" alt="${skarpette.name}" style="width: 200px; height: auto; margin-bottom: 10px;" />
-                    <p><strong>Розмір:</strong> ${item.size}</p>
-                    <p><strong>Кількість:</strong> ${item.quantity}</p>
+                <div style="display: flex; align-items: center; gap: 40px; margin-top: 30px">
+                    <div>
+                        <img style="width: 124px; height: 124px; object-fit: cover; border-radius: 10px;" src="${imageUrl}" alt="${skarpette.name}" />
+                    </div>
+                    <div style="height: 124px; margin-left: 20px; display: grid; gap: 8px; align-content: space-between;">
+                        <p style="margin: 0; padding: 0; font-size: 16px; font-family: MacPaw Fixel, sans-serif;">Артикул: ${skarpette.vendor_code}</p>
+                        <p style="margin: 0; padding: 0; font-size: 16px; font-family: MacPaw Fixel, sans-serif;">Назва: ${skarpette.name}</p>
+                        <p style="margin: 0; padding: 0; font-size: 16px; font-family: MacPaw Fixel, sans-serif;">Розмір: ${item.size}</p>
+                        <p style="margin: 0; padding: 0; font-size: 16px; font-family: MacPaw Fixel, sans-serif;">Кількість: ${item.quantity} шт</p>
+                        <p style="margin: 0; padding: 0; font-size: 16px; font-family: MacPaw Fixel, sans-serif;">Ціна: ${price} грн</p>
+                    </div>
                 </div>
-                <hr />
+
             `;
         }
+    }
+
+    const customerName = `${orderData.customerData.firstName} ${orderData.customerData.lastName}`;
+    const recipientName = "";
+    if (orderData.isDifferentRecipient) {
+        recipientName = `${orderData.recipientData.firstName} ${orderData.recipientData.lastName}`;
     }
 
     const mailOptions = {
@@ -292,47 +305,83 @@ const sendOrderEmailToOwner = async (orderData) => {
         to: process.env.EMAIL_USER,
         subject: "Нове замовлення в магазині Skarpette!",
         html: `
-            <h1>Нове замовлення в магазині Skarpette!</h1>
-            <p><strong>Деталі замовлення:</strong></p>
-            <ul>
-                <li><strong>Номер замовлення:</strong> ${
-                    orderData.orderNumber || "Невідомо"
-                }</li>
-                <li><strong>Загальна сума:</strong> ${
-                    orderData.totalPrice || "Невідомо"
-                } грн</li>
-                <li><strong>Дані замовника:</strong>
-                    <pre>${
-                        JSON.stringify(orderData.customerData, null, 2) ||
-                        "Відсутні"
-                    }</pre>
-                </li>
-                <li><strong>Інший отримувач:</strong>
-                    <pre>${
-                        orderData.isDifferentRecipient &&
-                        orderData.recipientData
-                            ? JSON.stringify(orderData.recipientData, null, 2)
-                            : "Відсутній"
-                    }</pre>
-                </li>
-                <li><strong>Дані доставки:</strong>
-                    <pre>${
-                        JSON.stringify(orderData.deliveryData, null, 2) ||
-                        "Відсутні"
-                    }</pre>
-                </li>
-                <li><strong>Коментар:</strong> ${
-                    orderData.comment || "Відсутній"
-                }</li>
-                <li><strong>Тип оплати:</strong> ${
-                    orderData.paymentType || "Невідомо"
-                }</li>
-                <li><strong>Оплачено:</strong> ${
-                    orderData.isPaid ? "Так" : "Ні"
-                }</li>
-            </ul>
-            <h2>Товари в замовленні:</h2>
-            <pre>${orderDetails || "Товари не знайдено."}</pre>
+            <div style="max-width: 800px; margin: 20px auto; padding: 20px;">
+                <h2 style="color: black; font-size: 22px; font-weight: 400; line-height: 28px; letter-spacing: -0.01em; text-align: left; text-underline-position: from-font; text-decoration-skip-ink: none;">
+                    На сайті оформлено нове замовлення<br />
+                    Номер замовлення №${orderData.orderNumber}
+                </h2>
+
+                <hr style="height: 1px; border: none; background-color: #edeff1; margin-top: 20px;" />
+
+                ${orderDetails}
+
+                <p style="margin: 20px 0; font-size: 16px; font-family: MacPaw Fixel, sans-serif;">
+                    <b>Вартість замовлення:</b> ${orderData.totalPrice} грн
+                </p>
+
+                <hr style="height: 1px; border: none; background-color: #edeff1; margin-top: 20px;" />
+
+                <div style="display: flex; gap: 100px; margin-top: 40px; font-size: 16px; font-family: 'MacPaw Fixel', sans-serif;">
+                    <div style="margin-right: 50px;">
+                        <h3 style="margin: 0 0 10px 0; padding: 0; font-size: 18px;">Дані замовника:</h3>
+                        <p style="margin: 5px 0; padding: 0;"><b>ПІБ:</b> ${customerName}</p>
+                        <p style="margin: 5px 0; padding: 0;"><b>Телефон:</b> ${
+                            orderData.customerData.phoneNumber
+                        }</p>
+                        <p style="margin: 5px 0; padding: 0;"><b>Пошта:</b> ${
+                            orderData.customerData.email
+                        }</p>
+                        <p style="margin: 5px 0; padding: 0;"><b>Тип оплати:</b> ${
+                            orderData.paymentType
+                        }</p>
+                    </div>
+                    ${
+                        orderData.isDifferentRecipient
+                            ? `<div style="margin-left: 50px;">
+                                <h3 style="margin: 0 0 10px 0; padding: 0; font-size: 18px;">Інший отримувач:</h3>
+                                <p style="margin: 5px 0; padding: 0;"><b>ПІБ:</b> ${recipientName}</p>
+                                <p style="margin: 5px 0; padding: 0;"><b>Телефон:</b> ${orderData.recipientData.phoneNumber}</p>
+                            </div>`
+                            : ""
+                    }
+                </div>
+
+                
+                <div style="margin-top: 20px; font-size: 16px; font-family: MacPaw Fixel, sans-serif;">
+                    <h3 style="margin: 0; padding: 0; font-size: 18px;"><b>Дані доставки:</b></h3>
+                    <p style="margin: 5px 0; padding: 0;">Спосіб доставки: ${
+                        orderData.deliveryData.deliveryType
+                    }</p>
+                    <p style="margin: 5px 0; padding: 0;">Місто: ${
+                        orderData.deliveryData.city
+                    }</p>
+                    ${
+                        orderData.deliveryData.departmentNumber
+                            ? `<p style="margin: 5px 0; padding: 0;">Номер відділення або поштомату: ${orderData.deliveryData.departmentNumber}</p>`
+                            : ""
+                    }
+                    ${
+                        orderData.deliveryData.street
+                            ? `<p style="margin: 5px 0; padding: 0;">Вулиця: ${orderData.deliveryData.street}</p>`
+                            : ""
+                    }
+                    ${
+                        orderData.deliveryData.houseNumber
+                            ? `<p style="margin: 5px 0; padding: 0;">Будинок: ${orderData.deliveryData.houseNumber}</p>`
+                            : ""
+                    }
+                    ${
+                        orderData.deliveryData.apartmentNumber
+                            ? `<p style="margin: 5px 0; padding: 0;">Квартира: ${orderData.deliveryData.apartmentNumber}</p>`
+                            : ""
+                    }
+                </div>
+                
+                <p style="margin-top: 20px; font-size: 16px; font-family: MacPaw Fixel, sans-serif;"><b>Коментар:</b></p>
+                <p style="margin: 5px 0; font-size: 16px;">${
+                    orderData.comment
+                }</p>
+            </div>
         `,
     };
 
