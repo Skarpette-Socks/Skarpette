@@ -92,14 +92,6 @@ async function generateUniqueVendorCode() {
 
     return vendorCode;
 }
-const findSkarpettesByCriteria = async (criteria, res) => {
-    try {
-        const skarpettes = await Skarpette.find(criteria);
-        res.status(200).json(skarpettes);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
 
 async function createSkarpette(req, res) {
     try {
@@ -311,11 +303,11 @@ const getFilteredSkarpettes = async (req, res) => {
     try {
         const { type } = req.query;
 
-        if (type) {
-            filter.type = type;
+        const skarpettes = await Skarpette.find({ type: type });
+        if (skarpettes.length === 0) {
+            return res.status(204).json("Skarpettes not found");
         }
-
-        await findSkarpettesByCriteria(filter, res);
+        res.status(200).json(skarpettes);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
