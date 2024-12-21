@@ -311,8 +311,6 @@ const getFilteredSkarpettes = async (req, res) => {
     try {
         const { type } = req.query;
 
-        let filter = { is_in_stock: true };
-
         if (type) {
             filter.type = type;
         }
