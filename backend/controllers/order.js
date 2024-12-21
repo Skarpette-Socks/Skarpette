@@ -4,6 +4,7 @@ const { format } = require("date-fns");
 const { DateTime } = require("luxon");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
+const { log } = require("console");
 require("dotenv").config();
 
 const getKyivTime = () => {
@@ -14,19 +15,16 @@ const generateOrderNumber = async () => {
     const orderDate = getKyivTime();
     const datePart = format(orderDate, "ddMMyy");
 
-    let sequenceNumber = "01";
-    let orderNumber = `${datePart}${sequenceNumber}`;
+    // Початковий лічильник без ведення лідуючих нулів
+    let sequenceNumber = 1;
+    let orderNumber = `${datePart}${String(sequenceNumber).padStart(2, "0")}`;
 
     let latestOrder = await Order.findOne({ orderNumber });
 
+    // Якщо номер вже існує, збільшуємо лічильник
     while (latestOrder) {
-        const latestSequence = orderNumber.slice(-2);
-        sequenceNumber = (parseInt(latestSequence, 10) + 1)
-            .toString()
-            .padStart(2, "0");
-
-        orderNumber = `${datePart}${sequenceNumber}`;
-
+        sequenceNumber += 1;
+        orderNumber = `${datePart}${sequenceNumber}`; // Без лідуючих нулів
         latestOrder = await Order.findOne({ orderNumber });
     }
 
@@ -34,7 +32,6 @@ const generateOrderNumber = async () => {
 };
 
 const validateRecipientData = (orderData) => {
-    console.log(orderData);
     if (orderData.isDifferentRecipient) {
         if (
             !orderData.recipientData.firstName ||
@@ -130,6 +127,7 @@ const decryptObject = (obj) => {
 };
 
 const sendOrderEmailToCustomer = async (orderData, userEmail) => {
+    console.log("Preparing email for customer...");
     const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -137,6 +135,7 @@ const sendOrderEmailToCustomer = async (orderData, userEmail) => {
             pass: process.env.EMAIL_PASS,
         },
         secure: true,
+        connectionTimeout: 5000,
     });
 
     let orderDetails = "";
@@ -262,6 +261,7 @@ const sendOrderEmailToCustomer = async (orderData, userEmail) => {
 };
 
 const sendOrderEmailToOwner = async (orderData) => {
+    console.log("Preparing email for owner...");
     const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -410,6 +410,7 @@ const createOrder = async (req, res) => {
         if (deliveryValidationError) {
             return res.status(400).json({ error: deliveryValidationError });
         }
+        console.log("Successful order validation");
         orderData.orderNumber = await generateOrderNumber();
         orderDataForEmail = { ...orderData };
         orderData.customerData = encryptObject(orderData.customerData);
@@ -420,14 +421,21 @@ const createOrder = async (req, res) => {
         if (orderData.comment) {
             orderData.comment = encrypt(orderData.comment);
         }
+        console.log("Successful order encryption");
+
         const newOrder = new Order(orderData);
         await newOrder.save();
-        await sendOrderEmailToCustomer(
-            orderDataForEmail,
-            orderDataForEmail.customerData.email
-        );
-        await sendOrderEmailToOwner(orderDataForEmail);
-        res.status(201).json(newOrder);
+        console.log("Order data before saving:", newOrder);
+
+        await Promise.all([
+            sendOrderEmailToCustomer(
+                orderDataForEmail,
+                orderDataForEmail.customerData.email
+            ),
+            sendOrderEmailToOwner(orderDataForEmail),
+        ]);
+
+        res.status(201).json(orderData);
     } catch (error) {
         console.error("Error creating order:", error);
         res.status(500).json({ message: "Internal server error" });
