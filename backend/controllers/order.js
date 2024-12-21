@@ -116,13 +116,27 @@ const encryptObject = (obj) => {
 
 const decryptObject = (obj) => {
     const decryptedObject = {};
+
     for (let key in obj) {
-        if (typeof obj[key] === "string" && key !== "deliveryType") {
-            decryptedObject[key] = decrypt(obj[key]);
+        // Перевірка на deliveryType
+        if (key === "deliveryType") {
+            decryptedObject[key] = obj[key]; // Просто передаємо значення, не шифруючи
+            continue; // Пропускаємо подальшу обробку для цього ключа
+        }
+
+        // Перевірка на тип "string" для шифрування
+        if (typeof obj[key] === "string") {
+            try {
+                decryptedObject[key] = decrypt(obj[key]); // Пробуємо розшифрувати
+            } catch (error) {
+                console.error(`Error decrypting ${key}:`, error); // Логування помилки для конкретного ключа
+                decryptedObject[key] = obj[key]; // Якщо не вдалося розшифрувати, передаємо значення без змін
+            }
         } else {
-            decryptedObject[key] = obj[key];
+            decryptedObject[key] = obj[key]; // Якщо значення не рядок, передаємо без змін
         }
     }
+
     return decryptedObject;
 };
 
@@ -474,6 +488,7 @@ const getAllOrders = async (req, res) => {
         if (!orders) {
             return res.status(404).json("Orders not found");
         }
+
         for (let order of orders) {
             if (order.customerData) {
                 order.customerData = decryptObject(order.customerData);
@@ -488,8 +503,10 @@ const getAllOrders = async (req, res) => {
                 order.comment = decrypt(order.comment);
             }
         }
+
         res.status(200).json(orders);
     } catch (error) {
+        console.error("Error fetching orders:", error); // Логування загальної помилки
         res.status(500).json({ error: error.message });
     }
 };
