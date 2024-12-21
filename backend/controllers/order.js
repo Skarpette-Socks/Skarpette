@@ -298,7 +298,7 @@ const sendOrderEmailToOwner = async (orderData) => {
     }
 
     const customerName = `${orderData.customerData.firstName} ${orderData.customerData.lastName}`;
-    const recipientName = "";
+    let recipientName = ``;
     if (orderData.isDifferentRecipient) {
         recipientName = `${orderData.recipientData.firstName} ${orderData.recipientData.lastName}`;
     }
