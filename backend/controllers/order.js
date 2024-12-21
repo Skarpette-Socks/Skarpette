@@ -149,11 +149,11 @@ const sendOrderEmailToCustomer = async (orderData, userEmail) => {
             const imageUrl =
                 skarpette.images_urls?.[0] || "https://via.placeholder.com/200";
             orderDetails += `
-                <div style="display: flex; align-items: center; gap: 60px; margin-top: 30px;"> <!-- Збільшено gap -->
-                    <div style="flex-shrink: 0; margin-right: 20px;"> <!-- Додано margin-right -->
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px; margin-top: 30px;"> <!-- Зменшено gap для мобільних -->
+                    <div style="flex-shrink: 0; margin-right: 20px;"> <!-- Відступ від картинки -->
                         <img src="${imageUrl}" alt="${skarpette.name}" style="width: 124px; height: 124px; object-fit: cover; border-radius: 10px;" />
                     </div>
-                    <div style="flex-direction: column; justify-content: space-between; height: 124px;"> <!-- Розподіл по висоті -->
+                    <div style="flex: 1 1 auto; margin-left: 20px; display: grid; gap: 8px; align-content: space-between;"> <!-- Текстовий блок -->
                         <p style="margin: 0; font-size: 16px; font-family: 'MacPaw Fixel', sans-serif;"><b>Артикул:</b> ${skarpette.vendor_code}</p>
                         <p style="margin: 0; font-size: 16px; font-family: 'MacPaw Fixel', sans-serif;"><b>Назва:</b> ${skarpette.name}</p>
                         <p style="margin: 0; font-size: 16px; font-family: 'MacPaw Fixel', sans-serif;"><b>Розмір:</b> ${item.size}</p>
@@ -281,11 +281,11 @@ const sendOrderEmailToOwner = async (orderData) => {
             const imageUrl =
                 skarpette.images_urls?.[0] || "https://via.placeholder.com/200";
             orderDetails += `
-                <div style="display: flex; align-items: center; gap: 40px; margin-top: 30px">
-                    <div>
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px; margin-top: 30px">
+                    <div style="flex: 0 0 auto;">
                         <img style="width: 124px; height: 124px; object-fit: cover; border-radius: 10px;" src="${imageUrl}" alt="${skarpette.name}" />
                     </div>
-                    <div style="height: 124px; margin-left: 20px; display: grid; gap: 8px; align-content: space-between;">
+                    <div style="flex: 1 1 auto; margin-left: 20px; display: grid; gap: 8px; align-content: space-between;">
                         <p style="margin: 0; padding: 0; font-size: 16px; font-family: MacPaw Fixel, sans-serif;">Артикул: ${skarpette.vendor_code}</p>
                         <p style="margin: 0; padding: 0; font-size: 16px; font-family: MacPaw Fixel, sans-serif;">Назва: ${skarpette.name}</p>
                         <p style="margin: 0; padding: 0; font-size: 16px; font-family: MacPaw Fixel, sans-serif;">Розмір: ${item.size}</p>
@@ -293,7 +293,6 @@ const sendOrderEmailToOwner = async (orderData) => {
                         <p style="margin: 0; padding: 0; font-size: 16px; font-family: MacPaw Fixel, sans-serif;">Ціна: ${price} грн</p>
                     </div>
                 </div>
-
             `;
         }
     }
