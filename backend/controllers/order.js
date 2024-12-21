@@ -169,7 +169,7 @@ const sendOrderEmailToCustomer = async (orderData, userEmail) => {
         orderData.customerData.firstName
     } ${orderData.customerData.lastName}, ${
         orderData.customerData.phoneNumber
-    }, ${orderData.deliveryData.city}${
+    }, ${orderData.deliveryData.city}, ${orderData.deliveryData.deliveryType}${
         orderData.deliveryData.street
             ? ", " + orderData.deliveryData.street
             : ""
@@ -180,6 +180,10 @@ const sendOrderEmailToCustomer = async (orderData, userEmail) => {
     }${
         orderData.deliveryData.apartmentNumber
             ? ", " + orderData.deliveryData.apartmentNumber
+            : ""
+    }${
+        orderData.deliveryData.departmentNumber
+            ? ", " + orderData.deliveryData.departmentNumber
             : ""
     }</p>`;
 
