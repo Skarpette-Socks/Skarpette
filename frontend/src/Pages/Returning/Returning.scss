@@ -98,4 +98,11 @@
     }
   }
 
+  &__line {
+    width: 100%;
+    background-color: $grayscale-600;
+    height: 2px;
+    margin-block: 25px;
+  }
+
 }
