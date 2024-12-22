@@ -29,7 +29,8 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     let isValid = true;
   
     setFirstNameError('');
@@ -101,7 +102,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
 
         if (response.ok) {
           toast.update(toaster, { 
-              render: "Повідомлення відправлено!", 
+              render: "Повідомлення відправлено та згодом зʼявиться на сайті!", 
               type: "success", 
               isLoading: false, 
               autoClose: 3000,
@@ -263,8 +264,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
               </p>
             )}
           <button
-            type="submit"
-            onClick={handleSubmit}
+            onClick={(e) => handleSubmit(e)}
             className="review-modal__submit"
           >
             Надіслати
