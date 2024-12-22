@@ -29,8 +29,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  const handleSubmit = async (event:React.FormEvent) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     let isValid = true;
   
     setFirstNameError('');
@@ -48,12 +47,12 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
       isValid = false;
     }
 
-    if (firstName.length >= 50) {
+    if (firstName.length > 50) {
       setFirstNameError('Перевищено максимальну кільість символів')
       isValid = false;
     }
 
-    if (lastName.length >= 50) {
+    if (lastName.length > 50) {
       setLastNameError('Перевищено максимальну кільість символів')
       isValid = false;
     }
@@ -189,7 +188,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form>
           <div className="review-modal__stars">
             {[1, 2, 3, 4, 5].map((star) => (
               <span
@@ -265,6 +264,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
             )}
           <button
             type="submit"
+            onClick={handleSubmit}
             className="review-modal__submit"
           >
             Надіслати
