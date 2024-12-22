@@ -24,8 +24,8 @@ const SuccessOrder: React.FC = () => {
       <PageNavigation linkText="Кошик" homeLink="/" linkHref="/cart" />
       <div className="success-order">
         <img src={no_result} alt="no_result" className="success-order__img" />
-        <p className="success-order__text">
-          Дякуємо за покупку в магазині <strong>Skarpette!</strong>
+        <p className="success-order__text-title">
+          Дякуємо за покупку в магазині <br /> <strong>Skarpette!</strong>
         </p>
         <p className="success-order__text">
           Ваше замовлення №{orderNumber} успішно оформлено

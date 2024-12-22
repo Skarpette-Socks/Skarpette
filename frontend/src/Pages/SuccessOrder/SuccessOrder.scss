@@ -7,7 +7,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 19px;
+  gap: 10px;
   margin-top: 24px;
 
   @include on-tablet {
@@ -25,15 +25,34 @@
     }
   }
 
+  &__text-title {
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 20.9px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: $grayscale-1000;
+
+    strong {
+      font-weight: 700;
+    }
+
+    @include on-tablet {
+      font-size: 40px;
+      font-weight: 500;
+      line-height: 44px;
+      text-align: center;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+    }
+  }
+
   &__text {
     font-size: 20px;
     font-weight: 500;
     color: $grayscale-1000;
     text-align: center;
-    
-    strong {
-      font-weight: 700;
-    }
 
     @include on-tablet {
       font-size: 40px;
