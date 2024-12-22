@@ -7,7 +7,8 @@
   padding: 32px 24px;
   border: 1px solid $grayscale-200;
   border-radius: 16px;
-  margin-top: 24px;
+  margin: 24px auto 0;
+  max-width: 1280px;
 
   @include on-tablet {
     grid-template-columns: repeat(6, 1fr); // 6-column grid
