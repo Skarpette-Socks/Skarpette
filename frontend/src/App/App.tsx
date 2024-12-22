@@ -33,7 +33,7 @@ const PrivacyPolicy = lazy(
   () => import("../Pages/PrivacyPolicy/PrivacyPolicy")
 );
 const Product = lazy(() => import("../Pages/Product/Product"));
-const Promotions = lazy(() => import("../Pages/Promotions"));
+const Promotions = lazy(() => import("../Pages/Promotions/Promotions"));
 const Returning = lazy(() => import("../Pages/Returning/Returning"));
 const Checkout = lazy(() => import("../Pages/Checkout/Checkout"));
 const Shop = lazy(() => import("../Pages/MainPage/MainPage"));

@@ -27,7 +27,7 @@ const ContactsForm = () => {
       isValid = false;
     }
 
-    if (name.length >= 50) {
+    if (name.length > 50) {
       setNameError('Перевищено максимальну кільість символів')
       isValid = false;
     }
