@@ -15,16 +15,14 @@ const generateOrderNumber = async () => {
     const orderDate = getKyivTime();
     const datePart = format(orderDate, "ddMMyy");
 
-    // Початковий лічильник без ведення лідуючих нулів
     let sequenceNumber = 1;
-    let orderNumber = `${datePart}${String(sequenceNumber).padStart(2, "0")}`;
+    let orderNumber = `${datePart}${String(sequenceNumber).padStart(3, "0")}`;
 
     let latestOrder = await Order.findOne({ orderNumber });
 
-    // Якщо номер вже існує, збільшуємо лічильник
     while (latestOrder) {
         sequenceNumber += 1;
-        orderNumber = `${datePart}${sequenceNumber}`; // Без лідуючих нулів
+        orderNumber = `${datePart}${String(sequenceNumber).padStart(3, "0")}`;
         latestOrder = await Order.findOne({ orderNumber });
     }
 
