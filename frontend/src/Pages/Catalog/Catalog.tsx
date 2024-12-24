@@ -48,6 +48,8 @@ const Catalog: React.FC = () => {
     if (!category) return;
     setLoading(true);
     try {
+      setError(null);
+
       const result =
         category.type === "All"
           ? await fetchAllData()

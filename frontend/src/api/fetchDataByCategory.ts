@@ -7,6 +7,11 @@ export const getSocksByCategory = async ( category: string ) => {
       },
     });
 
+    if (response.status === 204) {
+      console.log('No content');
+      return [];
+    }
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
