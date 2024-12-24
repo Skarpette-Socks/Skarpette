@@ -49,23 +49,23 @@
   }
 
   &__text {
-    font-size: 20px;
+    font-size: 14px;
     font-weight: 500;
     color: $grayscale-1000;
     text-align: center;
 
     @include on-tablet {
-      font-size: 40px;
+      font-size: 24px;
     }
   }
 
   &__button {
-    padding: 20px;
+    padding: 10px 13px;
     font-weight: 500;
     border-radius: 100px;
     background-color: $primary-800;
     color: $grayscale-0;
-    font-size: 12px;
+    font-size: 8px;
     border: none;
     cursor: pointer;
 
