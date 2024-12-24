@@ -3,6 +3,7 @@ import heartIcon from "../../assets/img/icons/heart.svg";
 import fillHeartIcon from "../../assets/img/icons/heart-filled.svg";
 import { useState, useEffect } from "react";
 import { useFavorites } from "../../Context/FavoritesContext";
+import { Link } from "react-router-dom";
 
 interface ItemProps {
   vendor_code: number;
@@ -70,7 +71,7 @@ const Item: React.FC<ItemProps> = ({
   };
 
   return (
-    <a href={`/product/${vendor_code}`} className="item">
+    <Link to={`/product/${vendor_code}`} className="item">
       <div className="item__image-container">
         <img 
           src={image} 
@@ -115,7 +116,7 @@ const Item: React.FC<ItemProps> = ({
         </div>
 
       </div>
-    </a>
+    </Link>
   );
 };
 

@@ -25,7 +25,8 @@ interface CartContextType {
   cartItems: CartItem[],
   addCartItem: AddCartItem,
   counterCartItem: CounterCartItem,
-  deleteCartItem: DeleteCartItem
+  deleteCartItem: DeleteCartItem,
+  deleteAllItems: () => void,
 }
 
 
@@ -62,8 +63,7 @@ export const CartProvider: React.FC<{ children: ReactNode}> = ({
   useEffect(() => {
     const handleStorageChange = (event: StorageEvent) => {
       if (event.key === "cart") {
-        const updatedCart = event.newValue ? JSON.parse(event.newValue) : [];
-        setCartItems(updatedCart);
+        setCartItems(event.newValue ? JSON.parse(event.newValue) : []);
       }
     };
 
@@ -144,6 +144,10 @@ export const CartProvider: React.FC<{ children: ReactNode}> = ({
     });
   };
 
+  const deleteAllItems = () => {
+    setCartItems([]);
+  }
+
 
   return (
     <CartContext.Provider
@@ -151,7 +155,8 @@ export const CartProvider: React.FC<{ children: ReactNode}> = ({
         cartItems, 
         addCartItem, 
         counterCartItem, 
-        deleteCartItem 
+        deleteCartItem,
+        deleteAllItems 
       }}
     >
       {children}
