@@ -11,7 +11,7 @@ const ContactsForm = () => {
   const [mailError, setMailError] = useState<string>('');
   const [messageError, setMessageError] = useState<string>('');
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const isCyrillic = /^[\u0400-\u04FF-ʼ/\s]*$/;
+  const isCyrillic = /^[\u0400-\u04FF-ʼ'/\s]*$/;
 
 
   const handleSubmit = async (event: React.FormEvent) => {

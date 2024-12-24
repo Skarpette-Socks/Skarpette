@@ -39,7 +39,7 @@ const CheckoutReceiver = forwardRef<ReceiverInfoRef, ContactInfoProps>((
   const [surnameError, setSurnameError] = useState('');
   const [phoneError, setPhoneError] = useState('');
 
-  const engRegex = /^[\u0400-\u04FF]+$/;
+  const engRegex = /^[\u0400-\u04FF-ʼ'/\s]*$/;
 
   useImperativeHandle(ref, () => ({
     isValid() {

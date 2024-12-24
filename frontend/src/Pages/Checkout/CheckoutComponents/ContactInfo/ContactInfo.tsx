@@ -27,7 +27,7 @@ const ContactInfo = forwardRef<ReceiverInfoRef>((_, ref) => {
   const [phoneError, setPhoneError] = useState('');
   const [mailError, setMailError] = useState('');
 
-  const engRegex = /^[\u0400-\u04FF-ʼ/\s]*$/;
+  const engRegex = /^[\u0400-\u04FF-ʼ'/\s]*$/;
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   
   useImperativeHandle(ref, () => ({
