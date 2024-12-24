@@ -24,8 +24,6 @@
 
     background-color: $grayscale-50;
     border-radius: 16px;
-
-
   }
 
   &__top-bar {
@@ -96,6 +94,7 @@
 
     @include on-desktop {
       width: 380px;
+      height: 180px;
     }
 
     &-name {
@@ -175,3 +174,4 @@
     }
   }
 }
+
