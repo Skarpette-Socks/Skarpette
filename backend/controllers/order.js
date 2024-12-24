@@ -591,7 +591,10 @@ const checkAvailability = async (req, res) => {
                 notFound.push(vendor_code);
                 continue;
             }
-
+            if (!foundSkarpette.is_in_stock) {
+                unavailable.push(vendor_code);
+                continue;
+            }
             const sizeFound = foundSkarpette.size.some(
                 (s) => s.size === size && s.is_available
             );
