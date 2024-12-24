@@ -164,7 +164,7 @@ const NewItemsComponent = () => {
     <Box sx={{ width: "45%", p: 2 }}>
       {error && (
         <Alert severity="error" sx={{ mb: 3 }}>
-          {error}
+          {`${error}, Спробуйте оновити сторінку`}
         </Alert>
       )}
 
