@@ -106,3 +106,32 @@ JSON Example:
 200 if email send
 400 if validation failed
 500 in case of error
+
+checkAvailability
+Request type: GET
+Example: http://localhost:5000/order/checkAvailability
+JSON Example:
+[
+    {
+        "vendor_code": 9837949,
+        "size": "19-21"
+    },
+    {
+        "vendor_code": 9837949,
+        "size": "21-23"
+    },
+    {
+        "vendor_code": 123,
+        "size": "21-23"
+    }
+]
+Returns 200 and JSON:
+{
+    "notFound": [
+        123
+    ],
+    "unavailable": [
+        9837949
+    ]
+} if success
+500 if error

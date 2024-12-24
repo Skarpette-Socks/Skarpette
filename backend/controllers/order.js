@@ -544,10 +544,48 @@ const updateOrder = async (req, res) => {
     }
 };
 
+const checkAvailability = async (req, res) => {
+    try {
+        const skarpettes = req.body;
+        if (!Array.isArray(skarpettes)) {
+            return res
+                .status(400)
+                .json({ error: "Invalid input format. Expected an array." });
+        }
+
+        const notFound = [];
+        const unavailable = [];
+
+        for (let { vendor_code, size } of skarpettes) {
+            const foundSkarpette = await Skarpette.findOne({ vendor_code });
+            if (!foundSkarpette) {
+                notFound.push(vendor_code);
+                continue;
+            }
+
+            const sizeFound = foundSkarpette.size.some(
+                (s) => s.size === size && s.is_available
+            );
+            if (!sizeFound) {
+                unavailable.push(vendor_code);
+            }
+        }
+
+        res.status(200).json({
+            notFound,
+            unavailable,
+        });
+    } catch (error) {
+        console.error("Error in checkAvailability:", error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
 module.exports = {
     createOrder,
     getAllOrders,
     getOrderById,
     deleteOrder,
     updateOrder,
+    checkAvailability,
 };
