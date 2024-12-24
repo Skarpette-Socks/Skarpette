@@ -419,12 +419,14 @@ const sendOrderEmailToOwner = async (orderData) => {
                     }
                 </div>
                 
-                <p style="margin-top: 20px; font-size: 16px; font-family: MacPaw Fixel, sans-serif;"><b>Коментар:</b></p>
                 ${
                     orderData.comment
-                        ? `<p style="margin: 5px 0; padding: 0;">${orderData.comment}</p>`
+                        ? `<p style="margin-top: 20px; font-size: 16px; font-family: MacPaw Fixel, sans-serif;"><b>Коментар:</b></p>
+                    <p style="margin: 5px 0; padding: 0;">${orderData.comment}</p>`
                         : ""
                 }
+                        
+                
             </div>
         `,
     };
