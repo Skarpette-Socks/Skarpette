@@ -150,6 +150,22 @@ const sendOrderEmailToCustomer = async (orderData, userEmail) => {
         connectionTimeout: 5000,
     });
 
+    const deliveryTypeMapping = {
+        НПВідділення: "Відділення Нової пошти",
+        "НПКур'єр": "Кур'єр Нової пошти",
+        НППоштомат: "Поштомат Нової пошти",
+        УПВідділення: "Відділення Укрпошти",
+    };
+
+    const paymentTypeMapping = {
+        Cash: "Готівка",
+        Card: "Картка",
+    };
+
+    const formatedDeliveryType =
+        deliveryTypeMapping[orderData.deliveryData.deliveryType];
+    const formatedPaymentType = paymentTypeMapping[orderData.paymentType];
+
     let orderDetails = "";
     for (let item of orderData.items) {
         const skarpette = await Skarpette.findOne({
@@ -180,7 +196,7 @@ const sendOrderEmailToCustomer = async (orderData, userEmail) => {
         orderData.customerData.firstName
     } ${orderData.customerData.lastName}, ${
         orderData.customerData.phoneNumber
-    }, ${orderData.deliveryData.city}, ${orderData.deliveryData.deliveryType}${
+    }, ${orderData.deliveryData.city}, ${formatedDeliveryType}${
         orderData.deliveryData.street
             ? ", " + orderData.deliveryData.street
             : ""
@@ -250,9 +266,7 @@ const sendOrderEmailToCustomer = async (orderData, userEmail) => {
                     }
                 </div>
                 <div style="margin-top: 20px;">
-                    <p style="margin: 0; padding: 0; font-size: 16px;"><b>Спосіб оплати:</b> ${
-                        orderData.paymentType
-                    }</p>
+                    <p style="margin: 0; padding: 0; font-size: 16px;"><b>Спосіб оплати:</b> ${formatedPaymentType}</p>
                 </div>
                 <p style="margin-top: 40px; font-size: 22px; font-weight: 400; line-height: 26.4px; letter-spacing: -0.01em; text-align: left; text-underline-position: from-font; text-decoration-skip-ink: none;">
                     З любов’ю, Ваші
@@ -282,6 +296,22 @@ const sendOrderEmailToOwner = async (orderData) => {
         },
         secure: true,
     });
+
+    const deliveryTypeMapping = {
+        НПВідділення: "Відділення Нової пошти",
+        "НПКур'єр": "Кур'єр Нової пошти",
+        НППоштомат: "Поштомат Нової пошти",
+        УПВідділення: "Відділення Укрпошти",
+    };
+
+    const paymentTypeMapping = {
+        Cash: "Готівка",
+        Card: "Картка",
+    };
+
+    const formatedDeliveryType =
+        deliveryTypeMapping[orderData.deliveryData.deliveryType];
+    const formatedPaymentType = paymentTypeMapping[orderData.paymentType];
 
     let orderDetails = "";
     for (let item of orderData.items) {
@@ -318,7 +348,7 @@ const sendOrderEmailToOwner = async (orderData) => {
     const mailOptions = {
         from: `"Skarpette" ${process.env.EMAIL_USER}`,
         to: process.env.EMAIL_USER,
-        subject: "Нове замовлення в магазині Skarpette!",
+        subject: `Нове замовлення №${orderData.orderNumber} в магазині Skarpette!`,
         html: `
             <div style="max-width: 800px; margin: 20px auto; padding: 20px;">
                 <h2 style="color: black; font-size: 22px; font-weight: 400; line-height: 28px; letter-spacing: -0.01em; text-align: left; text-underline-position: from-font; text-decoration-skip-ink: none;">
@@ -346,12 +376,11 @@ const sendOrderEmailToOwner = async (orderData) => {
                         <p style="margin: 5px 0; padding: 0;"><b>Пошта:</b> ${
                             orderData.customerData.email
                         }</p>
-                        <p style="margin: 5px 0; padding: 0;"><b>Тип оплати:</b> ${
-                            orderData.paymentType
-                        }</p>
+                        <p style="margin: 5px 0; padding: 0;"><b>Тип оплати:</b> ${formatedPaymentType}</p>
                     </div>
                     ${
-                        orderData.isDifferentRecipient
+                        orderData.isDifferentRecipient &&
+                        orderData.recipientData
                             ? `<div style="margin-left: 50px;">
                                 <h3 style="margin: 0 0 10px 0; padding: 0; font-size: 18px;">Інший отримувач:</h3>
                                 <p style="margin: 5px 0; padding: 0;"><b>ПІБ:</b> ${recipientName}</p>
@@ -364,9 +393,7 @@ const sendOrderEmailToOwner = async (orderData) => {
                 
                 <div style="margin-top: 20px; font-size: 16px; font-family: MacPaw Fixel, sans-serif;">
                     <h3 style="margin: 0; padding: 0; font-size: 18px;"><b>Дані доставки:</b></h3>
-                    <p style="margin: 5px 0; padding: 0;">Спосіб доставки: ${
-                        orderData.deliveryData.deliveryType
-                    }</p>
+                    <p style="margin: 5px 0; padding: 0;">Спосіб доставки: ${formatedDeliveryType}</p>
                     <p style="margin: 5px 0; padding: 0;">Місто: ${
                         orderData.deliveryData.city
                     }</p>
