@@ -2,7 +2,8 @@
 @import "../../assets/styles/variables";
 
 .no-promotions {
-  @include content-padding-inline;
+  // @include content-padding-inline;
+  padding-inline: 54px;
   margin-top: 24px;
 
   &__container {

@@ -11,7 +11,7 @@ const ContactsForm = () => {
   const [mailError, setMailError] = useState<string>('');
   const [messageError, setMessageError] = useState<string>('');
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const isCyrillic = /^[\u0400-\u04FF-ʼ/\s]*$/;
+  const isCyrillic = /^[\u0400-\u04FF-ʼ'/\s]*$/;
 
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -22,7 +22,7 @@ const ContactsForm = () => {
     setMailError('');
     setMessageError('');
 
-    if (name.length === 0) {
+    if (name.trim() === '') {
       setNameError('Заповніть поле')
       isValid = false;
     }
@@ -45,7 +45,7 @@ const ContactsForm = () => {
       setMessageError('Помилка: перевищено максимально допустиму кількість символів.');
     }
     
-    if (message.length === 0) {
+    if (message.trim() === '') {
       setMessageError('Заповніть поле')
       isValid = false;
     }
