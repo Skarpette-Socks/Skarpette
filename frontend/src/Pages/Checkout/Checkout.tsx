@@ -64,7 +64,7 @@ const ReceiverOption = {
 }
 
 const Checkout = () => {
-  const { cartItems, deleteCartItem } = useCartItems();
+  const { cartItems, deleteCartItem, deleteAllItems } = useCartItems();
   const isItemsDeleted = useRef<boolean>(false);
   const [underButtonError, setUnderButonError] = useState<string>('');
 
@@ -119,6 +119,7 @@ const Checkout = () => {
   let recipientData = {};
   let deliveryData = {};
   let comment = '';
+
 
   const contactInfoRef = useRef<ContactInfoRef>(null);
   const receiverInfoRef = useRef<ReceiverInfoRef>(null);
@@ -292,6 +293,7 @@ const Checkout = () => {
       });
 
       if (response.ok) {
+        deleteAllItems();
         console.log("Дані успішно відправлені!");
         const responseData = await response.json();
         console.log('Дані з відповіді:', responseData.orderNumber);
