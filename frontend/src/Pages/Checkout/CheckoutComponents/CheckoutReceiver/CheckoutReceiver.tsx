@@ -63,13 +63,13 @@ const CheckoutReceiver = forwardRef<ReceiverInfoRef, ContactInfoProps>((
   const isValidForm = () => {
     let error = false;
   
-    if (!name || !engRegex.test(name)) {
+    if (name.trim() === '' || !engRegex.test(name)) {
       setNameTouched(true);
       setNameError(name === '' ? 'Заповніть поле' : 'Лише кирилиця');
       error = true;
     }
   
-    if (!surname || !engRegex.test(surname)) {
+    if (surname.trim() === '' || !engRegex.test(surname)) {
       setSurnameTouched(true);
       setSurnameError(surname === '' ? 'Заповніть поле' : 'Лише кирилиця');
       error = true;
@@ -95,7 +95,7 @@ const CheckoutReceiver = forwardRef<ReceiverInfoRef, ContactInfoProps>((
     const value = e.target.value;
   
     setName(() => {
-      if (value === '') {
+      if (value.trim() === '') {
         setNameError('Заповніть поле');
       } else if (!engRegex.test(value)) {
         setNameError('Лише кирилиця');
@@ -111,7 +111,7 @@ const CheckoutReceiver = forwardRef<ReceiverInfoRef, ContactInfoProps>((
     const value = e.target.value;
   
     setSurname(() => {
-      if (value === '') {
+      if (value.trim() === '') {
         setSurnameError('Заповніть поле');
       } else if (!engRegex.test(value)) {
         setSurnameError('Лише кирилиця');

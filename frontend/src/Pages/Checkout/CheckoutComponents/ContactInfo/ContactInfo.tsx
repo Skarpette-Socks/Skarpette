@@ -52,15 +52,15 @@ const ContactInfo = forwardRef<ReceiverInfoRef>((_, ref) => {
   const isValidForm = () => {
     let error = false;
   
-    if (!name || !engRegex.test(name)) {
+    if (name.trim() === '' || !engRegex.test(name)) {
       setNameTouched(true);
-      setNameError(!name ? 'Заповніть поле' : 'Лише кирилиця');
+      setNameError(name.trim() === '' ? 'Заповніть поле' : 'Лише кирилиця');
       error = true;
     }
   
-    if (!surname || !engRegex.test(surname)) {
+    if (surname.trim() === '' || !engRegex.test(surname)) {
       setSurnameTouched(true);
-      setSurnameError(!surname ? 'Заповніть поле' : 'Лише кирилиця');
+      setSurnameError(surname.trim() === '' ? 'Заповніть поле' : 'Лише кирилиця');
       error = true;
     }
   
@@ -70,7 +70,7 @@ const ContactInfo = forwardRef<ReceiverInfoRef>((_, ref) => {
       error = true;
     }
   
-    if (!mail || !emailRegex.test(mail)) {
+    if (mail.trim() === '' || !emailRegex.test(mail)) {
       setMailTouched(true);
       setMailError(!mail ? 'Заповніть поле' : 'Неправильний мейл');
       error = true;
@@ -90,7 +90,7 @@ const ContactInfo = forwardRef<ReceiverInfoRef>((_, ref) => {
     const value = e.target.value;
   
     setName(() => {
-      if (value === '') {
+      if (value.trim() === '') {
         setNameError('Заповніть поле');
       } else if (!engRegex.test(value)) {
         setNameError('Лише кирилиця');
@@ -106,7 +106,7 @@ const ContactInfo = forwardRef<ReceiverInfoRef>((_, ref) => {
     const value = e.target.value;
   
     setSurname(() => {
-      if (value === '') {
+      if (value.trim() === '') {
         setSurnameError('Заповніть поле');
       } else if (!engRegex.test(value)) {
         setSurnameError('Лише кирилиця');
@@ -140,7 +140,7 @@ const ContactInfo = forwardRef<ReceiverInfoRef>((_, ref) => {
     const value = e.target.value;
   
     setMail(() => {
-      if (value === '') {
+      if (value.trim() === '') {
         setMailError('Заповніть поле');
       } else if (!emailRegex.test(value)) {
         setMailError('Неправильний мейл');

@@ -22,7 +22,7 @@ const ContactsForm = () => {
     setMailError('');
     setMessageError('');
 
-    if (name.length === 0) {
+    if (name.trim() === '') {
       setNameError('Заповніть поле')
       isValid = false;
     }
@@ -45,7 +45,7 @@ const ContactsForm = () => {
       setMessageError('Помилка: перевищено максимально допустиму кількість символів.');
     }
     
-    if (message.length === 0) {
+    if (message.trim() === '') {
       setMessageError('Заповніть поле')
       isValid = false;
     }

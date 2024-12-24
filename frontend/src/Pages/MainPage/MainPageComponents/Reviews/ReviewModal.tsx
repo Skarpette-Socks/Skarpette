@@ -26,7 +26,6 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const isCyrillic = /^[\u0400-\u04FF-ʼ'/\s]*$/;
 
-
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -38,12 +37,12 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
     setEmailError('');
     setMessageError('');
   
-    if (firstName.length === 0) {
+    if (firstName.trim() === '') {
       setFirstNameError('Заповніть поле')
       isValid = false;
     }
 
-    if (lastName.length === 0) {
+    if (lastName.trim() === '') {
       setLastNameError('Заповніть поле')
       isValid = false;
     }
@@ -68,7 +67,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
       setMessageError('Помилка: перевищено максимально допустиму кількість символів.');
     }
     
-    if (message.length === 0) {
+    if (message.trim() === '') {
       setMessageError('Заповніть поле')
       isValid = false;
     }
