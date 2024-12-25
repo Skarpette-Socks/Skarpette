@@ -7,6 +7,12 @@ import "slick-carousel/slick/slick-theme.css";
 
 import scroll from "../../../../assets/img/icons/scroll.svg";
 
+import img1 from '../../../../assets/img/carousel-img1.png';
+import img2 from '../../../../assets/img/carousel-img2.png';
+import img3 from '../../../../assets/img/carousel-img3.png';
+import img4 from '../../../../assets/img/carousel-img4.png';
+
+const images = [img1, img2, img3, img4];
 
 import items from "../../../../../json_links/categories.json";
 
@@ -49,7 +55,7 @@ const CategoriesCarousel: React.FC = () => {
                   to={link}
                 >
                   <img
-                    src={`src/assets/img/carousel-img${index + 1}.svg`}
+                    src={images[index]}
                     alt={`image ${index + 1}`}
                     className="categories-carousel__image"
                   />
