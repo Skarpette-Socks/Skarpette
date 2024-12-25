@@ -1,6 +1,31 @@
-const Admin = require('../models/admin');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const Admin = require("../models/admin");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const axios = require("axios");
+
+const veryfyCaptcha = async (captchaToken) => {
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+    const url = `https://www.google.com/recaptcha/api/siteverify`;
+
+    try {
+        const res = await axios.post(url, null, {
+            params: {
+                secret: secretKey,
+                response: captchaToken,
+            },
+        });
+
+        const { success } = res.data;
+
+        if (!success) {
+            throw new Error("Captcha verification failed");
+        }
+        return true;
+    } catch (error) {
+        console.error("Captcha Error:", error);
+        return false;
+    }
+};
 
 const createAdmin = async (req, res) => {
     try {
@@ -22,7 +47,7 @@ const getAllAdmins = async (req, res) => {
     try {
         const admins = await Admin.find();
         if (!admins) {
-            return res.status(404).json('No admins found');
+            return res.status(404).json("No admins found");
         }
         res.status(200).json(admins);
     } catch (error) {
@@ -35,10 +60,10 @@ const deleteAdmin = async (req, res) => {
         const { id } = req.params;
         const admin = await Admin.findById(id);
         if (!admin) {
-            return res.status(404).json('No admins found');
+            return res.status(404).json("No admins found");
         }
         await admin.deleteOne();
-        res.status(200).json('Admin has been deleted');
+        res.status(200).json("Admin has been deleted");
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -46,19 +71,24 @@ const deleteAdmin = async (req, res) => {
 
 const login = async (req, res) => {
     try {
-        const admin = await Admin.findOne({ login: req.body.login });
-        if (!admin) {
-            return res.status(404).json('Admin not found');
+        const { login, password, captchaToken } = req.body;
+
+        const isCaptchaValid = await veryfyCaptcha(captchaToken);
+
+        if (!isCaptchaValid) {
+            return res.status(400).json("Captcha verification failed");
         }
-        const validPassword = await bcrypt.compare(
-            req.body.password,
-            admin.password
-        );
+
+        const admin = await Admin.findOne({ login });
+        if (!admin) {
+            return res.status(404).json("Admin not found");
+        }
+        const validPassword = await bcrypt.compare(password, admin.password);
         if (!validPassword) {
-            return res.status(400).json('Wrong password');
+            return res.status(400).json("Wrong password");
         }
         const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, {
-            expiresIn: '1h',
+            expiresIn: "1h",
         });
         res.status(200).json(token);
     } catch (error) {
