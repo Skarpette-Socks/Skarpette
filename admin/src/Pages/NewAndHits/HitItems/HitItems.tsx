@@ -131,7 +131,9 @@ const HitItemsBlock = () => {
       );
 
       if (!checkResponse.ok) {
-        throw new Error(`HTTP error! status: ${checkResponse.status}`);
+        throw new Error(
+          `HTTP error! status: ${checkResponse.status} Будь ласка, оновіть строрінку`
+        );
       }
 
       const product = await checkResponse.json();
@@ -168,7 +170,7 @@ const HitItemsBlock = () => {
     <Box sx={{ width: "45%", p: 2 }}>
       {error && (
         <Alert severity="error" sx={{ mb: 3 }}>
-          {error}
+         { `${error}, Спробуйте оновити сторінку` }
         </Alert>
       )}
 
