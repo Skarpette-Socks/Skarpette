@@ -36,7 +36,8 @@ const Product: React.FC = () => {
 
   useEffect(() => {
     loadData();
-  }, [loadData]);
+    window.scrollTo(0, 0);
+  }, [loadData, VENDOR_CODE]);
 
   if (loading) {
     return (
