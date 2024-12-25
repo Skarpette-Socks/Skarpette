@@ -21,14 +21,23 @@ interface DeleteCartItem {(
 ): void;
 }
 
+interface DeleteSpecCartItem {(
+  item: unAvSockInfo
+):void}
+
+type unAvSockInfo = {
+  vendor_code: number,
+  size: string,
+}
+
 interface CartContextType {
   cartItems: CartItem[],
   addCartItem: AddCartItem,
   counterCartItem: CounterCartItem,
   deleteCartItem: DeleteCartItem,
   deleteAllItems: () => void,
+  deleteSpecCartItem: DeleteSpecCartItem,
 }
-
 
 const CartContext = createContext<CartContextType | undefined>(
   undefined
@@ -148,6 +157,15 @@ export const CartProvider: React.FC<{ children: ReactNode}> = ({
     setCartItems([]);
   }
 
+  const deleteSpecCartItem = (delItem: unAvSockInfo) => {
+    setCartItems((prevCartItems) => {
+      return prevCartItems
+        .filter(item => 
+          item.vendor_code !== delItem.vendor_code && 
+          item.size !== delItem.size)
+    })
+  }
+
 
   return (
     <CartContext.Provider
@@ -156,7 +174,8 @@ export const CartProvider: React.FC<{ children: ReactNode}> = ({
         addCartItem, 
         counterCartItem, 
         deleteCartItem,
-        deleteAllItems 
+        deleteAllItems,
+        deleteSpecCartItem
       }}
     >
       {children}

@@ -3,8 +3,12 @@
 
 .no-promotions {
   // @include content-padding-inline;
-  padding-inline: 54px;
   margin-top: 24px;
+  padding-inline: 16px;
+
+  @include on-tablet {
+    padding-inline: 54px;
+  }
 
   &__container {
     width: 100%;

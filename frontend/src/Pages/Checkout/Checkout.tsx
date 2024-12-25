@@ -12,11 +12,10 @@ import "./Checkout.scss";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FooterMinorInfo from "../../App/AppComponents/Footer/FooterMinorInfo";
-import { fetchAllData } from "../../api/fetchAllData";
-import DataItem from "../../types/DataItem";
 import CommentInput from "./CheckoutComponents/CommentInput/CommentInput";
 import { toast } from "react-toastify";
 import CheckoutButton from "./CheckoutComponents/CheckoutButton/CheckoutButton";
+import { checkAvailability } from "../../api/checkAvailability";
 
 interface ContactInfoRef {
   isValid: () => boolean;
@@ -58,13 +57,23 @@ interface Items {
   quantity: number | ''
 }
 
+type unAvSockInfo = {
+  vendor_code: number,
+  size: string,
+}
+
+type unavailableSocksResponse = {
+  notFound?: unAvSockInfo[],
+  unavailable?: unAvSockInfo[]
+}
+
 const ReceiverOption = {
   SELF:'self-receiver',
   ANOTHER: 'another-receiver'
 }
 
 const Checkout = () => {
-  const { cartItems, deleteCartItem, deleteAllItems } = useCartItems();
+  const { cartItems, deleteSpecCartItem, deleteAllItems } = useCartItems();
   const isItemsDeleted = useRef<boolean>(false);
   const [underButtonError, setUnderButonError] = useState<string>('');
 
@@ -130,40 +139,41 @@ const Checkout = () => {
   const [handleDialog, setHandleDialog] = useState<boolean>(false);
 
   const availabilityCheck = async () => {
-    let socksDb: DataItem[] = [];
+    let unavailableSocks: unavailableSocksResponse = {};
+    const items = cartItems.map(cartItem => {
+      return { 
+        vendor_code: cartItem.vendor_code,
+        size: cartItem.size
+      };
+    })  
 
     setLoading(true);
     try {
-      socksDb = await fetchAllData();
+      unavailableSocks = await checkAvailability(items);
+      console.log('unavailableSocks', unavailableSocks)
     } catch (error) {
       console.error("Failed to load data:", error);
     } finally {
       setLoading(false);
     }
-    
-    const unavailableItems = cartItems.filter((cartItem, index) => {
-      const matchedItem = socksDb
-        .find(dbItem => cartItem.vendor_code === dbItem.vendor_code);
-      if(!matchedItem || !matchedItem.is_in_stock) { 
-        deleteCartItem(index);
-        isItemsDeleted.current = true;
-        return true;
-      }
 
-      const sizeItem = matchedItem.size.find(curSize => curSize.size === cartItem.size);
-      if (!sizeItem || !sizeItem.is_available) {
-        deleteCartItem(index);
-        isItemsDeleted.current = true;
-        return true;
-      }
+    const unavailableSocksRes = Object
+      .values(unavailableSocks)
+      .reduce((accumulator, curArr) => (
+        accumulator.concat(curArr)
+      ),[]);
 
-      return false;
-    });
+    if(unavailableSocksRes.length !== 0) {
+      isItemsDeleted.current = true
+    }
 
-    console.log('unavailableItems', unavailableItems)
+    console.log('unavailableSocksRes',unavailableSocksRes)
+    unavailableSocksRes.forEach(item => deleteSpecCartItem(item))
 
-    return unavailableItems.length === 0;
+
+    return unavailableSocksRes.length === 0;
   }
+
 
   const handleCheckout = async () => {
     setHandleDialog(!await availabilityCheck())

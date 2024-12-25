@@ -6,11 +6,21 @@ import CartContentItem from "./CartContentItem";
 import { Link, useNavigate } from "react-router-dom";
 
 import no_cart from '../../../../assets/img/NoItemsCartNew.svg';
-import DataItem from "../../../../types/DataItem";
-import { fetchAllData } from "../../../../api/fetchAllData";
+// import DataItem from "../../../../types/DataItem";
+import { checkAvailability } from "../../../../api/checkAvailability";
+
+type unAvSockInfo = {
+  vendor_code: number,
+  size: string,
+}
+
+type unavailableSocksResponse = {
+  notFound?: unAvSockInfo[],
+  unavailable?: unAvSockInfo[]
+}
 
 const CartContent: React.FC = () => {
-  const { cartItems, deleteCartItem } = useCartItems();
+  const { cartItems, deleteSpecCartItem } = useCartItems();
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalDiscount, setTotalDiscount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -52,36 +62,34 @@ const CartContent: React.FC = () => {
   }, [cartItems]);
 
   const availabilityCheck = async () => {
-    let socksDb: DataItem[] = [];
+    let unavailableSocks: unavailableSocksResponse = {};
+    const items = cartItems.map(cartItem => {
+      return { 
+        vendor_code: cartItem.vendor_code,
+        size: cartItem.size
+      };
+    })  
 
     setLoading(true);
     try {
-      socksDb = await fetchAllData();
+      unavailableSocks = await checkAvailability(items);
+      console.log('unavailableSocks', unavailableSocks)
     } catch (error) {
       console.error("Failed to load data:", error);
     } finally {
       setLoading(false);
     }
-    
-    const unavailableItems = cartItems.filter((cartItem, index) => {
-      const matchedItem = socksDb
-        .find(dbItem => cartItem.vendor_code === dbItem.vendor_code);
-      if(!matchedItem || !matchedItem.is_in_stock) { 
-        deleteCartItem(index);
-        return true;
-      }
-      const sizeItem = matchedItem.size.find(curSize => curSize.size === cartItem.size);
-      if (!sizeItem || !sizeItem.is_available) {
-        deleteCartItem(index);
-        return true;
-      }
 
-      return false;
-    })
+    const unavailableSocksRes = Object
+      .values(unavailableSocks)
+      .reduce((accumulator, curArr) => (
+        accumulator.concat(curArr)
+      ),[]);
+    console.log('unavailableSocksRes',unavailableSocksRes)
+    unavailableSocksRes.forEach(item => deleteSpecCartItem(item))
 
-    console.log('unavailableItems', unavailableItems)
 
-    return unavailableItems.length === 0;
+    return unavailableSocksRes.length === 0;
   }
 
   const createOrder = async () => {
