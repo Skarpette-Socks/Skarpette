@@ -233,7 +233,7 @@ const ProductTable: React.FC = () => {
     }
   };
 
-  const renderTableCell = (sock: DataItem, field: string) => {
+  const renderTableCell = (sock: DataItem, field: string): React.ReactNode => {
     switch (field) {
       case "name":
         if (sock.is_in_stock) {
@@ -290,8 +290,12 @@ const ProductTable: React.FC = () => {
             </IconButton>
           </Box>
         );
-      default:
-        return sock[field as keyof DataItem] || "";
+        default:
+          { const value = sock[field as keyof DataItem];
+          if (Array.isArray(value)) {
+            return value.join(", ");
+          }
+          return value as React.ReactNode; }
     }
   };
 
