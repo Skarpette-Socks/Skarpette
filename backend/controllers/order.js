@@ -590,18 +590,18 @@ const checkAvailability = async (req, res) => {
         for (let { vendor_code, size } of skarpettes) {
             const foundSkarpette = await Skarpette.findOne({ vendor_code });
             if (!foundSkarpette) {
-                notFound.push(vendor_code);
+                notFound.push({ vendor_code, size });
                 continue;
             }
             if (!foundSkarpette.is_in_stock) {
-                unavailable.push(vendor_code);
+                unavailable.push({ vendor_code, size });
                 continue;
             }
             const sizeFound = foundSkarpette.size.some(
                 (s) => s.size === size && s.is_available
             );
             if (!sizeFound) {
-                unavailable.push(vendor_code);
+                unavailable.push({ vendor_code, size });
             }
         }
 

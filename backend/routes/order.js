@@ -2,7 +2,7 @@ const router = require("express").Router();
 const orderController = require("../controllers/order");
 const authMiddleware = require("../middleware/authMiddleware");
 
-router.get("/checkAvailability", orderController.checkAvailability);
+router.post("/checkAvailability", orderController.checkAvailability);
 router.post("/", orderController.createOrder);
 router.get("/", authMiddleware, orderController.getAllOrders);
 router.get("/:id", authMiddleware, orderController.getOrderById);
