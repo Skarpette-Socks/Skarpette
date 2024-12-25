@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const theme = createTheme({
   palette: {
@@ -30,6 +31,7 @@ const AdminAuth: React.FC = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -38,9 +40,18 @@ const AdminAuth: React.FC = () => {
     setLogin(newlogin);
   };
 
+  const handleCaptchaChange = (token: string | null) => {
+    setCaptchaToken(token);
+  };
+
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     setError("");
+
+    if (!captchaToken) {
+      setError("Підтвердіть, що ви не робот.");
+      return;
+    }
 
     if (login && password) {
       try {
@@ -52,6 +63,7 @@ const AdminAuth: React.FC = () => {
           body: JSON.stringify({
             login,
             password,
+            captchaToken,
           }),
         });
 
@@ -156,14 +168,16 @@ const AdminAuth: React.FC = () => {
                   ),
                 }}
               />
+              <ReCAPTCHA
+                sitekey="6Lf3fqUqAAAAAHQ-OqAAXDm0Q4V_aN1AOcaFQSYx"
+                onChange={handleCaptchaChange}
+              />
               {error && (
                 <Alert severity="error" sx={{ mt: 2 }}>
                   {error}
                 </Alert>
               )}
               <Button
-                // component={Link}
-                // to="/admin"
                 type="submit"
                 fullWidth
                 variant="contained"
