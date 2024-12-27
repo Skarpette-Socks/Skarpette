@@ -578,16 +578,26 @@ const updateOrder = async (req, res) => {
 const checkAvailability = async (req, res) => {
     try {
         const skarpettes = req.body;
+
         if (!Array.isArray(skarpettes)) {
             return res
                 .status(400)
                 .json({ error: "Invalid input format. Expected an array." });
         }
 
+        const uniqueSkarpettes = [
+            ...new Map(
+                skarpettes.map((item) => [
+                    `${item.vendor_code}-${item.size}`,
+                    item,
+                ])
+            ).values(),
+        ];
+
         const notFound = [];
         const unavailable = [];
 
-        for (let { vendor_code, size } of skarpettes) {
+        for (let { vendor_code, size } of uniqueSkarpettes) {
             const foundSkarpette = await Skarpette.findOne({ vendor_code });
             if (!foundSkarpette) {
                 notFound.push({ vendor_code, size });
