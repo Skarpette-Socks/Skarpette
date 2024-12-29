@@ -59,7 +59,7 @@ const NewItemsComponent = () => {
 
   const fetchLocalItems = async () => {
     try {
-      const response = await fetch("http://localhost:5000/new");
+      const response = await fetch("http://185.237.207.177:5000/new");
       if (!response.ok) throw new Error("Failed to fetch items");
       const data: NewItem[] = await response.json();
 
@@ -121,7 +121,7 @@ const NewItemsComponent = () => {
 
     try {
       const checkResponse = await fetch(
-        `http://localhost:5000/skarpette/search?vendor_code=${encodeURIComponent(
+        `http://185.237.207.177:5000/skarpette/search?vendor_code=${encodeURIComponent(
           inputValue
         )}`
       );

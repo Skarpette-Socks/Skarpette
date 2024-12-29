@@ -30,8 +30,8 @@ const SearchResultsPage: React.FC = () => {
         const isVendorCode = /^\d+$/.test(query);
 
         const url = isVendorCode
-          ? `http://localhost:5000/skarpette/search?vendor_code=${query}`
-          : `http://localhost:5000/skarpette/search?name=${query}`;
+          ? `http://185.237.207.177:5000/skarpette/search?vendor_code=${query}`
+          : `http://185.237.207.177:5000/skarpette/search?name=${query}`;
 
         const response = await fetch(url);
 

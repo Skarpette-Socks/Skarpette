@@ -64,8 +64,8 @@ const Product: React.FC<ProductProps> = ({ pageType, item, resetData }) => {
 
   const fetchLink = 
     pageType === ProductPageType.ADD 
-    ? "http://localhost:5000/skarpette" 
-    : `http://localhost:5000/skarpette/${item._id}`;
+    ? "http://185.237.207.177:5000/skarpette" 
+    : `http://185.237.207.177:5000/skarpette/${item._id}`;
 
   const fetchMethod = 
     pageType === ProductPageType.ADD 

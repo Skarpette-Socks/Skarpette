@@ -7,7 +7,7 @@ interface PromiseDataItem {
 
 export const fetchGoods = async (type: "new" | "hit"): Promise<PromiseDataItem[]> => {
   try {
-    const response = await fetch(`http://localhost:5000/${type}`);
+    const response = await fetch(`http://185.237.207.177:5000/${type}`);
     const data = await response.json();
 
     return data

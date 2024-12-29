@@ -6,7 +6,7 @@ export const deleteItem = async (id: string) => {
   }
 
   try {
-    const response = await fetch(`http://localhost:5000/skarpette/${id}`, {
+    const response = await fetch(`http://185.237.207.177:5000/skarpette/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export const deleteNewItem = async (id: string) => {
   }
 
   try {
-    const response = await fetch(`http://localhost:5000/new/${id}`, {
+    const response = await fetch(`http://185.237.207.177:5000/new/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -62,7 +62,7 @@ export const deleteHitItem = async (id: string) => {
   }
 
   try {
-    const response = await fetch(`http://localhost:5000/hit/${id}`, {
+    const response = await fetch(`http://185.237.207.177:5000/hit/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

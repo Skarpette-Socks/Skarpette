@@ -6,7 +6,7 @@ export const createNewItem = async (vendorCode: string, itemData: object) => {
   }
 
   try {
-    const response = await fetch(`http://localhost:5000/new/${vendorCode}`, {
+    const response = await fetch(`http://185.237.207.177:5000/new/${vendorCode}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,7 +35,7 @@ export const createHitItem = async (vendorCode: string, itemData: object) => {
   }
 
   try {
-    const response = await fetch(`http://localhost:5000/hit/${vendorCode}`, {
+    const response = await fetch(`http://185.237.207.177:5000/hit/${vendorCode}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

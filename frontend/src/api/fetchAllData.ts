@@ -1,6 +1,6 @@
 export const fetchAllData = async () => {
   try {
-    const response = await fetch("http://localhost:5000/skarpette/", {
+    const response = await fetch("http://185.237.207.177:5000/skarpette/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

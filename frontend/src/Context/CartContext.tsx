@@ -161,7 +161,7 @@ export const CartProvider: React.FC<{ children: ReactNode}> = ({
     setCartItems((prevCartItems) => {
       return prevCartItems
         .filter(item => 
-          item.vendor_code !== delItem.vendor_code && 
+          item.vendor_code !== delItem.vendor_code || 
           item.size !== delItem.size)
     })
   }

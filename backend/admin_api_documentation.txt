@@ -7,7 +7,7 @@ Routes for Admin:
 Request type: POST
 Parameters: login and password in body
 Example:
-http://localhost:5000/admin/login
+http://185.237.207.177:5000/admin/login
 {
     "login": "login",
     "password": "password"
@@ -18,7 +18,7 @@ Generates JSON Web Token, which you will need for other routes.
 Request type: POST
 Parameters: login, password and role (can be 'admin' or 'mod') in body
 Example:
-http://localhost:5000/admin/createAdmin
+http://185.237.207.177:5000/admin/createAdmin
 Body:
 {
     "login": "admin2",
@@ -32,7 +32,7 @@ Value - *JSON Web Token*
 / to get all admins
 Request type: GET
 Example:
-http://localhost:5000/admin
+http://185.237.207.177:5000/admin
 Header:
 Key - Authorization
 Value - *JSON Web Token*
@@ -41,7 +41,7 @@ Value - *JSON Web Token*
 Request type: DELETE
 Parameters: id in params
 Example:
-http://localhost:5000/admin/deleteAdmin/670134c622442a0631cd5234
+http://185.237.207.177:5000/admin/deleteAdmin/670134c622442a0631cd5234
 Header:
 Key - Authorization
 Value - *JSON Web Token*
@@ -55,12 +55,12 @@ Request type: POST
 Data:
 all fields from model in form_data
 Example:
-http://localhost:5000/skarpette
+http://185.237.207.177:5000/skarpette
 
 Delete Skarpette by ID
 Request type: DELETE
 Example: 
-http://localhost:5000/skarpette/669fa1d2df106cad2294c2ca
+http://185.237.207.177:5000/skarpette/669fa1d2df106cad2294c2ca
 Header:
 Key - Authorization
 Value - *JSON Web Token*
@@ -69,13 +69,13 @@ Update Skarpette
 Request type: PUT
 Data: JSON with fields to update
 Example:
-http://localhost:5000/skarpette/669fa1d2df106cad2294c2ca
+http://185.237.207.177:5000/skarpette/669fa1d2df106cad2294c2ca
 
 Create order
 Request type: POST
 Data:
 All fields from model in body
-Example: http://localhost:5000/order
+Example: http://185.237.207.177:5000/order
 body:
 {
   "items": [
@@ -117,7 +117,7 @@ Value - *JSON Web Token*
 Get order by ID
 Request type: GET
 Example:
-http://localhost:5000/order/669fa1d2df106cad2294c2ca
+http://185.237.207.177:5000/order/669fa1d2df106cad2294c2ca
 Header:
 Key - Authorization
 Value - *JSON Web Token*
@@ -125,7 +125,7 @@ Value - *JSON Web Token*
 Delete order by ID
 Request type: DELETE
 Example: 
-http://localhost:5000/order/669fa1d2df106cad2294c2ca
+http://185.237.207.177:5000/order/669fa1d2df106cad2294c2ca
 Header:
 Key - Authorization
 Value - *JSON Web Token*
