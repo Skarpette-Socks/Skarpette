@@ -3,41 +3,41 @@ http://localhost:5000
 
 Add /skarpette to Base URL for socks APIs and /order for orders
 Example:
-http://localhost:5000/skarpette
-http://localhost:5000/order
+http://185.237.207.177:5000/skarpette
+http://185.237.207.177:5000/order
 
 Search Skarpettes by Name or Vendor Code:
 Request type: GET
 Parameters: name or vendor_code
 Example:
-http://localhost:5000/skarpette/search?vendor_code=112233
-http://localhost:5000/skarpette/search?name=socks
+http://185.237.207.177:5000/skarpette/search?vendor_code=112233
+http://185.237.207.177:5000/skarpette/search?name=socks
 
 Filter Skarpettes:
 Request type: GET
 Parameters: type
 Example:
-http://localhost:5000/skarpette/filter?type=Men
+http://185.237.207.177:5000/skarpette/filter?type=Men
 
 Get Favorite Skarpettes
 Request type: GET
 Example:
-http://localhost:5000/skarpette/favorites
+http://185.237.207.177:5000/skarpette/favorites
 
 Get New Skarpettes
 Request type: GET
 Example:
-http://localhost:5000/skarpette/new
+http://185.237.207.177:5000/skarpette/new
 
 Get All Skarpettes
 Request type: GET
 Example:
-http://localhost:5000/skarpette
+http://185.237.207.177:5000/skarpette
 
 Create order
 Request type: POST
 Example:
-http://localhost:5000/order
+http://185.237.207.177:5000/order
 JSON Example:
 {
   "items": [
@@ -81,7 +81,7 @@ Returns:
 
 Send Feedback
 Request type: POST
-Example: http://localhost:5000/email/sendFeedback
+Example: http://185.237.207.177:5000/email/sendFeedback
 JSON Example:
 {
     "score": 3,
@@ -96,7 +96,7 @@ Returns:
 
 Send Help Form
 Request type: POST
-Example: http://localhost:5000/email/sendHelpForm
+Example: http://185.237.207.177:5000/email/sendHelpForm
 JSON Example:
 {
     "firstname": "sdfg",
@@ -109,7 +109,7 @@ JSON Example:
 
 checkAvailability
 Request type: GET
-Example: http://localhost:5000/order/checkAvailability
+Example: http://185.237.207.177:5000/order/checkAvailability
 JSON Example:
 [
     {

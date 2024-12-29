@@ -25,7 +25,7 @@ const AuthWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       }
 
       try {
-        const response = await fetch("http://localhost:5000/admin", {
+        const response = await fetch("http://185.237.207.177:5000/admin", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

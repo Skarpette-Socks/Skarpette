@@ -84,7 +84,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
       })
 
       try {
-        const response = await fetch('http://localhost:5000/email/sendFeedback', {
+        const response = await fetch('http://185.237.207.177:5000/email/sendFeedback', {
           method:'POST',
           headers: {
             'Content-Type':'application/json', 

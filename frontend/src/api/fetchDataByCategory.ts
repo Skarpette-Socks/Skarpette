@@ -1,6 +1,6 @@
 export const getSocksByCategory = async ( category: string ) => {
   try {
-    const response = await fetch(`http://localhost:5000/skarpette/filter?type=${category}`, {
+    const response = await fetch(`http://185.237.207.177:5000/skarpette/filter?type=${category}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -61,7 +61,7 @@ const HitItemsBlock = () => {
 
   const fetchItems = async () => {
     try {
-      const response = await fetch("http://localhost:5000/hit");
+      const response = await fetch("http://185.237.207.177:5000/hit");
       if (!response.ok) throw new Error("Failed to fetch items");
       const data: HitItem[] = await response.json();
 
@@ -125,7 +125,7 @@ const HitItemsBlock = () => {
 
     try {
       const checkResponse = await fetch(
-        `http://localhost:5000/skarpette/search?vendor_code=${encodeURIComponent(
+        `http://185.237.207.177:5000/skarpette/search?vendor_code=${encodeURIComponent(
           inputValue
         )}`
       );

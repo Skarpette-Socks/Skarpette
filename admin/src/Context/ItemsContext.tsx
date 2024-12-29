@@ -21,8 +21,8 @@ export const ItemsProvider = ({ children }: { children: ReactNode }) => {
   const fetchItems = async () => {
     try {
       const [newResponse, hitResponse] = await Promise.all([
-        fetch("http://localhost:5000/new"),
-        fetch("http://localhost:5000/hit"),
+        fetch("http://185.237.207.177:5000/new"),
+        fetch("http://185.237.207.177:5000/hit"),
       ]);
 
       const newData = await newResponse.json();

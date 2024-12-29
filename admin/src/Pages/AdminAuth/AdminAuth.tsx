@@ -55,7 +55,7 @@ const AdminAuth: React.FC = () => {
 
     if (login && password) {
       try {
-        const response = await fetch("http://localhost:5000/admin/login", {
+        const response = await fetch("http://185.237.207.177:5000/admin/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
