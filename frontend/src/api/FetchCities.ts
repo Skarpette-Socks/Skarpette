@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // api.ts
 export const fetchCities = async (searchQuery: string): Promise<string[]> => {
-  const apiKey = "1f4bb70db76a121fff96e59bf383ebd1";
+  const apiKey = "8458c66029e49ba21b601db5e87123f4";
   const apiUrl = "https://api.novaposhta.ua/v2.0/json/";
 
   const requestData = {

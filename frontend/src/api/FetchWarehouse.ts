@@ -14,7 +14,7 @@ export interface FetchWarehousesParams {
 export const fetchWarehouses = async (
   params: FetchWarehousesParams
 ): Promise<string[]> => {
-  const apiKey = "4ef7f616562477f2bf4173d436b118b3";
+  const apiKey = "8458c66029e49ba21b601db5e87123f4";
   const apiUrl = "https://api.novaposhta.ua/v2.0/json/";
 
   const requestData = {
@@ -51,7 +51,7 @@ export const fetchWarehouses = async (
 export const fetchWarehouseTypes = async (): Promise<
   { Ref: string; Description: string; DescriptionRu: string }[]
 > => {
-  const apiKey = "4ef7f616562477f2bf4173d436b118b3";
+  const apiKey = "8458c66029e49ba21b601db5e87123f4";
   const apiUrl = "https://api.novaposhta.ua/v2.0/json/";
 
   const requestData = {
@@ -119,7 +119,7 @@ export interface SearchSettlementStreetsResponse {
 export const searchSettlementStreets = async (
   params: SearchSettlementStreetsParams
 ): Promise<SearchSettlementStreetsResponse> => {
-  const apiKey = "4ef7f616562477f2bf4173d436b118b3";
+  const apiKey = "8458c66029e49ba21b601db5e87123f4";
   const apiUrl = "https://api.novaposhta.ua/v2.0/json/";
 
   const requestData = {
